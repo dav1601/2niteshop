@@ -7,16 +7,23 @@ $(function () {
     $(document).on('change', "#type", function () {
         var val = $(this).val();
         if (val != '') {
-            if (val != 'html') {
-                $(".not-html").removeClass('d-none');
+            if (val == "html") {
+                $(".html").removeClass('d-none');
+                $(".img").addClass('d-none');
+                $(".not-html").addClass('d-none');
+            } else if (val == "img") {
+                $(".img").removeClass('d-none');
+                $(".not-html").addClass('d-none');
                 $(".html").addClass('d-none');
             } else {
-                $(".not-html").addClass('d-none');
-                $(".html").removeClass('d-none');
+                $(".not-html").removeClass('d-none');
+                $(".img").addClass('d-none');
+                $(".html").addClass('d-none');
             }
         } else {
             $(".not-html").addClass('d-none');
             $(".html").addClass('d-none');
+            $(".img").addClass('d-none');
         }
     });
     var prefix_add = "#task__add--";
@@ -27,6 +34,10 @@ $(function () {
     $(document).on('change', "#use_img", function () {
         var file = $(this)[0].files;
         $("#forUse").html(file[0].name);
+    });
+    $(document).on('change', "#val_img", function () {
+        var file = $(this)[0].files;
+        $("#forVImg").html(file[0].name);
     });
     $(document).on('change', "#instruct_img", function () {
         var file = $(this)[0].files;
@@ -102,7 +113,7 @@ $(function () {
         load_task($action = "load", $id = 0, $name = "", $time = "", $unit = "", $done = 0, $page = page)
         return false;
     });
-    $(document).on('click' , ".task-pages .page-item .page-link " , function(){
+    $(document).on('click', ".task-pages .page-item .page-link ", function () {
         load_task($action = "load", $id = 0, $name = "", $time = "", $unit = "", $done = 0, $page = $(this).attr('data-page'));
     });
     $(document).on('click', ".task__item--check", function () {

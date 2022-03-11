@@ -92,8 +92,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::get('config_home/delete/{id}', 'AdminDashBoardController@delete_cofhome')->name('delete_cofhome')->where('id', '^[0-9]+$');
             Route::get('config_info', 'AdminDashBoardController@add_cofinfo_view')->name('add_cofinfor_view');
             Route::post('config_info', 'AdminDashBoardController@add_cofinfo_handle')->name('add_cofinfor_handle');
-            Route::get('config_info/edit/{id}', 'AdminDashBoardController@edit_cofinfo_view')->name('edit_cofinfor_view')->where('id', '^[0-9]+$');
-            Route::post('config_info/edit/{id}', 'AdminDashBoardController@edit_cofinfo_handle')->name('edit_cofinfor_handle');
+            Route::get('ci/view/edit/{id}', 'AdminDashBoardController@edit_info')->name('edit_info_view')->where('id', '^[0-9]+$');
+            Route::post('ci/handle/edit/{id}', 'AdminDashBoardController@edit_info_handle')->name('edit_info_handle')->where('id', '^[0-9]+$');
             Route::get('config_info/delete/{id}', 'AdminDashBoardController@delete_cofinfo_handle')->name('delete_cofinfor_handle')->where('id', '^[0-9]+$');
         });
         Route::prefix('users/')->group(function () {

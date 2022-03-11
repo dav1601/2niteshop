@@ -167,7 +167,7 @@ class AdminDashBoardController extends Controller
             if ($request->has('access')) {
                 $data['option'] = implode(",", $request->access);
             }
-            if ($request->cat_digital != 0 ) {
+            if ($request->cat_digital != 0) {
                 $data['cat_digital'] = $request->cat_digital;
             }
             $data['color'] = $request->color;
@@ -336,7 +336,7 @@ class AdminDashBoardController extends Controller
             if ($request->has('access')) {
                 $data['option'] = implode(",", $request->access);
             }
-            if ($request->cat_digital != 0 ) {
+            if ($request->cat_digital != 0) {
                 $data['cat_digital'] = $request->cat_digital;
             } else {
                 $data['cat_digital'] = NULL;
@@ -346,7 +346,9 @@ class AdminDashBoardController extends Controller
             $data['position'] = $request->position;
             // main img
             if ($request->has('main_img')) {
-                unlink("public/" . $conf->main_img);
+                 if ($conf->main_img != NULL){
+                    unlink("public/" . $conf->main_img);
+                 }
                 $main_img = $request->main_img;
                 $n_main = $main_img->getClientOriginalName();
                 if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
@@ -459,9 +461,9 @@ class AdminDashBoardController extends Controller
     }
 
     ////////////////////////////////////////
-    public function edit_cofinfo_view($id, Request $request)
+    public function edit_info($id, Request $request)
     {
-        $config = Config::where('id', '=', $id)->first();
+        $config = Config::where('id', '=', $id)->firstOrFail();
         return view('admin.dashboard.config_info_edit', compact('config'));
     }
     ////////////////////////////////////////
@@ -483,12 +485,11 @@ class AdminDashBoardController extends Controller
             [
                 'name' => 'required',
                 'type' => 'required',
-                'value' => 'required'
+                'value_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:10000',
             ],
             [
                 'name.required' => "Bạn chưa điền tên của config info",
                 'type.required' => "Bạn chưa chọn type của config info",
-                'value.required' => "Bạn chưa điền giá trị của config info",
             ]
         );
         if ($validator->fails()) {
@@ -496,7 +497,26 @@ class AdminDashBoardController extends Controller
         } else {
             $data_create['name'] = $request->name;
             $data_create['type'] = $request->type;
-            $data_create['value'] = $request->value;
+            if ($request->has('value_img')) {
+                $value_img = $request->value_img;
+                $n_access = $value_img->getClientOriginalName();
+                if (file_exists("public/admin/images/info/" . $n_access)) {
+                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
+                    $ext = $value_img->getClientOriginalExtension();
+                    $n_access = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/info/" . $n_access)) {
+                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_access = "admin/images/info/"  . $n_access;
+                $value_img->move("public/admin/images/info/", $n_access);
+                $data_create['value'] = $save_access;
+            } else {
+                $data_create['value'] = $request->value;
+            }
+
             if (Config::create($data_create)) {
                 return redirect()->back()->with('success', 1);
             } else {
@@ -506,14 +526,14 @@ class AdminDashBoardController extends Controller
     }
 
     ////////////////////////////////////////
-    public function edit_cofinfo_handle($id, Request $request)
+    public function edit_info_handle($id, Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
                 'name' => 'required',
                 'type' => 'required',
-                'value' => 'required'
+                'value_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:10000',
             ],
             [
                 'name.required' => "Bạn chưa điền tên của config info",
@@ -524,10 +544,38 @@ class AdminDashBoardController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
-            $data_create['name'] = $request->name;
-            $data_create['type'] = $request->type;
-            $data_create['value'] = $request->value;
-            if (Config::where('id', '=', $id)->update($data_create)) {
+            $config_info = Config::where('id', '=', $id)->first();
+            $data_update['name'] = $request->name;
+            $data_update['type'] = $request->type;
+            if ($request->has('value_img')) {
+               if($config_info->value != NULL) {
+                unlink("public/" . $config_info->value);
+               }
+                $value_img = $request->value_img;
+                $n_access = $value_img->getClientOriginalName();
+                if (file_exists("public/admin/images/info/" . $n_access)) {
+                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
+                    $ext = $value_img->getClientOriginalExtension();
+                    $n_access = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/info/" . $n_access)) {
+                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_access = "admin/images/info/"  . $n_access;
+                $value_img->move("public/admin/images/info/", $n_access);
+                $data_update['value'] = $save_access;
+            } else {
+                $data_update['value'] = $request->value;
+            }
+            if ($request->has('setNull')) {
+                if ($config_info->value != NULL) {
+                    unlink("public/" . $config_info->value);
+                }
+                $data_update['value'] = NULL;
+            }
+            if (Config::where('id', '=', $id)->update($data_update)) {
                 return redirect()->back()->with('success', 1);
             } else {
                 return redirect()->back()->with('error', 1);

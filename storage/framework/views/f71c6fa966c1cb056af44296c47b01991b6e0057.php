@@ -9,6 +9,42 @@
 </div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
+<?php if(getVal('background')->value != NULL): ?>
+<?php
+$bg = asset(getVal('background')->value);
+?>
+<style>
+    body {
+        background-image: url(<?php echo e($bg); ?>);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+
+    #biad__content--home {
+        background: white;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    #biad__header--bot {
+        background: white;
+    }
+
+    #biad__header--bot>div {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .show__home {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .show__home--box:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 100px;
+    }
+</style>
+
+<?php endif; ?>
 <div id="biad__content--home" class="container">
     <div class="w-100 home">
         <div class="home__left">
@@ -69,7 +105,8 @@
                 <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bn): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if($bn -> position == "Phải"): ?>
                 <a href="<?php echo e(url($bn->link)); ?>" class="d-block">
-                    <img src="<?php echo e($file->ver_img($bn->img)); ?>" alt="<?php echo e($bn->name); ?>" class="img-fluid">
+                    <img src="<?php echo e($file->ver_img($bn->img)); ?>" alt="<?php echo e($bn->name); ?>" width="100%" height="auto"
+                        alt="<?php echo e($bn->name); ?>">
                 </a>
                 <?php endif; ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -170,7 +207,7 @@
         });
         $digital = $digital ->orderBy('id','DESC')->get();
         } else {
-         $digital = [];
+        $digital = [];
         }
         ////////////////////////////
         ?>
@@ -582,7 +619,8 @@
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                             <?php else: ?>
-                            <strong>Hiện chưa có thẻ <?php echo e(App\Models\Category::where('id', '=' , $cf->cat_digital)->first()->name); ?> nào</strong>
+                            <strong>Hiện chưa có thẻ <?php echo e(App\Models\Category::where('id', '=' ,
+                                $cf->cat_digital)->first()->name); ?> nào</strong>
                             <?php endif; ?>
                         </div>
                         <?php endif; ?>
@@ -714,7 +752,8 @@
                 <div class="tab-pane active" id="tab__blogs" role="tabpanel">
                     <div class="owl-carousel owl-theme owl-6">
                         <?php $__currentLoopData = App\Models\Blogs::select('id' , 'title' , 'slug' , 'desc' , 'img' , 'cat_id' ,
-                        'cat_sub_id' , 'author' , 'views' , 'active' ,'created_at' , 'updated_at')-> where('active' , '=' , 1)->orderBy('id' ,
+                        'cat_sub_id' , 'author' , 'views' , 'active' ,'created_at' , 'updated_at')-> where('active' ,
+                        '=' , 1)->orderBy('id' ,
                         'DESC') ->limit(8)->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $invo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="item">
                             <?php if (isset($component)) { $__componentOriginalf39f559c5285947744fdc35c8c7b2100bbecdeab = $component; } ?>

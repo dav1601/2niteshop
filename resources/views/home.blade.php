@@ -10,6 +10,42 @@
 </div>
 @endsection
 @section('content')
+@if (getVal('background')->value != NULL)
+@php
+$bg = asset(getVal('background')->value);
+@endphp
+<style>
+    body {
+        background-image: url({{ $bg }});
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+
+    #biad__content--home {
+        background: white;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    #biad__header--bot {
+        background: white;
+    }
+
+    #biad__header--bot>div {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .show__home {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .show__home--box:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 100px;
+    }
+</style>
+
+@endif
 <div id="biad__content--home" class="container">
     <div class="w-100 home">
         <div class="home__left">
@@ -59,7 +95,8 @@
                 @foreach ($banners as $bn )
                 @if ($bn -> position == "Phải")
                 <a href="{{ url($bn->link) }}" class="d-block">
-                    <img src="{{ $file->ver_img($bn->img) }}" alt="{{ $bn->name }}" class="img-fluid">
+                    <img src="{{ $file->ver_img($bn->img) }}" alt="{{ $bn->name }}" width="100%" height="auto"
+                        alt="{{ $bn->name }}">
                 </a>
                 @endif
                 @endforeach
@@ -160,7 +197,7 @@
         });
         $digital = $digital ->orderBy('id','DESC')->get();
         } else {
-         $digital = [];
+        $digital = [];
         }
         ////////////////////////////
         @endphp
@@ -441,7 +478,8 @@
                                 @endforeach
                             </div>
                             @else
-                            <strong>Hiện chưa có thẻ {{ App\Models\Category::where('id', '=' , $cf->cat_digital)->first()->name }} nào</strong>
+                            <strong>Hiện chưa có thẻ {{ App\Models\Category::where('id', '=' ,
+                                $cf->cat_digital)->first()->name }} nào</strong>
                             @endif
                         </div>
                         @endif
@@ -529,7 +567,8 @@
                 <div class="tab-pane active" id="tab__blogs" role="tabpanel">
                     <div class="owl-carousel owl-theme owl-6">
                         @foreach (App\Models\Blogs::select('id' , 'title' , 'slug' , 'desc' , 'img' , 'cat_id' ,
-                        'cat_sub_id' , 'author' , 'views' , 'active' ,'created_at' , 'updated_at')-> where('active' , '=' , 1)->orderBy('id' ,
+                        'cat_sub_id' , 'author' , 'views' , 'active' ,'created_at' , 'updated_at')-> where('active' ,
+                        '=' , 1)->orderBy('id' ,
                         'DESC') ->limit(8)->get() as $invo)
                         <div class="item">
                             <x-blogsubitem :blog="$invo" />

@@ -30,7 +30,8 @@ return [
         '1' => "html",
         '2' => "text",
         '3' => "link",
-        '4' => "ifame"
+        '4' => "ifame",
+        '5' => "img",
     ),
     'paid' => array(
         '1' => "Chưa thanh toán",

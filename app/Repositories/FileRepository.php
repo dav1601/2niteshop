@@ -12,12 +12,12 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class FileRepository implements FileInterface
 {
-    public function import_css($file = "", $forder = "production/")
+    public function import_css($file = "", $forder = "app/")
     {
         $link = asset('client/' . $forder . 'css/' . $file) . '?ver=' . filemtime('public/client/' . $forder . 'css/' . $file);
         return $link;
     }
-    public function import_js($file = "", $forder = "production/")
+    public function import_js($file = "", $forder = "app/")
     {
         $link = asset('client/' . $forder . 'js/' . $file) . '?ver=' . filemtime('public/client/' . $forder . 'js/' . $file);
         return $link;

@@ -507,7 +507,9 @@ class AdminProductController extends Controller
 
             // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
             if ($request->has('main_img')) {
-                unlink("public/" . $product->main_img);
+                if ($product->main_img != NULL) {
+                    unlink("public/" . $product->main_img);
+                }
                 $main_img = $request->main_img;
                 $n_main = $main_img->getClientOriginalName();
                 if (file_exists("public/" . $path . Str::slug($data_update['cat_name']) . "/"  . "main/" . $n_main)) {

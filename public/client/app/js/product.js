@@ -163,6 +163,7 @@ $(function () {
             success: function (data) {
                 $("#outputGrid").html(data.html);
                 $("#outputList").html(data.html_2);
+                $('[data-toggle="tooltip"]').tooltip();
                 if (dataView == "grid") {
                     $("#grid .products__page").html(data.page);
                 } else {
@@ -207,6 +208,7 @@ $(function () {
             success: function (data) {
                 $("#outputGrid").html(data.html);
                 $("#outputList").html(data.html_2);
+                $('[data-toggle="tooltip"]').tooltip();
                 $(".products__page").html(data.page);
                 $(document).scrollTop(0);
                 $.end_loading();
@@ -242,6 +244,7 @@ $(function () {
             success: function (data) {
                 $("#outputGrid").html(data.html);
                 $("#outputList").html(data.html_2);
+                $('[data-toggle="tooltip"]').tooltip();
                 if (dataView == "grid") {
                     $("#grid .products__page").html(data.page);
                 } else {
