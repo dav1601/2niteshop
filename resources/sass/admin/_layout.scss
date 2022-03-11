@@ -1,0 +1,93 @@
+@import "_variables";
+#wrapper {
+    display: flex;
+}
+// AREA SIDEBAR
+#sidebar {
+    transition: all 0.5s;
+    flex: 0 0 $width-sidebar;
+    width: $width-sidebar;
+    max-width: $width-sidebar;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: #222e3c;
+    overflow-y: scroll;
+    padding: 10px 0;
+    &:hover::-webkit-scrollbar-track {
+        transition: all 0.5s;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+}
+.table {
+    color: $white;
+}
+.hide-sidebar {
+    left: -$width-sidebar !important;
+}
+.card-header h2 {
+    font-size: 18px;
+    color: $main;
+    font-weight: 600;
+}
+// END SIDEBAR
+hr {
+    background-color: currentColor;
+    color: inherit;
+    opacity: .25;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+// HEADER
+
+// END HEADER
+
+// CONTENT
+#content {
+    flex: 1;
+    margin-left: $width-sidebar;
+    max-width: 100%;
+    transition: width 0.5s;
+    margin-bottom: 50px;
+    .content__body {
+        width: auto;
+        max-width: 100vw;
+        padding: 3rem 3rem 1.5rem;
+        &--name {
+            font-size: 1.3125rem;
+            text-transform: capitalize;
+            line-height: 1.2;
+            margin-bottom: 1rem !important;
+        }
+    }
+}
+.full-content {
+    margin-left: 0 !important;
+}
+// END CONTENT
+
+// Scroll
+body::-webkit-scrollbar-track,
+#sidebar::-webkit-scrollbar-track,
+#pdc__show::-webkit-scrollbar-track {
+    // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #222e3c;
+}
+
+body::-webkit-scrollbar,
+#sidebar::-webkit-scrollbar,
+#pdc__show::-webkit-scrollbar {
+    width: 10px;
+    background-color: #222e3c;
+}
+
+body::-webkit-scrollbar-thumb,
+#sidebar::-webkit-scrollbar-thumb,
+#pdc__show::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #48dbfb;
+}
+// End Scroll

@@ -1,0 +1,246 @@
+$breakpoints-v: (
+    iphone5-se: 320px,
+    iphone6-7-8-x: 375px,
+    iphone6-7-8plus: 414px,
+    small-table: 600px,
+    ipad: 768px,
+    ipad-pro: 1024px,
+    hdtv: 1080px,
+);
+$breakpoints-h: (
+    iphone5-se: 568px,
+    iphone6-7-8: 667px,
+    iphone6-7-8plus: 736px,
+    small-table: 800px,
+    iphoneX: 812px,
+    ipad: 1024px,
+    ipad-pro: 1366px,
+);
+@mixin responsive_v($breakpoint, $direction: down) {
+    //neu breakpoint ton tai
+    @if map-has-key($breakpoints-v, $breakpoint) {
+        //Kiểm tra breakpoint truyền vào có tồn tại như bạn đã định nghĩa hay không.
+        $breakpoint-value: map-get($breakpoints-v, $breakpoint);
+
+        // Xác định min-width hay max-width
+        @if $direction == up {
+            //Build media query
+            @media (min-width: $breakpoint-value) {
+                @content;
+            }
+        } @else if $direction == down {
+            //Build media query
+            @media (max-width: $breakpoint-value) {
+                @content;
+            }
+        }
+    }
+}
+@mixin responsive_h($breakpoint, $direction: down) {
+    //neu breakpoint ton tai
+    @if map-has-key($breakpoints-h, $breakpoint) {
+        //Kiểm tra breakpoint truyền vào có tồn tại như bạn đã định nghĩa hay không.
+        $breakpoint-value: map-get($breakpoints-h, $breakpoint);
+
+        // Xác định min-width hay max-width
+        @if $direction == up {
+            //Build media query
+            @media (min-width: $breakpoint-value) {
+                @content;
+            }
+        } @else if $direction == down {
+            //Build media query
+            @media (max-width: $breakpoint-value) {
+                @content;
+            }
+        }
+    }
+}
+.mobile__header {
+    @include responsive_v(ipad-pro, down) {
+        display: block !important;
+    }
+    &--bar {
+        .j__menu {
+            display: flex;
+            height: 30px;
+            border-width: 0;
+            border-bottom-width: 1px;
+            border-style: solid;
+            border-color: rgba(221, 221, 221, 1);
+            padding-right: 5px;
+            padding-left: 5px;
+            background: rgba(255, 255, 255, 1);
+            &--item {
+                margin-left: 10px;
+                &:first-child {
+                    margin-left: 0;
+                }
+                a {
+                    display: flex;
+                    align-items: center;
+                    font-size: 15px;
+                    color: rgba(105, 105, 115, 1);
+                    font-weight: 400;
+                    padding: 5px;
+                    text-decoration: none;
+                    &:hover {
+                        color: #2e86de;
+                    }
+
+                    span {
+                        display: block;
+                        padding-left: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+#biad__header--top.resposive {
+    @include responsive_v(ipad-pro, down) {
+        display: block !important;
+    }
+}
+.mobile__menu {
+    height: 100vh;
+    width: 375px;
+    overflow: auto;
+    @include responsive_v(iphone6-7-8-x, down) {
+        width: 310px;
+        overflow: auto;
+        left: -310px;
+    }
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 15px 90px -10px rgb(0 0 0 / 20%);
+    z-index: 2000;
+    position: fixed;
+    left: -375px;
+    top: 0;
+    transition: all 0.4s;
+    &--content {
+        padding: 0 10px;
+        margin-top: 10px;
+    }
+    &--header {
+        position: relative;
+        width: 100%;
+        background: rgba(240, 242, 245, 1);
+        height: 45px;
+        z-index: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        min-width: 0;
+        span {
+            font-family: "Montserrat";
+            font-weight: 700;
+            text-transform: uppercase;
+            height: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 17px;
+        }
+        a {
+            height: 100%;
+            width: 40px;
+            -webkit-box-flex: 0;
+            -ms-flex-positive: 0;
+            flex-grow: 0;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            font-size: 25px;
+            cursor: pointer;
+        }
+    }
+}
+.nite__menu.lv-0 {
+    .nite__menu--item {
+        a {
+            padding-left: 30px !important;
+        }
+    }
+}
+.nite__menu.lv-1 {
+    .nite__menu--item {
+        a {
+            padding-left: 40px !important;
+        }
+    }
+}
+.nite__menu {
+    &--item {
+        .wp__iconName {
+            a {
+                flex:  1;
+            }
+        }
+        margin-bottom: 10px;
+        .icon-toggle {
+            cursor: pointer;
+
+        }
+        .icon-name {
+            display: flex;
+            align-items: center;
+        }
+        i {
+            margin-top: 4px;
+            font-size: 22px !important;
+            &:hover {
+                color: #2e86de;
+            }
+        }
+        position: relative;
+        width: 100%;
+        z-index: 20;
+        img {
+            margin-right: 5px;
+        }
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+            font-size: 15px;
+            line-height: 22.5px;
+            color: #333333;
+            transition: background 0.05s ease-in-out;
+            text-decoration: none;
+            &:hover {
+                color: #2e86de;
+            }
+            i {
+                font-size: 14px;
+            }
+        }
+    }
+}
+#filter_genre {
+    @include responsive_h(iphone6-7-8plus, down) {
+        display: none;
+    }
+}
+#menu__mini--user {
+    @include responsive_h(iphoneX, down) {
+        display: block !important;
+   }
+}

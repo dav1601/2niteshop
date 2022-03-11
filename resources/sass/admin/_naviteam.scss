@@ -1,0 +1,95 @@
+.va-rounded {
+    border-radius: 50%;
+}
+.va-radius-fb {
+    border-radius: 8px;
+}
+.va-checkbox {
+    position: relative;
+    input {
+        display: none;
+    }
+    label {
+        position: relative;
+        padding-left: 30px;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    label::after,
+    label::before {
+        content: "";
+        position: absolute;
+    }
+    label::after {
+        width: 0px;
+        height: 0px;
+        transition: width 0.2s;
+        top: 10px;
+        left: 2px;
+        transform: rotate(-45deg);
+    }
+    input:checked + label::after {
+        border: 2px solid #fff;
+        border-width: 0 0 3px 3px;
+        height: 7px;
+        width: 15px;
+    }
+    label::before {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #555;
+        top: 5px;
+        left: 0;
+        border-radius: 4px;
+    }
+    input:checked + label::before {
+        background: #ee5253;
+        border: none;
+    }
+}
+.buttons {
+    .all {
+        border: 1px solid white;
+        border-radius: 50px;
+        cursor: pointer;
+        display: inline-block;
+    }
+    .button-admin {
+        .admin {
+            padding: 0 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+    }
+    .button-vip-2 {
+        background-color: #81cb92;
+        &:hover {
+            border: 1px solid white;
+            background-color: #81cb92;
+        }
+    }
+    .button-vip-1 {
+        background-color: #D76FB4;
+        &:hover {
+            border: 1px solid white;
+            background-color: #D76FB4;
+        }
+    }
+    .button-vip-3 {
+        background-color: #0984e3;
+        &:hover {
+            border: 1px solid white;
+            background-color: #0984e3;
+        }
+    }
+    .button-vip-4 {
+        background-color: #FF3333;
+        &:hover {
+            border: 1px solid white;
+            background-color: #FF3333;
+        }
+    }
+}

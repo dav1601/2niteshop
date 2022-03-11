@@ -1,0 +1,69 @@
+.va-rounded {
+    border-radius: 50%;
+}
+.va-radius-fb {
+    border-radius: 8px;
+}
+.font-14 {
+    font-size: 14px !important;
+}
+.va-checkbox {
+    position: relative;
+    input {
+        display: none;
+    }
+    label {
+        position: relative;
+        padding-left: 30px;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    label::after,
+    label::before {
+        content: "";
+        position: absolute;
+    }
+    label::after {
+        width: 0px;
+        height: 0px;
+        transition: width 0.2s;
+        top: 10px;
+        left: 2px;
+        transform: rotate(-45deg);
+    }
+    input:checked + label::after {
+        border: 2px solid #fff;
+        border-width: 0 0 3px 3px;
+        height: 7px;
+        width: 15px;
+    }
+    label::before {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #555;
+        top: 5px;
+        left: 0;
+        border-radius: 4px;
+    }
+    input:checked + label::before {
+        background: #ee5253;
+        border: none;
+    }
+}
+
+@function column-width($col) {
+    @return percentage($col/100);
+}
+@for $i from 1 through 100 {
+    .va-fix-#{$i}{
+        flex: 0 0 column-width($i);
+        max-width: column-width($i)  ;
+    }
+}
+.va-fix-cont-1000 {
+max-width: 1030px !important;
+}
+.va-fix-padding {
+    padding: 0 10px !important;
+}

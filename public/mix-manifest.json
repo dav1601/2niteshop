@@ -1,0 +1,14 @@
+{
+    "/client/app/css/app.css": "/client/app/css/app.css",
+    "/admin/app/css/app.css": "/admin/app/css/app.css",
+    "/client/app/css/_component.css": "/client/app/css/_component.css",
+    "/admin/app/css/_naviteam.css": "/admin/app/css/_naviteam.css",
+    "/admin/app/css/_layout.css": "/admin/app/css/_layout.css",
+    "/admin/app/css/_responsive.css": "/admin/app/css/_responsive.css",
+    "/admin/app/css/_variables.css": "/admin/app/css/_variables.css",
+    "/client/app/css/_footer.css": "/client/app/css/_footer.css",
+    "/client/app/css/_naviteam.css": "/client/app/css/_naviteam.css",
+    "/client/app/css/_layout.css": "/client/app/css/_layout.css",
+    "/client/app/css/_responsive.css": "/client/app/css/_responsive.css",
+    "/client/app/css/_variables.css": "/client/app/css/_variables.css"
+}

@@ -1,0 +1,543 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\Blogs;
+use App\Models\Todos;
+use App\Models\Config;
+use App\Models\Orders;
+use App\Models\Slides;
+use App\Models\Category;
+use App\Models\Comments;
+use App\Models\Products;
+use App\Models\showHome;
+use App\Models\Statistics;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\UserInterface;
+use Symfony\Polyfill\Intl\Idn\Info;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use App\Repositories\CustomerInterface;
+use Illuminate\Support\Facades\Validator;
+
+class AdminDashBoardController extends Controller
+{
+    public function __construct(CustomerInterface $customer)
+    {
+        $this->customer = $customer;
+        $this->middleware(function ($request, $next) {
+            $this->customer->updateNameAuthor();
+            session(['active' => 'dashboard']);
+            return $next($request);
+        });
+    }
+    public function index(UserInterface $daviUser)
+    {
+        $todo = new Todos;
+        $count = Todos::count();
+        $page = 1;
+        $item_page = 6;
+        $start = ($page - 1) * $item_page;
+        $number_page = ceil($count / $item_page);
+        $tasks = $todo->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
+        $stats_users = User::where('role_id', '>', '3')->count();
+        $stats_order = Orders::count();
+        $stats_product = Products::count();
+        $stats_blog = Blogs::count();
+        $stats_comment = Comments::count();
+        $revenueToday = Statistics::where('day', '=', $now->day)->where('month', '=', $now->month)->where('year', '=', $now->year)->first();
+        if ($revenueToday) {
+            $stats_revenueToday = $revenueToday->total_day;
+            $stats_proFToday = $stats_revenueToday - $revenueToday->total_cost;
+        } else {
+            $stats_revenueToday = 0;
+            $stats_proFToday = 0;
+        }
+        $revenueMonth = Statistics::where('month', '=', $now->month)->where('year', '=', $now->year)->get();
+        $stats_revenueMonth = 0;
+        $proFitMonth = 0;
+        if (count($revenueMonth) > 0) {
+            foreach ($revenueMonth as $rm) {
+                $stats_revenueMonth  += $rm->total_day;
+                $proFitMonth += $rm->total_cost;
+            }
+            $stats_proFMonth =   $stats_revenueMonth -  $proFitMonth;
+        } else {
+            $stats_revenueMonth = 0;
+            $stats_proFMonth = 0;
+        }
+        $blogs = Blogs::orderBy('id', 'DESC')->limit(8)->get();
+        $products = Products::orderBy('id', 'DESC')->limit(8)->get();
+        return view('admin.dashboard.index', compact('tasks', 'now', 'number_page', 'page', 'stats_comment', 'stats_product', 'stats_order', 'stats_users', 'stats_blog', 'stats_revenueMonth', 'stats_proFMonth', 'stats_revenueToday', 'stats_proFToday', 'daviUser', 'blogs', 'products'));
+    }
+    ////////////////////////////////////////
+
+    public function add_cofhome_view(Request $request)
+    {
+        $category = category_child(Category::all(), 0);
+        $config = showHome::orderBy('position', 'ASC')->get();
+        Carbon::setLocale('vi');
+        $carbon = new Carbon();
+        return view('admin.dashboard.config_home', compact('config', 'category', 'carbon'));
+    }
+    ////////////////////////////////////////
+    public function edit_cofhome_view($id, Request $request)
+    {
+        $category = Category::where('parent_id', '=', 0)->get();
+        $config = showHome::where('id', '=', $id)->first();
+        $cat_1 = $config->cat;
+        $cat_2 = $config->cat_2;
+        Carbon::setLocale('vi');
+        $carbon = new Carbon();
+        $access =  Products::where(function ($query) use ($cat_1) {
+            $query->where('cat_id', '=', $cat_1)
+                ->orWhere('cat_2_id', '=', $cat_1);
+        });
+        $access = $access->where('sub_type', 'LIKE', 'controller')->get();
+        return view('admin.dashboard.config_home_edit', compact('config', 'category', 'carbon', 'access'));
+    }
+    ////////////////////////////////////////
+    public function add_cofhome_handle(Request $request)
+    {
+        $data = array();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|unique:show_home',
+                'main_img' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'use_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'instruct_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'access_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'fix_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'link_main' => 'required',
+                'cat'  => 'required',
+                'color'  => 'required',
+                'position' => 'unique:show_home',
+            ],
+            [
+                'name.required' => "Bạn chưa nhập tên config",
+                'cat.required' => "Bạn chưa chọn danh mục config",
+                'color.required' => "Bạn chưa nhập màu sắc config",
+                'link_main.required' => "Bạn chưa nhập link",
+                'link_use.required' => "Bạn chưa nhập link",
+                'link_instruct.required' => "Bạn chưa nhập link",
+                'link_fix.required' => "Bạn chưa nhập link",
+                'link_access.required' => "Bạn chưa nhập link",
+                'name.unique' => "Config này đã tồn tại",
+                'position.unique' => "Vị trí này đã tồn tại",
+                'main_img.required' => "Không được để trống file ảnh",
+                'main_img.image' => "File không phải là file ảnh",
+                'main_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'main_img.max' => "File ảnh không vượt quá 500kb",
+                'use_img.required' => "Không được để trống file ảnh",
+                'use_img.image' => "File không phải là file ảnh",
+                'use_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'use_img.max' => "File ảnh không vượt quá 500kb",
+                'instruct_img.required' => "Không được để trống file ảnh",
+                'instruct_img.image' => "File không phải là file ảnh",
+                'instruct_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'instruct_img.max' => "File ảnh không vượt quá 500kb",
+                'access_img.required' => "Không được để trống file ảnh",
+                'access_img.image' => "File không phải là file ảnh",
+                'access_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'access_img.max' => "File ảnh không vượt quá 500kb",
+                'fix_img.required' => "Không được để trống file ảnh",
+                'fix_img.image' => "File không phải là file ảnh",
+                'fix_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'fix_img.max' => "File ảnh không vượt quá 500kb",
+
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            $data['name'] = $request->name;
+            $data['main_link'] = $request->link_main;
+            $data['use_link'] = $request->link_use;
+            $data['fix_link'] = $request->link_fix;
+            $data['instruct_link'] = $request->link_instruct;
+            $data['access_link'] = $request->link_access;
+            $data['cat'] = $request->cat;
+            $data['cat_2'] = $request->cat_2;
+            if ($request->has('access')) {
+                $data['option'] = implode(",", $request->access);
+            }
+            if ($request->cat_digital != 0 ) {
+                $data['cat_digital'] = $request->cat_digital;
+            }
+            $data['color'] = $request->color;
+            $data['tab'] = $request->tab;
+            $data['position'] = $request->position;
+            // main img
+            $main_img = $request->main_img;
+            $n_main = $main_img->getClientOriginalName();
+            if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
+                $filename = pathinfo($n_main, PATHINFO_FILENAME);
+                $ext = $main_img->getClientOriginalExtension();
+                $n_main = $filename . '(1)' . '.' . $ext;
+                $i = 1;
+                while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
+                    $n_main = $filename . '(' . $i . ')' . '.' . $ext;
+                    $i++;
+                }
+            }
+            $save_main = "admin/images/show_home/" . $request->name . "/" . "main/" . $n_main;
+            $main_img->move("public/admin/images/show_home/" . $request->name . "/" . "main", $n_main);
+            $data['main_img'] = $save_main;
+            // end main img
+            // use img
+            if ($request->has('use_img')) {
+                $use_img = $request->use_img;
+                $n_use = $use_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
+                    $filename = pathinfo($n_use, PATHINFO_FILENAME);
+                    $ext = $use_img->getClientOriginalExtension();
+                    $n_use = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
+                        $n_use = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_use = "admin/images/show_home/" . $request->name . "/" . "use/" . $n_use;
+                $use_img->move("public/admin/images/show_home/" . $request->name . "/" . "use", $n_use);
+                $data['use_img'] = $save_use;
+            }
+            // end use img
+            // instruct img
+            if ($request->has('instruct_img')) {
+                $instruct_img = $request->instruct_img;
+                $n_instruct = $instruct_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
+                    $filename = pathinfo($n_instruct, PATHINFO_FILENAME);
+                    $ext = $instruct_img->getClientOriginalExtension();
+                    $n_instruct = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
+                        $n_instruct = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct;
+                $instruct_img->move("public/admin/images/show_home/" . $request->name . "/" . "instruct", $n_instruct);
+                $data['instruct_img'] = $save_instruct;
+            }
+            // end instruct img
+            // fix img
+            if ($request->has('fix_img')) {
+                $fix_img = $request->fix_img;
+                $n_fix = $fix_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
+                    $filename = pathinfo($n_fix, PATHINFO_FILENAME);
+                    $ext = $fix_img->getClientOriginalExtension();
+                    $n_fix = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
+                        $n_fix = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_fix = "admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix;
+                $fix_img->move("public/admin/images/show_home/" . $request->name . "/" . "fix", $n_fix);
+                $data['fix_img'] = $save_fix;
+            }
+            // end fix img
+            // access img
+            if ($request->has('access_img')) {
+                $access_img = $request->access_img;
+                $n_access = $access_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
+                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
+                    $ext = $access_img->getClientOriginalExtension();
+                    $n_access = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
+                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_access = "admin/images/show_home/" . $request->name . "/" . "access/" . $n_access;
+                $access_img->move("public/admin/images/show_home/" . $request->name . "/" . "access", $n_access);
+                $data['access_img'] = $save_access;
+            }
+            // end access img
+            showHome::create($data);
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+
+    //////////////////////////////////////// end add show_home
+    public function edit_cofhome_handle($id, Request $request)
+    {
+        $data = array();
+        $conf = showHome::where('id', '=', $id)->first();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'main_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'use_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'instruct_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'access_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'fix_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'link_main' => 'required',
+                'cat'  => 'required',
+                'color'  => 'required',
+            ],
+            [
+                'name.required' => "Bạn chưa nhập tên config",
+                'cat.required' => "Bạn chưa chọn danh mục config",
+                'color.required' => "Bạn chưa nhập màu sắc config",
+                'link_main.required' => "Bạn chưa nhập link",
+                'link_use.required' => "Bạn chưa nhập link",
+                'link_instruct.required' => "Bạn chưa nhập link",
+                'link_fix.required' => "Bạn chưa nhập link",
+                'link_access.required' => "Bạn chưa nhập link",
+                'name.unique' => "Config này đã tồn tại",
+                'position.unique' => "Vị trí này đã tồn tại",
+                'main_img.image' => "File không phải là file ảnh",
+                'main_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'main_img.max' => "File ảnh không vượt quá 500kb",
+                'use_img.required' => "Không được để trống file ảnh",
+                'use_img.image' => "File không phải là file ảnh",
+                'use_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'use_img.max' => "File ảnh không vượt quá 500kb",
+                'instruct_img.required' => "Không được để trống file ảnh",
+                'instruct_img.image' => "File không phải là file ảnh",
+                'instruct_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'instruct_img.max' => "File ảnh không vượt quá 500kb",
+                'access_img.required' => "Không được để trống file ảnh",
+                'access_img.image' => "File không phải là file ảnh",
+                'access_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'access_img.max' => "File ảnh không vượt quá 500kb",
+                'fix_img.required' => "Không được để trống file ảnh",
+                'fix_img.image' => "File không phải là file ảnh",
+                'fix_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'fix_img.max' => "File ảnh không vượt quá 500kb",
+
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            $data['name'] = $request->name;
+            $data['main_link'] = $request->link_main;
+            $data['use_link'] = $request->link_use;
+            $data['fix_link'] = $request->link_fix;
+            $data['instruct_link'] = $request->link_instruct;
+            $data['access_link'] = $request->link_access;
+            $data['cat'] = $request->cat;
+            $data['cat_2'] = $request->cat_2;
+            if ($request->has('access')) {
+                $data['option'] = implode(",", $request->access);
+            }
+            if ($request->cat_digital != 0 ) {
+                $data['cat_digital'] = $request->cat_digital;
+            } else {
+                $data['cat_digital'] = NULL;
+            }
+            $data['color'] = $request->color;
+            $data['tab'] = $request->tab;
+            $data['position'] = $request->position;
+            // main img
+            if ($request->has('main_img')) {
+                unlink("public/" . $conf->main_img);
+                $main_img = $request->main_img;
+                $n_main = $main_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
+                    $filename = pathinfo($n_main, PATHINFO_FILENAME);
+                    $ext = $main_img->getClientOriginalExtension();
+                    $n_main = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
+                        $n_main = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_main = "admin/images/show_home/" . $request->name . "/" . "main/" . $n_main;
+                $main_img->move("public/admin/images/show_home/" . $request->name . "/" . "main", $n_main);
+                $data['main_img'] = $save_main;
+            }
+            // end main img
+            // use img
+            if ($request->has('use_img')) {
+                unlink("public/" . $conf->use_img);
+                $use_img = $request->use_img;
+                $n_use = $use_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
+                    $filename = pathinfo($n_use, PATHINFO_FILENAME);
+                    $ext = $use_img->getClientOriginalExtension();
+                    $n_use = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
+                        $n_use = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_use = "admin/images/show_home/" . $request->name . "/" . "use/" . $n_use;
+                $use_img->move("public/admin/images/show_home/" . $request->name . "/" . "use", $n_use);
+                $data['use_img'] = $save_use;
+            }
+            // end use img
+            // instruct img
+            if ($request->has('instruct_img')) {
+                unlink("public/" . $conf->instruct_img);
+                $instruct_img = $request->instruct_img;
+                $n_instruct = $instruct_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
+                    $filename = pathinfo($n_instruct, PATHINFO_FILENAME);
+                    $ext = $instruct_img->getClientOriginalExtension();
+                    $n_instruct = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
+                        $n_instruct = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct;
+                $instruct_img->move("public/admin/images/show_home/" . $request->name . "/" . "instruct", $n_instruct);
+                $data['instruct_img'] = $save_instruct;
+            }
+            // end instruct img
+            // fix img
+            if ($request->has('fix_img')) {
+                unlink("public/" . $conf->fix_img);
+                $fix_img = $request->fix_img;
+                $n_fix = $fix_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
+                    $filename = pathinfo($n_fix, PATHINFO_FILENAME);
+                    $ext = $fix_img->getClientOriginalExtension();
+                    $n_fix = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
+                        $n_fix = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_fix = "admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix;
+                $fix_img->move("public/admin/images/show_home/" . $request->name . "/" . "fix", $n_fix);
+                $data['fix_img'] = $save_fix;
+            }
+            // end fix img
+            // access img
+            if ($request->has('access_img')) {
+                unlink("public/" . $conf->access_img);
+                $access_img = $request->access_img;
+                $n_access = $access_img->getClientOriginalName();
+                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
+                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
+                    $ext = $access_img->getClientOriginalExtension();
+                    $n_access = $filename . '(1)' . '.' . $ext;
+                    $i = 1;
+                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
+                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
+                        $i++;
+                    }
+                }
+                $save_access = "admin/images/show_home/" . $request->name . "/" . "access/" . $n_access;
+                $access_img->move("public/admin/images/show_home/" . $request->name . "/" . "access", $n_access);
+                $data['access_img'] = $save_access;
+            }
+            // end access img
+            showHome::where('id', '=', $id)->update($data);;
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function add_cofinfo_view(Request $request)
+    {
+        $config_info = Config::all();
+        return view('admin.dashboard.config_info', compact('config_info'));
+    }
+
+    ////////////////////////////////////////
+    public function edit_cofinfo_view($id, Request $request)
+    {
+        $config = Config::where('id', '=', $id)->first();
+        return view('admin.dashboard.config_info_edit', compact('config'));
+    }
+    ////////////////////////////////////////
+    public function delete_cofinfo_handle($id, Request $request)
+    {
+        if (Config::where('id', '=', $id)->delete()) {
+            return redirect()->back()->with('delete', 1);
+        } else {
+            return redirect()->back()->with('error_delete', 1);
+        }
+    }
+
+    // ////////////////////////////
+
+    public function add_cofinfo_handle(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'type' => 'required',
+                'value' => 'required'
+            ],
+            [
+                'name.required' => "Bạn chưa điền tên của config info",
+                'type.required' => "Bạn chưa chọn type của config info",
+                'value.required' => "Bạn chưa điền giá trị của config info",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            $data_create['name'] = $request->name;
+            $data_create['type'] = $request->type;
+            $data_create['value'] = $request->value;
+            if (Config::create($data_create)) {
+                return redirect()->back()->with('success', 1);
+            } else {
+                return redirect()->back()->with('error', 1);
+            }
+        }
+    }
+
+    ////////////////////////////////////////
+    public function edit_cofinfo_handle($id, Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'type' => 'required',
+                'value' => 'required'
+            ],
+            [
+                'name.required' => "Bạn chưa điền tên của config info",
+                'type.required' => "Bạn chưa chọn type của config info",
+                'value.required' => "Bạn chưa điền giá trị của config info",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            $data_create['name'] = $request->name;
+            $data_create['type'] = $request->type;
+            $data_create['value'] = $request->value;
+            if (Config::where('id', '=', $id)->update($data_create)) {
+                return redirect()->back()->with('success', 1);
+            } else {
+                return redirect()->back()->with('error', 1);
+            }
+        }
+    }
+
+
+
+
+
+    //////////////////////////////////////////
+}

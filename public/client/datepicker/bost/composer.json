@@ -1,0 +1,32 @@
+{
+  "name": "tempusdominus/bootstrap-4",
+  "type": "component",
+  "description": "A date/time picker component designed to work with Bootstrap 4 and Momentjs.",
+  "version": "5.38.0",
+  "keywords": [
+    "bootstrap",
+    "datepicker",
+    "datetimepicker",
+    "timepicker",
+    "moment"
+  ],
+  "homepage": "https://github.com/tempusdominus/bootstrap-4",
+  "license": "MIT",
+  "require": {
+    "robloach/component-installer": "*",
+    "components/jquery": ">=3.0.0",
+    "moment/moment": ">=2.10.5",
+    "tempusdominus/core": "5.0.*"
+  },
+  "extra": {
+    "component": {
+      "scripts": [
+        "src/js/tempusdominus-bootstrap-4.js"
+      ],
+      "files": [
+        "build/js/tempusdominus-bootstrap-4.min.js",
+        "build/css/tempusdominus-bootstrap-4.min.css"
+      ]
+    }
+  }
+}

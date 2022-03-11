@@ -1,0 +1,50 @@
+// Body
+$body-bg: #19222c;
+$avatar-radius: 6px;
+$fb-radius: 8px;
+$width-sidebar: 310px;
+$card-bg: #222e3c;
+// Typography
+$font-family-sans-serif: "Open Sans", sans-serif;
+$font-size-base: 16px;
+$line-height-base: 1.6;
+$font-weight: 400;
+// Colors
+$white: #ffffff;
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+$main: #48dbfb;
+@mixin active {
+    background: linear-gradient(
+        90deg,
+        rgba(59, 125, 221, 0.1),
+        rgba(59, 125, 221, 0.0875) 100%,
+        rgba(255, 255, 255, 0)
+    ) !important;
+    border-radius: $avatar-radius;
+}
+@mixin bg_btn_blue {
+    background: #56ccf2; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2f80ed, #56ccf2); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+        to right,
+        #2f80ed,
+        #56ccf2
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: $white;
+    font-weight: 600;
+}
+@mixin  bg_hover {
+background: #0575E6;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #021B79, #0575E6);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}

@@ -1,0 +1,481 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\gllCat;
+use App\Models\Policy;
+use App\Models\Bundled;
+use App\Models\CatGame;
+use App\Models\Category;
+use App\Models\Producer;
+use App\Models\Insurance;
+use Illuminate\Support\Arr;
+use App\Models\RelatedPosts;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+
+class AdminCategoryController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            session(['active' => 'category']);
+            return $next($request);
+        });
+    }
+    public function index()
+    {
+    }
+    public function cat(Request $request)
+    {
+        $categories = category_child(Category::all(), 0);
+        if ($request->has('selected_blog')) {
+            $selected_blog = $request->selected_blog;
+        } else {
+            $selected_blog = "";
+        }
+        $url = route('cat');
+        return view('admin.products.category.prd.index', compact('categories' , 'url'  ,'selected_blog'));
+    }
+    ////////////////////////////////////////
+    public function edit($id)
+    {
+        $categories = category_child(Category::all(), 0);
+        $cat = Category::where('id', '=', $id)->first();
+        $related_blog = RelatedPosts::where('cat_id', '=', $id)->first();
+        if ($related_blog) {
+            $selected_blog = $related_blog->posts;
+        } else {
+            $selected_blog = "";
+        }
+        $url = route('edit_cat', ['id' => $id]);
+        return view('admin.products.category.prd.edit', compact('categories', 'cat', 'id' , 'url' , 'selected_blog'));
+    }
+    ////////////////////////////////////////
+    public function handle_add(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|unique:category',
+                'title' => 'required|unique:category',
+                'slug' => 'required|unique:category',
+                'desc' => 'required',
+                'keywords' => 'required',
+                'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'icon' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'gll.*' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500'
+            ],
+            [
+                'name.required' => "Không Được Để Trống Tên",
+                'name.unique' => "Danh Mục Đã Tồn Tại",
+                'title.required' => "Không Được Để Trống Title",
+                'title.unique' => "Title Danh Mục Đã Tồn Tại",
+                'desc.required' => "Bạn chưa nhập description",
+                'keywords.required' => "Bạn chưa nhập keywords",
+                'slug.required' => "Không Được Để Trống Slug",
+                'slug.unique' => "Slug Đã Tồn Tại",
+                'img.image' => "File không phải là file ảnh",
+                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'img.max' => "File ảnh không vượt quá 500kb",
+                'icon.image' => "File không phải là file ảnh",
+                'icon.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg ",
+                'icon.max' => "File ảnh không vượt quá 500kb",
+                'gll.*.image' => "Có File Không Phải Là File Ảnh",
+                'gll.*.mimes' => "Có File Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'gll.*.max' => "Có File ảnh vượt quá 500kb",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            $data['name'] = $request->name;
+            $data['title'] = $request->title;
+            $data['slug'] = $request->slug;
+            $data['desc'] = $request->desc;
+            $data['keywords'] = $request->keywords;
+            if ($request->parent == 0) {
+                $data['parent_id'] = 0;
+                $data['level'] = 0;
+            } else {
+                $data['parent_id'] = $request->parent;
+                $data['level'] = Category::where('id', '=', $request->parent)->first()->level + 1;
+            }
+            if ($request->has('img')) {
+                $img = $request->img;
+                $img_name = $img->getClientOriginalName();
+                $path_save_img = "admin/images/category/banner/" . $img_name;
+                $img->move("public/admin/images/category/banner", $img_name);
+                $data['img'] = $path_save_img;
+            }
+            if ($request->has('icon')) {
+                if ($request->parent == 0) {
+                    $icon = $request->icon;
+                    $icon_name = $icon->getClientOriginalName();
+                    $path_save_icon = "admin/images/category/icon/" .  $icon_name;
+                    $icon->move("public/admin/images/category/icon",  $icon_name);
+                    $data['icon'] = $path_save_icon;
+                } else {
+                    return redirect()->back()->with('error', '1');
+                }
+            }
+            $created = Category::create($data);
+            if ($created) {
+                if ($request->has('gll')) {
+                    $index = 0;
+                    foreach ($request->gll as $gl) {
+                        $index++;
+                        $gl_name = $gl->getClientOriginalName();
+                        $path_save_gl = "admin/images/category/banner/" .   $gl_name;
+                        $gl->move("public/admin/images/category/banner",   $gl_name);
+                        if ($index == 1) {
+                            $data2['link'] = "psn-card";
+                        }
+                        if ($index == 2) {
+                            $data2['link'] = "xbox-live-cards";
+                        }
+                        if ($index == 3) {
+                            $data2['link'] = "nintendo-eshop-cards";
+                        }
+                        $data2['index'] = $index;
+                        $data2['path'] = $path_save_gl;
+                        $data2['cate_id'] = $created->id;
+                        gllCat::create($data2);
+                        unset($gl);
+                    }
+                }
+                //  start handle related produts
+                // ///////////////
+                if ($request->has('blogs')) {
+                    if (count($request->blogs) > 0) {
+                        $data_related_blog['posts'] = implode(",", $request->blogs);
+                        $data_related_blog['cat_id'] = $created->id;
+                        $data_related_blog['for'] = "product";
+                        RelatedPosts::create($data_related_blog);
+                    }
+                }
+                // end handle related blogs
+            }
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+
+    ////////////////////////////////////////
+    public function handle_edit(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|unique:category,name,' . $request->id,
+                'title' => 'required|unique:category,title,' . $request->id,
+                'slug' => 'required|unique:category,slug,' . $request->id,
+                'desc' => 'required',
+                'keywords' => 'required',
+                'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'icon' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'gll.*' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500'
+            ],
+            [
+                'name.required' => "Không Được Để Trống Tên",
+                'name.unique' => "Danh Mục Đã Tồn Tại",
+                'title.required' => "Không Được Để Trống Title",
+                'title.unique' => "Title Danh Mục Đã Tồn Tại",
+                'desc.required' => "Bạn chưa nhập description",
+                'keywords.required' => "Bạn chưa nhập keywords",
+                'slug.required' => "Không Được Để Trống Slug",
+                'slug.unique' => "Slug Đã Tồn Tại",
+                'img.image' => "File không phải là file ảnh",
+                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'img.max' => "File ảnh không vượt quá 500kb",
+                'icon.image' => "File không phải là file ảnh",
+                'icon.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg ",
+                'icon.max' => "File ảnh không vượt quá 500kb",
+                'gll.*.image' => "Có File Không Phải Là File Ảnh",
+                'gll.*.mimes' => "Có File Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+                'gll.*.max' => "Có File ảnh vượt quá 500kb",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            $data['name'] = $request->name;
+            $data['title'] = $request->title;
+            $data['slug'] = $request->slug;
+            $data['desc'] = $request->desc;
+            $data['keywords'] = $request->keywords;
+            if ($request->parent == 0) {
+                $data['parent_id'] = 0;
+                $data['level'] = 0;
+            } else {
+                $data['parent_id'] = $request->parent;
+                $data['level'] = Category::where('id', '=', $request->parent)->first()->level + 1;
+            }
+            if ($request->has('img')) {
+                $img = $request->img;
+                $img_name = $img->getClientOriginalName();
+                $path_save_img = "admin/images/category/banner/" . $img_name;
+                $img->move("public/admin/images/category/banner", $img_name);
+                $data['img'] = $path_save_img;
+            }
+            if ($request->has('icon')) {
+                if ($request->parent == 0) {
+                    $icon = $request->icon;
+                    $icon_name = $icon->getClientOriginalName();
+                    $path_save_icon = "admin/images/category/icon/" .  $icon_name;
+                    $icon->move("public/admin/images/category/icon",  $icon_name);
+                    $data['icon'] = $path_save_icon;
+                } else {
+                    return redirect()->back()->with('error', '1');
+                }
+            }
+            $created = Category::where('id', $request->id)->update($data);;
+            return redirect()->back()->with('update', '1');
+        }
+    }
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function handle_delete($id)
+    {
+        Category::where('id', $id)->delete();
+        return redirect()->back()->with('delete', '1');
+    }
+
+    //////////////////////////////////////// main cat
+
+    public function prdcer(Request $request)
+    {
+        $producer = Producer::orderBy('id', 'ASC')->get();
+        return view('admin.products.category.prducer.index', compact('producer'));
+    }
+
+    ////////////////////////////////////////
+
+    public function handle_add_prdcer(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|unique:producer',
+                'slug' => 'required|unique:producer',
+            ],
+            [
+                'name.required' => "Không Được Để Trống Tên Nhà Sản Xuất",
+                'name.unique' => "Nhà Sản Xuất Đã Tồn Tại",
+                'slug.required' => "Không Được Để Trống Slug Nhà Sản Xuất",
+                'slug.unique' => "Slug Đã Tồn Tại",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            Producer::create([
+                'name' => $request->name,
+                'slug' => $request->slug
+            ]);
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+    ////////////////////////////////////////
+    public function handle_delete_prdcer($id)
+    {
+        Producer::where('id', $id)->delete();
+        return redirect()->back()->with('delete', '1');
+    }
+    ///////////////////////////////////////
+    public function game(Request $request)
+    {
+        $games = CatGame::orderBy('id', 'ASC')->get();
+        return view('admin.products.category.game.index', compact('games'));
+    }
+
+    //////////////////////////////////////// producer
+
+    public function handle_add_game(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|unique:cat_game',
+            ],
+            [
+                'name.required' => "Không Được Để Trống Tên Thể Loại",
+                'name.unique' => "Thể Loại Này Đã Tồn Tại",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            CatGame::create([
+                'name' => $request->name,
+            ]);
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+    ////////////////////////////////////////
+    public function handle_delete_game($id)
+    {
+        CatGame::where('id', $id)->delete();
+        return redirect()->back()->with('delete', '1');
+    }
+    /////////////////////////////////////// game
+    public function insurance(Request $request)
+    {
+        $insurances = Insurance::orderBy('id', 'ASC')->get();
+        return view('admin.products.category.insurance.index', compact('insurances'));
+    }
+
+    ////////////////////////////////////////
+
+    public function handle_add_insurance(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'price' =>  'required|regex:/^[0-9]+$/',
+            ],
+            [
+                'name.required' => "Bạn Chưa Nhập Tên",
+                'price.required' => "Bạn Chưa Nhập Giá",
+                'price.regex' => "Giá bắt buộc phải là SỐ",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            $check = Insurance::where('name', 'LIKE', $request->name)->where('price', '=', $request->price)->first();
+            if ($check) {
+                return redirect()->back()->with('error', '1');
+            } else {
+                Insurance::create([
+                    'name' => $request->name,
+                    'price' => $request->price,
+                    'group' => $request->group,
+                ]);
+            }
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+    ////////////////////////////////////////
+    public function handle_delete_insurance($id)
+    {
+        Insurance::where('id', $id)->delete();
+        return redirect()->back()->with('delete', '1');
+    }
+    /////////////////////////////////////// end ins
+
+    public function plc(Request $request)
+    {
+        $policy = Policy::all();
+        return view('admin.products.category.policy.index', compact('policy'));
+    }
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function handle_plc(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'icon' => 'required',
+                'content' => 'required'
+            ],
+            [
+                'name.required' => "Bạn chưa nhập tên chính sách",
+                'icon.required' => "Bạn chưa nhập icon",
+                'content.required' => "Bạn chưa nhập content",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            Policy::create([
+                'title' => $request->name,
+                'icon' => $request->icon,
+                'content' => $request->content,
+                'position' => $request->position,
+                'fullset' => $request->fullset,
+            ]);
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+
+    ////////////////////////////////////////
+    public function handle_edit_plc($id, Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'icon' => 'required',
+                'content' => 'required'
+            ],
+            [
+                'name.required' => "Bạn chưa nhập tên chính sách",
+                'icon.required' => "Bạn chưa nhập icon",
+                'content.required' => "Bạn chưa nhập content",
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            Policy::where('id', '=', $id)->update([
+                'title' => $request->name,
+                'icon' => $request->icon,
+                'content' => $request->content,
+                'position' => $request->position,
+                'fullset' => $request->fullset,
+            ]);
+            return redirect()->back()->with('ok', '1');
+        }
+    }
+    // //////////////////////////////////////////////
+
+    public function plc_edit($id, Request $request)
+    {
+        $policy = Policy::where('id', '=', $id)->first();
+        return view('admin.products.category.policy.edit', compact('policy'));
+    }
+
+    // /////////////////////////////////////// end policy
+    ////////////////////////////////////////
+
+    public function bundled(Request $request)
+    {
+        $bundled = Bundled::all();
+        $category = Category::where('parent_id', '=', 0)->get();
+        return view('admin.products.category.prd.bundled', compact('bundled', 'category'));
+    }
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function handle_add_bundled(Request $request)
+    {
+        $data_create = array();
+        if ($request->has('access')) {
+            $data_create['bundled_accessory'] = implode(",", $request->access);
+        }
+        $data_create['bundled_skin'] = $request->bundled_skin;
+        $data_create['cat_id'] = $request->cat_id;
+        Bundled::create($data_create);
+        return redirect()->back()->with('ok', '1');
+    }
+
+    ////////////////////////////////////////
+    public function handle_delete_bundled($id)
+    {
+        Bundled::where('id', $id)->delete();
+        return redirect()->back()->with('delete', '1');
+    }
+
+    // ////////////////////////////////////////// end bundled
+
+}

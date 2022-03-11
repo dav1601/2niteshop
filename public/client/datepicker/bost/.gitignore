@@ -1,0 +1,15 @@
+bower_components
+node_modules
+.idea
+.vs
+obj
+bin
+site
+*.user
+*.csproj
+*.sln
+*.nupkg
+/index.html
+/test.html
+/npm-debug.log
+private_local_dir/**
