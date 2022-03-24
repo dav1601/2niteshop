@@ -601,11 +601,11 @@ body {
                         flex: 1 1 820px;
                         max-width: 820px;
                         padding: 0px 10px 0px 10px;
+                         @include responsive_h(iphoneX, down) {
+                         padding: 0;
+                        }
                         @include responsive_v(ipad-pro, down) {
                             padding-left: 0;
-                        }
-                        @include responsive_h(iphoneX, down) {
-                            padding-left: 10px;
                         }
                         #homeSlide {
                             ol {

@@ -86,7 +86,7 @@ if (!function_exists('navi_ajax_page')) {
             $output .= " <li class='page-item '><a class='page-link' >...</a></li>";
         }
         for ($i = 1; $i <= $number_pages; $i++) {
-            if ($i < $page + 4 && $i > $page - 4) {
+            if ($i < $page + 2 && $i > $page - 2) {
                 if ($i == $page) {
                     $output .= "<li class='page-item active'><a class='page-link' data-page='" . $i . "'>" . $i . "</a></li>";
                 } else {

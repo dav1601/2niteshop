@@ -74,10 +74,8 @@ $(function () {
             url: url_cart,
             data: { type: "load" },
             dataType: "json",
-            beforeSend: function () {
-                $.loading();
-            },
             success: function (data) {
+                $.end_loading();
                 if (data.items != 0) {
                     $(".cartShow--left").html(data.cart);
                 } else {
@@ -89,7 +87,6 @@ $(function () {
                 $('#ck_total').text(data.total_format);
                 $("#cart__drop").html(data.sub_cart);
                 $("#items").html(data.html_items);
-                $.end_loading();
             }
         });
     }

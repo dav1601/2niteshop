@@ -80,5 +80,6 @@ class DavjCart implements DavjCartInterface
         if (Auth::check()) {
             Cart::instance('shopping')->store(Auth::id());
         }
+        return;
     }
 }

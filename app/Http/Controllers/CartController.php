@@ -59,6 +59,7 @@ class CartController extends Controller
         $add_ok = '';
         $output_items = '';
         $error = array();
+        $login = 0;
         if ($request->type == "load") {
             if (Auth::check()) {
                 Cart::instance('shopping')->destroy();

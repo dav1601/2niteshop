@@ -22,11 +22,12 @@ use Symfony\Polyfill\Intl\Idn\Info;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Repositories\CustomerInterface;
+use App\Repositories\FileInterface;
 use Illuminate\Support\Facades\Validator;
 
 class AdminDashBoardController extends Controller
 {
-    public function __construct(CustomerInterface $customer)
+    public function __construct(CustomerInterface $customer, FileInterface $file)
     {
         $this->customer = $customer;
         $this->middleware(function ($request, $next) {
@@ -34,16 +35,16 @@ class AdminDashBoardController extends Controller
             session(['active' => 'dashboard']);
             return $next($request);
         });
+        $this->file = $file;
     }
     public function index(UserInterface $daviUser)
     {
-        $todo = new Todos;
         $count = Todos::count();
         $page = 1;
         $item_page = 6;
         $start = ($page - 1) * $item_page;
         $number_page = ceil($count / $item_page);
-        $tasks = $todo->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();
+        $tasks = User::find(Auth::id())->todos()->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();;
         $now = Carbon::now('Asia/Ho_Chi_Minh');
         $stats_users = User::where('role_id', '>', '3')->count();
         $stats_order = Orders::count();
@@ -174,96 +175,31 @@ class AdminDashBoardController extends Controller
             $data['tab'] = $request->tab;
             $data['position'] = $request->position;
             // main img
-            $main_img = $request->main_img;
-            $n_main = $main_img->getClientOriginalName();
-            if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
-                $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                $ext = $main_img->getClientOriginalExtension();
-                $n_main = $filename . '(1)' . '.' . $ext;
-                $i = 1;
-                while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
-                    $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                    $i++;
-                }
-            }
-            $save_main = "admin/images/show_home/" . $request->name . "/" . "main/" . $n_main;
-            $main_img->move("public/admin/images/show_home/" . $request->name . "/" . "main", $n_main);
-            $data['main_img'] = $save_main;
+            $path_main = "admin/images/show_home/" . $request->name . "/" . "main/";
+            $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
             // end main img
             // use img
             if ($request->has('use_img')) {
-                $use_img = $request->use_img;
-                $n_use = $use_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
-                    $filename = pathinfo($n_use, PATHINFO_FILENAME);
-                    $ext = $use_img->getClientOriginalExtension();
-                    $n_use = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
-                        $n_use = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_use = "admin/images/show_home/" . $request->name . "/" . "use/" . $n_use;
-                $use_img->move("public/admin/images/show_home/" . $request->name . "/" . "use", $n_use);
-                $data['use_img'] = $save_use;
+                $path_use = "admin/images/show_home/" . $request->name . "/" . "use/";
+                $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
             }
             // end use img
             // instruct img
             if ($request->has('instruct_img')) {
-                $instruct_img = $request->instruct_img;
-                $n_instruct = $instruct_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
-                    $filename = pathinfo($n_instruct, PATHINFO_FILENAME);
-                    $ext = $instruct_img->getClientOriginalExtension();
-                    $n_instruct = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
-                        $n_instruct = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct;
-                $instruct_img->move("public/admin/images/show_home/" . $request->name . "/" . "instruct", $n_instruct);
-                $data['instruct_img'] = $save_instruct;
+                $path_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/";
+                $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
             }
             // end instruct img
             // fix img
             if ($request->has('fix_img')) {
-                $fix_img = $request->fix_img;
-                $n_fix = $fix_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
-                    $filename = pathinfo($n_fix, PATHINFO_FILENAME);
-                    $ext = $fix_img->getClientOriginalExtension();
-                    $n_fix = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
-                        $n_fix = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_fix = "admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix;
-                $fix_img->move("public/admin/images/show_home/" . $request->name . "/" . "fix", $n_fix);
-                $data['fix_img'] = $save_fix;
+                $path_fix = "admin/images/show_home/" . $request->name . "/" . "fix/";
+                $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
             }
             // end fix img
             // access img
             if ($request->has('access_img')) {
-                $access_img = $request->access_img;
-                $n_access = $access_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
-                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
-                    $ext = $access_img->getClientOriginalExtension();
-                    $n_access = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
-                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_access = "admin/images/show_home/" . $request->name . "/" . "access/" . $n_access;
-                $access_img->move("public/admin/images/show_home/" . $request->name . "/" . "access", $n_access);
-                $data['access_img'] = $save_access;
+                $path_access = "admin/images/show_home/" . $request->name . "/" . "access/";
+                $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
             }
             // end access img
             showHome::create($data);
@@ -346,104 +282,42 @@ class AdminDashBoardController extends Controller
             $data['position'] = $request->position;
             // main img
             if ($request->has('main_img')) {
-                 if ($conf->main_img != NULL){
+                if ($conf->main_img != NULL)
                     unlink("public/" . $conf->main_img);
-                 }
-                $main_img = $request->main_img;
-                $n_main = $main_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
-                    $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                    $ext = $main_img->getClientOriginalExtension();
-                    $n_main = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "main/" . $n_main)) {
-                        $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_main = "admin/images/show_home/" . $request->name . "/" . "main/" . $n_main;
-                $main_img->move("public/admin/images/show_home/" . $request->name . "/" . "main", $n_main);
-                $data['main_img'] = $save_main;
+                $path_main = "admin/images/show_home/" . $request->name . "/" . "main/";
+                $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
             }
             // end main img
             // use img
             if ($request->has('use_img')) {
-                unlink("public/" . $conf->use_img);
-                $use_img = $request->use_img;
-                $n_use = $use_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
-                    $filename = pathinfo($n_use, PATHINFO_FILENAME);
-                    $ext = $use_img->getClientOriginalExtension();
-                    $n_use = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "use/" . $n_use)) {
-                        $n_use = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_use = "admin/images/show_home/" . $request->name . "/" . "use/" . $n_use;
-                $use_img->move("public/admin/images/show_home/" . $request->name . "/" . "use", $n_use);
-                $data['use_img'] = $save_use;
+                if ($conf->use_img != NULL)
+                    unlink("public/" . $conf->use_img);
+                $path_use = "admin/images/show_home/" . $request->name . "/" . "use/";
+                $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
             }
             // end use img
             // instruct img
             if ($request->has('instruct_img')) {
-                unlink("public/" . $conf->instruct_img);
-                $instruct_img = $request->instruct_img;
-                $n_instruct = $instruct_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
-                    $filename = pathinfo($n_instruct, PATHINFO_FILENAME);
-                    $ext = $instruct_img->getClientOriginalExtension();
-                    $n_instruct = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct)) {
-                        $n_instruct = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/" . $n_instruct;
-                $instruct_img->move("public/admin/images/show_home/" . $request->name . "/" . "instruct", $n_instruct);
-                $data['instruct_img'] = $save_instruct;
+                if ($conf->instruct_img != NULL)
+                    unlink("public/" . $conf->instruct_img);
+                $path_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/";
+                $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
             }
             // end instruct img
             // fix img
             if ($request->has('fix_img')) {
-                unlink("public/" . $conf->fix_img);
-                $fix_img = $request->fix_img;
-                $n_fix = $fix_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
-                    $filename = pathinfo($n_fix, PATHINFO_FILENAME);
-                    $ext = $fix_img->getClientOriginalExtension();
-                    $n_fix = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix)) {
-                        $n_fix = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_fix = "admin/images/show_home/" . $request->name . "/" . "fix/" . $n_fix;
-                $fix_img->move("public/admin/images/show_home/" . $request->name . "/" . "fix", $n_fix);
-                $data['fix_img'] = $save_fix;
+                if ($conf->fix_img != NULL)
+                    unlink("public/" . $conf->fix_img);
+                $path_fix = "admin/images/show_home/" . $request->name . "/" . "fix/";
+                $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
             }
             // end fix img
             // access img
             if ($request->has('access_img')) {
-                unlink("public/" . $conf->access_img);
-                $access_img = $request->access_img;
-                $n_access = $access_img->getClientOriginalName();
-                if (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
-                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
-                    $ext = $access_img->getClientOriginalExtension();
-                    $n_access = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/show_home/" . $request->name . "/" . "access/" . $n_access)) {
-                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_access = "admin/images/show_home/" . $request->name . "/" . "access/" . $n_access;
-                $access_img->move("public/admin/images/show_home/" . $request->name . "/" . "access", $n_access);
-                $data['access_img'] = $save_access;
+                if ($conf->access_img != NULL)
+                    unlink("public/" . $conf->access_img);
+                $path_access = "admin/images/show_home/" . $request->name . "/" . "access/";
+                $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
             }
             // end access img
             showHome::where('id', '=', $id)->update($data);;
@@ -485,11 +359,13 @@ class AdminDashBoardController extends Controller
             [
                 'name' => 'required',
                 'type' => 'required',
-                'value_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:10000',
+                'value' => 'required_without:value_img',
+                'value_img' => 'required_without:value|image|mimes:jpeg,png,jpg,tiff,svg|max:10000',
             ],
             [
                 'name.required' => "Bạn chưa điền tên của config info",
                 'type.required' => "Bạn chưa chọn type của config info",
+                'value.required_without' => "Bạn chưa điền giá trị của config info",
             ]
         );
         if ($validator->fails()) {
@@ -498,21 +374,8 @@ class AdminDashBoardController extends Controller
             $data_create['name'] = $request->name;
             $data_create['type'] = $request->type;
             if ($request->has('value_img')) {
-                $value_img = $request->value_img;
-                $n_access = $value_img->getClientOriginalName();
-                if (file_exists("public/admin/images/info/" . $n_access)) {
-                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
-                    $ext = $value_img->getClientOriginalExtension();
-                    $n_access = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/info/" . $n_access)) {
-                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_access = "admin/images/info/"  . $n_access;
-                $value_img->move("public/admin/images/info/", $n_access);
-                $data_create['value'] = $save_access;
+                $path = "admin/images/info/";
+                $data_create['value'] = $this->file->storeFileImg($request->value_img);
             } else {
                 $data_create['value'] = $request->value;
             }
@@ -534,11 +397,12 @@ class AdminDashBoardController extends Controller
                 'name' => 'required',
                 'type' => 'required',
                 'value_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:10000',
+                'value' => 'required_without:value_img',
             ],
             [
                 'name.required' => "Bạn chưa điền tên của config info",
                 'type.required' => "Bạn chưa chọn type của config info",
-                'value.required' => "Bạn chưa điền giá trị của config info",
+                'value.required_without' => "Bạn chưa điền giá trị của config info",
             ]
         );
         if ($validator->fails()) {
@@ -548,24 +412,11 @@ class AdminDashBoardController extends Controller
             $data_update['name'] = $request->name;
             $data_update['type'] = $request->type;
             if ($request->has('value_img')) {
-               if($config_info->value != NULL) {
-                unlink("public/" . $config_info->value);
-               }
-                $value_img = $request->value_img;
-                $n_access = $value_img->getClientOriginalName();
-                if (file_exists("public/admin/images/info/" . $n_access)) {
-                    $filename = pathinfo($n_access, PATHINFO_FILENAME);
-                    $ext = $value_img->getClientOriginalExtension();
-                    $n_access = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/info/" . $n_access)) {
-                        $n_access = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
+                if ($config_info->value != NULL) {
+                    unlink("public/" . $config_info->value);
                 }
-                $save_access = "admin/images/info/"  . $n_access;
-                $value_img->move("public/admin/images/info/", $n_access);
-                $data_update['value'] = $save_access;
+                $path = "admin/images/info/";
+                $data_update['value'] = $this->file->storeFileImg($request->value_img);
             } else {
                 $data_update['value'] = $request->value;
             }
@@ -582,6 +433,7 @@ class AdminDashBoardController extends Controller
             }
         }
     }
+    // ////////////////////////////// API CONFIRMATION
 
 
 

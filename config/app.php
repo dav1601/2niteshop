@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL' , null),
     // 'url' => env('APP_URL', 'https://nava.com'),
     'asset_url' => env('ASSET_URL', null),
 
@@ -177,6 +177,7 @@ return [
         App\Providers\CustomerServiceProvider::class,
         App\Providers\DavjCartServiceProvider::class,
         App\Providers\DaviUserServiceProvider::class,
+        App\Providers\FileServiceProvider::class,
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
@@ -242,6 +243,7 @@ return [
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         // or
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+        'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade',
         // ...
 
     ],

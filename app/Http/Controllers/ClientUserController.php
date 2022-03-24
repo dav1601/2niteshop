@@ -8,6 +8,7 @@ use App\Models\Blogs;
 use App\Models\Orders;
 use App\Models\Address;
 use App\Models\Products;
+use App\Repositories\FileInterface;
 use Illuminate\Http\Request;
 use App\Repositories\UserInterface;
 use Illuminate\Support\Facades\Auth;
@@ -102,7 +103,7 @@ class ClientUserController extends Controller
 
     ////////////////////////////////////////
 
-    public function hanle_edit_profile($id, Request $request)
+    public function hanle_edit_profile($id, Request $request , FileInterface $file )
     {
         $validator = Validator::make(
             $request->all(),
@@ -125,26 +126,14 @@ class ClientUserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         } else {
+            $user = User::where('id', '=' , $id)->first();
             $data['name'] = $request->name;
             $data['phone'] = $request->phone;
             if ($request->has('avatar')) {
+                if($user->avatar != NULL)
+                unlink("public/".$user->avatar);
                 $path = "admin/images/avatar/";
-                $path_public = "public/admin/images/avatar/";
-                $sub_img = $request->avatar;
-                $n_sub = $sub_img->getClientOriginalName();
-                if (file_exists($path_public .  $n_sub)) {
-                    $filename2 = pathinfo($n_sub, PATHINFO_FILENAME);
-                    $ext2 = $sub_img->getClientOriginalExtension();
-                    $n_sub = $filename2 . '(1)' . '.' . $ext2;
-                    $k = 1;
-                    while (file_exists($path_public . $n_sub)) {
-                        $n_sub = $filename2 . '(' . $k . ')' . '.' . $ext2;
-                        $k++;
-                    }
-                }
-                $save_sub = $path . $n_sub;
-                $sub_img->move($path_public, $n_sub);
-                $data['avatar'] = $save_sub;
+                $data['avatar'] = $file->storeFileImg($request->avatar, $path);
             }
             User::where('id', '=', $id)->update($data);
             if (Auth::user()->role_id <= 3) {

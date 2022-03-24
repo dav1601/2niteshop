@@ -24,7 +24,7 @@ class FileRepository implements FileInterface
     }
     public function ver($link = "")
     {
-        $link = asset($link) . '?ver=' . filemtime('public/'.$link);
+        $link = asset($link) . '?ver=' . filemtime('public/' . $link);
         return $link;
     }
     public function ver_img($link = "")
@@ -35,5 +35,24 @@ class FileRepository implements FileInterface
     public function main_banner()
     {
         return  asset('client/images/banner_2nite.png') . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
+    }
+    public function storeFileImg($file, $path)
+    {
+        $path_public = "public/" . $path;
+        $name = $file->getClientOriginalName();
+        if (file_exists($path_public .  $name)) {
+            $file_name = pathinfo($name, PATHINFO_FILENAME);
+            $ext = $file->getClientOriginalExtension();
+            $name = $file_name . '(1)' . '.' . $ext;
+            $k = 1;
+            while (file_exists($path_public . $name)) {
+                $name = $file_name . '(' . $k . ')' . '.' . $ext;
+                $k++;
+            }
+        }
+        $save = $path . $name;
+        if ($file->move($path_public, $name))
+            return $save;
+        return NULL;
     }
 }

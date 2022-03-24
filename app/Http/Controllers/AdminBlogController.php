@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\RelatedPosts;
 use App\Repositories\CustomerInterface;
+use App\Repositories\FileInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,7 @@ class AdminBlogController extends Controller
             });
         }
         if ($request->auth != NULL) {
-            $blogs =  $blogs->join('users' , 'users.id','=', 'blogs.users_id')->where('users.name', 'LIKE', '%' . $request->auth . '%');
+            $blogs =  $blogs->join('users', 'users.id', '=', 'blogs.users_id')->where('users.name', 'LIKE', '%' . $request->auth . '%');
         }
         if ($request->dP != null) {
             $blogs =  $blogs->where('created_at', '<=', $request->dP);
@@ -230,7 +231,7 @@ class AdminBlogController extends Controller
     ////////////////////////////////////////
 
     ////////////////////////////////////////
-    public function handle_add_blog(Request $request)
+    public function handle_add_blog(Request $request, FileInterface $file)
     {
         $validator = Validator::make(
             $request->all(),
@@ -261,21 +262,8 @@ class AdminBlogController extends Controller
             $data['slug'] = Str::slug($request->title);
             $data['content'] = $request->content;
             $data['desc'] = $request->desc;
-            $main_img = $request->img;
-            $n_main = $main_img->getClientOriginalName();
-            if (file_exists("public/" . $path . Str::slug($cat_name) . "/"  . "main/" . $n_main)) {
-                $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                $ext = $main_img->getClientOriginalExtension();
-                $n_main = $filename . '(1)' . '.' . $ext;
-                $i = 1;
-                while (file_exists("public/" . $path .  Str::slug($cat_name) . "/"  . "main/" . $n_main)) {
-                    $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                    $i++;
-                }
-            }
-            $save_main = $path . Str::slug($cat_name) . "/"  . "main/" . $n_main;
-            $main_img->move("public/" . $path .  Str::slug($cat_name) . "/" . "main", $n_main);
-            $data['img'] = $save_main;
+            $path_img = $path . Str::slug($cat_name) . "/"  . "main/";
+            $data['img'] = $file->storeFileImg($request->img, $path_img);
             $data['category_id'] = $request->cat_product;
             $data['cat_id'] = $request->cat;
             $data['cat_sub_id'] = $request->cat_2;
@@ -288,7 +276,7 @@ class AdminBlogController extends Controller
         }
     }
     // ///////////////////////////
-    public function handle_edit_blog($id, Request $request)
+    public function handle_edit_blog($id, Request $request , FileInterface $file)
     {
         $blog = Blogs::where('id', '=', $id)->firstOrFail();
         $validator = Validator::make(
@@ -319,22 +307,10 @@ class AdminBlogController extends Controller
             $data['content'] = $request->content;
             $data['desc'] = $request->desc;
             if ($request->has('img')) {
-                unlink('public/' . $blog->img);
-                $main_img = $request->img;
-                $n_main = $main_img->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($cat_name) . "/"  . "main/" . $n_main)) {
-                    $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                    $ext = $main_img->getClientOriginalExtension();
-                    $n_main = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/" . $path .  Str::slug($cat_name) . "/"  . "main/" . $n_main)) {
-                        $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_main = $path . Str::slug($cat_name) . "/"  . "main/" . $n_main;
-                $main_img->move("public/" . $path .  Str::slug($cat_name) . "/" . "main", $n_main);
-                $data['img'] = $save_main;
+                if ($blog->img != NULL)
+                    unlink('public/' . $blog->img);
+                $path_img = $path . Str::slug($cat_name) . "/"  . "main/";
+                $data['img'] = $file->storeFileImg($request->img, $path_img);
             }
             $data['cat_id'] = $request->cat;
             $data['cat_sub_id'] = $request->cat_2;

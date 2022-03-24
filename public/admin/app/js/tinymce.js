@@ -1,6 +1,6 @@
 $(function () {
-    // var path_ab = "http://localhost/nava/";
-    var path_ab = "http://vachill.com/";
+     var path_ab = "http://localhost/nava/";
+    // var path_ab = "http://vachill.com/";
     var editor_config = {
         path_absolute: path_ab,
         selector: '#plc__tiny',

@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\gllCat;
 use App\Models\Policy;
 use App\Models\Category;
-use App\Models\gllProducts;
-use App\Models\Insurance;
 use App\Models\Products;
+use App\Models\Insurance;
 use GuzzleHttp\Middleware;
+use App\Models\gllProducts;
 use Illuminate\Support\Arr;
 use App\Models\RelatedPosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Models\bundled_skin_cat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -171,18 +172,18 @@ class ClientProductsController extends Controller
         }
         $policies = collect($policies);
         $policies = $policies->sortBy('position');
-        $related_blog = RelatedPosts::where('cat_id', '=', $product->sub_1_cat_id)->first();
-        if ($related_blog) {
-            $related_blogs = explode(",", $related_blog->posts);
-        } else {
-            $related_blogs = [];
-        }
+        $related_blog = Products::find($product->id)->related_blogs()->get();
+        $related_cat = Category::find($product->sub_1_cat_id)->related_blogs()->get();
+        $related_cat_blog  = $related_blog->merge($related_cat);
+        $related_product = Products::find($product->id)->related_products()->get();
+        $bundled_skin = bundled_skin_cat::where('cat_id', '=' , $product->sub_1_cat_id)->first();
+        $bundled_accessory = Category::find($product->sub_1_cat_id)->bundled_accessory()->get();
         if ($product->insurance != NULL) {
             $group = Insurance::whereIn('id', explode(",", $product->insurance))->select('group')->distinct()->first()->group;
         } else {
             $group = 0;
         }
-        return view('client.product.detail', compact('product', 'policies', 'fullset', 'related_blogs', 'banner', 'group'));
+        return view('client.product.detail', compact('product', 'policies', 'fullset', 'related_blog', 'banner', 'group' , 'related_product' , 'related_cat_blog' , 'bundled_skin' , 'bundled_accessory'));
     }
 
     ////////////////////////////////////////

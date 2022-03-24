@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Config;
 use App\Models\Slides;
 use App\Models\Banners;
@@ -16,16 +17,19 @@ use Illuminate\Http\Request;
 use MatthiasMullie\Minify\JS;
 use Illuminate\Support\Carbon;
 use MatthiasMullie\Minify\CSS;
+use App\Models\bundled_skin_cat;
 use MatthiasMullie\Minify\Minify;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use App\View\Components\Modal\Product;
 use Illuminate\Support\Facades\Validator;
 
+
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request )
     {
         $config = showHome::all();
         $company = Config::all();
@@ -200,7 +204,7 @@ class HomeController extends Controller
             $data_create['phone'] = $request->phone;
             $data_create['products_id'] = $request->id;
             if ($product->price != NULL && $product->price != 0) {
-                $data_create['price'] = $product->price;    
+                $data_create['price'] = $product->price;
             }
             $data_create['products_name'] = Products::where('id', '=', $data_create['products_id'])->firstOrFail()->name;
             if (PreOrder::create($data_create)) {
@@ -216,42 +220,46 @@ class HomeController extends Controller
     /////////////////////////////////////
     ////////////////////////////////////////
 
-    public function minify(Request $request)
-    {
-        $file_js = [
-            'app',
-            'blog',
-            'cart',
-            'home',
-            'product',
-            'scrollReval',
-            'slide',
-            'user',
-            'helper'
-        ];
-        $file_css = [
-            '_component',
-            '_footer',
-            '_layout',
-            '_naviteam',
-            '_responsive',
-            '_variables',
-            'app'
-        ];
-        foreach ($file_js as $js) {
-            $minifier = new JS();
-            $minifier->add('public/client/app/js/' . $js . '.js');
-            $minifier->minify('public/client/production/js/' . $js . '.js');
-            unset($minifier);
-        }
-        foreach ($file_css as $css) {
-            $minifier_css = new CSS();
-            $minifier_css->add('public/client/app/css/' . $css . '.css');
-            $minifier_css->minify('public/client/production/css/' . $css . '.css');
-            unset($minifier_css);
-        }
-        return "Đã minified tất cả file";
-    }
+    // public function minify(Request $request)
+    // {
+    //     $file_js = [
+    //         'app',
+    //         'blog',
+    //         'cart',
+    //         'home',
+    //         'product',
+    //         'scrollReval',
+    //         'slide',
+    //         'user',
+    //         'helper'
+    //     ];
+    //     $file_css = [
+    //         '_component',
+    //         '_footer',
+    //         '_layout',
+    //         '_naviteam',
+    //         '_responsive',
+    //         '_variables',
+    //         'app'
+    //     ];
+    //     foreach ($file_js as $js) {
+    //         $minifier = new JS();
+    //         $minifier->add('public/client/app/js/' . $js . '.js');
+    //         $minifier->minify('public/client/production/js/' . $js . '.js');
+    //         unset($minifier);
+    //     }
+    //     foreach ($file_css as $css) {
+    //         $minifier_css = new CSS();
+    //         $minifier_css->add('public/client/app/css/' . $css . '.css');
+    //         $minifier_css->minify('public/client/production/css/' . $css . '.css');
+    //         unset($minifier_css);
+    //     }
+    //     return "Đã minified tất cả file";
+    // }
 
     ////////////////////////////////////////
+    public function api(Request $request)
+    {
+       
+    }
 }

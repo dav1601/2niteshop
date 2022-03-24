@@ -345,33 +345,51 @@ $(function () {
     // ////// start delete gll images in edit product
     $(document).on('click', ".delete_gll", function () {
         var id = $(this).attr('data-id');
-        swal({
-            title: "Bạn chắc chứ?",
-            text: "Khi đã xoá thì không thể khôi phục ảnh này chỉ có thể THÊM VÀO LẠI",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        type: "post",
-                        url: url_delete_gll,
-                        data: { id: id },
-                        dataType: "json",
-                        success: function (data) {
-                            $(".op_700").html(data.html1);
-                            $(".op_80").html(data.html2);
-                            if (data.error == 0) {
-                                toastr.success("Xoá Hình Ảnh Thành Công");
-                            }
-                            console.log(data);
+        // swal({
+        //     title: "Bạn chắc chứ?",
+        //     text: "Khi đã xoá thì không thể khôi phục ảnh này chỉ có thể THÊM VÀO LẠI",
+        //     icon: "warning",
+        //     buttons: true,
+        //     dangerMode: true,
+        // })
+        //     .then((willDelete) => {
+        //         if (willDelete) {
+
+        //         } else {
+        //             swal("Đừng click nhầm nữa nhé bae!");
+        //         }
+        //     });
+        Swal.fire({
+            title: 'Bạn Chắc Chắn Xoá Chứ?',
+            text: "Hình ảnh không thể khôi phục chỉ có thể thêm lại!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Vẫn Xoá'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "post",
+                    url: url_delete_gll,
+                    data: { id: id },
+                    dataType: "json",
+                    success: function (data) {
+                        $(".op_700").html(data.html1);
+                        $(".op_80").html(data.html2);
+                        if (data.error == 0) {
+                            toastr.success("Xoá Hình Ảnh Thành Công");
                         }
-                    });
-                } else {
-                    swal("Đừng click nhầm nữa nhé bae!");
-                }
-            });
+                        console.log(data);
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'Cẩn Thận Hơn Nhé!',
+                  });
+            }
+          })
     });
 
     // ////////////////// end
@@ -404,7 +422,7 @@ $(function () {
             }
         })
     });
-    
+
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

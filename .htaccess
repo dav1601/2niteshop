@@ -5,9 +5,8 @@
 
     RewriteEngine On
 
-    RewriteCond %{HTTP_HOST} ^www\.vachill\.com$
-    RewriteRule ^/?$ "https\:\/\/vachill\.com\/" [R=301,L]
-
+    # RewriteCond %{HTTP_HOST} !^www.vachill.com$ [NC]
+    # RewriteRule ^(.*)$ https://www.vachill.com/$1 [L,R=301]
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

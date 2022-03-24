@@ -1,0 +1,16 @@
+{
+    "user": {
+        "id": 337,
+        "role_id": 5,
+        "name": "Garrison Farrell",
+        "email": "tkub@example.org",
+        "phone": "0944373354",
+        "email_verified_at": null,
+        "avatar": null,
+        "provider_id": null,
+        "provider": null,
+        "ban": 0,
+        "created_at": "2022-02-19T08:40:34.000000Z",
+        "updated_at": "2022-02-19T08:40:34.000000Z"
+    }
+}

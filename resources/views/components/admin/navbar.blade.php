@@ -28,6 +28,9 @@
                         @if (Gate::allows('admin-action'))
                         <li class="nav__item"><a href="{{ route('minify') }}" target="_blank" class="nav__link">Minify</a></li>
                         @endif
+                        @if ($daviUser->ApiExists())
+                        <li class="nav__item"><a href="{{ route('identity_confirmation') }}" target="_blank" class="nav__link">Api Docs</a></li>
+                        @endif
                     </ul>
                 </div>
 

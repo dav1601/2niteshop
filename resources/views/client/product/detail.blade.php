@@ -30,6 +30,7 @@ $bg = asset($product->bg);
         background-repeat: no-repeat;
 
     }
+
     #breadCrumb .b__crumb {
         margin-bottom: 0px !important;
     }
@@ -85,8 +86,10 @@ $bg = asset($product->bg);
                             $link_80 = $gll->link;
                             }
                             @endphp
-                            <li data-thumb="{{ $file->ver_img($link_80) }}?now={{ $carbon->now()->timestamp }}" alt="{{ $product->name }}">
-                                <img src="{{ $file->ver_img($gll->link) }}?now={{ $carbon->now()->timestamp }}" alt="{{ $product->name }}"/>
+                            <li data-thumb="{{ $file->ver_img($link_80) }}?now={{ $carbon->now()->timestamp }}"
+                                alt="{{ $product->name }}">
+                                <img src="{{ $file->ver_img($gll->link) }}?now={{ $carbon->now()->timestamp }}"
+                                    alt="{{ $product->name }}" />
                                 <x-productlabels :product="$product" />
                             </li>
                             @endif
@@ -97,7 +100,8 @@ $bg = asset($product->bg);
                         @if ($product -> banner != NULL)
                         <div class="prd__banner">
                             <a href="{{ url($product->banner_link) }}" class="d-block">
-                                <img src="{{ $file->ver_img($product->banner) }}" class="img-fluid" alt="{{ $product->name }}">
+                                <img src="{{ $file->ver_img($product->banner) }}" class="img-fluid"
+                                    alt="{{ $product->name }}">
                             </a>
                         </div>
                         @endif
@@ -146,7 +150,8 @@ $bg = asset($product->bg);
                         </div>
                         @if ($group !== 0)
                         <div class="prd__dtl--insur">
-                            <span class="d-block">{{ $group == 1 ? "Chọn thời gian bảo hành":"Chọn phụ kiện mua kèm" }}: <strong>*</strong></span>
+                            <span class="d-block">{{ $group == 1 ? "Chọn thời gian bảo hành":"Chọn phụ kiện mua kèm" }}:
+                                <strong>*</strong></span>
                             <ul class="insur">
                                 @foreach ( $insurance as $key => $ins )
                                 <li class="insur__item @if ($key == 0) insur__item-active @endif"
@@ -310,22 +315,14 @@ $bg = asset($product->bg);
         {{-- end detail content product --}}
         <div class="w-100 dtl__bundled">
             @if ($product -> type != "game")
-            @php
-            $bundled = App\Models\Bundled::where('cat_id', '=' , $product->sub_1_cat_id)->first();
-            @endphp
-            @if ($bundled)
-            @php
-            $bundled_k = App\Models\Products::where('sub_1_cat_id' , '=' , $bundled ->
-            bundled_skin)->orWhere('sub_2_cat_id' , '=' , $bundled -> bundled_skin)->get();
-            $bundled_a = explode("," , $bundled -> bundled_accessory);
-            @endphp
+            @if ($bundled_skin != null || count($bundled_accessory) > 0)
             <ul class="nav cat__tab" id="myTab__bundled" role="tablist">
 
                 <li class="" role="presentation">
                     <a class="active active-bundled" data-toggle="tab" href="#tab__aces" role="tab" aria-controls="home"
                         aria-selected="true">Phụ kiện đi kèm</a>
                 </li>
-                @if ($bundled->bundled_skin != NULL)
+                @if ($bundled_skin != NULL)
                 <li class="nav-item" role="presentation">
                     <a class=" active-bundled" data-toggle="tab" href="#tab__skin" role="tab" aria-controls="profile"
                         aria-selected="false">
@@ -337,11 +334,11 @@ $bg = asset($product->bg);
             </ul>
             <div class="tab-content" id="myTabContent__bundled">
                 <div class="tab-pane active" id="tab__aces" role="tabpanel">
-                    @if (count($bundled_a) > 0)
+                    @if (count($bundled_accessory) > 0)
                     <div class="owl-carousel owl-theme owl-6">
-                        @foreach ($bundled_a as $aces )
+                        @foreach ($bundled_accessory as $aces )
                         @php
-                        $m = App\Models\Products::where('id', '=' , $aces)->first();
+                        $m = App\Models\Products::where('id', '=' , $aces->products_id)->first();
                         @endphp
                         <div class="item">
                             <x-product.itemgrid type="2" class="prddetail" :message="$m" />
@@ -355,7 +352,14 @@ $bg = asset($product->bg);
                     {{-- end machine > 0 --}}
                 </div>
                 {{-- end tabs machine --}}
-                @if ($bundled->bundled_skin != NULL)
+                @if ($bundled_skin != NULL)
+                @php
+                    $skin_cat_id = $bundled_skin ->skin_cat_id;
+                    $bundled_k = App\Models\Products::where(function($q) use ($skin_cat_id){
+                        $q -> where('sub_1_cat_id' , $skin_cat_id)
+                           -> orWhere('sub_2_cat_id' , $skin_cat_id);
+                    })->get();
+                @endphp
                 <div class="tab-pane" id="tab__skin" role="tabpanel">
                     @if (count($bundled_k) > 0)
                     {{-- @if (count($bundled_k) > 4) --}}
@@ -420,12 +424,7 @@ $bg = asset($product->bg);
             <strong>Không có games nào liên quan</strong>
             @endif
             @endif
-            @if (App\Models\RelatedProducts::where('product_id' , '=' , $product->id) ->first())
-            @php
-            $relate = App\Models\RelatedProducts::where('product_id' , '=' , $product->id) ->first();
-            $relate_products = explode("," , $relate->products);
-            @endphp
-            @if (count($relate_products) > 0 )
+            @if (count($related_product) > 0 )
             <ul class="nav cat__tab" id="myTab__relate" role="tablist">
                 <li class="" role="presentation">
                     <a class="active active-bundled" data-toggle="tab" href="#tab__relate" role="tab"
@@ -434,13 +433,13 @@ $bg = asset($product->bg);
             </ul>
             <div class="tab-content" id="dtlTabsRelateContent">
                 <div class="tab-pane active" id="tab__relate" role="tabpanel">
-                    @if (count($relate_products) > 0)
+                    @if (count($related_product) > 0)
                     <div class="owl-carousel owl-theme owl-6">
-                        @foreach ($relate_products as $rlp )
+                        @foreach ($related_product as $rlp )
                         @php
-                        $prd = App\Models\Products::where('id', '=' , $rlp)->first();
+                        $prd = App\Models\Products::where('id', '=' , $rlp->products_id)->first();
                         @endphp
-                        @if ($rlp != $product ->id)
+                        @if ($rlp->products_id != $product ->id)
                         <div class="item">
                             <x-product.itemgrid type="2" class="prddetail" :message=" $prd" />
                         </div>
@@ -454,8 +453,6 @@ $bg = asset($product->bg);
                     {{-- end machine > 0 --}}
                 </div>
             </div>
-            @else
-            @endif
             @endif
         </div>
         {{-- end phu kien game + skin --}}
@@ -465,7 +462,7 @@ $bg = asset($product->bg);
         {{-- end bài viết liên quan --}}
     </div>
     {{-- blog lien quan --}}
-    @if (count($related_blogs) > 0)
+    @if (count($related_cat_blog) > 0)
     <div id="home__blogs">
         <div id="home__blogs--content" class="container">
             <h2 class="related__blogs--title mb-3 font-weight-bold text-uppercase" style="font-size: 17px">Bài viết liên
@@ -474,9 +471,9 @@ $bg = asset($product->bg);
                     <div class="tab-content" id="myTabContent__blogs">
                         <div class="tab-pane active" id="tab__blogs" role="tabpanel">
                             <div class="owl-carousel owl-theme owl-6">
-                                @foreach ( $related_blogs as $blog)
+                                @foreach ( $related_cat_blog as $blog_item)
                                 @php
-                                $blog = App\Models\Blogs::where('id', '=' , $blog)->first();
+                                $blog = App\Models\Blogs::where('id', '=' , $blog_item->posts)->first();
                                 @endphp
                                 <div class="item">
                                     <x-blogsubitem :blog="$blog" />

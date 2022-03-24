@@ -2,30 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Api\ApiAdmin;
 use App\Models\User;
 use App\Models\Blogs;
-use App\Models\infoAdmin;
 use App\Models\Products;
-use App\Repositories\CustomerInterface;
+use App\Models\infoAdmin;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Repositories\UserInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
+use App\Repositories\CustomerInterface;
+use App\Repositories\FileInterface;
+use App\Repositories\MailOrderInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class AdminUserController extends Controller
 {
-    public function __construct()
+    public function __construct(FileInterface $handle_file)
     {
         $this->middleware(function ($request, $next) {
             session(['active' => 'users']);
             return $next($request);
         });
-
+        $this->handle_file = $handle_file;
     }
     // ///////////////////
-    public function add()
+    public function add(UserInterface $user)
     {
         $this->authorize('admin-action');
         return view('admin.users.add');
@@ -141,7 +147,7 @@ class AdminUserController extends Controller
     }
     ////////////////////////////////////////
 
-    public function handle_add(Request $request)
+    public function handle_add(Request $request, UserInterface $dvi_user)
     {
         $validator = Validator::make(
             $request->all(),
@@ -149,7 +155,7 @@ class AdminUserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string'],
-                'phone' => ['required', 'string', 'min:6', 'unique:users' ,'numeric'],
+                'phone' => ['required', 'string', 'min:6', 'unique:users', 'numeric'],
 
             ],
             [
@@ -178,6 +184,13 @@ class AdminUserController extends Controller
             ]);
             if ($user) {
                 infoAdmin::create(['user_id' => $user->id]);
+                if ($user->role_id <= 2) {
+                    $token = $dvi_user->createApiToken($user->id);
+                    $created_auth_api = ApiAdmin::create([
+                        'users_id' => $user->id,
+                        'token_api' => $token
+                    ]);
+                }
                 return redirect()->back()->with('ok', 1);
             } else {
                 return redirect()->back()->with('not-ok', 1);
@@ -192,8 +205,8 @@ class AdminUserController extends Controller
             $request->all(),
             [
                 'name' => 'required', 'string', 'max:255',
-                'email' => 'required|string|email|unique:users,email,'.$id,
-                'phone' => 'required|string|numeric|unique:users,phone,'.$id,
+                'email' => 'required|string|email|unique:users,email,' . $id,
+                'phone' => 'required|string|numeric|unique:users,phone,' . $id,
             ],
             [
                 'name.required' => "Bạn chưa nhập tên",
@@ -331,7 +344,7 @@ class AdminUserController extends Controller
             $request->all(),
             [
                 'name' => 'required',
-                'phone' => 'required|numeric|unique:users,phone,'.$id,
+                'phone' => 'required|numeric|unique:users,phone,' . $id,
                 'address_1' => 'required',
                 'city' => 'required',
                 'dist' => 'required',
@@ -348,24 +361,12 @@ class AdminUserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         } else {
+            $user = User::where('id', '=', $id)->first();
             if ($request->has('avatar')) {
+                if ($user->avatar != NULL)
+                    unlink("public/" . $user->avatar);
                 $path = "admin/images/avatar/";
-                $path_public = "public/admin/images/avatar/";
-                $sub_img = $request->avatar;
-                $n_sub = $sub_img->getClientOriginalName();
-                if (file_exists($path_public .  $n_sub)) {
-                    $filename2 = pathinfo($n_sub, PATHINFO_FILENAME);
-                    $ext2 = $sub_img->getClientOriginalExtension();
-                    $n_sub = $filename2 . '(1)' . '.' . $ext2;
-                    $k = 1;
-                    while (file_exists($path_public . $n_sub)) {
-                        $n_sub = $filename2 . '(' . $k . ')' . '.' . $ext2;
-                        $k++;
-                    }
-                }
-                $save_sub = $path . $n_sub;
-                $sub_img->move($path_public, $n_sub);
-                $data_update_user['avatar'] = $save_sub;
+                $data_update_user['avatar'] = $this->handle_file->storeFileImg($request->avatar, $path);
             }
             $data_update_user['name'] = $request->name;
             $data_update_user['phone'] = $request->phone;
@@ -381,10 +382,137 @@ class AdminUserController extends Controller
             $data_update['twitter'] = $request->twitter;
             $data_update['biography'] = $request->biography;
             User::where('id', '=', $id)->update($data_update_user);
-            Products::where('id' , '=' , $id)->update(['author' => $data_update_user['name']]);
-            Blogs::where('id' , '=' , $id)->update(['author' => $data_update_user['name']]);
+            Products::where('id', '=', $id)->update(['author' => $data_update_user['name']]);
+            Blogs::where('id', '=', $id)->update(['author' => $data_update_user['name']]);
             infoAdmin::where('user_id', '=', $id)->update($data_update);
             return redirect()->back()->with('ok', 1);
+        }
+    }
+
+    ////////////////////////////////////////
+    //////////////////////////////////////
+
+    public function get_security_code(Request $request, UserInterface $user, MailOrderInterface $mailer)
+    {
+        $data = array();
+        $pagination = '';
+        $output = '';
+        $data_create = array();
+        $data_update = array();
+        $error = array();
+        $ok = 1;
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => 'required|email|exists:users,email',
+                'password' => 'required',
+            ],
+            [
+                'email.required' => "Email không được để trống",
+                'email.email' => "Không phải định dạng email",
+                'email.exists' => "Email không tồn tại",
+            ]
+        );
+        if ($validator->fails()) {
+            $data['errors'] = $validator->errors();
+            $data['ok'] = 0;
+            return response()->json($data);
+        } else {
+            if (!Hash::check($request->password, Auth::user()->password)) {
+                $error['errors'] = "Passowrd Không Chính Xác";
+                $data['errors'] = collect($error);
+                $data['ok'] = 0;
+                return response()->json($data);
+            }
+            $code =  $user->generateSecurityCode();
+            $created_security_code = ApiAdmin::where('users_id', Auth::id())->update(['security_code' => $code]);
+            if ($created_security_code) {
+                $subject = "MÃ BẢO VỆ CỦA BẠN TỪ HỆ THỐNG 2NITE SHOP";
+                $to = Auth::user()->email;
+                $template = 'admin.api.mail.send_security_code';
+                $data_email['code'] = $code;
+                $data_email['type'] = 1;
+                $mailer->send_code($to, $subject, $template, $data_email);
+            }
+        }
+        $data['ok'] = $ok;
+        return response()->json($data);
+    }
+
+    ////////////////////////////////////////
+    public function get_api_token(Request $request, UserInterface $user, MailOrderInterface $mailer)
+    {
+        $data = array();
+        $pagination = '';
+        $output = '';
+        $data_create = array();
+        $data_update = array();
+        $error = array();
+        $ok = 1;
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'secode' => 'required|exists:auth_api_admin,security_code',
+            ],
+            [
+                'secode.required' => "MÃ BẢO VỆ KHÔNG ĐƯỢC ĐỂ TRỐNG",
+                'secode.exists' => "MÃ BẢO VỆ KHÔNG TỒN TẠI",
+            ]
+        );
+        if ($validator->fails()) {
+            $data['errors'] = $validator->errors();
+            $data['ok'] = 0;
+            return response()->json($data);
+        } else {
+            $user = ApiAdmin::where('users_id', Auth::id())->where('security_code', $request->secode)->first();
+            if ($user) {
+                $subject = "YÊU CẦU TRUY CẬP API TOKEN CỦA BẠN TỪ HỆ THỐNG 2NITE SHOP";
+                $to = Auth::user()->email;
+                $template = 'admin.api.mail.send_security_code';
+                $data_email['code'] = $user->token_api;
+                $data_email['type'] = 2;
+                $data_email['token_api'] = Crypt::encrypt($user->token_api);
+                $data_email['security_code'] = Crypt::encrypt($user->security_code);
+                $mailer->send_code($to, $subject, $template, $data_email);
+            } else {
+                $data['errors'] = "Mã BẢO VỆ KHÔNG CHÍNH XÁC";
+                $data['ok'] = 0;
+                return response()->json($data);
+            }
+        }
+        $data['ok'] = $ok;
+        return response()->json($data);
+    }
+    ////////////////////////////////////////
+
+    public function identity_confirmation(Request $request)
+    {
+        if ($request->has('token_api')) {
+            $token = Crypt::decrypt($request->token_api);
+        } else {
+            $token = '';
+        }
+        if ($request->has('security_code')) {
+            $secode = Crypt::decrypt($request->security_code);
+        } else {
+            $secode = '';
+        }
+        return view('admin.api.confirmation', compact('secode', 'token'));
+    }
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function handle_identity_confirmation(Request $request)
+    {
+        $token = $request->api_token;
+        $secode = $request->seocode;
+        if (ApiAdmin::where('token_api', $token)->where('security_code', $secode)->first()) {
+            ApiAdmin::where('token_api', $token)->where('security_code', $secode)->update(['requested_at' => Carbon::now('Asia/Ho_Chi_Minh')]);
+            $requested_at = ApiAdmin::where('token_api', $token)->where('security_code', $secode)->first()->requested_at;
+            return redirect()->route('scribe', ['token_api' => Crypt::encrypt($token), 'security_code' => Crypt::encrypt($secode), 'rq_at' => $requested_at]);
+        } else {
+            return redirect()->back()->with('error', 1);
         }
     }
 

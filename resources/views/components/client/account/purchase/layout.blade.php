@@ -1,5 +1,5 @@
 @php
-$orders_all = App\Models\Orders::orderBy('id' , 'DESC')-> where('users_id' , '=' , Auth::id()) -> get();
+$orders_all = App\Models\User::find(Auth::id())->orders()->get();
 @endphp
 <div class="" id="myTabPurchase" role="tablist">
   <a class="stt__item stt__item--0 @if ($type == 0 ) active @endif" id="purchase__tab--0" data-type="0"

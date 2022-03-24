@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\gllCat;
 use App\Models\Policy;
-use App\Models\Bundled;
 use App\Models\CatGame;
 use App\Models\Category;
 use App\Models\Producer;
 use App\Models\Insurance;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Models\RelatedPosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Models\bundled_skin_cat;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\FileInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Models\bundled_accessory_cat;
 use Illuminate\Support\Facades\Validator;
 
 class AdminCategoryController extends Controller
@@ -33,37 +36,62 @@ class AdminCategoryController extends Controller
     public function cat(Request $request)
     {
         $categories = category_child(Category::all(), 0);
+        if ($request->has('selected')) {
+            $selected = $request->selected;
+        } else {
+            $selected = "";
+        }
         if ($request->has('selected_blog')) {
             $selected_blog = $request->selected_blog;
         } else {
             $selected_blog = "";
         }
+
         $url = route('cat');
-        return view('admin.products.category.prd.index', compact('categories' , 'url'  ,'selected_blog'));
+        return view('admin.products.category.prd.index', compact('categories', 'url', 'selected_blog', 'selected'));
     }
     ////////////////////////////////////////
     public function edit($id)
     {
+        $array_blogs = array();
+        $array_products =  array();
         $categories = category_child(Category::all(), 0);
         $cat = Category::where('id', '=', $id)->first();
-        $related_blog = RelatedPosts::where('cat_id', '=', $id)->first();
-        if ($related_blog) {
-            $selected_blog = $related_blog->posts;
+        $bundled_skin = bundled_skin_cat::where('cat_id', '=', $id)->first();;
+        $related = Category::find($id)->bundled_accessory()->get()->toArray();
+        $related_blog = Category::find($id)->related_blogs()->get()->toArray();
+        if (count($related) > 0) {
+            $selected = $related;
+            foreach ($related as $item) {
+                $array_products[] = $item['products_id'];
+            }
+            $selected_js_product = implode(",",  $array_products);
+        } else {
+            $selected = "";
+            $selected_js_product = "";
+        }
+        if (count($related_blog) > 0) {
+            $selected_blog = $related_blog;
+            foreach ($related_blog as $item_2) {
+                $array_blogs[] = $item_2['posts'];
+            }
+            $selected_js_blog = implode(",", $array_blogs);
         } else {
             $selected_blog = "";
+            $selected_js_blog = "";
         }
         $url = route('edit_cat', ['id' => $id]);
-        return view('admin.products.category.prd.edit', compact('categories', 'cat', 'id' , 'url' , 'selected_blog'));
+        return view('admin.products.category.prd.edit', compact('categories', 'cat', 'id', 'url', 'selected_blog', 'selected_js_blog', 'array_blogs', 'selected_js_product', 'array_products', 'selected', 'bundled_skin'));
     }
     ////////////////////////////////////////
-    public function handle_add(Request $request)
+    public function handle_add(Request $request, FileInterface $file)
     {
         $validator = Validator::make(
             $request->all(),
             [
                 'name' => 'required|unique:category',
                 'title' => 'required|unique:category',
-                'slug' => 'required|unique:category',
+                'slug' => 'unique:category',
                 'desc' => 'required',
                 'keywords' => 'required',
                 'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
@@ -95,7 +123,11 @@ class AdminCategoryController extends Controller
         } else {
             $data['name'] = $request->name;
             $data['title'] = $request->title;
-            $data['slug'] = $request->slug;
+            if ($request->slug == null) {
+                $data['slug'] = Str::slug($request->name);
+            } else {
+                $data['slug'] = $request->slug;
+            }
             $data['desc'] = $request->desc;
             $data['keywords'] = $request->keywords;
             if ($request->parent == 0) {
@@ -106,19 +138,13 @@ class AdminCategoryController extends Controller
                 $data['level'] = Category::where('id', '=', $request->parent)->first()->level + 1;
             }
             if ($request->has('img')) {
-                $img = $request->img;
-                $img_name = $img->getClientOriginalName();
-                $path_save_img = "admin/images/category/banner/" . $img_name;
-                $img->move("public/admin/images/category/banner", $img_name);
-                $data['img'] = $path_save_img;
+                $path = "admin/images/category/banner/";
+                $data['img'] = $file->storeFileImg($request->img, $path);
             }
             if ($request->has('icon')) {
                 if ($request->parent == 0) {
-                    $icon = $request->icon;
-                    $icon_name = $icon->getClientOriginalName();
-                    $path_save_icon = "admin/images/category/icon/" .  $icon_name;
-                    $icon->move("public/admin/images/category/icon",  $icon_name);
-                    $data['icon'] = $path_save_icon;
+                    $path_icon = "admin/images/category/icon/";
+                    $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
                 } else {
                     return redirect()->back()->with('error', '1');
                 }
@@ -149,13 +175,33 @@ class AdminCategoryController extends Controller
                     }
                 }
                 //  start handle related produts
+                if ($request->bundled_skin != null) {
+                    bundled_skin_cat::create([
+                        'skin_cat_id' => $request->bundled_skin,
+                        'cat_id' => $created->id,
+                    ]);
+                }
                 // ///////////////
+                if ($request->has('products')) {
+                    if (count($request->products) > 0) {
+                        foreach ($request->products as $products_id) {
+                            bundled_accessory_cat::create([
+                                'products_id' => $products_id,
+                                'cat_id' => $created->id,
+                            ]);
+                        }
+                    }
+                }
+                // //////////////
                 if ($request->has('blogs')) {
                     if (count($request->blogs) > 0) {
-                        $data_related_blog['posts'] = implode(",", $request->blogs);
-                        $data_related_blog['cat_id'] = $created->id;
-                        $data_related_blog['for'] = "product";
-                        RelatedPosts::create($data_related_blog);
+                        foreach ($request->blogs as $posts) {
+                            RelatedPosts::create([
+                                'posts' => $posts,
+                                'cat_id' => $created->id,
+                                'for' => "category"
+                            ]);
+                        }
                     }
                 }
                 // end handle related blogs
@@ -165,14 +211,15 @@ class AdminCategoryController extends Controller
     }
 
     ////////////////////////////////////////
-    public function handle_edit(Request $request)
+    public function handle_edit(Request $request, FileInterface $file)
     {
+        $category = Category::where('id', $request->id)->firstOrFail();
         $validator = Validator::make(
             $request->all(),
             [
                 'name' => 'required|unique:category,name,' . $request->id,
                 'title' => 'required|unique:category,title,' . $request->id,
-                'slug' => 'required|unique:category,slug,' . $request->id,
+                'slug' => 'unique:category,slug,' . $request->id,
                 'desc' => 'required',
                 'keywords' => 'required',
                 'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
@@ -204,7 +251,11 @@ class AdminCategoryController extends Controller
         } else {
             $data['name'] = $request->name;
             $data['title'] = $request->title;
-            $data['slug'] = $request->slug;
+            if ($request->slug == null) {
+                $data['slug'] = Str::slug($request->name);
+            } else {
+                $data['slug'] = $request->slug;
+            }
             $data['desc'] = $request->desc;
             $data['keywords'] = $request->keywords;
             if ($request->parent == 0) {
@@ -215,24 +266,56 @@ class AdminCategoryController extends Controller
                 $data['level'] = Category::where('id', '=', $request->parent)->first()->level + 1;
             }
             if ($request->has('img')) {
-                $img = $request->img;
-                $img_name = $img->getClientOriginalName();
-                $path_save_img = "admin/images/category/banner/" . $img_name;
-                $img->move("public/admin/images/category/banner", $img_name);
-                $data['img'] = $path_save_img;
+                if ($category->img != NULL)
+                    unlink("public/" . $category->img);
+                $path = "admin/images/category/banner/";
+                $data['img'] = $file->storeFileImg($request->img, $path);
             }
             if ($request->has('icon')) {
                 if ($request->parent == 0) {
-                    $icon = $request->icon;
-                    $icon_name = $icon->getClientOriginalName();
-                    $path_save_icon = "admin/images/category/icon/" .  $icon_name;
-                    $icon->move("public/admin/images/category/icon",  $icon_name);
-                    $data['icon'] = $path_save_icon;
+                    if ($category->icon != NULL)
+                        unlink("public/" . $category->icon);
+                    $path_icon = "admin/images/category/icon/";
+                    $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
                 } else {
                     return redirect()->back()->with('error', '1');
                 }
             }
-            $created = Category::where('id', $request->id)->update($data);;
+            Category::where('id', $request->id)->update($data);
+            if ($request->bundled_skin != null) {
+                if (bundled_skin_cat::where('cat_id',  $request->id)->first()) {
+                    bundled_skin_cat::where('cat_id',  $request->id)->update(['skin_cat_id' => $request->bundled_skin]);
+                } else {
+                    bundled_skin_cat::where('cat_id',  $request->id)->create(['skin_cat_id' => $request->bundled_skin, 'cat_id' => $request->id]);
+                }
+            } else {
+                bundled_skin_cat::where('cat_id', '=', $request->id)->delete();
+            }
+            if ($request->has('products')) {
+                if (count($request->products) > 0) {
+                    foreach ($request->products as $products_id) {
+                        if (!bundled_accessory_cat::where('products_id', $products_id)->where('cat_id', $request->id)->first()) {
+                            bundled_accessory_cat::create([
+                                'products_id' => $products_id,
+                                'cat_id' => $request->id,
+                            ]);
+                        }
+                    }
+                }
+            }
+            if ($request->has('blogs')) {
+                if (count($request->blogs) > 0) {
+                    foreach ($request->blogs as $posts) {
+                        if (!RelatedPosts::where('cat_id', $request->id)->where('posts', $posts)->where('for', 'LIKE', "category")->first()) {
+                            RelatedPosts::create([
+                                'posts' => $posts,
+                                'cat_id' => $request->id,
+                                'for' => "category"
+                            ]);
+                        }
+                    }
+                }
+            }
             return redirect()->back()->with('update', '1');
         }
     }
@@ -447,34 +530,34 @@ class AdminCategoryController extends Controller
     // /////////////////////////////////////// end policy
     ////////////////////////////////////////
 
-    public function bundled(Request $request)
-    {
-        $bundled = Bundled::all();
-        $category = Category::where('parent_id', '=', 0)->get();
-        return view('admin.products.category.prd.bundled', compact('bundled', 'category'));
-    }
+    // public function bundled(Request $request)
+    // {
+    //     $bundled = Bundled::all();
+    //     $category = Category::where('parent_id', '=', 0)->get();
+    //     return view('admin.products.category.prd.bundled', compact('bundled', 'category'));
+    // }
 
     ////////////////////////////////////////
     ////////////////////////////////////////
 
-    public function handle_add_bundled(Request $request)
-    {
-        $data_create = array();
-        if ($request->has('access')) {
-            $data_create['bundled_accessory'] = implode(",", $request->access);
-        }
-        $data_create['bundled_skin'] = $request->bundled_skin;
-        $data_create['cat_id'] = $request->cat_id;
-        Bundled::create($data_create);
-        return redirect()->back()->with('ok', '1');
-    }
+    // public function handle_add_bundled(Request $request)
+    // {
+    //     $data_create = array();
+    //     if ($request->has('access')) {
+    //         $data_create['bundled_accessory'] = implode(",", $request->access);
+    //     }
+    //     $data_create['bundled_skin'] = $request->bundled_skin;
+    //     $data_create['cat_id'] = $request->cat_id;
+    //     Bundled::create($data_create);
+    //     return redirect()->back()->with('ok', '1');
+    // }
 
-    ////////////////////////////////////////
-    public function handle_delete_bundled($id)
-    {
-        Bundled::where('id', $id)->delete();
-        return redirect()->back()->with('delete', '1');
-    }
+    // ////////////////////////////////////////
+    // public function handle_delete_bundled($id)
+    // {
+    //     Bundled::where('id', $id)->delete();
+    //     return redirect()->back()->with('delete', '1');
+    // }
 
     // ////////////////////////////////////////// end bundled
 

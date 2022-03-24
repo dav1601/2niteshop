@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\RelatedProducts;
 use App\Repositories\CustomerInterface;
+use App\Repositories\FileInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -26,12 +27,13 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminProductController extends Controller
 {
-    public function __construct()
+    public function __construct(FileInterface $handle_file)
     {
         $this->middleware(function ($request, $next) {
             session(['active' => 'prd']);
             return $next($request);
         });
+        $this->handle_file =  $handle_file;
     }
     public function index()
     {
@@ -71,6 +73,8 @@ class AdminProductController extends Controller
     // //////////////////////////////////////// end view add
     public function product_view_edit($id, Request $request)
     {
+        $array_products = array();
+        $array_blogs = array();
         $product = Products::where('id', '=', $id)->firstOrFail();
         if (Gate::allows('group-4')) {
         } else {
@@ -84,20 +88,30 @@ class AdminProductController extends Controller
         $cat_s2 = Category::where('parent_id', '=', $product->sub_1_cat_id);
         $type = typeProduct::where('parent', '=', 0)->get();
         $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
-        $related = RelatedProducts::where('product_id', '=', $id)->first();
-        $related_blog = RelatedPosts::where('product_id', '=', $id)->first();
-        if ($related) {
-            $selected = $related->products;
+        $related = Products::find($id)->related_products()->get()->toArray();
+        $related_blog = Products::find($id)->related_blogs()->get()->toArray();
+        if (count($related) > 0) {
+            $selected = $related;
+            foreach ($related as $item) {
+                $array_products[] = $item['products_id'];
+            }
+            $selected_js_product = implode(",",  $array_products);
         } else {
             $selected = "";
+            $selected_js_product = "";
         }
-        if ($related_blog) {
-            $selected_blog = $related_blog->posts;
+        if (count($related_blog) > 0) {
+            $selected_blog = $related_blog;
+            foreach ($related_blog as $item_2) {
+                $array_blogs[] = $item_2['posts'];
+            }
+            $selected_js_blog = implode(",", $array_blogs);
         } else {
             $selected_blog = "";
+            $selected_js_blog = "";
         }
         $url = route('product_view_edit', ['id' => $id]);
-        return view('admin.products.edit', compact('category', 'ins', 'policy', 'producer', 'cat_game', 'type', 'cat_s2', 'product', 'sub_type', 'selected', 'selected_blog', 'url'));
+        return view('admin.products.edit', compact('id', 'category', 'ins', 'policy', 'producer', 'cat_game', 'type', 'cat_s2', 'product', 'sub_type', 'selected', 'selected_blog', 'url', 'selected_js_product', 'selected_js_blog', 'array_products', 'array_blogs'));
     }
     // //////////////////////////////////////// end view edit
     public function product_handle_add(Request $request)
@@ -214,118 +228,36 @@ class AdminProductController extends Controller
             }
             // /////////////////////////////////
             if ($request->has('banner')) {
-                $banner = $request->banner;
-                $n_b = $banner->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($data_create['cat_name']) . "/"  . "banner/" .   $n_b)) {
-                    $filename4 = pathinfo($n_b, PATHINFO_FILENAME);
-                    $ext4 =  $banner->getClientOriginalExtension();
-                    $n_b = $filename4 . '(1)' . '.' . $ext4;
-                    $b = 1;
-                    while (file_exists("public/" . $path .  Str::slug($data_create['cat_name']) . "/"  . "banner/" . $n_b)) {
-                        $n_b = $filename4 . '(' . $b . ')' . '.' . $ext4;
-                        $b++;
-                    }
-                }
-                $save_banner = $path . Str::slug($data_create['cat_name']) . "/"  . "banner/" . $n_b;
-                $banner->move("public/" . $path . Str::slug($data_create['cat_name']) . "/" . "banner", $n_b);
-                $data_create['banner'] = $save_banner;
+                $path_banner = $path . Str::slug($data_create['cat_name']) . "/"  . "banner/";
+                $data_create['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
                 $data_create['banner_link'] = $request->banner_link;
             }
             // //////////// background img
-            if ($request->has('bg')) {
-                $banner = $request->bg;
-                $n_b = $banner->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($data_create['cat_name']) . "/"  . "banner/" .   $n_b)) {
-                    $filename4 = pathinfo($n_b, PATHINFO_FILENAME);
-                    $ext4 =  $banner->getClientOriginalExtension();
-                    $n_b = $filename4 . '(1)' . '.' . $ext4;
-                    $b = 1;
-                    while (file_exists("public/" . $path .  Str::slug($data_create['cat_name']) . "/"  . "banner/" . $n_b)) {
-                        $n_b = $filename4 . '(' . $b . ')' . '.' . $ext4;
-                        $b++;
-                    }
-                }
-                $save_banner = $path . Str::slug($data_create['cat_name']) . "/"  . "banner/" . $n_b;
-                $banner->move("public/" . $path . Str::slug($data_create['cat_name']) . "/" . "banner", $n_b);
-                $data_create['banner'] = $save_banner;
-                $data_create['banner_link'] = $request->banner_link;
-            }
-
 
             // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
-            $main_img = $request->main_img;
-            $n_main = $main_img->getClientOriginalName();
-            if (file_exists("public/" . $path . Str::slug($data_create['cat_name']) . "/"  . "main/" . $n_main)) {
-                $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                $ext = $main_img->getClientOriginalExtension();
-                $n_main = $filename . '(1)' . '.' . $ext;
-                $i = 1;
-                while (file_exists("public/" . $path .  Str::slug($data_create['cat_name']) . "/"  . "main/" . $n_main)) {
-                    $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                    $i++;
-                }
-            }
-            $save_main = $path . Str::slug($data_create['cat_name']) . "/"  . "main/" . $n_main;
-            $main_img->move("public/" . $path .  Str::slug($data_create['cat_name']) . "/" . "main", $n_main);
-            $data_create['main_img'] = $save_main;
+            $path_main_img = $path . Str::slug($data_create['cat_name']) . "/"  . "main/";
+            $data_create['main_img'] = $this->handle_file->storeFileImg($request->main_img, $path_main_img);
             // //////////////// end main
             if ($request->has('sub_img')) {
-                $sub_img = $request->sub_img;
-                $n_sub = $sub_img->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($data_create['cat_name']) . "/"  . "sub/" .  $n_sub)) {
-                    $filename2 = pathinfo($n_sub, PATHINFO_FILENAME);
-                    $ext2 = $sub_img->getClientOriginalExtension();
-                    $n_sub = $filename2 . '(1)' . '.' . $ext2;
-                    $k = 1;
-                    while (file_exists("public/" . $path .  Str::slug($data_create['cat_name']) . "/"  . "sub/" . $n_sub)) {
-                        $n_sub = $filename2 . '(' . $k . ')' . '.' . $ext2;
-                        $k++;
-                    }
-                }
-                $save_sub = $path . Str::slug($data_create['cat_name']) . "/"  . "sub/" . $n_sub;
-                $sub_img->move("public/" . $path . Str::slug($data_create['cat_name']) . "/" . "sub", $n_sub);
-                $data_create['sub_img'] = $save_sub;
+                $path_sub_img = $path .  Str::slug($data_create['cat_name']) . "/"  . "sub/";
+                $data_create['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
             }
             // end subbbbbbbbbbbbbb
             // start backgroud
             if ($request->has('bg')) {
-                $bg = $request->bg;
-                $n_bg = $bg->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($data_create['cat_name']) . "/"  . "backgroud/" .  $n_bg)) {
-                    $filename_bg = pathinfo($n_bg, PATHINFO_FILENAME);
-                    $ext_bg = $bg->getClientOriginalExtension();
-                    $n_bg = $filename_bg . '(1)' . '.' . $ext_bg;
-                    $k = 1;
-                    while (file_exists("public/" . $path .  Str::slug($data_create['cat_name']) . "/"  . "backgroud/" . $n_bg)) {
-                        $n_bg = $filename_bg . '(' . $k . ')' . '.' . $ext_bg;
-                        $k++;
-                    }
-                }
-                $save_bg = $path . Str::slug($data_create['cat_name']) . "/"  . "backgroud/" . $n_bg;
-                $bg->move("public/" . $path . Str::slug($data_create['cat_name']) . "/" . "backgroud", $n_bg);
-                $data_create['bg'] = $save_bg;
+                $path_bg =  $path . Str::slug($data_create['cat_name']) . "/"  . "backgroud/";
+                $data_create['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
             }
-
             // end backgroud
             $created = Products::create($data_create);
+            // createdd end
             if ($created) {
                 if ($request->has('gll700')) {
                     $index = 0;
                     foreach ($request->gll700 as $g7) {
                         $index++;
-                        $name = $g7->getClientOriginalName();
-                        if (file_exists("public/" . $path . Str::slug($created->cat_name) . "/"  . "images_700x700/" .  $name)) {
-                            $f7 = pathinfo($name, PATHINFO_FILENAME);
-                            $ext7 = $g7->getClientOriginalExtension();
-                            $name = $f7 . '(1)' . '.' . $ext7;
-                            $j = 1;
-                            while (file_exists("public/" . $path . Str::slug($created->cat_name) . "/"  . "images_700x700/" .  $name)) {
-                                $name = $f7 . '(' . $j . ')' . '.' . $ext7;
-                                $j++;
-                            }
-                        }
-                        $save_7 =  $path . Str::slug($created->cat_name) . "/"  . "images_700x700/" . $name;
-                        $g7->move("public/" . $path . Str::slug($created->cat_name) . "/"  . "images_700x700", $name);
+                        $path_g7 = $path . Str::slug($created->cat_name) . "/"  . "images_700x700/";
+                        $save_7 =  $this->handle_file->storeFileImg($g7, $path_g7);
                         gllProducts::create([
                             'link' => $save_7,
                             'products_id' => $created->id,
@@ -335,24 +267,13 @@ class AdminProductController extends Controller
                         unset($g7);
                     }
                 }
-                // end 70000000000000000000000000
+                // end 750x750 img
                 if ($request->has('gll80')) {
                     $index = 0;
                     foreach ($request->gll80 as $g8) {
                         $index++;
-                        $name_8 = $g8->getClientOriginalName();
-                        if (file_exists("public/" . $path . Str::slug($created->cat_name) . "/"  . "images_80x80/" . $name_8)) {
-                            $f8 = pathinfo($name_8, PATHINFO_FILENAME);
-                            $ext8 = $g8->getClientOriginalExtension();
-                            $name_8 = $f8 . '(1)' . '.' . $ext8;
-                            $h = 1;
-                            while (file_exists("public/" . $path . Str::slug($created->cat_name) . "/"  . "images_80x80/" . $name_8)) {
-                                $name_8 = $f8 . '(' . $h . ')' . '.' . $ext8;
-                                $h++;
-                            }
-                        }
-                        $save_8 =  $path . Str::slug($created->cat_name) . "/"  . "images_80x80/" . $name_8;
-                        $g8->move("public/" . $path . Str::slug($created->cat_name) . "/" . "images_80x80", $name_8);
+                        $path_g8 = $path . Str::slug($created->cat_name) . "/"  . "images_80x80/";
+                        $save_8 = $this->handle_file->storeFileImg($g8, $path_g8);
                         gllProducts::create([
                             'link' => $save_8,
                             'products_id' => $created->id,
@@ -362,23 +283,29 @@ class AdminProductController extends Controller
                         unset($g8);
                     }
                 }
-                // end 80000000000000000000000000000000
+                // end 80x80 img
                 //  start handle related produts
                 if ($request->has('products')) {
                     if (count($request->products) > 0) {
-                        $data_related['products'] = implode(",", $request->products);
-                        $data_related['product_id'] = $created->id;
-                        $data_related['for'] = "product";
-                        RelatedProducts::create($data_related);
+                        foreach ($request->products as $products_id) {
+                            RelatedProducts::create([
+                                'products_id' => $products_id,
+                                'product_id' => $created->id,
+                                'for' => "product"
+                            ]);
+                        }
                     }
                 }
                 // ///////////////
                 if ($request->has('blogs')) {
                     if (count($request->blogs) > 0) {
-                        $data_related_blog['posts'] = implode(",", $request->blogs);
-                        $data_related_blog['product_id'] = $created->id;
-                        $data_related_blog['for'] = "product";
-                        RelatedPosts::create($data_related_blog);
+                        foreach ($request->blogs as $posts) {
+                            RelatedPosts::create([
+                                'posts' => $posts,
+                                'product_id' => $created->id,
+                                'for' => "product"
+                            ]);
+                        }
                     }
                 }
                 // end handle related blogs
@@ -388,7 +315,7 @@ class AdminProductController extends Controller
     }
 
     //////////////////////////////////////// end add product
-    public function product_handle_edit($id, Request $request)
+    public function product_handle_edit($id, FileInterface $handle_file, Request $request)
     {
         $data_create = array();
         $product = Products::where('id', '=', $id)->firstOrFail();
@@ -456,6 +383,8 @@ class AdminProductController extends Controller
             $data_update['model'] = $request->model;
             $data_update['cat_id'] = $request->cat;
             $data_update['cat_name'] = Category::where('id', '=', $request->cat)->first()->name;
+            $data_update['cat_2_id'] = $request->cat_2;
+            $data_update['cat_2_sub'] = $request->cat_2_id;
             if ($request->cat_1 != null) {
                 $data_update['sub_1_cat_id'] = $request->cat_1;
                 $data_update['sub_1_cat_name'] = Category::where('id', '=', $request->cat_1)->first()->name;
@@ -494,8 +423,7 @@ class AdminProductController extends Controller
             $data_update['author_id'] = Auth::id();
             $data_update['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
             $data_update['video'] = $request->video;
-            $data_update['cat_2_id'] = $request->cat_2;
-            $data_update['cat_2_sub'] = $request->cat_2_id;
+
             if ($request->has('ins')) {
                 $data_update['insurance'] = implode(",", $request->ins);
             }
@@ -503,50 +431,25 @@ class AdminProductController extends Controller
                 $data_update['policy'] = implode(",", $request->plc);
             }
             // /////////////////////////////////
-
+            if ($request->has('banner')) {
+                if ($product->banner != NULL) {
+                    unlink("public/" . $product->banner);
+                }
+                $path_banner = $path . Str::slug($data_update['cat_name']) . "/"  . "banner/";
+                $data_update['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
+                $data_update['banner_link'] = $request->banner_link;
+            }
 
             // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
             if ($request->has('main_img')) {
-                if ($product->main_img != NULL) {
-                    unlink("public/" . $product->main_img);
-                }
-                $main_img = $request->main_img;
-                $n_main = $main_img->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($data_update['cat_name']) . "/"  . "main/" . $n_main)) {
-                    $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                    $ext = $main_img->getClientOriginalExtension();
-                    $n_main = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/" . $path .  Str::slug($data_update['cat_name']) . "/"  . "main/" . $n_main)) {
-                        $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_main = $path . Str::slug($data_update['cat_name']) . "/"  . "main/" . $n_main;
-                $main_img->move("public/" . $path .  Str::slug($data_update['cat_name']) . "/" . "main", $n_main);
-                $data_update['main_img'] = $save_main;
+                $main_path = $path . Str::slug($data_update['cat_name']) . "/"  . "main/";
+                $data_update['main_img'] = $this->handle_file->storeFileImg($request->main_img, $main_path);
             }
 
             // //////////////// end main
             if ($request->has('sub_img')) {
-                if ($product->sub_img != NULL && $product->sub_img != '') {
-                    unlink("public/" . $product->sub_img);
-                }
-                $sub_img = $request->sub_img;
-                $n_sub = $sub_img->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($data_update['cat_name']) . "/"  . "sub/" .  $n_sub)) {
-                    $filename2 = pathinfo($n_sub, PATHINFO_FILENAME);
-                    $ext2 = $sub_img->getClientOriginalExtension();
-                    $n_sub = $filename2 . '(1)' . '.' . $ext2;
-                    $k = 1;
-                    while (file_exists("public/" . $path .  Str::slug($data_update['cat_name']) . "/"  . "sub/" . $n_sub)) {
-                        $n_sub = $filename2 . '(' . $k . ')' . '.' . $ext2;
-                        $k++;
-                    }
-                }
-                $save_sub = $path . Str::slug($data_update['cat_name']) . "/"  . "sub/" . $n_sub;
-                $sub_img->move("public/" . $path . Str::slug($data_update['cat_name']) . "/" . "sub", $n_sub);
-                $data_update['sub_img'] = $save_sub;
+                $path_sub_img = $path .  Str::slug($data_update['cat_name']) . "/"  . "sub/";
+                $data_update['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
             }
             // end subbbbbbbbbbbbbb
             // start backgroup img
@@ -554,21 +457,8 @@ class AdminProductController extends Controller
                 if ($product->bg != NULL && $product->bg != '') {
                     unlink("public/" . $product->bg);
                 }
-                $bg = $request->bg;
-                $n_bg = $bg->getClientOriginalName();
-                if (file_exists("public/" . $path . Str::slug($data_update['cat_name']) . "/"  . "backgroud/" .  $n_bg)) {
-                    $filename_bg = pathinfo($n_bg, PATHINFO_FILENAME);
-                    $ext_bg = $bg->getClientOriginalExtension();
-                    $n_bg = $filename_bg . '(1)' . '.' . $ext_bg;
-                    $k = 1;
-                    while (file_exists("public/" . $path .  Str::slug($data_update['cat_name']) . "/"  . "backgroud/" . $n_bg)) {
-                        $n_bg = $filename_bg . '(' . $k . ')' . '.' . $ext_bg;
-                        $k++;
-                    }
-                }
-                $save_bg = $path . Str::slug($data_update['cat_name']) . "/"  . "backgroud/" . $n_bg;
-                $bg->move("public/" . $path . Str::slug($data_update['cat_name']) . "/" . "backgroud", $n_bg);
-                $data_update['bg'] = $save_bg;
+                $path_bg =  $path . Str::slug($data_update['cat_name']) . "/"  . "backgroud/";
+                $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
             }
             // update product
             Products::where('id', '=', $id)->update($data_update);
@@ -587,37 +477,40 @@ class AdminProductController extends Controller
             // handle related products
             if ($request->has('products')) {
                 if (count($request->products) > 0) {
-                    $data_related['products'] = implode(",", $request->products);
-                    RelatedProducts::where('product_id', '=',  $id)->update($data_related);
+                    foreach ($request->products as $products_id) {
+                        if (!RelatedProducts::where('products_id', $products_id)->where('product_id', $id)->where('for', 'LIKE', "product")->first()) {
+                            RelatedProducts::create([
+                                'products_id' => $products_id,
+                                'product_id' => $id,
+                                'for' => "product"
+                            ]);
+                        }
+                    }
                 }
             }
             // end handle related products
             if ($request->has('blogs')) {
                 if (count($request->blogs) > 0) {
-                    $data_related_blog['posts'] = implode(",", $request->blogs);
-                    RelatedPosts::where('product_id', '=',  $id)->update($data_related_blog);
+                    foreach ($request->blogs as $posts) {
+                        if (!RelatedPosts::where('product_id', $id)->where('posts', $posts)->where('for', 'LIKE', "product")->first()) {
+                            RelatedPosts::create([
+                                'posts' => $posts,
+                                'product_id' => $id,
+                                'for' => "product"
+                            ]);
+                        }
+                    }
                 }
             }
             // end handle related blogs
             if ($request->has('gll700')) {
                 foreach ($request->gll700 as $g7) {
                     $index = 1;
-                    $name = $g7->getClientOriginalName();
-                    if (file_exists("public/" . $path . Str::slug($product->cat_name) . "/"  . "images_700x700/" .  $name)) {
-                        $f7 = pathinfo($name, PATHINFO_FILENAME);
-                        $ext7 = $g7->getClientOriginalExtension();
-                        $name = $f7 . '(1)' . '.' . $ext7;
-                        $j = 1;
-                        while (file_exists("public/" . $path . Str::slug($product->cat_name) . "/"  . "images_700x700/" .  $name)) {
-                            $name = $f7 . '(' . $j . ')' . '.' . $ext7;
-                            $j++;
-                        }
-                    }
                     while (gllProducts::where('products_id', '=', $id)->where('index', '=', $index)->where('size', '=', 700)->first()) {
                         $index++;
                     }
-                    $save_7 =  $path . Str::slug($product->cat_name) . "/"  . "images_700x700/" . $name;
-                    $g7->move("public/" . $path . Str::slug($product->cat_name) . "/"  . "images_700x700", $name);
+                    $path_g7 = $path . Str::slug($product->cat_name) . "/"  . "images_700x700/";
+                    $save_7 =  $this->handle_file->storeFileImg($g7, $path_g7);
                     gllProducts::create([
                         'link' => $save_7,
                         'products_id' => $id,
@@ -631,22 +524,11 @@ class AdminProductController extends Controller
             if ($request->has('gll80')) {
                 foreach ($request->gll80 as $g8) {
                     $index = 1;
-                    $name_8 = $g8->getClientOriginalName();
-                    if (file_exists("public/" . $path . Str::slug($product->cat_name) . "/"  . "images_80x80/" . $name_8)) {
-                        $f8 = pathinfo($name_8, PATHINFO_FILENAME);
-                        $ext8 = $g8->getClientOriginalExtension();
-                        $name_8 = $f8 . '(1)' . '.' . $ext8;
-                        $h = 1;
-                        while (file_exists("public/" . $path . Str::slug($product->cat_name) . "/"  . "images_80x80/" . $name_8)) {
-                            $name_8 = $f8 . '(' . $h . ')' . '.' . $ext8;
-                            $h++;
-                        }
-                    }
                     while (gllProducts::where('products_id', '=', $id)->where('index', '=', $index)->where('size', '=', 80)->first()) {
                         $index++;
                     }
-                    $save_8 =  $path . Str::slug($product->cat_name) . "/"  . "images_80x80/" . $name_8;
-                    $g8->move("public/" . $path . Str::slug($product->cat_name) . "/" . "images_80x80", $name_8);
+                    $path_g8 = $path . Str::slug($product->cat_name) . "/"  . "images_80x80/";
+                    $save_8 = $this->handle_file->storeFileImg($g8, $path_g8);
                     gllProducts::create([
                         'link' => $save_8,
                         'products_id' => $id,

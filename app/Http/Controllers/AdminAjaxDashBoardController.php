@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Todos;
 use App\Models\Statistics;
 use Illuminate\Http\Request;
@@ -47,14 +48,13 @@ class AdminAjaxDashBoardController extends Controller
             $update = 1;
         }
         $now1 = Carbon::now('Asia/Ho_Chi_Minh');
-        $todo = new Todos;
         $count = Todos::count();
         $page = $request->page;
         $item_page = 6;
         $start = ($page - 1) * $item_page;
         $number_page = ceil($count / $item_page);
-        $tasks = $todo->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();
-        if ($todo->count() > 0) {
+        $tasks = User::find(Auth::id())->todos()->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();
+        if (count($tasks) > 0) {
             foreach ($tasks as $task) {
                 $output .= '
             <div class="task__item task-' . $task->id . '

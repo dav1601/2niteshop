@@ -1,0 +1,44 @@
+{
+    "category": "tin-moi",
+    "number_page": 3,
+    "count": 21,
+    "sort": "DESC",
+    "key_sort": "id",
+    "per_page": "10",
+    "page": "1",
+    "blogs": [
+        {
+            "id": 23,
+            "title": "Những tựa game đáng mong đợi tháng 2/2022 - Tháng này chơi gì",
+            "slug": "nhung-tua-game-dang-mong-doi-thang-22022-thang-nay-choi-gi",
+            "content": "<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\"><em style=\"box-sizing: border-box;\">K&iacute;nh ch&agrave;o năm mới! HaLo v&agrave; Say Game xin gửi những lời ch&uacute;c b&igrave;nh an đến với mọi kh&aacute;n giả đ&atilde; đồng h&agrave;nh c&ugrave;ng HaLo suốt thời gian qua v&agrave; sẽ c&ograve;n ủng hộ trong tương lai về sau.</em></span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Những ng&agrave;y nghỉ Tết tuy ngắn nhưng lại l&agrave; cơ hội tốt cho một số bạn c&oacute; thể tăng thu nhập đột biến nhưng cũng sẽ khiến c&aacute;c anh em kh&aacute;c hao hụt kha kh&aacute; số dư. D&ugrave; vậy c&aacute;c bạn cũng đừng qu&ecirc;n c&aacute;c tựa game cực phẩm sẽ l&ecirc;n kệ trong th&aacute;ng 2 n&agrave;y v&agrave; nhanh ch&oacute;ng bổ sung v&agrave;o bộ sưu tập của m&igrave;nh nh&eacute;. V&agrave; đ&acirc;y l&agrave; video Những tựa game Hay th&aacute;ng 2/2022 của&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;\"",
+            "desc": "Kính chào năm mới! HaLo và Say Game xin gửi những lời chúc bình an đến với mọi khán giả đã đồng hành cùng HaLo suốt thời gian qua và sẽ còn ủng hộ trong tương lai về sau. Những ngày nghỉ Tết tuy ngắn nhưng lại là cơ hội tốt cho một số bạn có thể tăng..",
+            "img": "admin/images/blogs/tin-moi/main/nhung-tua-game-dang-choi-thang-2-2022-0-356x200w.jpeg",
+            "cat_id": 2,
+            "cat_sub_id": null,
+            "users_id": 1,
+            "views": 0,
+            "author": "2NITE",
+            "active": 1,
+            "created_at": "2022-02-09T17:27:09.000000Z",
+            "updated_at": "2022-03-22T18:27:56.000000Z"
+        },
+        {
+            "id": 20,
+            "title": "Các tựa game độc quyền PlayStation đáng chơi nhất trên PS5/PS4 trong năm 2022",
+            "slug": "cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5ps4-trong-nam-2022",
+            "content": "<p><em style=\"box-sizing: border-box; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\"><span style=\"box-sizing: border-box; font-weight: bold;\">Cuối c&ugrave;ng th&igrave; ch&uacute;ng ta cũng đ&atilde; bước sang năm 2022, ng&agrave;y ra mắt của những tựa game m&agrave; ai ai cũng đang mong chờ lại gần hơn bao giờ hết, đặc biệt l&agrave; đối với những bạn n&agrave;o đang sở hữu chiếc m&aacute;y game PS4/ PS5. Như ti&ecirc;u đề ng&agrave;y h&ocirc;m nay, ch&uacute;ng m&igrave;nh sẽ tổng hợp lại danh s&aacute;ch c&aacute;c tựa game độc quyền PlayStation sẽ ra mắt trong năm 2022 n&agrave;y nh&eacute;.</span></em></p>\r\n<div class=\"related-post\" style=\"box-sizing: border-box; padding-left: 20px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\">\r\n<ul style=\"box-sizing: border-box; margin: 5px; padding-left: 30px;\">\r\n<li style=\"box-sizing: border-box; margin: 10px 0px 0px; padding: 0px; text-indent: 15px; line-height: 25px !important; text-align: justify;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/psn-va-rui-ro-khi-mua-tai-khoan-lau\"",
+            "desc": "Cuối cùng thì chúng ta cũng đã bước sang năm 2022, ngày ra mắt của những tựa game mà ai ai cũng đang mong chờ lại gần hơn bao giờ hết, đặc biệt là đối với những bạn nào đang sở hữu chiếc máy game PS4/ PS5. Như tiêu đề ngày hôm nay, chúng mình sẽ tổng..",
+            "img": "admin/images/blogs/tin-moi/main/cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5-ps4-trong-nam-2022-0-356x200w.jpg",
+            "cat_id": 2,
+            "cat_sub_id": 6,
+            "users_id": 1,
+            "views": 0,
+            "author": "2NITE",
+            "active": 1,
+            "created_at": "2022-01-11T16:01:13.000000Z",
+            "updated_at": "2022-03-22T18:27:56.000000Z"
+        }
+    ]
+}
+

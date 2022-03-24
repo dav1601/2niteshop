@@ -30,10 +30,11 @@ Chỉnh sửa sản phẩm
 <input type="hidden" name="" value="{{ route('handle_cat') }}" id="url__handle--cat">
 <input type="hidden" name="" value="{{ route('handle_reload') }}" id="url__handle--reload">
 <input type="hidden" name="" value="{{ route('handle_delete_gll') }}" id="url__handle--delete">
-<input type="hidden" name="" id="array__selected" value="{{ $selected }}">
+<input type="hidden" name="" id="array__selected" value="{{ $selected_js_product }}">
 <input type="hidden" name="" id="url__selected" value="{{ $url }}">
-<input type="hidden" name="" id="array__selected--blog" value="{{ $selected_blog }}">
+<input type="hidden" name="" id="array__selected--blog" value="{{ $selected_js_blog }}">
 <input type="hidden" name="" id="url__handle--related" value="{{ route('handle_related_all') }}">
+<input type="hidden" name="" id="product_id" value="{{ $id }}">
 <div id="product" class="row mx-0">
     <div class="col-12 mt-4 p-0">
         <div class="w-100">
@@ -285,6 +286,7 @@ Chỉnh sửa sản phẩm
                             </table>
                         </div>
                     </div>
+
                     <div class="form-group mb-5">
                         <div class="custom-file">
                             <input type="file" name="gll80[]" class="custom-file-input" id="gll80" multiple>
@@ -336,6 +338,7 @@ Chỉnh sửa sản phẩm
                             </table>
                         </div>
                     </div>
+
                     <div class="row mx-0">
                         <div class="form-group mb-5 col-6 pl-0">
                             <div class="custom-file">
@@ -371,7 +374,6 @@ Chỉnh sửa sản phẩm
 
                         </div>
                     </div>
-
                     <div class="form-group mb-5">
                         <div class="row mx-0">
                             <div class="col-4 pl-0 mb-5">
@@ -393,7 +395,7 @@ Chỉnh sửa sản phẩm
                                 </div>
                                 @enderror
                             </div>
-
+                            {{-- no error 1 --}}
                             <div class="col-4 mb-5">
                                 <label for="">Danh Mục Phụ 1</label>
                                 <select class="custom-select" name="cat_1" id="cat_1">
@@ -415,6 +417,7 @@ Chỉnh sửa sản phẩm
                                 </div>
                                 @enderror
                             </div>
+
                             <div class="col-4 pr-0">
                                 <label for="">Danh Mục Phụ 2</label>
                                 <select class="custom-select" name="cat_2" id="cat_2">
@@ -431,10 +434,8 @@ Chỉnh sửa sản phẩm
                                     @else
                                     <option value="0">Không có danh mục phụ 2</option>
                                     @endif
-
                                 </select>
                             </div>
-
                             {{-- end cat_2 --}}
                             <div class="col-6 mb-5 pl-0">
                                 <label for="">Op sub 1</label>
@@ -488,7 +489,6 @@ Chỉnh sửa sản phẩm
                                     @endif
                                 </select>
                             </div>
-
                             {{-- end cat_2 --}}
                             <div class="col-4 pl-0">
                                 <label for="">Danh Mục Chính 2</label>
@@ -521,7 +521,7 @@ Chỉnh sửa sản phẩm
                             </div>
 
                             <div class="col-4">
-                                <label for="">Danh Mục Chính 2</label>
+                                <label for="">Danh Mục Phụ Của DM Chính 2</label>
                                 <select class="custom-select" name="cat_2_id" id="cat_2_id">
                                     @if ($product->cat_2_sub != 0)
                                     <option value="{{ $product->cat_2_sub }}">{{ App\Models\Category::where('id', '='
@@ -620,9 +620,9 @@ Chỉnh sửa sản phẩm
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group mb-5">
                         <div class="row mx-0">
-
                             <div class="col-4 pl-0">
                                 <label for="">Danh Mục Game</label>
                                 <select class="custom-select" name="cat_game" id="">
@@ -739,6 +739,7 @@ Chỉnh sửa sản phẩm
                             <button class="btn navi_btn ml-3" id="reload__plc"><i class="fas fa-sync-alt pr-2"></i>Làm
                                 Mới</button>
                         </div>
+
                         <div class="row mx-0 inner-plc">
                             @foreach ( $policy as $plc )
                             <div class="mb-4 col-3 plc_item">
@@ -758,6 +759,7 @@ Chỉnh sửa sản phẩm
                         </div>
                     </div>
                     {{-- --}}
+
                     <div class="col-12 mt-4 p-0">
                         <div class="w-100">
                             <div class="card">
@@ -767,16 +769,16 @@ Chỉnh sửa sản phẩm
                                 <div class="card-body">
                                     <div id="selected" class="mb-4">
                                         <h1 class="mb-3" style="font-size: 20px">Danh Sách Sản Phẩm Đã Chọn</h1>
-                                        @if ($selected != "")
-                                        @foreach (explode("," , $selected) as $id )
+                                        @if (count($array_products) > 0 )
+                                        @foreach ($array_products as $item )
                                         @php
-                                        $product = App\Models\Products::where('id', '=' , $id)->first();
-                                        $array = explode("," , $selected);
+                                        $product = App\Models\Products::where('id', $item)->first();
                                         @endphp
                                         <x-admin.product.checkbox :product="$product" class="select__product"
-                                            name="products" prefix="product" :array="$array" />
+                                            name="products" prefix="product" :array="$array_products" />
                                         @endforeach
                                         @else
+
                                         <span>Chưa có sản phẩm nào được chọn</span>
                                         @endif
                                     </div>
@@ -794,6 +796,7 @@ Chỉnh sửa sản phẩm
                     </div>
                     {{-- --}}
                     {{-- --}}
+
                     <div class="col-12 my-4 p-0">
                         <div class="w-100">
                             <div class="card">
@@ -803,14 +806,13 @@ Chỉnh sửa sản phẩm
                                 <div class="card-body">
                                     <div id="selected_blog" class="mb-4">
                                         <h1 class="mb-3" style="font-size: 20px">Danh Sách Bài Viết Đã Chọn</h1>
-                                        @if ($selected_blog != "")
-                                        @foreach (explode("," , $selected_blog) as $id_blog )
+                                        @if (count($array_blogs) > 0 )
+                                        @foreach ($array_blogs as $item_2)
                                         @php
-                                        $blog = App\Models\Blogs::where('id', '=' , $id_blog)->first();
-                                        $array = explode("," , $selected_blog);
+                                        $blog = App\Models\Blogs::where('id', '=' , $item_2)->first();
                                         @endphp
                                         <x-admin.blogs.checkbox :blog="$blog" class="select__blog" name="blogs"
-                                            prefix="blog" :array="$array" />
+                                            prefix="blog" :array="$array_blogs" />
                                         @endforeach
                                         @else
                                         <span>Chưa có bài viết nào được chọn</span>

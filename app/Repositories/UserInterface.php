@@ -12,4 +12,9 @@ interface UserInterface {
     public function getNameDist($id);
     public function getNameWard($id);
     public function getUser($id);
+    public function generateSecurityCode();
+    public function createApiToken($id_admin);
+    public function ApiExists();
+    public function createPasswordResetCode();
+    public static function convertFromE164($E164Number);
 }

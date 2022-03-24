@@ -146,7 +146,86 @@ $(function () {
             }
         });
     });
+//  get api + security code admin
+$(document).on('click' , "#getSeCode" , function(){
+    var email = $("#emailSec").val();
+    var password = $("#passSec").val();
+     $.ajax({
+        type: "post",
+        url: route('get_security_code'),
+        data:{email:email , password:password},
+        dataType: "json",
+         beforeSend: function(){
+             $("#getSeCode").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý....');
+             $("#getSeCode").prop('disabled', true);
+        },
+        success: function (data) {
+            $("#getSeCode").html('Lấy Mã Bảo Vệ');
+            $("#getSeCode").prop('disabled', false);
+             if (data.ok == 0){
+                 $.each(data.errors, function (key, val) {
+                    alert(val);
+                 });
+             } else {
+                $("#emailSec").val('');
+                $("#passSec").val('');
+                $("#getSecurityCode").modal('hide');
+                Swal.fire({
+                    icon: 'success',
+                    title: "Đã gửi email vui lòng kiểm tra tin nhắn email để lấy MÃ BẢO VỆ",
+                    showClass: {
+                      popup: 'animate__animated animate__fadeInUp'
+                    },
+                    hideClass: {
+                      popup: 'animate__animated animate__hinge'
+                    }
+                  });
+             }
 
+
+         }
+    });
+
+});
+// get api token
+$(document).on('click' , "#getApiTokenBtn" , function(){
+    var secode = $("#secode").val();
+     $.ajax({
+        type: "post",
+        url: route('get_api_token'),
+        data:{secode:secode},
+        dataType: "json",
+         beforeSend: function(){
+             $("#getApiTokenBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý....');
+             $("#getApiTokenBtn").prop('disabled', true);
+        },
+        success: function (data) {
+            $("#getApiTokenBtn").html('Lấy Api Token');
+            $("#getApiTokenBtn").prop('disabled', false);
+                 if (data.ok == 0){
+                     $.each(data.errors, function (key, val) {
+                        alert(val);
+                     });
+                 } else {
+                    $("#secode").val('');
+                    $("#getApiToken").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Đã gửi email vui lòng kiểm tra tin nhắn email để lấy API TOKEN",
+                        showClass: {
+                          popup: 'animate__animated animate__fadeInUp'
+                        },
+                        hideClass: {
+                          popup: 'animate__animated animate__hinge'
+                        }
+                      });
+                 }
+
+
+         }
+    });
+
+});
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

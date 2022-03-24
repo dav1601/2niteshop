@@ -16,6 +16,7 @@ class checkbox extends Component
     public $name;
     public $prefix;
     public $array;
+    public $option;
     public function __construct($product , $class ,$name ,$prefix , $array)
     {
         $this->product = $product;

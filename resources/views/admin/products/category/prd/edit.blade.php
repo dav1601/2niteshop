@@ -14,6 +14,10 @@ Cập Nhật Danh Mục
 @endsection
 
 @section('content')
+<input type="hidden" name="" id="url__selected" value="{{ $url }}">
+<input type="hidden" name="" id="array__selected--blog" value="{{ $selected_js_blog }}">
+<input type="hidden" name="" id="url__handle--related" value="{{ route('handle_related_all') }}">
+<input type="hidden" name="" id="product_id" value="{{ $id }}">
 <div id="cat__add--product">
     <div class="row mx-0">
         <div class="col-12 mt-4 p-0">
@@ -50,8 +54,8 @@ Cập Nhật Danh Mục
                         </div>
                         <div class="form-group mb-5">
                             <label for="">Title</label>
-                            <input type="text" class="form-control" name="title" id=""
-                                placeholder="Title Danh Mục" value="{{ $cat->title }}">
+                            <input type="text" class="form-control" name="title" id="" placeholder="Title Danh Mục"
+                                value="{{ $cat->title }}">
                             @error('title')
                             <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
                                 {{ $message }}
@@ -184,6 +188,111 @@ Cập Nhật Danh Mục
                             </div>
                             @enderror
                         </div>
+                        {{-- end galley banner --}}
+                        <div class="form-group mb-5">
+                            <label for="">Danh mục Skin đi kèm</label>
+                            <select class="custom-select" name="bundled_skin" id="bundled_skin">
+                                @if ($bundled_skin)
+                                <option value="{{ $bundled_skin->skin_cat_id }}">{{ App\Models\Category::where('id', '='
+                                    , $bundled_skin->skin_cat_id)->first()->name }}</option>
+                                <option value="">Trống</option>
+                                @foreach (category_child(App\Models\Category::all() , 0) as $category )
+                                @if ($category->id != $bundled_skin->skin_cat_id)
+                                <option value="{{ $category->id }}">{{ str_repeat("--", $category->level) }}{{
+                                    $category->name }}</option>
+                                @endif
+                                @endforeach
+                                @else
+                                <option value="">Chọn Danh Mục Skin Đi Kèm</option>
+                                @foreach (category_child(App\Models\Category::all() , 0) as $category )
+                                <option value="{{ $category->id }}">{{ str_repeat("--", $category->level) }}{{
+                                    $category->name }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        {{-- chỉnh sửa sản phẩm đi kèm --}}
+
+                        <div class="col-12 mt-4 p-0">
+                            <div class="w-100">
+                                <div class="card">
+                                    <div class="card-header text-center">
+                                        Chỉnh sửa Phụ Kiện Mua Kèm
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="selected" class="mb-4">
+                                            <h1 class="mb-3" style="font-size: 20px">Danh Sách Phụ Kiện Đã Chọn</h1>
+                                            @if (count($array_products) > 0 )
+                                            @foreach ($array_products as $item )
+                                            @php
+                                            $product = App\Models\Products::where('id', $item)->first();
+                                            @endphp
+                                            <x-admin.product.checkbox :product="$product" class="select__product"
+                                                name="products" prefix="product" :array="$array_products" />
+                                            @endforeach
+                                            @else
+
+                                            <span>Chưa có sản phẩm nào được chọn</span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group mb-5">
+                                            <label for="">Tìm Phụ Kiện</label>
+                                            <input type="text" class="form-control" name="related_products"
+                                                id="search__name" placeholder="Nhập tên sản phẩm">
+                                            <div id="result" class="mt-4">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- bài viết đi kèm --}}
+
+                        <div class="col-12 mt-4 p-0">
+                            <div class="w-100">
+                                <div class="card">
+                                    <div class="card-header text-center">
+                                        Chỉnh sửa bài viết liên quan
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="selected_blog" class="mb-4">
+                                            <h1 class="mb-3" style="font-size: 20px">Danh Sách Bài Viết Đã Chọn</h1>
+                                            @if (count($array_blogs) > 0 )
+                                            @foreach ($array_blogs as $item_2)
+                                            @php
+                                            $blog = App\Models\Blogs::where('id', '=' , $item_2)->first();
+                                            @endphp
+                                            <x-admin.blogs.checkbox :blog="$blog" class="select__blog" name="blogs"
+                                                prefix="blog" :array="$array_blogs" />
+                                            @endforeach
+                                            @else
+                                            <span>Chưa có bài viết nào được chọn</span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group mb-5">
+                                            <label for="">Tìm Bài Viết</label>
+                                            <input type="text" class="form-control" name="" id="search__name--blog"
+                                                placeholder="Nhập tên bài viết">
+                                            <div id="result_blog" class="mt-4"></div>
+                                            @error('blogs')
+                                            <div class="alert alert-danger mt-4 alert-dismissible fade show"
+                                                role="alert">
+                                                {{ $message }}
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                         <div class="form-group mb-5">
                             <input type="submit" value="Cập Nhật Danh Mục" class="btn w-100 text-center navi_btn">
                         </div>

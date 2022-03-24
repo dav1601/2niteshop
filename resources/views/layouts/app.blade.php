@@ -126,8 +126,7 @@ $name = Route::currentRouteName();
         <x-Footer />
     </div>
     <input type="hidden" name="" value="{{ $name }}" id="nameRoute">
-    <input type="hidden" name="" id="cookie_view"
-        value="@if(Cookie::has('view')){{ Cookie::get('view') }}@else grid @endif">
+    <input type="hidden" name="" id="cookie_view" value="{{ Cookie::has('view') ? Cookie::get('view'): grid  }}">
     <x-modal.Product />
     <x-modal.preorder />
     <x-Ajax />

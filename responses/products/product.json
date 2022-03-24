@@ -1,0 +1,197 @@
+{
+    "product": {
+      "id": 40,
+      "name": "PlayStation 5 / PS5 Standard Edition - VN [ CFI-1118A 01 ]",
+      "slug": "playstation-5-ps5-standard-edition-vn-cfi-1118a-01",
+      "des": "Về thiết kế PS5 sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, không vuông vức \"đậm chất Sony\" như PS4, hay Sony Xperia...bắt mắt với tông màu trắng chủ đạo kết hợp màu đen bên trong thân máy cùng đèn LED xanh dương mang lại cảm giác đây chính là thiết kế của tương lai. Vỏ ngoài PS5 ..",
+      "keywords": "sony, sony playstation, playstation 5, ps5, may choi game ps5",
+      "price": 20800000,
+      "historical_cost": 17500000,
+      "content": "<p>&nbsp;</p>\r\n<p><iframe style=\"box-sizing: border-box; max-width: 100%; border-width: initial; border-style: none; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://www.youtube.com/embed/xUJplfTW8XQ\" width=\"700\" height=\"394\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">VỀ THIẾT KẾ</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/index.php?route=product/search&amp;search=playstation%205&amp;category_id=668\">PS5</a>&nbsp;sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, kh&ocirc;ng vu&ocirc;ng vức \"đậm chất Sony\" như PS4, hay Sony Xperia...bắt mắt với t&ocirc;ng m&agrave;u trắng chủ đạo kết hợp m&agrave;u đen b&ecirc;n trong th&acirc;n m&aacute;y c&ugrave;ng đ&egrave;n LED xanh dương mang lại cảm gi&aacute;c đ&acirc;y ch&iacute;nh l&agrave; thiết kế của tương lai.",
+      "insurance": "7,8",
+      "policy": "9,18,21",
+      "model": "14720",
+      "video": "<iframe width=\"310\" height=\"200\" src=\"https://www.youtube.com/embed/z7xQitZX0uw\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>",
+      "banner": "admin/images/products/playstation-5/banner/len-doi-ps5-new-product-banner-630x239(4).jpg",
+      "banner_link": "thong-tin/len-doi-ps5-tiet-kiem-den-6-trieu",
+      "main_img": "admin/images/products/playstation-5/main/ps5-standard-vn-00-305x305.jpg",
+      "sub_img": "admin/images/products/playstation-5/sub/ps5-40-305x305.jpg",
+      "bg": null,
+      "type": "machine",
+      "sub_type": null,
+      "cat_id": 77,
+      "cat_name": "PlayStation 5",
+      "cat_2_id": 0,
+      "cat_2_sub": 0,
+      "sub_1_cat_id": 79,
+      "sub_1_cat_name": "Máy PS5",
+      "sub_2_cat_id": null,
+      "sub_2_cat_name": null,
+      "op_sub_1_id": null,
+      "op_sub_1_name": null,
+      "op_sub_2_id": null,
+      "op_sub_2_name": null,
+      "producer_id": 3,
+      "producer_slug": "sony-playstation-world",
+      "cat_game_id": null,
+      "option_color": null,
+      "option": null,
+      "stock": 1,
+      "new": 2,
+      "usage_stt": 1,
+      "num_orders": 0,
+      "highlight": 1,
+      "author": "2NITE",
+      "author_id": 1,
+      "created_at": "2021-11-24T10:37:49.000000Z",
+      "updated_at": "2022-03-22T18:27:56.000000Z"
+    },
+    "policies": {
+      "0": {
+        "id": 9,
+        "title": "THANH TOÁN & TRẢ GÓP",
+        "content": "<p>Miễn ph&iacute; thanh to&aacute;n thẻ ATM.<br />Thanh to&aacute;n thẻ Visa, Master +2%.<br />Trả G&oacute;p: Trả trước 10% + CMND + Hộ khẩu / Bằng l&aacute;i (<a href=\"https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop\" target=\"_blank\" rel=\"noopener\">Xem chi tiết</a>)<br />Trả G&oacute;p: D&ugrave;ng thẻ t&iacute;n dụng l&atilde;i suất 0% (<a href=\"https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop#2\" target=\"_blank\" rel=\"noopener\">Xem chi tiết</a>)</p>",
+        "icon": "<i class=\"fas fa-shield-alt\"></i>",
+        "position": 3,
+        "fullset": 0,
+        "created_at": "2021-10-23T12:44:18.000000Z",
+        "updated_at": "2021-10-23T12:44:18.000000Z"
+      },
+      "1": {
+        "id": 18,
+        "title": "BẢO HÀNH",
+        "content": "<p>Bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng</p>",
+        "icon": "<i class=\"fas fa-shield-alt\"></i>",
+        "position": 0,
+        "fullset": 0,
+        "created_at": "2021-10-28T10:22:28.000000Z",
+        "updated_at": "2021-10-28T10:22:28.000000Z"
+      },
+      "2": {
+        "id": 21,
+        "title": "GÓI BẢO HÀNH 7 NGÀY",
+        "content": "<p>&Aacute;p dụng b&aacute;n tại cửa h&agrave;ng hoặc giao h&agrave;ng t&iacute;nh ph&iacute;</p>",
+        "icon": "<i class=\"fas fa-exclamation-circle\"></i>",
+        "position": 0,
+        "fullset": 0,
+        "created_at": "2021-10-29T14:36:40.000000Z",
+        "updated_at": "2021-10-29T14:36:40.000000Z"
+      }
+    },
+    "fullset": 0,
+    "related_blog": [],
+    "banner": {
+      "id": 238,
+      "link": "admin/images/products/playstation-5/images_700x700/ps5-0-standard-vn-00-700x700.jpg",
+      "products_id": 40,
+      "size": 700,
+      "index": 1,
+      "created_at": "2021-11-24T10:37:49.000000Z",
+      "updated_at": "2021-11-24T10:37:49.000000Z"
+    },
+    "group": 1,
+    "related_product": [],
+    "related_cat_blog": [
+      {
+        "id": 14,
+        "posts": "4",
+        "product_id": null,
+        "cat_id": 79,
+        "for": "category",
+        "created_at": "2022-03-15T07:17:10.000000Z",
+        "updated_at": "2022-03-15T07:17:10.000000Z"
+      },
+      {
+        "id": 12,
+        "posts": "22",
+        "product_id": null,
+        "cat_id": 79,
+        "for": "category",
+        "created_at": "2022-03-15T07:17:10.000000Z",
+        "updated_at": "2022-03-15T07:17:10.000000Z"
+      },
+      {
+        "id": 11,
+        "posts": "21",
+        "product_id": null,
+        "cat_id": 79,
+        "for": "category",
+        "created_at": "2022-03-15T07:17:10.000000Z",
+        "updated_at": "2022-03-15T07:17:10.000000Z"
+      },
+      {
+        "id": 13,
+        "posts": "20",
+        "product_id": null,
+        "cat_id": 79,
+        "for": "category",
+        "created_at": "2022-03-15T07:17:10.000000Z",
+        "updated_at": "2022-03-15T07:17:10.000000Z"
+      }
+    ],
+    "bundled_skin": {
+      "id": 2,
+      "skin_cat_id": 86,
+      "cat_id": 79,
+      "created_at": "2022-03-15T06:49:28.000000Z",
+      "updated_at": "2022-03-15T07:17:10.000000Z"
+    },
+    "bundled_accessory": [
+      {
+        "id": 4,
+        "products_id": 30,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      },
+      {
+        "id": 5,
+        "products_id": 31,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      },
+      {
+        "id": 6,
+        "products_id": 32,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      },
+      {
+        "id": 7,
+        "products_id": 33,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      },
+      {
+        "id": 8,
+        "products_id": 34,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      },
+      {
+        "id": 9,
+        "products_id": 35,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      },
+      {
+        "id": 10,
+        "products_id": 45,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      },
+      {
+        "id": 11,
+        "products_id": 46,
+        "cat_id": 79,
+        "created_at": "2022-03-15T06:32:29.000000Z",
+        "updated_at": "2022-03-15T06:32:29.000000Z"
+      }
+    ]
+  }

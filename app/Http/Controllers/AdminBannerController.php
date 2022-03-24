@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banners;
 use App\Models\Slides;
+use App\Repositories\FileInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -39,7 +40,7 @@ class AdminBannerController extends Controller
     }
     ////////////////////////////////////////
 
-    public function banner_handle_add(Request $request)
+    public function banner_handle_add(Request $request , FileInterface $file)
     {
         $data = array();
         $validator = Validator::make(
@@ -72,21 +73,8 @@ class AdminBannerController extends Controller
                 $data['link'] = $request->link;
                 $data['index'] = $request->index;
                 $data['position'] = $request->position;
-                $main_img = $request->img;
-                $n_main = $main_img->getClientOriginalName();
-                if (file_exists("public/admin/images/banners/" . $n_main)) {
-                    $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                    $ext = $main_img->getClientOriginalExtension();
-                    $n_main = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/banners/" . $n_main)) {
-                        $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_main = "admin/images/banners/" . $n_main;
-                $main_img->move("public/admin/images/banners", $n_main);
-                $data['img'] = $save_main;
+                $path_img = "admin/images/banners/";
+                $data['img'] = $file->storeFileImg($request->img , $path_img);
                 Banners::create($data);
                 return redirect()->back()->with('ok', '1');
             }
@@ -94,7 +82,7 @@ class AdminBannerController extends Controller
     }
 
     ////////////////////////////////////////
-    public function banner_handle_edit($id, Request $request)
+    public function banner_handle_edit($id, Request $request , FileInterface $file)
     {
         $data = array();
         $validator = Validator::make(
@@ -116,25 +104,14 @@ class AdminBannerController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         } else {
+            $banner = Banners::where('id', '=' , $id)->first();
             $data['name'] = $request->name;
             $data['link'] = $request->link;
             if ($request->has('img')) {
-                unlink("public/" . Banners::where('id', '=', $id)->first()->img);
-                $main_img = $request->img;
-                $n_main = $main_img->getClientOriginalName();
-                if (file_exists("public/admin/images/banners/" . $n_main)) {
-                    $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                    $ext = $main_img->getClientOriginalExtension();
-                    $n_main = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/banners/" . $n_main)) {
-                        $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_main = "admin/images/banners/" . $n_main;
-                $main_img->move("public/admin/images/banners", $n_main);
-                $data['img'] = $save_main;
+                if ($banner->img != NULL)
+                unlink("public/" . $banner->img);
+                $path_img = "admin/images/banners/";
+                $data['img'] = $file->storeFileImg($request->img , $path_img);
             }
             Banners::where('id', '=', $id)->update($data);
             return redirect()->back()->with('ok', '1');
@@ -155,7 +132,7 @@ class AdminBannerController extends Controller
     ////////////////////////////////////////
     ////////////////////////////////////////
 
-    public function slide_handle_add(Request $request)
+    public function slide_handle_add(Request $request , FileInterface $file)
     {
         $data = array();
         $validator = Validator::make(
@@ -211,21 +188,8 @@ class AdminBannerController extends Controller
                 $data['index'] = $request->index;
                 $data['status'] = $request->stt;
                 $data['author_post'] = Auth::user()->name;
-                $main_img = $request->img;
-                $n_main = $main_img->getClientOriginalName();
-                if (file_exists("public/admin/images/slides/" . $n_main)) {
-                    $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                    $ext = $main_img->getClientOriginalExtension();
-                    $n_main = $filename . '(1)' . '.' . $ext;
-                    $i = 1;
-                    while (file_exists("public/admin/images/slides/" . $n_main)) {
-                        $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                        $i++;
-                    }
-                }
-                $save_main = "admin/images/slides/" . $n_main;
-                $main_img->move("public/admin/images/slides", $n_main);
-                $data['img'] = $save_main;
+                $path = "admin/images/slides/";
+                $data['img'] = $file->storeFileImg($request->img , $path);
             }
             // ///
             Slides::create($data);

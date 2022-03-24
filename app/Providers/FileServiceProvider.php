@@ -13,7 +13,7 @@ class FileServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(
+        $this->app->bind(
             \App\Repositories\FileInterface::class ,
             \App\Repositories\FileRepository::class
         );

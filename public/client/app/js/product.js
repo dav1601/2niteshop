@@ -127,6 +127,7 @@ $(function () {
         $(".see__full--btn i").addClass('fa-long-arrow-alt-down');
 
     });
+
     $('#nav-dtlContent').html(function (i, h) {
         return h.replace(/&nbsp;/g, '');
     });

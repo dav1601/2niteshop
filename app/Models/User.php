@@ -6,7 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\RefreshToken;
+use Laravel\Passport\Token;
 
 class User extends Authenticatable
 {
@@ -49,5 +51,11 @@ class User extends Authenticatable
     ];
     public function address(){
        return $this->hasMany('App\Models\Address')->orderBy('def' , 'DESC');
+    }
+    public function todos(){
+        return $this->hasMany('App\Models\Todos' , 'user_id');
+    }
+    public function orders(){
+        return $this->hasMany('App\Models\Orders' , 'users_id')->orderBy('id' , 'DESC');
     }
 }

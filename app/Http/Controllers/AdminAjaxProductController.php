@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blogs;
+use App\Models\bundled_accessory_cat;
 use App\Models\Category;
 use App\Models\CatGame;
 use App\Models\gllProducts;
@@ -10,6 +11,8 @@ use App\Models\Insurance;
 use App\Models\Policy;
 use App\Models\Producer;
 use App\Models\Products;
+use App\Models\RelatedPosts;
+use App\Models\RelatedProducts;
 use App\Models\typeProduct;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -79,8 +82,6 @@ class AdminAjaxProductController extends Controller
         $data['html'] = $output;
         return response()->json($data);
     }
-
-
     ////////////////////////////////////////
     public function handle_search(Request $request)
     {
@@ -525,7 +526,11 @@ class AdminAjaxProductController extends Controller
         if ($request->act == "keyup") {
             if ($request->type == "product") {
                 if ($request->kw != NULL) {
-                    $products = Products::where('name', 'LIKE', '%' . $request->kw . '%')->get();
+                    $kw = $request->kw;
+                    $products = Products::where(function($q) use ($kw) {
+                        $q -> where('name', 'LIKE', '%' . $kw . '%')
+                           -> orWhere('id' , $kw);
+                    })->get();
                     if (count($products) > 0) {
                         $array = $selected;
                         $class = "select__product";
@@ -592,4 +597,32 @@ class AdminAjaxProductController extends Controller
     //////////////////////////////////////
 
     // //////////// end delete gll edit product
+    //////////////////////////////////////
+
+    public function handle_related_delete(Request $request)
+    {
+        $data = array();
+        $pagination = '';
+        $output = '';
+        $data_create = array();
+        $data_update = array();
+        $error = array();
+        $id = $request->id;
+        $type = $request->type;
+        $product_id = $request->product_id;
+        if ($type == "prd") {
+            RelatedProducts::where('product_id', $request->product_id)->where('products_id', $id)->delete();
+            bundled_accessory_cat::where('products_id', $id)->where('cat_id', $product_id)->delete();
+        }
+        if ($type == "blog") {
+            RelatedPosts::where(function ($query) use ($product_id) {
+                $query->where('product_id', $product_id)
+                    ->orWhere('cat_id', $product_id);
+            })->where('posts', $id)->delete();
+        }
+        $data['html'] = $output;
+        return response()->json($data);
+    }
+
+    ////////////////////////////////////////
 }

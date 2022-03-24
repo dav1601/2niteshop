@@ -13,11 +13,14 @@ $route = Route::currentRouteName();
     <link rel="icon" href="{{ asset('admin/layout/navi.png') }}" type="image/jpg">
     <title> @yield('title', '2NITE SHOP')</title>
     <link rel="stylesheet" href="{{ asset('plugin/reset.css') }}">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('plugin/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -40,15 +43,14 @@ $route = Route::currentRouteName();
         integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @yield('import_js')
-    <script
-        src="{{ $file->ver('admin/app/js/tinymce.js') }}">
+    <script src="{{ $file->ver('admin/app/js/tinymce.js') }}">
     </script>
     <script src="{{ asset('admin/app/js/app.js')}}?ver=@php echo filemtime('public/admin/app/js/app.js') @endphp">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
@@ -161,20 +163,6 @@ $route = Route::currentRouteName();
                                                 class="{{ $route == 'cat'?'route_active':'' }} {{ $route == 'edit_cat'?'route_active':'' }}">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
                                                 <span>Danh Mục Sản Phẩm</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('prd_add_related_view') }}"
-                                                class="{{ $route == 'prd_add_related_view'?'route_active':''  }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thêm Sản Phẩm Liên Quan</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('bundled') }}"
-                                                class="{{ $route == 'bundled'?'route_active':'' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Bundled Danh Mục</span>
                                             </a>
                                         </li>
                                         <li class="item">
@@ -350,13 +338,13 @@ $route = Route::currentRouteName();
                                                 <span>Danh Mục Bài Viết</span>
                                             </a>
                                         </li>
-                                        <li class="item">
+                                        {{-- <li class="item">
                                             <a href="{{ route('add_related_view') }}"
                                                 class="{{ $route == 'add_related_view'?'route_active':''  }}">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
                                                 <span>Thêm Bài Viết Liên Quan</span>
                                             </a>
-                                        </li>
+                                        </li> --}}
 
                                     </ul>
                                 </div>

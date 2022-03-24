@@ -17,6 +17,7 @@ Danh Mục Sản Phẩm
 @endsection
 
 @section('content')
+<input type="hidden" name="" id="array__selected" value="{{ $selected }}">
 <input type="hidden" name="" id="url__selected" value="{{ $url }}">
 <input type="hidden" name="" id="array__selected--blog" value="{{ $selected_blog }}">
 <input type="hidden" name="" id="url__handle--related" value="{{ route('handle_related_all') }}">
@@ -178,7 +179,53 @@ Danh Mục Sản Phẩm
                             </div>
                             @enderror
                         </div>
-
+                        {{-- end galley banner --}}
+                        <div class="form-group mb-5">
+                            <label for="">Danh mục Skin đi kèm</label>
+                            <select class="custom-select" name="bundled_skin" id="bundled_skin">
+                                <option value="">Chọn Danh Mục Skin Đi Kèm</option>
+                                @foreach (category_child(App\Models\Category::all() , 0) as $category )
+                                <option value="{{ $category->id }}">{{ str_repeat("--", $category->level) }}{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        {{-- end danh muc skin --}}
+                        {{-- san pham mua kem --}}
+                        <div class="col-12 my-4 p-0">
+                            <div class="w-100">
+                                <div class="card">
+                                    <div class="card-header text-center">
+                                        Phụ kiện mua kèm
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="selected" class="mb-4">
+                                            <h1 class="mb-3" style="font-size: 20px">Danh Sách Phụ Kiện Đã Chọn</h1>
+                                            @if ($selected != "")
+                                            @foreach (explode("," , $selected) as $id )
+                                            @php
+                                            $product = App\Models\Products::where('id', '=' ,$id)->first();
+                                            $array = explode("," , $selected);
+                                            @endphp
+                                            <x-admin.product.checkbox :product="$product" class="select__product"
+                                                name="products" prefix="product" :array="$array" />
+                                            @endforeach
+                                            @else
+                                            <span>Chưa có phụ kiệnk nào được chọn</span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group mb-5">
+                                            <label for="">Tìm Phụ Kiện</label>
+                                            <input type="text" class="form-control" name="related_products"
+                                                id="search__name" placeholder="Nhập tên sản phẩm">
+                                            <div id="result" class="mt-4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- end san pham mua kem --}}
+                        {{-- bai viet lien quan --}}
                     <div class="col-12 my-4 p-0">
                         <div class="w-100">
                             <div class="card">

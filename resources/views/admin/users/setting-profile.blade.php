@@ -90,7 +90,7 @@ Chinh sách của shop
             <div class="w-100">
                 <div class="card">
                     <div class="card-header text-center">
-                        Private info
+                        Private Info
                     </div>
                     <div class="card-body" id="setting_profile">
                         <div class="row mx-0">
@@ -101,19 +101,34 @@ Chinh sách của shop
                                         value="{{ $user->email }}" id="" placeholder="">
                                 </div>
                             </div>
+
+                            @if ($daviUser->ApiExists())
+                            <div class="col-12">
+                                <div class="form-group mb-5">
+                                    <button type="button" class="btn btn-primary mr-3" data-toggle="modal"
+                                        data-target="#getSecurityCode">
+                                        Lấy Mã Bảo Vệ
+                                    </button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#getApiToken">
+                                        Lấy Token Và Truy Cập Api
+                                    </button>
+                                </div>
+                            </div>
+                            @endif
                             <div class="col-12">
                                 <div class="form-group mb-5">
                                     <label for="">Số điện thoại</label>
-                                    <input type="text" class="form-control" name="phone"
-                                        value="{{ $user->phone }}" id="" placeholder="">
-                                        @error('phone')
-                                        <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
-                                            {{ $message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        @enderror
+                                    <input type="text" class="form-control" name="phone" value="{{ $user->phone }}"
+                                        id="" placeholder="">
+                                    @error('phone')
+                                    <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
+                                        {{ $message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
@@ -181,7 +196,8 @@ Chinh sách của shop
                                         @else
                                         <option value="{{ $profile->d }}">{{ App\Models\District::where('id', '=' ,
                                             $profile->d)->first()->_name }}</option>
-                                        @foreach (App\Models\District::where('_province_id', '=', $profile->city)->get() as $dist )
+                                        @foreach (App\Models\District::where('_province_id', '=', $profile->city)->get()
+                                        as $dist )
                                         @if ($dist->id != $profile->d)
                                         <option value="{{ $dist->id }}">{{ $dist->_name }}</option>
                                         @endif
@@ -203,17 +219,18 @@ Chinh sách của shop
                                 <div class="form-group">
                                     <label for="">Phường/Xã</label>
                                     <select class="custom-select" name="ward" id="ward">
-                                            @if ($profile->city == NULL)
-                                            <option value="">Chưa Quận/Huyện</option>
-                                            @else
-                                            <option value="{{ $profile->w }}">{{ App\Models\Ward::where('id', '=' ,
-                                                $profile->w)->first()->_name }}</option>
-                                            @foreach (App\Models\Ward::where('_district_id', '=', $profile->d)->get() as $ward )
-                                            @if ($ward->id != $profile->w)
-                                            <option value="{{ $ward->id }}">{{ $ward->_name }}</option>
-                                            @endif
-                                            @endforeach
-                                            @endif
+                                        @if ($profile->city == NULL)
+                                        <option value="">Chưa Quận/Huyện</option>
+                                        @else
+                                        <option value="{{ $profile->w }}">{{ App\Models\Ward::where('id', '=' ,
+                                            $profile->w)->first()->_name }}</option>
+                                        @foreach (App\Models\Ward::where('_district_id', '=', $profile->d)->get() as
+                                        $ward )
+                                        @if ($ward->id != $profile->w)
+                                        <option value="{{ $ward->id }}">{{ $ward->_name }}</option>
+                                        @endif
+                                        @endforeach
+                                        @endif
                                     </select>
                                     @error('ward')
                                     <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
@@ -294,3 +311,55 @@ Chinh sách của shop
     </div>
 </div>
 @endsection
+@if ($daviUser->ApiExists())
+<!-- Modal -->
+<div class="modal fade" id="getSecurityCode" tabindex="-1" aria-labelledby="getSecurityCodeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #222e3c !important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="getSecurityCodeLabel">Lấy Mã Bảo Vệ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-5">
+                    <label for="emailSec">Email</label>
+                    <input type="text" name="" id="emailSec" class="form-control">
+                </div>
+                <div class="form-group mb-5">
+                    <label for="emailS">Passowrd</label>
+                    <input type="password" name="" id="passSec" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="getSeCode" class="btn btn-primary">Lấy Mã Bảo Vệ</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- -------- --}}
+<div class="modal fade" id="getApiToken" tabindex="-1" aria-labelledby="getApiTokenLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #222e3c !important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="getApiTokenLabel">Lấy Token Và Truy Cập Api</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-5">
+                    <label for="security_code">SECURITY CODE</label>
+                    <input type="password" name="" id="secode" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="getApiTokenBtn" class="btn btn-primary">Lấy Token Và Truy Cập Api</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif

@@ -35,10 +35,12 @@ $bg = asset(getVal('background')->value);
         padding-left: 0;
         padding-right: 0;
     }
+
     .show__home {
         padding-left: 10px;
         padding-right: 10px;
     }
+
     .show__home--box:last-child {
         margin-bottom: 0 !important;
         padding-bottom: 100px;

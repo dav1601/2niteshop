@@ -55,7 +55,7 @@ class RegisterController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'phone' => ['required', 'string', 'min:6', 'unique:users'],
+                'phone' => ['required', 'string', 'numeric' , 'min:6', 'unique:users'],
 
             ],
             [
@@ -64,7 +64,7 @@ class RegisterController extends Controller
                 'name.max' => "Độ dài tối đa 255 ký tự",
                 'email.required' => "Không được để trống email",
                 'email.string' => "Email phải là 1 chuỗi kí tự",
-                'email.string' => "Độ dài email tối đa 255 ký tự",
+                'email.max' => "Độ dài email tối đa 255 ký tự",
                 'email.unique' => "Email đã tồn tại",
                 'password.confirmed' => "Mật khẩu xác nhận không khớp",
                 'password.min' => "Ít nhất 8 ký tự",

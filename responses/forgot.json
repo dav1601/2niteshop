@@ -1,0 +1,8 @@
+{
+    "check": true,
+    "send_code": true,
+    "code": 160101,
+    "phone": "0858467890",
+    "message": "Gửi mã OTP thành công",
+    "phone_format": "+84858467890"
+  }

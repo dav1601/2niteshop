@@ -44,7 +44,6 @@ class Products extends Model
         'producer_id',
         'producer_slug',
         'cat_game_id',
-        'option',
         'stock',
         'new',
         'usage_stt',
@@ -56,5 +55,11 @@ class Products extends Model
     public function gll()
     {
         return $this->hasMany('App\Models\gllProducts')->orderBy('index', 'ASC');
+    }
+    public function related_products(){
+        return $this->hasMany('App\Models\RelatedProducts' , 'product_id');
+    }
+    public function related_blogs(){
+        return $this->hasMany('App\Models\RelatedPosts' , 'product_id')->orderBy('posts', 'DESC');
     }
 }

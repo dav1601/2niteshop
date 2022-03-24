@@ -10,7 +10,7 @@ class RelatedProducts extends Model
     use HasFactory;
     protected $table = 'related_products';
     protected $fillable = [
-        'products',
+        'products_id',
         'product_id',
         'blog_id',
         'for',

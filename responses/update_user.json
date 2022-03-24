@@ -1,0 +1,18 @@
+{
+    "success": 1,
+    "updated_fail": false,
+    "user": {
+        "id": 1,
+        "role_id": 1,
+        "name": "2NITEAPI",
+        "email": "2nitetestapi@gmail.com",
+        "phone": "0811122260",
+        "email_verified_at": null,
+        "avatar": "admin/images/avatar/245119900_260411806011768_6267318235776841110_n.jpg",
+        "provider_id": null,
+        "provider": null,
+        "ban": 0,
+        "created_at": "2022-02-19T08:06:28.000000Z",
+        "updated_at": "2022-03-22T11:39:20.000000Z"
+    }
+}

@@ -60,4 +60,13 @@ class Category extends Model
     {
         return $this->parent_id !== 0;
     }
+    public function related_blogs(){
+        return $this->hasMany('App\Models\RelatedPosts' , 'cat_id')->orderBy('posts', 'DESC');
+    }
+    public function bundled_skin(){
+        return $this->hasOne('App\Models\bundled_skin_cat' , 'cat_id');
+    }
+    public function bundled_accessory(){
+        return $this->hasMany('App\Models\bundled_accessory_cat' , 'cat_id');
+    }
 }

@@ -2,7 +2,9 @@
 
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 
 
 /*
@@ -18,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('contact', 'HomeController@contact')->name('contact');
+ Route::get('update_api', 'HomeController@api');
+Route::get('test/template' , function(){
+return view('admin.api.mail.send_security_code');
+});
 Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
 Auth::routes();
 Route::get('products/{slug}', 'ClientProductsController@detail_product')->name('detail_product');
@@ -25,12 +31,13 @@ Route::get('pages/{slug}', 'ClientPageController@index')->name('detail_page');
 Route::get('producer/{slug}', 'ClientProductsController@producer')->name('producer');
 Route::get('category/{slug}/{filter?}', 'ClientProductsController@index')->name('index_product')->where(['filter' => '.*']);
 Route::get('tin-tuc/{cat?}/{detail?}', 'ClientBlogController@index')->name('blog');
-Route::get('search' ,'HomeController@search_main')->name('search_main');
-Route::post('search_main' ,'HomeController@search_main_ajax')->name('search_main_ajax');
-Route::post('pre-order' ,'HomeController@pre_order')->name('pre_order');
+Route::get('search', 'HomeController@search_main')->name('search_main');
+Route::post('search_main', 'HomeController@search_main_ajax')->name('search_main_ajax');
+Route::post('pre-order', 'HomeController@pre_order')->name('pre_order');
 Route::prefix('ajax/')->group(function () {
-   Route::post('load__chart' , 'AdminAjaxDashBoardController@load__chart')->name('load__chart');
+    Route::post('load__chart', 'AdminAjaxDashBoardController@load__chart')->name('load__chart');
 });
+
 Route::get('minify', 'HomeController@minify')->name('minify');
 Route::middleware(['auth'])->group(function () {
     Route::prefix('user/')->group(function () {
@@ -77,12 +84,18 @@ Route::prefix('login/social/')->group(function () {
     Route::get('github', 'Auth\LoginController@redirectToGit')->name('login_git');
     Route::get('github/callback', 'Auth\LoginController@handleGitCallback')->name('handle_login_git');
 });
-
+Route::prefix('auth/api/') -> group(function(){
+    Route::get('confirmation' , 'AdminUserController@identity_confirmation')->name('identity_confirmation');
+    Route::post('confirmation', 'AdminUserController@handle_identity_confirmation')->name('handle_identity_confirmation');
+});
 Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::prefix('admin/')->group(function () {
         Route::get('fullcalender', 'FullCalenderController@index')->name('fullcalender');
         Route::post('fullcalenderAjax', 'FullCalenderController@ajax')->name('fullcalender_ajax');
-
+        Route::prefix('auth/api/') -> group(function(){
+            Route::post('get/security_code' , 'AdminUserController@get_security_code')->name('get_security_code');
+            Route::post('get/api_token' , 'AdminUserController@get_api_token')->name('get_api_token');
+        });
         Route::get('dashboard', 'AdminDashBoardController@index')->name('dashboard');
         Route::prefix('dashboard/')->group(function () {
             Route::get('config_home', 'AdminDashBoardController@add_cofhome_view')->name('add_cofhome_view');
@@ -118,12 +131,12 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::get('show', 'AdminOrderController@index')->name('show_orders');
             Route::get('customers', 'AdminOrderController@customers')->name('customers');
             Route::get('detail/{id}', 'AdminOrderController@detail')->name('detail_order')->where('id', '^[0-9]+$');
-            Route::prefix('pre_orders/')->group(function(){
-                Route::get('show_preOrders' , 'AdminOrderController@show_preOrders')->name('show_preOrders');
-                Route::get('update_preOrders/{id}' , 'AdminOrderController@update_preOrders')->name('update_preOrders')->where('id', '^[0-9]+$');
+            Route::prefix('pre_orders/')->group(function () {
+                Route::get('show_preOrders', 'AdminOrderController@show_preOrders')->name('show_preOrders');
+                Route::get('update_preOrders/{id}', 'AdminOrderController@update_preOrders')->name('update_preOrders')->where('id', '^[0-9]+$');
                 Route::post('ajax_preOrders', 'AdminOrderController@ajax_preOrders')->name('ajax_preOrders');
                 Route::post('handle_update/{id}', 'AdminOrderController@handle_update')->name('handle_update')->where('id', '^[0-9]+$');
-               });
+            });
         });
         Route::prefix('ajax/')->group(function () {
             Route::post('todos', 'AdminAjaxDashBoardController@todos')->name('todos');
@@ -145,7 +158,6 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::prefix('slide/')->group(function () {
                 Route::post('handle_update', 'AdminBannerController@handle_update')->name('handle_update_slide');
             });
-
         });
         // /////////////////////////////////////////
         Route::prefix('product/')->group(function () {
@@ -155,9 +167,6 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
                 Route::get('edit/{id}', 'AdminCategoryController@edit')->name('edit_cat')->where('id', '^[0-9]+$');
                 Route::post('edit', 'AdminCategoryController@handle_edit')->name('handle_edit_cat');
                 Route::get('delete/{id}', 'AdminCategoryController@handle_delete')->name('handle_delete_cat')->where('id', '^[0-9]+$');
-                Route::get('bundled', 'AdminCategoryController@bundled')->name('bundled');
-                Route::post('bundled', 'AdminCategoryController@handle_add_bundled')->name('handle_add_bundled');
-                Route::get('bundled/delete/{id}', 'AdminCategoryController@handle_delete_bundled')->name('handle_delete_bundled');
                 // ////////////////////////////////////
                 Route::get('prdcer', 'AdminCategoryController@prdcer')->name('prdcer');
                 Route::post('prdcer', 'AdminCategoryController@handle_add_prdcer')->name('handle_add_prdcer');
@@ -193,6 +202,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
                 Route::post('prd_handle_related', 'AdminAjaxProductController@handle_related_product')->name('prd_handle_related');
                 Route::post('prd_handle_related_for', 'AdminAjaxProductController@handle_related_prd_for')->name('prd_handle_related_for');
                 Route::post('handle_related_all', 'AdminAjaxProductController@handle_related_all')->name('handle_related_all');
+                Route::post('handle_related_delete', 'AdminAjaxProductController@handle_related_delete')->name('handle_related_delete');
             });
 
             // end prefix product

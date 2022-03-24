@@ -2,9 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Api\ApiAdmin;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class superAdmin
 {
@@ -17,9 +20,8 @@ class superAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
-            return redirect()->route('dashboard');
-        }
+        if (Gate::allows('admin-action'))
         return $next($request);
+        return abort(403);
     }
 }

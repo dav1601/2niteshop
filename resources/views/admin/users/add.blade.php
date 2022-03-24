@@ -11,7 +11,7 @@
 @endsection
 
 @section('name')
-Chinh sách của shop
+Thêm User
 @endsection
 
 @section('content')
