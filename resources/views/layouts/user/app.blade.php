@@ -94,7 +94,7 @@ $name = Route::currentRouteName();
     <x-mobile.menu />
     <x-mobile.cart.wp />
     <div id="loading">
-        <img src="{{ $file->ver_img('client/images/loading.gif') }}" alt="Loading........." width="60">
+        <img src="{{ $file->ver_img('admin/images/layout/loading-unscreen.gif') }}" alt="Loading........." width="200">
     </div>
     @if (Gate::allows('group-admin'))
     <x-admin.navbar />

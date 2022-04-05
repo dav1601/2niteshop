@@ -22,7 +22,7 @@ endpoints:
         status: 200
         content: |-
           {
-          logout => true
+          is_logout => true
           }
         headers: []
         description: '200'
@@ -45,7 +45,7 @@ endpoints:
         name: id
         description: 'The ID of the me.'
         required: true
-        example: eveniet
+        example: quia
         type: string
         custom: []
     queryParameters: []
@@ -91,7 +91,7 @@ endpoints:
         name: id
         description: 'The ID of the update.'
         required: true
-        example: beatae
+        example: quia
         type: string
         custom: []
     queryParameters: []
@@ -160,7 +160,7 @@ endpoints:
         name: id
         description: 'The ID of the order.'
         required: true
-        example: et
+        example: sed
         type: string
         custom: []
     queryParameters: []

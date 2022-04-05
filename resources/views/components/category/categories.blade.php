@@ -2,7 +2,6 @@
 <li class="nite__menu--item">
     <div class="d-flex align-items-center justify-content-between wp__iconName">
         <a href="{{ route('index_product' , ['slug'=>$category->slug]) }}">
-
             <div class="icon-name">
                 @if ($category->icon != NULL)
                 <img src="{{ $file->ver_img($category->icon) }}" width="25" height="25" alt="">

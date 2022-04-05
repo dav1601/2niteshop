@@ -22,70 +22,70 @@ endpoints:
         name: title
         description: 'Tiêu đề bài viết'
         required: false
-        example: reprehenderit
+        example: voluptatibus
         type: varchar(255)
         custom: []
       slug:
         name: slug
         description: 'Slug bài viết'
         required: false
-        example: eveniet
+        example: qui
         type: longtext
         custom: []
       desc:
         name: desc
         description: 'Mô tả ngắn bài viết'
         required: false
-        example: dignissimos
+        example: voluptas
         type: longtext
         custom: []
       img:
         name: img
         description: 'Path hình ảnh bài viết'
         required: false
-        example: iure
+        example: aliquid
         type: varchar
         custom: []
       cat_id:
         name: cat_id
         description: 'Danh mục chính bài viết'
         required: false
-        example: consequatur
+        example: voluptas
         type: bigint
         custom: []
       cat_sub_id:
         name: cat_sub_id
         description: 'Danh mục phụ bài viết'
         required: false
-        example: odit
+        example: nihil
         type: bigint
         custom: []
       users_id:
         name: users_id
         description: 'Id tác giả'
         required: false
-        example: repellat
+        example: ullam
         type: bigint
         custom: []
       views:
         name: views
         description: 'Lượt xem bài viết'
         required: false
-        example: odit
+        example: aliquid
         type: bigint
         custom: []
       author:
         name: author
         description: 'Tên tác giả'
         required: false
-        example: quas
+        example: quo
         type: varchar
         custom: []
       active:
         name: active
         description: 'Trạng thái bài viết (1: được đăng , 2: đã gỡ)'
         required: false
-        example: 15
+        example: 5
         type: integer
         custom: []
     responses:
@@ -112,7 +112,7 @@ endpoints:
         name: id
         description: 'The ID of the blog.'
         required: true
-        example: sit
+        example: corporis
         type: string
         custom: []
     queryParameters:
@@ -120,7 +120,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
     bodyParameters: []
@@ -199,7 +199,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
       kw:
@@ -228,7 +228,7 @@ endpoints:
         name: kw
         description: ''
         required: true
-        example: alias
+        example: velit
         type: string
         custom: []
     responses:
@@ -280,7 +280,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
       category:

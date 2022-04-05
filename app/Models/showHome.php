@@ -28,5 +28,6 @@ class showHome extends Model
         'color',
         'access_tab',
         'position',
+        'active'
     ];
 }

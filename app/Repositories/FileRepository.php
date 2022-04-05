@@ -7,19 +7,24 @@ use App\Models\Insurance;
 use Illuminate\Support\Carbon;
 use App\Repositories\FileInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use App\Repositories\DavjCartInterface;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class FileRepository implements FileInterface
 {
-    public function import_css($file = "", $forder = "app/")
+    public function __construct()
     {
-        $link = asset('client/' . $forder . 'css/' . $file) . '?ver=' . filemtime('public/client/' . $forder . 'css/' . $file);
+        $this->forder = config('2nitefile.forder');
+    }
+    public function import_css($file = "")
+    {
+        $link = asset('client/' . $this->forder . '/' . 'css/' . $file) . '?ver=' . filemtime('public/client/' . $this->forder . '/' . 'css/' . $file);
         return $link;
     }
-    public function import_js($file = "", $forder = "app/")
+    public function import_js($file = "")
     {
-        $link = asset('client/' . $forder . 'js/' . $file) . '?ver=' . filemtime('public/client/' . $forder . 'js/' . $file);
+        $link = asset('client/' . $this->forder . '/' . 'js/' . $file) . '?ver=' . filemtime('public/client/' . $this->forder . '/' . 'js/' . $file);
         return $link;
     }
     public function ver($link = "")

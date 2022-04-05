@@ -45,7 +45,7 @@ class ProductCategoriesController extends Controller
      * List all Game Genre.
      * Lấy danh sách danh mục game của sản phẩm.
      * @group Product Categories
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/products/categories_game.json
      * */
     public function categories_game()
@@ -57,7 +57,7 @@ class ProductCategoriesController extends Controller
      * List all Producer.
      * Lấy danh sách nhà sản xuất.
      * @group Product Categories
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/products/producer.json
      * */
     public function categories_producer()

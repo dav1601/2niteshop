@@ -83,10 +83,7 @@ class ClientUserController extends Controller
         $kw = $request->kw;
         $orders_all = new Orders();
         if ($kw != null) {
-            $orders_all = $orders_all->where(function ($q) use ($kw) {
-                $q->where('id', '=', $kw)
-                    ->orWhere('cart', 'LIKE', '%' . $kw . '%');
-            });
+            $orders_all = $orders_all->where('id', '=', $kw);
         }
         $orders_all = $orders_all->orderBy('id', 'DESC')->where('users_id', '=', Auth::id())->get();
         if (count($orders_all) > 0) {

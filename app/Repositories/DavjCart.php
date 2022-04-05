@@ -10,22 +10,22 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DavjCart implements DavjCartInterface
 {
-    public function add__cart($id, $sub_total = 0, $qty = 1, $ins = 0, $color = 0)
+    public function add__cart($id, $qty = 1, $ins = 0, $color = 0)
     {
-        $product = Products::where('id', '=', $id)->first();
+        $product = Products::where('id', '=', $id)->firstOrFail();
+        if ($ins != 0) {
+            $price_ins = Insurance::where('id',  $ins)->first()->price;
+        } else {
+            $price_ins = 0;
+        }
+        $sub_total = ($qty * $product->price) + $price_ins;
         $check =  Cart::instance('shopping')->search(function ($cartItem, $rowId) use ($id) {
             return $cartItem->id == $id;
         });
         if (count($check) > 0) {
             foreach ($check as $item) {
                 $qty_update = ($item->qty + $qty);
-                if ($item->options->ins != 0) {
-                    $pi = Insurance::where('id', '=', $item->options->ins)->first()->price;
-                } else {
-                    $pi = 0;
-                }
-                $sub_total = ($qty_update * $item->price) + $pi;
-                $this->update__cart($id, $item->rowId, $sub_total, $qty_update, $ins, 0);
+                $this->update__cart($id, $item->rowId,  $qty_update, $ins, 0);
             }
         } else {
             Cart::instance('shopping')->add(
@@ -47,9 +47,15 @@ class DavjCart implements DavjCartInterface
         }
     }
     //
-    public function update__cart($id, $rowId, $sub_total = 0, $qty = 1, $ins = 0, $color = 0)
+    public function update__cart($id, $rowId,  $qty = 1, $ins = 0, $color = 0)
     {
         $product = Products::where('id', '=', $id)->first();
+        if ($ins != 0) {
+            $p_ins = Insurance::where('id', '=', $ins)->first()->price;
+        } else {
+            $p_ins = 0;
+        }
+        $sub_total = ($qty * $product->price) + $p_ins;
         return Cart::instance('shopping')->update($rowId, [
             'id' => $product->id,
             'name' => $product->name,
@@ -81,5 +87,15 @@ class DavjCart implements DavjCartInterface
             Cart::instance('shopping')->store(Auth::id());
         }
         return;
+    }
+    // ////////////////////
+    public function get_rowID_by_id_product($id)
+    {
+        $product =  Cart::instance('shopping')->search(function ($cartItem, $rowId) use ($id) {
+            return $cartItem->id == $id;
+        });
+        if ($product)
+            return $product->first()->rowId;
+        return false;
     }
 }

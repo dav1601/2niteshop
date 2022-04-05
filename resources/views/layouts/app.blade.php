@@ -68,6 +68,10 @@ $name = Route::currentRouteName();
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     {{-- end script --}}
 </head>
+<div id="bg-loading"></div>
+<div id="loading">
+    <img src="{{ $file->ver_img('admin/images/layout/loading-unscreen.gif') }}" alt="Loading......." width="200">
+</div>
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -94,15 +98,11 @@ $name = Route::currentRouteName();
 
 <body>
     {{-- <div id="popup">
-
     </div> --}}
-    <div id="bg-loading"></div>
     <div id="bg-menu" class="d-none"></div>
     <x-mobile.menu />
     <x-mobile.cart.wp />
-    <div id="loading">
-        <img src="{{ $file->ver_img('client/images/loading.gif') }}" alt="Loading......." width="60">
-    </div>
+
     @if (Gate::allows('group-admin'))
     <x-admin.navbar />
     @endif
@@ -126,7 +126,7 @@ $name = Route::currentRouteName();
         <x-Footer />
     </div>
     <input type="hidden" name="" value="{{ $name }}" id="nameRoute">
-    <input type="hidden" name="" id="cookie_view" value="{{ Cookie::has('view') ? Cookie::get('view'): grid  }}">
+    <input type="hidden" name="" id="cookie_view" value="{{ Cookie::has('view') ? Cookie::get('view'): " grid" }}">
     <x-modal.Product />
     <x-modal.preorder />
     <x-Ajax />

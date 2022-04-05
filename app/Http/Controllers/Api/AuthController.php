@@ -102,7 +102,7 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'login' => false,
+                'is_login' => false,
                 'message' => $validator->errors()->first(),
                 'errors' => $validator->errors(),
             ]);
@@ -115,7 +115,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials, $remember_me)) {
             return response()->json([
-                'login' => false,
+                'is_login' => false,
                 'message' => 'Sai tài khoản hoặc mật khẩu'
             ], 401);
         }
@@ -129,6 +129,7 @@ class AuthController extends Controller
         }
         $token->save();
         return response()->json([
+            'is_login' => true,
             'status' => 'success',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
@@ -147,7 +148,7 @@ class AuthController extends Controller
      * @header Authorization Bearer {token}
      * @authenticated
      * @response{
-     * logout => true
+     * is_logout => true
      * }
      */
     public function logout()
@@ -155,7 +156,7 @@ class AuthController extends Controller
         $user = Auth::user()->token();
         $user->revoke();
         return response()->json([
-            'logout' => true,
+            'is_logout' => true,
         ]);
     }
     /**
@@ -242,7 +243,7 @@ class AuthController extends Controller
     public function me_orders($id, Request $request)
     {
         $orders = User::findOrFail($id)->orders()->get();
-        foreach ($orders as $item){
+        foreach ($orders as $item) {
             $item->cart = unserialize($item->cart);
         }
         return $orders;

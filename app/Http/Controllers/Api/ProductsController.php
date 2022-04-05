@@ -67,7 +67,7 @@ class ProductsController extends Controller
      * List all products.
      * Lấy danh sách sản phẩm.
      * @group PRODUCTS API
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam category int Default: null For All Cate Example: 1
      * @queryParam genre string Default: null For All Genre Game Example: Action,Adventure
      * @queryParam sort string ASC/DESC Default: DESC Example: DESC
@@ -126,7 +126,7 @@ class ProductsController extends Controller
      * Retrieve a product.
      * API này cho phép bạn truy xuất và xem một sản phẩm cụ thể bằng ID
      * @group PRODUCTS API
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/products/product.json
      */
     public function retrieve_product($id, Request $request)
@@ -175,7 +175,7 @@ class ProductsController extends Controller
      * Search Products.
      * API này cho phép bạn tìm kiếm sản phẩm theo từ khoá.
      * @group PRODUCTS API
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam kw string required Example: DualSense - PS5 Wireless Game Controller Chính Hãng
      * @queryParam per_page int  Default: 10 Example: 10
      * @queryParam page int Default: all Example: 1

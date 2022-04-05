@@ -53,7 +53,6 @@ return [
     */
 
     'url' => env('APP_URL' , null),
-    // 'url' => env('APP_URL', 'https://nava.com'),
     'asset_url' => env('ASSET_URL', null),
 
     /*

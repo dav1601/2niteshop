@@ -20,287 +20,287 @@ endpoints:
         name: name
         description: 'Tên sản phẩm'
         required: false
-        example: veritatis
+        example: velit
         type: varchar(255)
         custom: []
       slug:
         name: slug
         description: 'Slug sản phẩm'
         required: false
-        example: nam
+        example: eveniet
         type: longtext
         custom: []
       des:
         name: des
         description: 'Mô tả ngắn sản phẩm'
         required: false
-        example: doloremque
+        example: unde
         type: longtext
         custom: []
       keywords:
         name: keywords
         description: 'Keywords SEO or Tag sản phẩm'
         required: false
-        example: repellendus
+        example: sed
         type: longtext
         custom: []
       price:
         name: price
         description: 'Giá bán của sản phẩm'
         required: false
-        example: natus
+        example: quos
         type: bigint
         custom: []
       historical_cost:
         name: historical_cost
         description: 'Giá gốc của sản phẩm'
         required: false
-        example: qui
+        example: amet
         type: bigint
         custom: []
       content:
         name: content
         description: 'Nội dung của sản phẩm'
         required: false
-        example: qui
+        example: molestias
         type: longtext
         custom: []
       info:
         name: info
         description: 'Thông tin của sản phẩm'
         required: false
-        example: est
+        example: quis
         type: longtext
         custom: []
       insurance:
         name: insurance
         description: 'Chính sách bảo hành,options đi kèm với của sản phẩm'
         required: false
-        example: non
+        example: dolorum
         type: longtext
         custom: []
       policy:
         name: policy
         description: 'Chính sách của cửa hàng'
         required: false
-        example: ullam
+        example: in
         type: longtext
         custom: []
       model:
         name: model
         description: 'Model của sản phẩm'
         required: false
-        example: officiis
+        example: cupiditate
         type: varchar
         custom: []
       video:
         name: video
         description: 'Mã nhúng utube của sản phẩm'
         required: false
-        example: totam
+        example: ea
         type: longtext
         custom: []
       banner:
         name: banner
         description: 'Banner đi kèm với sản phẩm'
         required: false
-        example: et
+        example: aut
         type: varchar
         custom: []
       banner_link:
         name: banner_link
         description: 'Link banner của sản phẩm'
         required: false
-        example: a
+        example: harum
         type: varchar
         custom: []
       main_img:
         name: main_img
         description: 'Hình ảnh chính của sản phẩm'
         required: false
-        example: eaque
+        example: eum
         type: varchar
         custom: []
       sub_img:
         name: sub_img
         description: 'Hình ảnh phụ của sản phẩm'
         required: false
-        example: et
+        example: dolores
         type: varchar
         custom: []
       bg:
         name: bg
         description: 'Hình ảnh background của sản phẩm'
         required: false
-        example: dolore
+        example: sit
         type: longtext
         custom: []
       type:
         name: type
         description: 'Kiểu sản phẩm'
         required: false
-        example: perspiciatis
+        example: vitae
         type: varchar
         custom: []
       sub_type:
         name: sub_type
         description: 'Kiểu phụ sản phẩm'
         required: false
-        example: assumenda
+        example: ipsa
         type: varchar
         custom: []
       cat_id:
         name: cat_id
         description: 'ID Danh mục chính sản phẩm'
         required: false
-        example: placeat
+        example: qui
         type: bigint
         custom: []
       cat_name:
         name: cat_name
         description: 'Tên danh mục chính'
         required: false
-        example: aut
+        example: soluta
         type: varchar
         custom: []
       sub_1_cat_id:
         name: sub_1_cat_id
         description: 'ID danh mục phụ 1 của danh mục chính'
         required: false
-        example: in
+        example: ea
         type: bigint
         custom: []
       sub_1_cat_name:
         name: sub_1_cat_name
         description: 'Tên danh mục phụ 1 của danh mục chính'
         required: false
-        example: fugit
+        example: optio
         type: varchar
         custom: []
       sub_2_cat_id:
         name: sub_2_cat_id
         description: 'ID danh mục phụ 2 của danh mục chính'
         required: false
-        example: autem
+        example: veniam
         type: bigint
         custom: []
       sub_2_cat_name:
         name: sub_2_cat_name
         description: 'Tên danh mục phụ 2 của danh mục chính'
         required: false
-        example: maxime
+        example: enim
         type: varchar
         custom: []
       cat_id_2:
         name: cat_id_2
         description: 'ID Danh mục chính 2 của sản phẩm'
         required: false
-        example: iste
+        example: dolore
         type: bigint
         custom: []
       op_sub_1_id:
         name: op_sub_1_id
         description: 'ID option 1 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: libero
+        example: itaque
         type: bigint
         custom: []
       op_sub_1_name:
         name: op_sub_1_name
         description: 'Tên option 1 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: et
+        example: iste
         type: varchar
         custom: []
       op_sub_2_id:
         name: op_sub_2_id
         description: 'ID option 2 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: qui
+        example: quis
         type: bigint
         custom: []
       op_sub_2_name:
         name: op_sub_2_name
         description: 'Tên option 2 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: qui
+        example: fuga
         type: varchar
         custom: []
       cat_2_sub:
         name: cat_2_sub
         description: 'ID Danh mục phụ 1 của danh mục chính 2 sản phẩm'
         required: false
-        example: quis
+        example: rerum
         type: bigint
         custom: []
       producer_id:
         name: producer_id
         description: 'ID nhà sản xuất sản phẩm'
         required: false
-        example: sapiente
+        example: excepturi
         type: bigint
         custom: []
       producer_slug:
         name: producer_slug
         description: 'Slug nhà sản xuất sản phẩm'
         required: false
-        example: voluptatem
+        example: sed
         type: varchar
         custom: []
       cat_game_id:
         name: cat_game_id
         description: 'thể loại game của sản phẩm'
         required: false
-        example: ipsa
+        example: qui
         type: ID
         custom: []
       stock:
         name: stock
         description: 'Tình trạng kho của sản phẩm (1: còn hàng , 2: hàng sắp về , 3:hết hàng)'
         required: false
-        example: 7
+        example: 5
         type: integer
         custom: []
       new:
         name: new
         description: 'Trạng thái mới của sản phẩm (1: mới đăng , 2: bình thường)'
         required: false
-        example: 19
+        example: 9
         type: integer
         custom: []
       usage_stt:
         name: usage_stt
         description: 'Trạng thái sử dụng sản phẩm (1: sản phẩm chưa qua sử dụng , 2: sản phẩm đã qua sử dụng)'
         required: false
-        example: 14
+        example: 17
         type: integer
         custom: []
       num_orders:
         name: num_orders
         description: 'Số lượt mua sản phẩm'
         required: false
-        example: quasi
+        example: aliquid
         type: bigint
         custom: []
       highlight:
         name: highlight
         description: 'Sản Phẩm nổi bật (1: sp bình thương , 2: sp hot)'
         required: false
-        example: 11
+        example: 20
         type: integer
         custom: []
       author_id:
         name: author_id
         description: 'Id người đăng sản phẩm'
         required: false
-        example: quis
+        example: consequatur
         type: bigint
         custom: []
       author_name:
         name: author_name
         description: 'Tên người đăng sản phẩm'
         required: false
-        example: odit
+        example: sit
         type: varchar
         custom: []
     responses:

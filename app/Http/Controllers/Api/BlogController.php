@@ -31,7 +31,7 @@ class BlogController extends Controller
      * List all blog.
      * Lấy danh sách bài viết.
      * @group Blog Api
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam category string Slug Danh Mục Example: tin-moi
      * @queryParam sort string ASC/DESC Default: DESC Example: DESC
      * @queryParam key_sort string Default: id Example: id
@@ -73,7 +73,7 @@ class BlogController extends Controller
      * Retrieve a blog.
      * API này cho phép bạn truy xuất và xem một bài viết cụ thể bằng ID
      * @group Blog Api
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/blogs/blog.json
      */
     public function retrieve_blog($id, Request $request)
@@ -96,7 +96,7 @@ class BlogController extends Controller
      * Search Blogs.
      * API này cho phép bạn tìm kiếm bài viết theo từ khoá.
      * @group Blog Api
-     * @queryParam token_api string required Example: 19aIotXmkjH
+     * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam kw string required Example: Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới
      * @queryParam per_page int  Default: 10 Example: 10
      * @queryParam page int Default: all Example: 1

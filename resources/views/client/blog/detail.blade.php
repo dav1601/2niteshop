@@ -22,6 +22,16 @@
 {{-- end section js --}}
 @section('margin') dtl__margin option_blog_detail @endsection
 @section('content')
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<!-- Your share button code -->
 <div id="breadCrumb">
     <div class="container">
         <ol class="b__crumb">
@@ -70,9 +80,12 @@
                     @if ($blog->cat_sub_id != NULL)
                     <a href="{{ $slug_2 }}">, {{
                         App\Models\CatBlog::where('id', '=' , $blog->cat_sub_id)->first()->name }}</a>
-
                     @endif
                 </span>
+                <span data-url="{{ url()->current() }}" class="d-block ml-3"><div class="fb-share-button"
+                    data-href="{{ url()->current() }}"
+                    data-layout="button_count">
+                    </div></span>
             </div>
         </div>
         <div class="blog__detail--content w-100">

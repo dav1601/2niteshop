@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Carbon;
 use App\Models\Ward;
 use App\Events\Order;
 use App\Models\Orders;
 use App\Models\District;
 use App\Models\PreOrder;
 use App\Models\Products;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Laravel\Ui\Presets\React;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\OrderInterface;
 use App\Repositories\CustomerInterface;
 use App\Repositories\MailOrderInterface;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Validator;
 
 class AdminOrderController extends Controller
@@ -81,8 +83,8 @@ class AdminOrderController extends Controller
                 }
                 Orders::where('id', '=', $id)->update(
                     [
-                        'status' => $request->val, 
-                        'paid' => 2, 
+                        'status' => $request->val,
+                        'paid' => 2,
                         'date_s' => Carbon::now('Asia/Ho_Chi_Minh'),
                     ]
                 );
@@ -361,8 +363,13 @@ class AdminOrderController extends Controller
     }
 
     ////////////////////////////////////////
-
-
+    public function export_invoice($id , Request $request)
+    {
+        $ordered = Orders::where('id', $id)->firstOrFail();
+        $cart = unserialize($ordered->cart);
+        $nameFilePdf = 'hoá đơn đơn hàng số ' . $id . ' của ' . $ordered->name . '.pdf';
+        return PDF::loadView('admin.orders.invoice', compact('ordered', 'cart'))->download($nameFilePdf);
+    }
 
 
 

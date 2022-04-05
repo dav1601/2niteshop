@@ -20,14 +20,14 @@ endpoints:
         name: name
         description: 'Tiêu đề danh mục'
         required: false
-        example: nam
+        example: aliquid
         type: varchar
         custom: []
       slug:
         name: slug
         description: 'Slug danh mục'
         required: false
-        example: dolorum
+        example: ipsa
         type: varchar
         custom: []
     responses:

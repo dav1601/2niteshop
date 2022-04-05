@@ -191,7 +191,8 @@ Thêm Sản Phẩm
                     <div class="form-group mb-5">
                         <div class="custom-file">
                             <input type="file" name="bg" class="custom-file-input" id="bg_product">
-                            <label class="custom-file-label" for="bg_product" id="forBg">Hình Ảnh Backgroud (Không có bỏ qua)</label>
+                            <label class="custom-file-label" for="bg_product" id="forBg">Hình Ảnh Backgroud (Không có bỏ
+                                qua)</label>
                         </div>
                         @error('bg')
                         <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
@@ -293,7 +294,9 @@ Thêm Sản Phẩm
                                 </div>
                                 @enderror
                             </div>
-                            {{-- end cat_1 --}}
+                            {{-- end cat_2 --}}
+
+                            {{-- end products categories --}}
                             <div class="col-4 pr-0">
                                 <label for="">Danh Mục Phụ 2</label>
                                 <select class="custom-select" name="cat_2" id="cat_2">
@@ -301,59 +304,38 @@ Thêm Sản Phẩm
                                 </select>
                             </div>
                             {{-- end cat_2 --}}
-                            <div class="col-6 mb-5 pl-0">
-                                <label for="">Op sub 1</label>
-                                <select class="custom-select" name="op_sub_1" id="op_sub_1">
-                                    <option value="0">Chưa Chọn Danh Mục Chính</option>
-                                </select>
-                                @error('op_sub_1')
-                                <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                            <div class="accordion col-6 pl-0" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header p-0" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button
+                                                class="btn btn-link btn-block navi_btn text-left d-flex justify-content-between align-items-center text-light"
+                                                type="button" data-toggle="collapse" data-target="#collapseOne"
+                                                aria-expanded="true" aria-controls="collapseOne" >
+                                                Danh Mục Khác
+                                                <i class="fa-solid fa-angles-down"></i>
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            @foreach (category_child(App\Models\Category::all() , 0) as $cate_other)
+                                            <div class="va-checkbox d-flex align-items-center w-100" style="margin-left: calc({{ $cate_other->level }} * 25px);">
+                                                <input type="checkbox" name="categories[]"
+                                                    value="{{ $cate_other -> id }}" id="category__{{ $cate_other->id}}"
+                                                    class="check_ins ">
+                                                <label for="category__{{ $cate_other -> id }}">
+                                                    {{ $cate_other -> name }}
+                                                </label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
-                                @enderror
                             </div>
-                            {{-- end cat_1 --}}
-                            <div class="col-6">
-                                <label for="">Op sub 2</label>
-                                <select class="custom-select" name="op_sub_2" id="op_sub_2">
-                                    <option value="0">Chưa Chọn Option sub 1</option>
-                                </select>
-                            </div>
-                            {{-- end cat_2 --}}
-                            <div class="col-4 pl-0">
-                                <label for="">Danh Mục Chính 2</label>
-                                <select class="custom-select" name="cat_2" id="cat_2">
-                                    <option value="0">Chọn Danh Mục Chính Gốc 2 </option>
-                                    @foreach ( $category as $cate )
-                                    <option value="{{ $cate->id }}">{{ $cate->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('cat_2')
-                                <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="col-4 pl-0">
-                                <label for="">Danh Mục Phụ 1 Của Danh Mục Chính 2</label>
-                                <select class="custom-select" name="cat_2_id" id="cat_2_id">
-                                    <option value="0">Chưa Chọn Danh Mục Gốc 2</option>
-                                </select>
-                                @error('cat_2_id')
-                                <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @enderror
-                            </div>
+                            {{-- end danh muc khac --}}
+
                         </div>
                     </div>
                     <div class="form-group mb-5">

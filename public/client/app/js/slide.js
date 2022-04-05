@@ -11,9 +11,6 @@ $(function () {
             gallery: true,
             item: 1,
             vertical: vertical,
-            // verticalHeight: function (el) {
-            //     el.getCurrentSlideCount() * 80
-            // },
             vThumbWidth: 80,
             vThumbHeight:80,
             thumbItem: 6,

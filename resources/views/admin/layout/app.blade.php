@@ -60,7 +60,7 @@ $route = Route::currentRouteName();
                 <div class="sidebar__head">
                     <div class="sidebar__head--logo d-flex align-items-center">
                         <img src="{{ asset('admin/layout/navi.png') }}" width="100px" class="rounded-circle" alt="">
-                        <span>NAVITeam</span>
+                        <span>2NITE SHOP</span>
                     </div>
                     <div class="sidebar__head--info d-flex align-items-center justify-content-center my-2">
                         @if (Auth::user() ->avatar != NULL)
@@ -99,7 +99,7 @@ $route = Route::currentRouteName();
                                             <a href="{{ route('dashboard') }}"
                                                 class="{{ $route == 'dashboard'?'route_active':'' }}">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Dashboard NAVI</span>
+                                                <span>Dashboard 2NITESHOP</span>
                                             </a>
                                         </li>
                                         <li class="item">

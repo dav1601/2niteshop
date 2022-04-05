@@ -10,6 +10,9 @@ use App\Models\Products;
 use App\Models\Insurance;
 use App\Models\gllProducts;
 use App\Models\PreOrder;
+use App\Models\ProductCategories;
+use App\Models\ProductIns;
+use App\Models\ProductPlc;
 use App\Models\RelatedPosts;
 use App\Models\typeProduct;
 use Illuminate\Support\Arr;
@@ -80,6 +83,16 @@ class AdminProductController extends Controller
         } else {
             $this->authorize('edit-product', $product);
         }
+        $product_policies = array();
+        $product_ins = array();
+        $link_policies = Products::find($id)->policies;
+        $link_ins = Products::find($id)->ins;
+        foreach ($link_policies as $lp) {
+            array_push($product_policies, $lp->plc_id);
+        }
+        foreach ($link_ins as $li) {
+            array_push($product_ins, $li->ins_id);
+        }
         $category = Category::where('parent_id', '=', 0)->get();
         $ins = Insurance::all();
         $policy = Policy::all();
@@ -90,6 +103,11 @@ class AdminProductController extends Controller
         $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
         $related = Products::find($id)->related_products()->get()->toArray();
         $related_blog = Products::find($id)->related_blogs()->get()->toArray();
+        $product_categories = Products::find($id)->categories()->select('category_id')->get()->toArray();
+        $array_pc = array();
+        foreach($product_categories as $pc) {
+            $array_pc[] = $pc['category_id'];
+        }
         if (count($related) > 0) {
             $selected = $related;
             foreach ($related as $item) {
@@ -111,7 +129,7 @@ class AdminProductController extends Controller
             $selected_js_blog = "";
         }
         $url = route('product_view_edit', ['id' => $id]);
-        return view('admin.products.edit', compact('id', 'category', 'ins', 'policy', 'producer', 'cat_game', 'type', 'cat_s2', 'product', 'sub_type', 'selected', 'selected_blog', 'url', 'selected_js_product', 'selected_js_blog', 'array_products', 'array_blogs'));
+        return view('admin.products.edit', compact('id', 'category', 'ins', 'policy', 'producer', 'cat_game', 'type', 'cat_s2', 'product', 'sub_type', 'selected', 'selected_blog', 'url', 'selected_js_product', 'selected_js_blog', 'array_products', 'array_blogs', 'product_policies', 'product_ins' ,'array_pc'));
     }
     // //////////////////////////////////////// end view edit
     public function product_handle_add(Request $request)
@@ -185,17 +203,6 @@ class AdminProductController extends Controller
             if ($request->cat_1 != null) {
                 $data_create['sub_1_cat_id'] = $request->cat_1;
                 $data_create['sub_1_cat_name'] = Category::where('id', '=', $request->cat_1)->first()->name;
-            } else {
-                $data_create['sub_1_cat_id'] = $request->cat;
-                $data_create['sub_1_cat_name'] = Category::where('id', '=', $request->cat)->first()->name;
-            }
-            if ($request->op_sub_1 != "") {
-                $data_create['op_sub_1_id'] = $request->op_sub_1;
-                $data_create['op_sub_1_name'] = Category::where('id', '=', $request->op_sub_1)->first()->name;
-            }
-            if ($request->op_sub_2 != 0) {
-                $data_create['op_sub_2_id'] = $request->op_sub_2;
-                $data_create['op_sub_2_name'] = Category::where('id', '=', $request->op_sub_2)->first()->name;
             }
             if ($request->cat_2 != 0) {
                 $data_create['sub_2_cat_id'] = $request->cat_2;
@@ -220,12 +227,7 @@ class AdminProductController extends Controller
             $data_create['video'] = $request->video;
             $data_create['cat_2_id'] = $request->cat_2;
             $data_create['cat_2_sub'] = $request->cat_2_id;
-            if ($request->has('ins')) {
-                $data_create['insurance'] = implode(",", $request->ins);
-            }
-            if ($request->has('plc')) {
-                $data_create['policy'] = implode(",", $request->plc);
-            }
+
             // /////////////////////////////////
             if ($request->has('banner')) {
                 $path_banner = $path . Str::slug($data_create['cat_name']) . "/"  . "banner/";
@@ -252,6 +254,28 @@ class AdminProductController extends Controller
             $created = Products::create($data_create);
             // createdd end
             if ($created) {
+                if ($request->has('categories')) {
+                    foreach ($request->categories as $cate_id) {
+                        ProductCategories::create(['products_id' => $created->id, 'category_id' => $cate_id, 'category_name' => Category::where('id', '=', $cate_id)->first()->name]);
+                    }
+                }
+                if ($request->has('plc')) {
+                    foreach ($request->plc as $plc) {
+                        ProductPlc::create([
+                            'products_id' => $created->id,
+                            'plc_id' => $plc
+                        ]);
+                    }
+                }
+                if ($request->has('ins')) {
+                    foreach ($request->ins as $ins) {
+                        ProductPlc::create([
+                            'products_id' => $created->id,
+                            'ins_id' => $ins,
+                            'group_id' => Insurance::where('id', '=', $ins)->first()->group
+                        ]);
+                    }
+                }
                 if ($request->has('gll700')) {
                     $index = 0;
                     foreach ($request->gll700 as $g7) {
@@ -423,12 +447,33 @@ class AdminProductController extends Controller
             $data_update['author_id'] = Auth::id();
             $data_update['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
             $data_update['video'] = $request->video;
-
+            if ($request->has('categories')) {
+                ProductCategories::where('products_id', $id)->whereNotIn('category_id', $request->categories)->delete();
+                foreach ($request->categories as $cate_id) {
+                    if (!ProductCategories::where('products_id', $id)->where('category_id', $cate_id)->first()) {
+                        ProductCategories::create(['products_id' => $id, 'category_id' => $cate_id, 'category_name' => Category::where('id', '=', $cate_id)->first()->name]);
+                    }
+                }
+            }
             if ($request->has('ins')) {
-                $data_update['insurance'] = implode(",", $request->ins);
+                ProductIns::where('products_id', $id)->whereNotIn('ins_id', $request->ins)->delete();
+                foreach ($request->ins as $ins) {
+                    if (!ProductIns::where('products_id', $id)->where('ins_id', $ins)->first()) {
+                        ProductIns::create(['products_id' => $id, 'ins_id' => $ins, 'group_id' => Insurance::where('id', '=', $ins)->first()->group]);
+                    }
+                }
+            } else {
+                ProductIns::where('products_id', $id)->delete();
             }
             if ($request->has('plc')) {
-                $data_update['policy'] = implode(",", $request->plc);
+                ProductPlc::where('products_id', $id)->whereNotIn('plc_id', $request->plc)->delete();
+                foreach ($request->plc as $plc) {
+                    if (!ProductPlc::where('products_id', $id)->where('plc_id', $plc)->first()) {
+                        ProductPlc::create(['products_id' => $id, 'plc_id' => $plc]);
+                    }
+                }
+            } else {
+                ProductPlc::where('products_id', $id)->delete();
             }
             // /////////////////////////////////
             if ($request->has('banner')) {

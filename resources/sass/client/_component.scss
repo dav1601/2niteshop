@@ -31,9 +31,6 @@
     &--img {
         position: relative;
         .quick__view {
-            @include responsive_v(ipad, down) {
-                display: none;
-            }
             visibility: hidden;
             transition: background 0.25s;
             position: absolute;
@@ -246,6 +243,11 @@
             flex: 0 0 165px;
             max-width: 165px;
             margin-left: 10px;
+             @include responsive_h(iphone5-se, down) {
+                flex: 1;
+                max-width: 100%;
+                margin-right: 10px;
+            }
         }
     }
     &:hover {

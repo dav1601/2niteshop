@@ -18,7 +18,7 @@ endpoints:
         name: id
         description: 'The ID of the product.'
         required: true
-        example: blanditiis
+        example: et
         type: string
         custom: []
     queryParameters:
@@ -26,7 +26,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
     bodyParameters: []
@@ -252,7 +252,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
       kw:
@@ -281,7 +281,7 @@ endpoints:
         name: kw
         description: ''
         required: true
-        example: tempore
+        example: minima
         type: string
         custom: []
     responses:
@@ -365,7 +365,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
       category:

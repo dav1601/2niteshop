@@ -39,6 +39,7 @@ class Category extends Model
             }
         }
     }
+    // //////////////////////
     static function OneCatTree($id)
     {
         $allCategories = Category::where('id', '!=', 145)->get();
@@ -55,18 +56,62 @@ class Category extends Model
             }
         }
     }
-
+    // //////////////
+    static function ParentTree($id)
+    {
+        $allCategories = Category::where('id', '!=', 145)->get();
+        $category = Category::where('id', '=', $id)->get();
+        self::formatParentTree($category, $allCategories);
+        return $category;
+    }
+    // //////////////////////////////////
+    private static function formatParentTree($categories, $allCategories)
+    {
+        foreach ($categories as $category) {
+            if ($category->parent_id != 0) {
+                $category->parent = $allCategories->where('id', $category->parent_id)->values();
+                if ($category->parent->isNotEmpty()) {
+                    self::formatParentTree($category->parent, $allCategories);
+                }
+            }
+        }
+    }
+    // /////////////
+    static function treeUriParent($categories)
+    {
+        $uri = [];
+        foreach ($categories as $category) {
+            array_push($uri, $category->slug);
+            if (isset($category->parent)) {
+                $parent = self::treeUriParent($category->parent);
+                $uri = array_merge($uri, $parent);
+            }
+        }
+        return $uri;
+    }
+    static function createUriCategory($categories , $implode="/")
+    {
+        $uri = self::treeUriParent($categories);
+        return implode($implode, collect($uri)->reverse()->toArray());
+    }
     public function isChild(): bool
     {
         return $this->parent_id !== 0;
     }
-    public function related_blogs(){
-        return $this->hasMany('App\Models\RelatedPosts' , 'cat_id')->orderBy('posts', 'DESC');
+    public function related_blogs()
+    {
+        return $this->hasMany('App\Models\RelatedPosts', 'cat_id')->orderBy('posts', 'DESC');
     }
-    public function bundled_skin(){
-        return $this->hasOne('App\Models\bundled_skin_cat' , 'cat_id');
+    public function bundled_skin()
+    {
+        return $this->hasOne('App\Models\bundled_skin_cat', 'cat_id');
     }
-    public function bundled_accessory(){
-        return $this->hasMany('App\Models\bundled_accessory_cat' , 'cat_id');
+    public function bundled_accessory()
+    {
+        return $this->hasMany('App\Models\bundled_accessory_cat', 'cat_id');
+    }
+    public function products()
+    {
+        return $this->hasMany('App\Models\ProductCategories', 'category_id');
     }
 }

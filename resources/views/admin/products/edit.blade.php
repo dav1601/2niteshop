@@ -437,114 +437,39 @@ Chỉnh sửa sản phẩm
                                 </select>
                             </div>
                             {{-- end cat_2 --}}
-                            <div class="col-6 mb-5 pl-0">
-                                <label for="">Op sub 1</label>
-                                <select class="custom-select" name="op_sub_1" id="op_sub_1">
-                                    @if ($product->op_sub_1_id != null )
-                                    <option value="{{ $product->op_sub_1_id	  }}">{{ $product->op_sub_1_name }}
-                                    </option>
-                                    @foreach ( App\Models\Category::where('parent_id' , '=' , $product->cat_id)
-                                    ->get()
-                                    as $ops_1 )
-                                    @if ($ops_1->id != $product->op_sub_1_id)
-                                    <option value="{{ $ops_1->id }}">{{ $ops_1->name }}</option>
-                                    @endif
-                                    @endforeach
-                                    @else
-                                    <option value="">Chọn danh mục option 1 </option>
-                                    @foreach ( App\Models\Category::where('parent_id' , '=' , $product->cat_id)
-                                    ->get()
-                                    as $ops_1)
-                                    <option value="{{ $ops_1->id }}">{{ $ops_1->name }}</option>
-                                    @endforeach
-
-                                    @endif
-                                </select>
-                                @error('op_sub_1')
-                                <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @enderror
-                            </div>
-
-                            {{-- end cat_1 --}}
-                            <div class="col-6">
-                                <label for="">Op sub 2</label>
-                                <select class="custom-select" name="op_sub_2" id="op_sub_2">
-                                    @if ($product->op_sub_1_id != null )
-                                    <option value="{{ $product->op_sub_2_id	  }}">{{ $product->op_sub_2_name }}
-                                    </option>
-                                    @foreach ( App\Models\Category::where('parent_id' , '=' , $product->op_sub_1_id)
-                                    ->get()
-                                    as $ops_2 )
-                                    @if ($ops_2->id != $product->op_sub_2_id)
-                                    <option value="{{ $ops_2->id }}">{{ $ops_2->name }}</option>
-                                    @endif
-                                    @endforeach
-                                    @else
-                                    <option value="">Chọn danh mục option sub 1</option>
-                                    @endif
-                                </select>
-                            </div>
                             {{-- end cat_2 --}}
-                            <div class="col-4 pl-0">
-                                <label for="">Danh Mục Chính 2</label>
-                                <select class="custom-select" name="cat_2" id="cat_2">
-                                    @if ($product->cat_2_id != 0)
-                                    <option value="{{ $product->cat_2_id }}">{{ App\Models\Category::where('id', '=' ,
-                                        $product->cat_2_id )->first()->name }} </option>
-                                    @foreach ( $category as $cate_s2 )
-                                    @if ($cate_s2->id != $product->cat_2_id )
-                                    <option value="{{ $cate_s2->id }}">{{ $cate_s2->name }}</option>
-                                    @endif
-                                    @endforeach
-
-                                    @else
-                                    <option value="0">Chọn Danh Mục Chính Gốc 2</option>
-                                    @foreach ( $category as $cate )
-                                    <option value="{{ $cate->id }}">{{ $cate->name }}</option>
-                                    @endforeach
-                                    @endif
-
-                                </select>
-                                @error('cat_2')
-                                <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                            <div class="accordion col-6 pl-0" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header p-0" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button
+                                                class="btn btn-link btn-block navi_btn text-left d-flex justify-content-between align-items-center text-light"
+                                                type="button" data-toggle="collapse" data-target="#collapseOne"
+                                                aria-expanded="true" aria-controls="collapseOne">
+                                                Danh Mục Khác
+                                                <i class="fa-solid fa-angles-down"></i>
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseOne" class="collapse  @if(count($array_pc) > 0) show @endif" aria-labelledby="headingOne"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            @foreach (category_child(App\Models\Category::all() , 0) as $cate_other)
+                                            <div class="va-checkbox d-flex align-items-center w-100"
+                                                style="margin-left: calc({{ $cate_other->level }} * 25px);">
+                                                <input type="checkbox" name="categories[]"
+                                                    value="{{ $cate_other -> id }}" id="category__{{ $cate_other->id}}"
+                                                    class="check_ins" {{ in_array($cate_other->id , $array_pc) ?"checked":"" }}>
+                                                <label for="category__{{ $cate_other -> id }}">
+                                                    {{ $cate_other -> name }}
+                                                </label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
-                                @enderror
                             </div>
-
-                            <div class="col-4">
-                                <label for="">Danh Mục Phụ Của DM Chính 2</label>
-                                <select class="custom-select" name="cat_2_id" id="cat_2_id">
-                                    @if ($product->cat_2_sub != 0)
-                                    <option value="{{ $product->cat_2_sub }}">{{ App\Models\Category::where('id', '='
-                                        ,$product->cat_2_sub )->first()->name }} </option>
-                                    @foreach ( App\Models\Category::where('parent_id' , '=' , $product->cat_2_id)
-                                    ->get() as $cate_2_s )
-                                    @if ($cate_2_s ->id != $product->cat_2_sub )
-                                    <option value="{{ $cate_2_s ->id }}">{{ $cate_2_s ->name }}</option>
-                                    @endif
-                                    @endforeach
-                                    @else
-                                    <option value="0">Chưa Chọn Danh Mục Gốc 2</option>
-                                    @endif
-                                </select>
-                                @error('cat_2_id')
-                                <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @enderror
-                            </div>
+                            {{-- end danh muc khac --}}
                         </div>
                     </div>
                     <div class="form-group mb-5">
@@ -720,7 +645,7 @@ Chỉnh sửa sản phẩm
                             <div class="mb-4 col-3 cis_item">
                                 <div class="va-checkbox d-flex align-items-center w-100">
                                     <input type="checkbox" name="ins[]" value="{{ $in -> id }}" id="ci__{{ $in -> id }}"
-                                        class="check_ins" @if (in_array($in->id, explode("," , $product->insurance)))
+                                        class="check_ins" @if (in_array($in->id, $product_ins))
                                     checked
                                     @endif>
                                     <label for="ci__{{ $in -> id }}" data-toggle="tooltip" data-placement="top"
@@ -745,8 +670,8 @@ Chỉnh sửa sản phẩm
                             <div class="mb-4 col-3 plc_item">
                                 <div class="va-checkbox d-flex align-items-center w-100">
                                     <input type="checkbox" name="plc[]" value="{{ $plc -> id }}"
-                                        id="plc__{{ $plc -> id }}" class="check_plc" @if (in_array($plc->id, explode(","
-                                    , $product->policy)))
+                                        id="plc__{{ $plc -> id }}" class="check_plc" @if (in_array($plc->id,
+                                    $product_policies))
                                     checked
                                     @endif>
                                     <label for="plc__{{ $plc -> id }}" data-toggle="tooltip" data-html="true"

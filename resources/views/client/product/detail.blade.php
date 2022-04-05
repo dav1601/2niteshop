@@ -57,8 +57,29 @@ $bg = asset($product->bg);
                 <li class="b__crumb--item">
                     <i class="fas fa-long-arrow-alt-right"></i>
                 </li>
+                @php
+                $index = count($bc)
+                @endphp
+                @foreach ($bc as $key => $b )
+                @php
+                $name = App\Models\Category::select('name')->where('slug', $b )->first();
+                @endphp
+                @if ($name)
+                @if ($key != $index && $key != 0)
                 <li class="b__crumb--item">
-                    <h1>{{ $product->name }}</h1>
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </li>
+                @endif
+                <li class="b__crumb--item">
+                    <h1>{{ $name->name }}</h1>
+                </li>
+                @endif
+                @endforeach
+                <li class="b__crumb--item">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </li>
+                <li class="b__crumb--item">
+                    <h1>{{ $product->name}}</h1>
                 </li>
             </ol>
         </div>
@@ -148,22 +169,25 @@ $bg = asset($product->bg);
                                 CALL-{{ getVal('switchboard') ->value }}
                                 @endif</span>
                         </div>
-                        @if ($group !== 0)
+
+                        @foreach ($product_ins as $group => $item )
                         <div class="prd__dtl--insur">
-                            <span class="d-block">{{ $group == 1 ? "Chọn thời gian bảo hành":"Chọn phụ kiện mua kèm" }}:
+                            <span class="d-block">{{ App\Models\bundled_product::where('id', $group)->first()->name }}:
                                 <strong>*</strong></span>
                             <ul class="insur">
-                                @foreach ( $insurance as $key => $ins )
+                                @foreach ( $item as $key => $ins )
                                 <li class="insur__item @if ($key == 0) insur__item-active @endif"
-                                    data-price="{{ App\Models\Insurance::where('id', '=' ,  $ins)->first()->price }}"
-                                    data-id="{{ $ins }}">
-                                    <span>{{ App\Models\Insurance::where('id', '=' , $ins)->first()->name }} (+ {{
-                                        crf(App\Models\Insurance::where('id', '=' , $ins)->first()->price) }})</span>
+                                    data-price="{{ App\Models\Insurance::where('id', '=' ,  $ins['ins_id'])->first()->price }}"
+                                    data-id="{{ $ins['ins_id'] }}">
+                                    <span>{{ App\Models\Insurance::where('id', '=' , $ins['ins_id'])->first()->name }}
+                                        (+ {{
+                                        crf(App\Models\Insurance::where('id', '=' , $ins['ins_id'])->first()->price)
+                                        }})</span>
                                 </li>
                                 @endforeach
                             </ul>
                         </div>
-                        @endif
+                        @endforeach
                         <div class="prd__dtl--cart row mx-0">
                             @if($product->stock == 1 && $product->price != 0)
                             <div class="qty col-1 p-0 d-flex w-100">
@@ -354,11 +378,11 @@ $bg = asset($product->bg);
                 {{-- end tabs machine --}}
                 @if ($bundled_skin != NULL)
                 @php
-                    $skin_cat_id = $bundled_skin ->skin_cat_id;
-                    $bundled_k = App\Models\Products::where(function($q) use ($skin_cat_id){
-                        $q -> where('sub_1_cat_id' , $skin_cat_id)
-                           -> orWhere('sub_2_cat_id' , $skin_cat_id);
-                    })->get();
+                $skin_cat_id = $bundled_skin ->skin_cat_id;
+                $bundled_k = App\Models\Products::where(function($q) use ($skin_cat_id){
+                $q -> where('sub_1_cat_id' , $skin_cat_id)
+                -> orWhere('sub_2_cat_id' , $skin_cat_id);
+                })->get();
                 @endphp
                 <div class="tab-pane" id="tab__skin" role="tabpanel">
                     @if (count($bundled_k) > 0)

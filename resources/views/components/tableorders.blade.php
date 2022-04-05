@@ -11,6 +11,7 @@
             <th scope="col">Thanh Toán ĐH</th>
             <th scope="col">Tỉnh</th>
             <th scope="col">Xem</th>
+            <th scope="col">Xuất hoá đơn</th>
         </tr>
     </thead>
     <tbody>
@@ -38,15 +39,20 @@
                     <i class="fas fa-eye"></i>
                 </a>
             </td>
-
+            @if ($ord->status == 3)
+            <td class="d-flex justify-content-center">
+                <a href="{{ route('export_invoice' ,['id'=> $ord->id]) }}"  class="text-center export_invoice" target="_blank">
+                    <i class="fa-solid fa-file-export"></i>
+                </a>
+            </td>
+            @endif
         </tr>
         @endforeach
     </tbody>
 
 </table>
 <div class="card-footer p-0" id="orders_show--page">
-  @if ($number > 1)
-  {!! navi_ajax_page($number , $page , "","justify-content-center" , "mt-2") !!}
-  @endif
+    @if ($number > 1)
+    {!! navi_ajax_page($number , $page , "","justify-content-center" , "mt-2") !!}
+    @endif
 </div>
-

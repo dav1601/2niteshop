@@ -96,8 +96,7 @@ class AdminDashBoardController extends Controller
         Carbon::setLocale('vi');
         $carbon = new Carbon();
         $access =  Products::where(function ($query) use ($cat_1) {
-            $query->where('cat_id', '=', $cat_1)
-                ->orWhere('cat_2_id', '=', $cat_1);
+            $query->where('cat_id', '=', $cat_1);
         });
         $access = $access->where('sub_type', 'LIKE', 'controller')->get();
         return view('admin.dashboard.config_home_edit', compact('config', 'category', 'carbon', 'access'));
@@ -269,6 +268,11 @@ class AdminDashBoardController extends Controller
             $data['access_link'] = $request->link_access;
             $data['cat'] = $request->cat;
             $data['cat_2'] = $request->cat_2;
+            if ($request->has('active')) {
+                $data['active'] = 1;
+            } else {
+                $data['active'] = 0;
+            }
             if ($request->has('access')) {
                 $data['option'] = implode(",", $request->access);
             }

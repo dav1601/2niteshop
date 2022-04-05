@@ -28,7 +28,7 @@ class CartController extends Controller
     public $mailer;
 
 
-    function __construct(MailOrderInterface $mailer , DavjCartInterface $handle_cart)
+    function __construct(MailOrderInterface $mailer, DavjCartInterface $handle_cart)
     {
         $this->mailer = $mailer;
         $this->handle_cart = $handle_cart;
@@ -71,10 +71,10 @@ class CartController extends Controller
             $ins = $request->op;
             $sub_total = $request->sub_total;
             $id = $request->id;
-           $this->handle_cart->add__cart($id, $sub_total, $qty, $ins, 0);
-           $item = Products::select('name' , 'slug' , 'main_img')->where('id' , '=' , $id)->first();
-           $add_ok .= view('components.addcart' , compact('item'));
-           $data['add_ok'] = $add_ok;
+            $this->handle_cart->add__cart($id,  $qty, $ins, 0);
+            $item = Products::select('name', 'slug', 'main_img')->where('id', '=', $id)->first();
+            $add_ok .= view('components.addcart', compact('item'));
+            $data['add_ok'] = $add_ok;
         }
         if ($request->type ==  "update") {
             $rowId = $request->rowId;
@@ -83,15 +83,16 @@ class CartController extends Controller
             $op = $request->op;
             $sub_total = ($qty * $price) + $op;
             $ins = $request->op_id;
-            $update_cart = $this->handle_cart-> update__cart($request->id, $rowId, $sub_total, $qty, $ins, 0);
+            $update_cart = $this->handle_cart->update__cart($request->id, $rowId, $qty, $ins, 0);
             $data['update'] = $update_cart;
             $data['sub_total'] = crf($update_cart->options->sub_total);
+            $data['new_rowId'] = $this->handle_cart->get_rowID_by_id_product($request->id);
         }
         if ($request->type == "delete") {
             $rowId = $request->rowId;
             Cart::instance('shopping')->remove($rowId);
         }
-        $this->handle_cart-> store_cart();
+        $this->handle_cart->store_cart();
         $total = $this->handle_cart->total();
         $items = Cart::instance('shopping')->count();
         if ($items > 0) {
@@ -252,7 +253,7 @@ class CartController extends Controller
                 $template = 'client.mail.order';
                 event(new Order($to, $subject, $template, $data_mail));
                 Cart::instance('shopping')->destroy();
-                $this->handle_cart-> store_cart();
+                $this->handle_cart->store_cart();
                 $request->session()->put('last_orderd', $ordered->id);
                 return redirect()->route('checkout_s');
             }
@@ -266,7 +267,7 @@ class CartController extends Controller
         $id = session()->get('last_orderd');
         $ordered = Orders::where('id', '=', $id)->first();
         $cart = unserialize($ordered->cart);
-        return view('client.cart.checkout-success', compact('ordered' ,'cart'));
+        return view('client.cart.checkout-success', compact('ordered', 'cart'));
     }
 
     ////////////////////////////////////////

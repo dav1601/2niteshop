@@ -1,10 +1,12 @@
 @extends('admin.layout.app')
 @section('import_css')
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 @endsection
 @section('import_js')
 <script
     src="{{ asset('admin/app/js/dashboard.js') }}?ver=@php echo filemtime('public/admin/app/js/dashboard.js') @endphp">
 </script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 @endsection
 @section('name')
 Dashboard
@@ -29,6 +31,9 @@ Dashboard
                 <div class="card-body" id="config__home--add">
                     {!! Form::open(['url' => route('edit_cofhome_handle' , ['id' => $config->id]) , 'method' => "POST"
                     ,'files' => true ]) !!}
+                    <div class="d-flex justify-content-end align-items-center mb-4">
+                        <input type="checkbox" name="active" value="1" @if ($config->active == 1) checked @endif class="toggle-active" data-id={{ $config->id }} data-toggle="toggle"  data-width="100">
+                    </div>
                     <div class="form-group mb-5">
                         <label for="">Tên</label>
                         <input type="text" class="form-control" name="name" id="" value="{{ $config->name }}"

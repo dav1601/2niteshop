@@ -25,9 +25,6 @@
                         <li class="nav__item"><a href="{{ route('dashboard') }}" target="_blank" class="nav__link">Dashboard</a></li>
                         <li class="nav__item"><a href="{{ route('show_product') }}" target="_blank" class="nav__link">Sản Phẩm</a></li>
                         <li class="nav__item"><a href="{{ route('setting_profile' , ['id'=>Auth::id()]) }}" target="_blank" class="nav__link">Cài Đặt</a></li>
-                        @if (Gate::allows('admin-action'))
-                        <li class="nav__item"><a href="{{ route('minify') }}" target="_blank" class="nav__link">Minify</a></li>
-                        @endif
                         @if ($daviUser->ApiExists())
                         <li class="nav__item"><a href="{{ route('identity_confirmation') }}" target="_blank" class="nav__link">Api Docs</a></li>
                         @endif

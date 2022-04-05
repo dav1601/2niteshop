@@ -1,16 +1,14 @@
 @extends('admin.layout.app')
 @section('import_css')
-<link rel="stylesheet" href="{{ asset('client/Date-Time-Picker-Bootstrap-4/build/css/bootstrap-datetimepicker.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('client/Date-Time-Picker-Bootstrap-4/build/css/bootstrap-datetimepicker.min.css') }}">
 @endsection
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
-</script>
 <script src="{{ asset('admin/app/js/oders.js') }}"></script>
 <script src="{{ asset('client/Date-Time-Picker-Bootstrap-4/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-
 @endsection
 
 @section('name')
@@ -61,22 +59,22 @@ Danh Sách Sản Phẩm
                                 placeholder="Số điện thoại khách hàng">
                         </div>
                     </div>
-                    <div class="col-3 mb-4 pl-0" >
+                    <div class="col-3 mb-4 pl-0">
                         <label for="">Chọn Ngày Đặt Hàng (trở về trước)</label>
                         <div id="dateprev" class="positon-relative">
                             <input type="text" class="form-control">
-                       <span id="show_date_1">
-                        <i class="fas fa-calendar"></i>
-                       </span>
+                            <span id="show_date_1">
+                                <i class="fas fa-calendar"></i>
+                            </span>
                         </div>
                     </div>
-                    <div class="col-3 mb-4 pl-0" >
+                    <div class="col-3 mb-4 pl-0">
                         <label for="">Chọn Ngày Đặt Hàng (trở về sau)</label>
                         <div id="datenext" class="positon-relative">
                             <input type="text" class="form-control">
-                       <span id="show_date_2">
-                        <i class="fas fa-calendar"></i>
-                       </span>
+                            <span id="show_date_2">
+                                <i class="fas fa-calendar"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="col-2 pl-0 mb-4">
@@ -85,7 +83,7 @@ Danh Sách Sản Phẩm
                             <select class="custom-select" name="" id="ord__filter--prov">
                                 <option value="0">Tất Cả</option>
                                 @foreach (App\Models\Province::all() as $prov )
-                                    <option value="{{ $prov->_name }}" data-id="{{ $prov->id }}">{{ $prov->_name }}</option>
+                                <option value="{{ $prov->_name }}" data-id="{{ $prov->id }}">{{ $prov->_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -111,14 +109,19 @@ Danh Sách Sản Phẩm
         </div>
     </div>
     {{-- end filter --}}
-    <div class="col-12 mt-4 p-0">
+    <div class="col-12 mt-4 p-0 position-relative" id="show_orders">
+        <div id="loading" class="d-none">
+            <div class="img_loading d-flex flex-column justify-content-center align-items-center w-100 h-100">
+                <img src=" {{ asset('admin/images/layout/loading-unscreen.gif') }}  " alt="">
+            </div>
+        </div>
         <div class="w-100">
             <div class="card">
                 <div class="card-header text-center">
                     Danh sách sản phẩm
                 </div>
                 <div class="card-body pb-0" id="table__show--orders">
-                   <x-tableorders :number="$number_page" :page="$page" :order="$orders"  />
+                    <x-tableorders :number="$number_page" :page="$page" :order="$orders" />
                 </div>
 
             </div>

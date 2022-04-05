@@ -10,6 +10,7 @@ use App\Models\Insurance;
 use GuzzleHttp\Middleware;
 use App\Models\gllProducts;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Models\RelatedPosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -25,27 +26,27 @@ class ClientProductsController extends Controller
 
     public function index($slug, Request $request)
     {
-        if ($slug == '' || !Category::where('slug', 'LIKE', $slug)->first()) {
-            abort(404);
-        }
+        $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('category/'), '', url()->current())));
+        $slug = collect($bc)->last();
+        $category =  Category::where('slug', 'LIKE', $slug)->firstOrFail();
         $view = $request->cookie('view');
         if ($request->has('page')) {
             $page = $request->page;
         } else {
             $page = 1;
         }
-        $category =  Category::where('slug', 'LIKE',  $slug)->first();
         $list_banner = gllCat::where('cate_id', '=', $category->id)->get();
         $id = $category->id;
+        $list_products = array();
+        foreach (Category::find($id)->products()->select('products_id')->get()->toArray() as $item) {
+            $list_products[] = $item['products_id'];
+        }
         if ($id != 129) {
-            $products = Products::where(function ($query) use ($id) {
+            $products = Products::where(function ($query) use ($id, $list_products) {
                 $query->where('cat_id', '=', $id)
-                    ->orWhere('cat_2_id', '=', $id)
-                    ->orWhere('cat_2_sub', '=', $id)
                     ->orWhere('sub_1_cat_id', '=', $id)
                     ->orWhere('sub_2_cat_id', '=', $id)
-                    ->orWhere('op_sub_1_id', '=', $id)
-                    ->orWhere('op_sub_2_id', '=', $id);
+                    ->orWhereIn('id', $list_products);
             });
         } else {
             $products = Products::where('usage_stt', '=', 2);
@@ -71,7 +72,7 @@ class ClientProductsController extends Controller
         }
         $products = $products->offset($start)->limit($item_page)->get();
 
-        return view('client.product.index', compact('products', 'category', 'view', 'page', 'number_page', 'id', 'sort', 'ord', 'genres', 'list_banner'));
+        return view('client.product.index', compact('products', 'category', 'view', 'page', 'number_page', 'id', 'sort', 'ord', 'genres', 'list_banner', 'bc' ,'list_products'));
     }
     //////////////////////////////////////
 
@@ -93,15 +94,16 @@ class ClientProductsController extends Controller
         $sort = $request->sort;
         $ord = $request->ord;
         $view = $request->view;
+        $list_products = array();
+        foreach (Category::find($id)->products()->select('products_id')->get()->toArray() as $item) {
+            $list_products[] = $item['products_id'];
+        }
         if ($id != 129) {
-            $products = Products::where(function ($query) use ($id) {
+            $products = Products::where(function ($query) use ($id, $list_products) {
                 $query->where('cat_id', '=', $id)
-                    ->orWhere('cat_2_id', '=', $id)
-                    ->orWhere('cat_2_sub', '=', $id)
                     ->orWhere('sub_1_cat_id', '=', $id)
                     ->orWhere('sub_2_cat_id', '=', $id)
-                    ->orWhere('op_sub_1_id', '=', $id)
-                    ->orWhere('op_sub_2_id', '=', $id);
+                    ->orWhereIn('id', $list_products);
             });
         } else {
             $products = Products::where('usage_stt', '=', 2);
@@ -139,7 +141,7 @@ class ClientProductsController extends Controller
             $output_2 .= '</div>';
         }
         if ($number_page > 1) {
-            $pagination = navi_ajax_page($number_page, $page, $size = "pagination-sm", "justify-content-start", $mt = "mt-4");
+            $pagination = navi_ajax_page($number_page, $page, $size = "pagination-sm", "justify-content-center", $mt = "mt-4");
         }
 
         $data['html'] = $output;
@@ -152,22 +154,20 @@ class ClientProductsController extends Controller
     ////////////////////////////////////////
     ////////////////////////////////////////
     ////////////////////////////////////////
-
-    public function detail_product($slug, Request $request)
+    public function detail_product(Request $request)
     {
-        if ($slug == '' || !Products::where('slug', 'LIKE', $slug)->first()) {
-            abort(404);
-        }
+        $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('products/'), '', url()->current())));
+        $slug = collect($bc)->last();
+        $product = Products::where('slug',  $slug)->firstOrFail();
         $fullset = 0;
         $policies = array();
-        $product = Products::where('slug', 'LIKE', $slug)->firstOrFail();
         $banner = gllProducts::where('products_id', '=', $product->id)->where('index', '=', 1)->where('size', '=', 700)->first();
-        $policy = explode(",", $product->policy);
+        $policy = Products::find($product->id)->policies;
         foreach ($policy as $item) {
-            if (Policy::where('id', '=', $item)->first()->fullset == 1) {
-                $fullset = $item;
+            if (Policy::where('id', '=', $item->plc_id)->first()->fullset == 1) {
+                $fullset = $item->plc_id;
             } else {
-                $policies[] = Policy::where('id', '=', $item)->first();
+                $policies[] = Policy::where('id', '=', $item->plc_id)->first();
             }
         }
         $policies = collect($policies);
@@ -176,14 +176,10 @@ class ClientProductsController extends Controller
         $related_cat = Category::find($product->sub_1_cat_id)->related_blogs()->get();
         $related_cat_blog  = $related_blog->merge($related_cat);
         $related_product = Products::find($product->id)->related_products()->get();
-        $bundled_skin = bundled_skin_cat::where('cat_id', '=' , $product->sub_1_cat_id)->first();
+        $bundled_skin = bundled_skin_cat::where('cat_id', '=', $product->sub_1_cat_id)->first();
         $bundled_accessory = Category::find($product->sub_1_cat_id)->bundled_accessory()->get();
-        if ($product->insurance != NULL) {
-            $group = Insurance::whereIn('id', explode(",", $product->insurance))->select('group')->distinct()->first()->group;
-        } else {
-            $group = 0;
-        }
-        return view('client.product.detail', compact('product', 'policies', 'fullset', 'related_blog', 'banner', 'group' , 'related_product' , 'related_cat_blog' , 'bundled_skin' , 'bundled_accessory'));
+        $product_ins = collect(Products::find($product->id)->ins()->get()->toArray())->groupBy('group_id');
+        return view('client.product.detail', compact('product', 'policies', 'fullset', 'related_blog', 'banner',  'related_product', 'related_cat_blog', 'bundled_skin', 'bundled_accessory', 'product_ins' , 'bc'));
     }
 
     ////////////////////////////////////////
@@ -219,6 +215,27 @@ class ClientProductsController extends Controller
         $data['price'] = $output;
     }
     ////////////////////////////////////////
+    ////////////////////////////////////////
 
+    public function render_skeleton(Request $request)
+    {
+        $output = '';
+        $output_2 = '';
+        for ($i = 1; $i <= 8; $i++) {
+            $output .= '<div class="col-lg-3 col-md-4 col-12 col-sm-6 item w-100">';
+            $output .= view('components.client.product.skeletion.grid');
+            $output .= '</div>';
+        }
+        for ($i = 1; $i <= 5; $i++) {
+            $output_2 .= '<div class="item w-100">';
+            $output_2 = view('components.client.product.skeleton.listitem');
+            $output_2 .= '</div>';
+        }
+        $data['html'] = $output;
+        $data['html_2'] = $output_2;
+        return response()->json($data);
+    }
+
+    ////////////////////////////////////////
     // ///////////////////////////////////
 }

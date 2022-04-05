@@ -22,42 +22,42 @@ endpoints:
         name: name
         description: 'Tên danh mục'
         required: false
-        example: rerum
+        example: suscipit
         type: varchar(255)
         custom: []
       title:
         name: title
         description: 'Tiêu đề danh mục'
         required: false
-        example: officiis
+        example: sit
         type: mediumtext
         custom: []
       desc:
         name: desc
         description: 'Mô tả ngắn danh mục'
         required: false
-        example: dolor
+        example: omnis
         type: longtext
         custom: []
       keywords:
         name: keywords
         description: 'Keywords SEO or Tag danh mục'
         required: false
-        example: possimus
+        example: similique
         type: longtext
         custom: []
       parent_id:
         name: parent_id
         description: 'id danh mục cha (0: là danh mục gốc)'
         required: false
-        example: 18
+        example: 2
         type: integer
         custom: []
       slug:
         name: slug
         description: 'Slug danh mục'
         required: false
-        example: vel
+        example: adipisci
         type: varchar
         custom: []
       img:
@@ -71,21 +71,21 @@ endpoints:
         name: icon
         description: 'Icon danh mục'
         required: false
-        example: eum
+        example: dolore
         type: varchar
         custom: []
       level:
         name: level
         description: 'Level danh mục (danh mục gốc level = 0)'
         required: false
-        example: 13
+        example: 3
         type: integer
         custom: []
       is_game:
         name: is_game
         description: '(2: không là danh mục game , 1: là danh mục game)'
         required: false
-        example: 9
+        example: 11
         type: integer
         custom: []
     responses:
@@ -292,7 +292,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
     bodyParameters: []
@@ -337,7 +337,7 @@ endpoints:
         name: token_api
         description: ''
         required: true
-        example: 19aIotXmkjH
+        example: 19aIotXOerK
         type: string
         custom: []
     bodyParameters: []

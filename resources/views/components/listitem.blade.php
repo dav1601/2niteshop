@@ -1,9 +1,18 @@
+@php
+$nameRoute = Route::currentRouteName();
+if ($nameRoute == "index_product" || $nameRoute == "index_product_1" || $nameRoute == "index_product_2"){
+$product_cat = Str::replaceFirst('/', '', Str::replace(url('category/'), '', url()->current()));
+$route_product = url('products/'.$product_cat.'/'.$message->slug);
+} else {
+$route_product = route('detail_product', ['slug'=>$message->slug]);
+}
+@endphp
 <div class="product__item--list d-flex reval-item flex-wrap" data-id="{{ $message->id }}">
     <div class="image position-relative" data-id="{{ $message->id }}">
-        <a href="{{ route('detail_product', ['slug'=>$message->slug]) }}" class="image__main">
+        <a href="{{ $route_product }}" class="image__main">
             <img src="{{ $file->ver_img($message ->main_img) }}" alt="{{ $message->name }}" class="img-fluid">
         </a>
-        <a href="{{ route('detail_product', ['slug'=>$message->slug]) }}" class="image__sub">
+        <a href="{{ $route_product }}" class="image__sub">
             <img src="{{ $file->ver_img($message ->sub_img) }}" alt="{{ $message->name }}" class="img-fluid">
         </a>
         <div class="quick__view qv__{{ $message->id }}" data-toggle="tooltip" data-placement="top" title="Xem Nhanh" class="open__modal--qview"
@@ -18,7 +27,7 @@
                     App\Models\Producer::where('id', '=' ,$message->producer_id )->first()->name }}</a></span>
         </div>
         <div class="name">
-            <a href="{{ route('detail_product', ['slug'=>$message->slug]) }}" class="d-block">{{ $message -> name }}</a>
+            <a href="{{ $route_product }}" class="d-block">{{ $message -> name }}</a>
         </div>
         <div class="des">
             <p>{{ $message -> des }}</p>

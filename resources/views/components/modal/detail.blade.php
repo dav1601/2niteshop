@@ -1,31 +1,21 @@
 @php
 $fullset = 0;
 $policies = array();
-$policy = explode(",", $product->policy);
+$policy = App\Models\Products::find($product->id)->policies;
 foreach ($policy as $item) {
-if (App\Models\Policy::where('id', '=', $item)->first()->fullset == 1) {
-$fullset = $item;
+if (App\Models\Policy::where('id', '=', $item->plc_id)->first()->fullset == 1) {
+$fullset = $item->plc_id;
 } else {
-$policies[] = App\Models\Policy::where('id', '=', $item)->first();
+$policies[] = App\Models\Policy::where('id', '=', $item->plc_id)->first();
 }
 }
 $policies = collect($policies);
 $policies = $policies->sortBy('position');
-if ($product->insurance != NULL) {
-$insurance = explode("," , $product->insurance);
-$price = $product->price + App\Models\Insurance::where('id', '=' ,
-$insurance[0])->first()->price;
+$product_ins = collect(App\Models\Products::find($product->id)->ins()->get()->toArray())->groupBy('group_id');
+if (count($product_ins) > 0) {
+$price = $product->price + App\Models\Insurance::where('id', '=' , $product_ins->first()[0]['ins_id'])->first()->price;
 } else {
-if ($product->stock != 2) {
-$price = $product->price ;
-} else {
-$price = 0;
-}
-}
-if ($product->insurance != NULL) {
-$group = App\Models\Insurance::whereIn('id' , explode("," , $product->insurance))->select('group')->distinct()->first()->group;
-} else {
-$group = 0;
+$price = $product->price;
 }
 @endphp
 <div class="box__sub--btn    @if ($product->stock==3) d-none @endif">
@@ -57,7 +47,7 @@ $group = 0;
 <div id="wrapperr" class="position-relative">
     <div id="wrapper__detail">
         <div class="row mx-0 w-100 dtl__sub mb-4 pb-4">
-            <div class="col-6 pl-0 dtl__sub--l">
+            <div class="col-12  col-lg-6 pl-lg-0 dtl__sub--l">
                 <div class="w-100" id="wrapper_slide">
                     <div class="control__prev controls">
                         <i class="fas fa-chevron-left"></i>
@@ -69,9 +59,8 @@ $group = 0;
                         @foreach (App\Models\Products::find($product->id)->gll as $gll )
                         @if ($gll -> size == 700)
                         @php
-                        if (App\Models\gllProducts::where('products_id' , '=' , $gll->products_id) -> where('index', '='
-                        ,
-                        $gll->index) -> where('size' , '=' , 80) -> first()) {
+                        if (App\Models\gllProducts::where('products_id' , '=' , $gll->products_id) -> where('index',
+                        '=', $gll->index) -> where('size' , '=' , 80) -> first()) {
                         $link_80 = App\Models\gllProducts::where('products_id' , '=' , $gll->products_id) ->
                         where('index' , '=' , $gll->index) -> where('size' , '=' , 80) -> first()->link;
                         } else {
@@ -87,7 +76,7 @@ $group = 0;
                     </ul>
                 </div>
             </div>
-            <div class="col-6 pr-0 dtl__sub--r">
+            <div class="col-12 mt-lg-0 mt-3 col-lg-6 pr-lg-0 dtl__sub--r">
                 <div class="w-100" class="prd__dtl">
                     <div class="prd__dtl--name">
                         <span>{{ $product->name }}</span>
@@ -111,22 +100,23 @@ $group = 0;
                             CALL-{{ getVal('switchboard') ->value }}
                             @endif</span>
                     </div>
-                    @if ($product->insurance != NULL)
+                    @foreach ($product_ins as $group => $item )
                     <div class="prd__dtl--insur">
-                        <span class="d-block">{{ $group == 1 ? "Chọn thời gian bảo hành":"Chọn phụ kiện mua kèm" }}:
+                        <span class="d-block">{{ App\Models\bundled_product::where('id', $group)->first()->name }}:
                             <strong>*</strong></span>
                         <ul class="insur">
-                            @foreach ( $insurance as $key => $ins )
+                            @foreach ( $item as $key => $ins )
                             <li class="insur__item @if ($key == 0) insur__item-active @endif"
-                                data-price="{{ App\Models\Insurance::where('id', '=' ,  $ins)->first()->price }}"
-                                data-id="{{ $ins }}">
-                                <span>{{ App\Models\Insurance::where('id', '=' , $ins)->first()->name }} (+ {{
-                                    crf(App\Models\Insurance::where('id', '=' , $ins)->first()->price) }})</span>
+                                data-price="{{ App\Models\Insurance::where('id', '=' ,  $ins['ins_id'])->first()->price }}"
+                                data-id="{{ $ins['ins_id'] }}">
+                                <span>{{ App\Models\Insurance::where('id', '=' , $ins['ins_id'])->first()->name }} (+ {{
+                                    crf(App\Models\Insurance::where('id', '=' , $ins['ins_id'])->first()->price)
+                                    }})</span>
                             </li>
                             @endforeach
                         </ul>
                     </div>
-                    @endif
+                    @endforeach
                     <div class="w-100 prd__dtl--contact">
                         <div class="contact">
                             <div class="contact__top">

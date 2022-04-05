@@ -20,16 +20,24 @@ use Illuminate\Support\Facades\Request;
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('contact', 'HomeController@contact')->name('contact');
- Route::get('update_api', 'HomeController@api');
-Route::get('test/template' , function(){
-return view('admin.api.mail.send_security_code');
+Route::get('update_api', 'HomeController@api');
+Route::get('test/template', function () {
+    return view('admin.api.mail.send_security_code');
 });
 Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
 Auth::routes();
+
 Route::get('products/{slug}', 'ClientProductsController@detail_product')->name('detail_product');
+Route::get('products/{parent_1?}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_2');
+Route::get('products/{parent_1?}/{parent_2}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_3');
+
 Route::get('pages/{slug}', 'ClientPageController@index')->name('detail_page');
 Route::get('producer/{slug}', 'ClientProductsController@producer')->name('producer');
-Route::get('category/{slug}/{filter?}', 'ClientProductsController@index')->name('index_product')->where(['filter' => '.*']);
+
+Route::get('category/{slug}', 'ClientProductsController@index')->name('index_product');
+Route::get('category/{parent_1}/{slug}', 'ClientProductsController@index')->name('index_product_1');
+Route::get('category/{parent_1}/{parent_2}/{slug}', 'ClientProductsController@index')->name('index_product_2');
+
 Route::get('tin-tuc/{cat?}/{detail?}', 'ClientBlogController@index')->name('blog');
 Route::get('search', 'HomeController@search_main')->name('search_main');
 Route::post('search_main', 'HomeController@search_main_ajax')->name('search_main_ajax');
@@ -39,6 +47,7 @@ Route::prefix('ajax/')->group(function () {
 });
 
 Route::get('minify', 'HomeController@minify')->name('minify');
+
 Route::middleware(['auth'])->group(function () {
     Route::prefix('user/')->group(function () {
         Route::prefix('profile/')->group(function () {
@@ -75,7 +84,9 @@ Route::prefix('ajax/')->group(function () {
     });
     Route::post('loadDataQuickView', 'ClientProductsController@loadDataQuickView')->name('loadDataQuickView');
     Route::post('search', 'HomeController@search')->name('search');
+    Route::post('render_skeleton', 'ClientProductsController@render_skeleton')->name('render_skeleton_product');
 });
+
 Route::prefix('login/social/')->group(function () {
     Route::get('google', 'Auth\LoginController@redirectToGoogle')->name('login_google');
     Route::get('google/callback', 'Auth\LoginController@handleGoogleCallback')->name('handle_login_google');
@@ -84,17 +95,17 @@ Route::prefix('login/social/')->group(function () {
     Route::get('github', 'Auth\LoginController@redirectToGit')->name('login_git');
     Route::get('github/callback', 'Auth\LoginController@handleGitCallback')->name('handle_login_git');
 });
-Route::prefix('auth/api/') -> group(function(){
-    Route::get('confirmation' , 'AdminUserController@identity_confirmation')->name('identity_confirmation');
+Route::prefix('auth/api/')->group(function () {
+    Route::get('confirmation', 'AdminUserController@identity_confirmation')->name('identity_confirmation');
     Route::post('confirmation', 'AdminUserController@handle_identity_confirmation')->name('handle_identity_confirmation');
 });
 Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::prefix('admin/')->group(function () {
         Route::get('fullcalender', 'FullCalenderController@index')->name('fullcalender');
         Route::post('fullcalenderAjax', 'FullCalenderController@ajax')->name('fullcalender_ajax');
-        Route::prefix('auth/api/') -> group(function(){
-            Route::post('get/security_code' , 'AdminUserController@get_security_code')->name('get_security_code');
-            Route::post('get/api_token' , 'AdminUserController@get_api_token')->name('get_api_token');
+        Route::prefix('auth/api/')->group(function () {
+            Route::post('get/security_code', 'AdminUserController@get_security_code')->name('get_security_code');
+            Route::post('get/api_token', 'AdminUserController@get_api_token')->name('get_api_token');
         });
         Route::get('dashboard', 'AdminDashBoardController@index')->name('dashboard');
         Route::prefix('dashboard/')->group(function () {
@@ -131,6 +142,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::get('show', 'AdminOrderController@index')->name('show_orders');
             Route::get('customers', 'AdminOrderController@customers')->name('customers');
             Route::get('detail/{id}', 'AdminOrderController@detail')->name('detail_order')->where('id', '^[0-9]+$');
+            Route::get('export/invoice/{id}', 'AdminOrderController@export_invoice')->name('export_invoice')->where('id', '^[0-9]+$');
             Route::prefix('pre_orders/')->group(function () {
                 Route::get('show_preOrders', 'AdminOrderController@show_preOrders')->name('show_preOrders');
                 Route::get('update_preOrders/{id}', 'AdminOrderController@update_preOrders')->name('update_preOrders')->where('id', '^[0-9]+$');
@@ -244,10 +256,6 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::post('edit/handle/{id}', 'AdminPageController@handle_edit')->name('handle_edit_page')->where('id', '^[0-9]+$');
             Route::post('delete/{id}', 'AdminPageController@delete')->name('handle_delete_page')->where('id', '^[0-9]+$');
         });
-        // Route::prefix('user/')->group(function () {
-        // });
-        // Route::prefix('order/')->group(function () {
-        // });
     });
 });
 

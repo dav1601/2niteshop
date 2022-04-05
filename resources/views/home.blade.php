@@ -119,60 +119,93 @@ $bg = asset(getVal('background')->value);
         @endforeach
     </div>
     {{-- END BOTTOM BANNER --}}
+    <div class="w-100  owl-carousel owl-theme mb-4">
+        <div class="item">
+            <a  class="d-block w-100">
+                <img src="{{ $file->ver_img('client/images/plc-1.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+            </a>
+        </div>
+        <div class="item">
+            <a  class="d-block w-100">
+                <img src="{{ $file->ver_img('client/images/plc-2.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+            </a>
+        </div>
+        <div class="item">
+            <a  class="d-block w-100">
+                <img src="{{ $file->ver_img('client/images/plc-3.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+            </a>
+        </div>
+        <div class="item">
+            <a  class="d-block w-100">
+                <img src="{{ $file->ver_img('client/images/plc-4.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+            </a>
+        </div>
+    </div>
+    {{-- --------------- --}}
     <div class="w-100 show__home">
         @foreach ( $config as $cf )
         @php
         $id = $cf->cat;
         $id_2 = $cf->cat_2;
+        $list_products = array();
+        foreach (App\Models\Category::find($id)->products()->select('products_id')->get()->toArray() as $item) {
+        $list_products[] = $item['products_id'];
+        }
+        $list_products_2 = array();
+        if ($cf->cat_2 != NULL) {
+            foreach (App\Models\Category::find($id_2)->products()->select('products_id')->get()->toArray() as $item) {
+        $list_products_2[] = $item['products_id'];
+        }
+        }
         $machine = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' , 'new'
-        , 'highlight' , 'usage_stt')->where(function ($query) use ($id) {
+        , 'highlight' , 'usage_stt')->where(function ($query) use ($id , $list_products) {
         $query->where('cat_id', '=', $id)
         ->orWhere('sub_1_cat_id', '=', $id)
-        ->orWhere('cat_2_id', '=', $id)
-        ->orWhere('cat_2_sub', '=', $id);
+        ->orWhere('sub_2_cat_id', '=', $id)
+        ->orWhereIn('id', $list_products);
         });
         $machine = $machine -> where('type' , 'LIKE' , 'machine')->get();
         // ////////////////////////////
         $access = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' , 'new' ,
-        'highlight' , 'usage_stt')->where(function ($query) use ($id) {
+        'highlight' , 'usage_stt')->where(function ($query) use ($id, $list_products) {
         $query->where('cat_id', '=', $id)
-        ->orWhere('cat_2_id', '=', $id);
+        ->orWhereIn('id', $list_products);
         });
         $access = $access->where('type', 'LIKE', 'access') ->get();
         // ////////////////////////////
         $machine_2 = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' ,
-        'new' , 'highlight' , 'usage_stt')->where('cat_id' , '=' , $cf->cat_2) -> where('type' , 'LIKE' ,
-        'machine')->get();
+        'new' , 'highlight' , 'usage_stt')->where(function ($query) use ($id_2, $list_products_2) {
+        $query->where('cat_id', '=', $id_2)
+        ->orWhereIn('id', $list_products_2);
+        })-> where('type' , 'LIKE' , 'machine')->get();
         // ////////////////////////////
         $access_2 = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' , 'new'
-        , 'highlight' , 'usage_stt')->where(function ($query) use ($id_2) {
+        , 'highlight' , 'usage_stt')->where(function ($query) use ($id_2 , $list_products_2) {
         $query->where('cat_id', '=', $id_2)
-        ->orWhere('cat_2_id', '=', $id_2);
+        ->orWhereIn('id', $list_products_2);
         });
         $access_2 = $access_2->where('type', 'LIKE', 'access')->orderBy('id' ,'DESC') ->get();
         // ////////////////////////////
         if ($cf->tab=="second"){
-        $access = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' , 'new' ,
-        'highlight' , 'usage_stt')->where('usage_stt' , '=' , 2)-> where('cat_id' , '=' , $cf->cat)->orderBy('id'
-        ,'DESC')->get();
+        $access = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' , 'new' , 'highlight' , 'usage_stt')->where('usage_stt' , '=' , 2)-> where('cat_id' , '=' , $cf->cat)->orderBy('id','DESC')->get();
         }
         // ////////////////////////////
         $option = explode("," , $cf->option);
         // ////////////////////////////
         $game = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' , 'new' ,
-        'highlight' , 'usage_stt')->where(function ($query) use ($id , $id_2) {
+        'highlight' , 'usage_stt')->where(function ($query) use ($id , $id_2 , $list_products , $list_products_2) {
         $query->where('cat_id', '=', $id)
-        ->orWhere('cat_2_id', '=', $id)
+        ->orWhereIn('id', $list_products)
         ->orWhere('cat_id', '=', $id_2)
-        ->orWhere('cat_2_id', '=', $id_2);
+        ->orWhereIn('id', $list_products_2);
         });
         // ////////////////////////////
         $game_2 = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' , 'new' ,
-        'highlight' , 'usage_stt')->where(function ($query) use ($id , $id_2) {
+        'highlight' , 'usage_stt')->where(function ($query) use ($id , $id_2, $list_products , $list_products_2) {
         $query->where('cat_id', '=', $id)
-        ->orWhere('cat_2_id', '=', $id)
+        ->orWhereIn('id', $list_products)
         ->orWhere('cat_id', '=', $id_2)
-        ->orWhere('cat_2_id', '=', $id_2);
+        ->orWhereIn('id', $list_products_2);
         });
         // ////////////////////////////
         $game_hot = $game->where('highlight' , '=' , 2)-> where('type' , 'LIKE' ,"game")->orderBy('id' ,'DESC')->get();
@@ -184,18 +217,22 @@ $bg = asset(getVal('background')->value);
         'new' , 'highlight' , 'usage_stt')->where(function ($query) use ($id , $id_2) {
         $query->where('cat_id', '=', $id)
         ->orWhere('cat_id', '=', $id_2);
-        });
-        $game_future = $game_future-> where('stock' , '=' , 2)->where('type' , 'LIKE' , 'game')->orderBy('id'
+        });;
+        $game_future = $game_future->where('stock' , '=' , 2)->where('type' , 'LIKE' , 'game')->orderBy('id'
         ,'DESC')->get();
         // ////////////////////////////
 
         if ($cf->cat_digital != NULL) {
+        $list_digital = array();
+        foreach (App\Models\Category::find($cf->cat_digital)->products()->select('products_id')->get()->toArray() as
+        $item) {
+        $list_digital[] = $item['products_id'];
+        }
         $cat_digital = $cf->cat_digital;
         $digital = App\Models\Products::select('id' ,'name' , 'slug' , 'price' ,'main_img', 'sub_img' , 'stock' ,
-        'new' , 'highlight' , 'usage_stt')->where(function ($query) use ($cat_digital) {
+        'new' , 'highlight' , 'usage_stt')->where(function ($query) use ($cat_digital ,$list_digital) {
         $query->where('cat_id', '=', $cat_digital)
-        ->orWhere('cat_2_id', '=', $cat_digital)
-        ->orWhere('cat_2_sub', '=', $cat_digital);
+        ->orWhereIn('id', $list_digital);
         });
         $digital = $digital ->orderBy('id','DESC')->get();
         } else {
@@ -519,9 +556,10 @@ $bg = asset(getVal('background')->value);
             </div>
             @if ($cf->tab == "none")
             @php
-            $access_items = App\Models\Products::where(function ($query) use ($id , $id_2) {
+            $access_items = App\Models\Products::where(function ($query) use ($id ,$list_products ) {
             $query->where('cat_id', '=', $id)
-            ->orWhere('cat_2_id', '=', $id);
+            ->orWhereIn('id', $list_products);
+
             });
             $access_items = $access_items -> where('type' , 'LIKE' , 'access') ->get();
             @endphp

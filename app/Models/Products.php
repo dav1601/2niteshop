@@ -19,7 +19,6 @@ class Products extends Model
         'content',
         'info',
         'insurance',
-        'policy',
         'model',
         'video',
         'banner',
@@ -31,16 +30,10 @@ class Products extends Model
         'sub_type',
         'cat_id',
         'cat_name',
-        'cat_2_id',
-        'cat_2_sub',
         'sub_1_cat_id',
         'sub_1_cat_name',
         'sub_2_cat_id',
         'sub_2_cat_name',
-        'op_sub_1_id',
-        'op_sub_1_name',
-        'op_sub_2_id',
-        'op_sub_2_name',
         'producer_id',
         'producer_slug',
         'cat_game_id',
@@ -56,10 +49,24 @@ class Products extends Model
     {
         return $this->hasMany('App\Models\gllProducts')->orderBy('index', 'ASC');
     }
-    public function related_products(){
-        return $this->hasMany('App\Models\RelatedProducts' , 'product_id');
+    public function related_products()
+    {
+        return $this->hasMany('App\Models\RelatedProducts', 'product_id');
     }
-    public function related_blogs(){
-        return $this->hasMany('App\Models\RelatedPosts' , 'product_id')->orderBy('posts', 'DESC');
+    public function related_blogs()
+    {
+        return $this->hasMany('App\Models\RelatedPosts', 'product_id')->orderBy('posts', 'DESC');
+    }
+    public function policies()
+    {
+        return $this->hasMany('App\Models\ProductPlc', 'products_id');
+    }
+    public function ins()
+    {
+        return $this->hasMany('App\Models\ProductIns', 'products_id');
+    }
+    public function categories()
+    {
+        return $this->hasMany('App\Models\ProductCategories', 'products_id');
     }
 }

@@ -106,7 +106,9 @@ Chi Tiết Đơn Hàng
                             @endforeach
                             <tr>
                                 <td colspan="5" class="text-right" style="font-size: 20px">Tổng Đơn:</td>
-                                <td colspan="2" class="text-right" style="font-size: 20px; color:#1dd1a1; font-weight:700">{{ crf($ordered->total) }}</td>
+                                <td colspan="2" class="text-right"
+                                    style="font-size: 20px; color:#1dd1a1; font-weight:700">{{ crf($ordered->total) }}
+                                </td>
 
                             </tr>
                         </tbody>
@@ -140,6 +142,12 @@ Chi Tiết Đơn Hàng
 
                 </div>
                 <div class="card-footer">
+                    @if ($ordered->status==3)
+                    <a data-id="{{ $ordered->id}}"
+                        class="invoice-{{ $ordered->id }} btn navi_btn w-100 mb-4 text-center export_invoice">
+                        <i class="fa-solid fa-file-export"></i> Xuất Hoá Đơn
+                    </a>
+                    @endif
                     <a href="{{ route('show_orders') }}" class="btn navi_btn w-100">Quay Lại Trang Danh Sách Đơn
                         Hàng</a>
                 </div>

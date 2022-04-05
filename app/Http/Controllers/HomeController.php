@@ -18,6 +18,11 @@ use MatthiasMullie\Minify\JS;
 use Illuminate\Support\Carbon;
 use MatthiasMullie\Minify\CSS;
 use App\Models\bundled_skin_cat;
+use App\Models\Insurance;
+use App\Models\ProductCategories;
+use App\Models\ProductIns;
+use App\Models\ProductPlc;
+use App\Repositories\DavjCartInterface;
 use MatthiasMullie\Minify\Minify;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -27,11 +32,12 @@ use App\View\Components\Modal\Product;
 use Illuminate\Support\Facades\Validator;
 
 
+
 class HomeController extends Controller
 {
-    public function index(Request $request )
+    public function index(Request $request)
     {
-        $config = showHome::all();
+        $config = showHome::where('active' , '=' , 1)->get();
         $company = Config::all();
         $banners = Banners::where('index', '!=', 0)->get();
         $menu_fix = FixMenu::all();
@@ -220,46 +226,11 @@ class HomeController extends Controller
     /////////////////////////////////////
     ////////////////////////////////////////
 
-    // public function minify(Request $request)
-    // {
-    //     $file_js = [
-    //         'app',
-    //         'blog',
-    //         'cart',
-    //         'home',
-    //         'product',
-    //         'scrollReval',
-    //         'slide',
-    //         'user',
-    //         'helper'
-    //     ];
-    //     $file_css = [
-    //         '_component',
-    //         '_footer',
-    //         '_layout',
-    //         '_naviteam',
-    //         '_responsive',
-    //         '_variables',
-    //         'app'
-    //     ];
-    //     foreach ($file_js as $js) {
-    //         $minifier = new JS();
-    //         $minifier->add('public/client/app/js/' . $js . '.js');
-    //         $minifier->minify('public/client/production/js/' . $js . '.js');
-    //         unset($minifier);
-    //     }
-    //     foreach ($file_css as $css) {
-    //         $minifier_css = new CSS();
-    //         $minifier_css->add('public/client/app/css/' . $css . '.css');
-    //         $minifier_css->minify('public/client/production/css/' . $css . '.css');
-    //         unset($minifier_css);
-    //     }
-    //     return "Đã minified tất cả file";
-    // }
+
 
     ////////////////////////////////////////
-    public function api(Request $request)
+    public function api(Request $request, DavjCartInterface $dci)
     {
-       
+       return;
     }
 }
