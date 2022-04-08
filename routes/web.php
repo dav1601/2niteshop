@@ -38,7 +38,8 @@ Route::get('category/{slug}', 'ClientProductsController@index')->name('index_pro
 Route::get('category/{parent_1}/{slug}', 'ClientProductsController@index')->name('index_product_1');
 Route::get('category/{parent_1}/{parent_2}/{slug}', 'ClientProductsController@index')->name('index_product_2');
 
-Route::get('tin-tuc/{cat?}/{detail?}', 'ClientBlogController@index')->name('blog');
+Route::get('tin-tuc/{cat?}', 'ClientBlogController@index')->name('blog');
+Route::get('tin-tuc/{cat}/{slug}', 'ClientBlogController@detail')->name('detail_blog');
 Route::get('search', 'HomeController@search_main')->name('search_main');
 Route::post('search_main', 'HomeController@search_main_ajax')->name('search_main_ajax');
 Route::post('pre-order', 'HomeController@pre_order')->name('pre_order');
@@ -77,6 +78,7 @@ Route::prefix('cart/')->group(function () {
 Route::prefix('ajax/')->group(function () {
     Route::post('format', 'ClientProductsController@format')->name('format');
     Route::post('set_cookie', 'OptionController@set_cookie')->name('set_cookie');
+    Route::post('set_nsp', 'OptionController@set_nsp')->name('set_nsp');
     Route::post('change_address', 'CartController@change_address')->name('change_address');
     Route::post('change_address_2', 'AdminOrderController@change_address')->name('change_address_2');
     Route::prefix('category/')->group(function () {
@@ -225,6 +227,13 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::post('add', 'AdminBannerController@banner_handle_add')->name('banner_handle_add');
             Route::get('edit/{id}', 'AdminBannerController@banner_view_edit')->name('banner_view_edit')->where('id', '^[0-9]+$');
             Route::post('edit/{id}', 'AdminBannerController@banner_handle_edit')->name('banner_handle_edit')->where('id', '^[0-9]+$');
+        });
+        Route::prefix('ads/')->group(function () {
+            Route::get('add', 'AdminBannerController@ads_view_add')->name('ads_view_add');
+            Route::post('add', 'AdminBannerController@ads_handle_add')->name('ads_handle_add');
+            Route::get('edit/{id}', 'AdminBannerController@ads_view_edit')->name('ads_view_edit')->where('id', '^[0-9]+$');
+            Route::post('edit/{id}', 'AdminBannerController@ads_handle_edit')->name('ads_handle_edit')->where('id', '^[0-9]+$');
+            Route::post('delete/{id}', 'AdminBannerController@delete_handle')->name('ads_handle_delete')->where('id', '^[0-9]+$');
         });
         Route::prefix('slide/')->group(function () {
             Route::get('browser', 'AdminBannerController@slide_view_add')->name('slide_view_add');

@@ -138,6 +138,20 @@ $(function () {
         });
     }
     var view = $("#cookie_view").val();
+    var nsp = $("#no-show-popup").val();
+    if (nsp == 0) {
+        const myTimeout = setTimeout(myPopup, 2000);
+        function myPopup() {
+            $("#popup").modal("show");
+        }
+    }
+    $(document).on("click", "#no-popup", function () {
+        if ($(this).is(":checked")) {
+            set_ses_popup(1);
+        } else {
+            set_ses_popup(0);
+        }
+    });
     var url__preOrder = route("pre_order");
     set_cookie_view(view);
     var urlQv = route("loadDataQuickView");
@@ -195,7 +209,7 @@ $(function () {
             $(".rsQueryMobile").slideUp();
         }
     });
-//  custom vị trí cho btn modal quick view
+    //  custom vị trí cho btn modal quick view
     function settingBtnModal() {
         var height = $(window).height();
         var heightModal = $("#quickModal .modal-content").height();
@@ -378,6 +392,19 @@ $(function () {
         });
         return false;
     });
+    function set_ses_popup(nsp) {
+        var url_cookie = route("set_nsp");
+        $.ajax({
+            type: "post",
+            url: url_cookie,
+            data: { val: nsp },
+            dataType: "text",
+            success: function (data) {
+                console.log(data);
+            },
+        });
+    }
+
     function set_cookie_view($type = "grid") {
         var url_cookie = route("set_cookie");
         $.ajax({
@@ -588,7 +615,7 @@ $(function () {
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });
-window.addEventListener("DOMContentLoaded" , function(){
-    $("#loading").css('display', 'none');
-    $("#bg-loading").css('display', 'none');
+window.addEventListener("DOMContentLoaded", function () {
+    $("#loading").css("display", "none");
+    $("#bg-loading").css("display", "none");
 });

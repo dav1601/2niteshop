@@ -11,12 +11,12 @@ $name = Route::currentRouteName();
     <meta property="fb:admins" content="100007446334009" />
     <meta property="fb:app_id" content="349901006628885" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ $file->ver_img('client/images/email-logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
     <title>@yield('title' , config('2niteseo.meta.defaults.title'))</title>
     <link rel="canonical" href="{{ URL::current() }}">
-    <meta name='description' itemprop='description' content='@yield(' meta-desc' ,
+    <meta name='description' itemprop='description' content='@yield('meta-desc' ,
         config('2niteseo.meta.defaults.description'))' />
-    <meta name='keywords' content='@yield(' meta-keyword' , config('2niteseo.meta.defaults.keywords'))' />
+    <meta name='keywords' content='@yield('meta-keyword' , config('2niteseo.meta.defaults.keywords'))' />
     <meta property="og:description" content="@yield('og-desc' , config('2niteseo.meta.defaults.description'))" />
     <meta property="og:title" content="@yield('og-title' , config('2niteseo.meta.defaults.title'))" />
     <meta property="og:image" content="@yield('og-image' , $file->ver_img('client/images/banner_2nite.png'))" />
@@ -102,7 +102,6 @@ $name = Route::currentRouteName();
     <div id="bg-menu" class="d-none"></div>
     <x-mobile.menu />
     <x-mobile.cart.wp />
-
     @if (Gate::allows('group-admin'))
     <x-admin.navbar />
     @endif
@@ -126,10 +125,12 @@ $name = Route::currentRouteName();
         <x-Footer />
     </div>
     <input type="hidden" name="" value="{{ $name }}" id="nameRoute">
-    <input type="hidden" name="" id="cookie_view" value="{{ Cookie::has('view') ? Cookie::get('view'): " grid" }}">
+    <input type="hidden" name="" id="cookie_view" value="{{ Cookie::has('view') ? Cookie::get('view'): "grid" }}">
+    <input type="hidden" name="" id="no-show-popup" value="{{ Session::has('nsp') ? Session::get('nsp') : 0 }}">
     <x-modal.Product />
     <x-modal.preorder />
     <x-Ajax />
+    <x-popup />
 </body>
 
 </html>

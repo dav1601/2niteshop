@@ -1,0 +1,21 @@
+davi_server:
+  build: .
+  dockerfile: docker/Dockerfile
+  container_name: davi_framework
+  wroking_dir: \\wsl$\Ubuntu-20.04/var
+  ports:
+     - "80:80"
+  volumes:
+  - .:/xampp/htdocs/nava_docker
+  - ./docker/nginx_log:/xampp/htdocs/nava_docker/log/nginx
+  - ./docker/php-fpm/php-fpm.log:/xampp/htdocs/nava_docker/log/php-fpm.log
+  - ./docker/config/app.conf:/etc/nginx/conf.d/app.conf
+  links:
+  - mysql
+mysql:
+   image: mysql:5.6
+   container_name: davi_mysql
+   ports:
+   - "3308:3306"
+   volumes:
+   - ./docker/mysql

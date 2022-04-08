@@ -10,10 +10,9 @@ $route = Route::currentRouteName();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('admin/layout/navi.png') }}" type="image/jpg">
+    <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
     <title> @yield('title', '2NITE SHOP')</title>
     <link rel="stylesheet" href="{{ asset('plugin/reset.css') }}">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -378,6 +377,13 @@ $route = Route::currentRouteName();
                                                 class="{{ $route == 'slide_view_add'?'route_active':''  }} ">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
                                                 <span>Quản Lý Slide</span>
+                                            </a>
+                                        </li>
+                                        <li class="item">
+                                            <a href="{{ route('ads_view_add') }}"
+                                                class="{{ $route == 'ads_view_add'?'route_active':''  }} ">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Quản Lý ADS</span>
                                             </a>
                                         </li>
                                     </ul>

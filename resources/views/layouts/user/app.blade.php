@@ -11,7 +11,7 @@ $name = Route::currentRouteName();
     <meta property="fb:admins" content="100007446334009" />
     <meta property="fb:app_id" content="349901006628885" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ $file->ver_img('client/images/email-logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
     <title>@yield('title' , config('2niteseo.meta.defaults.title'))</title>
     <link rel="canonical" href="{{ URL::current() }}">
     <meta name='description' itemprop='description' content='@yield(' meta-desc' ,
@@ -226,6 +226,7 @@ $name = Route::currentRouteName();
     <input type="hidden" name="" value="{{ $name }}" id="nameRoute">
     <x-modal.Product />
     <x-Ajax />
+    <x-popup />
 </body>
 
 </html>

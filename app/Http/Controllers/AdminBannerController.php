@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ads;
 use App\Models\Banners;
 use App\Models\Slides;
 use App\Repositories\FileInterface;
@@ -40,7 +41,7 @@ class AdminBannerController extends Controller
     }
     ////////////////////////////////////////
 
-    public function banner_handle_add(Request $request , FileInterface $file)
+    public function banner_handle_add(Request $request, FileInterface $file)
     {
         $data = array();
         $validator = Validator::make(
@@ -74,7 +75,7 @@ class AdminBannerController extends Controller
                 $data['index'] = $request->index;
                 $data['position'] = $request->position;
                 $path_img = "admin/images/banners/";
-                $data['img'] = $file->storeFileImg($request->img , $path_img);
+                $data['img'] = $file->storeFileImg($request->img, $path_img);
                 Banners::create($data);
                 return redirect()->back()->with('ok', '1');
             }
@@ -82,7 +83,7 @@ class AdminBannerController extends Controller
     }
 
     ////////////////////////////////////////
-    public function banner_handle_edit($id, Request $request , FileInterface $file)
+    public function banner_handle_edit($id, Request $request, FileInterface $file)
     {
         $data = array();
         $validator = Validator::make(
@@ -104,14 +105,14 @@ class AdminBannerController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         } else {
-            $banner = Banners::where('id', '=' , $id)->first();
+            $banner = Banners::where('id', '=', $id)->first();
             $data['name'] = $request->name;
             $data['link'] = $request->link;
             if ($request->has('img')) {
                 if ($banner->img != NULL)
-                unlink("public/" . $banner->img);
+                    unlink("public/" . $banner->img);
                 $path_img = "admin/images/banners/";
-                $data['img'] = $file->storeFileImg($request->img , $path_img);
+                $data['img'] = $file->storeFileImg($request->img, $path_img);
             }
             Banners::where('id', '=', $id)->update($data);
             return redirect()->back()->with('ok', '1');
@@ -132,7 +133,7 @@ class AdminBannerController extends Controller
     ////////////////////////////////////////
     ////////////////////////////////////////
 
-    public function slide_handle_add(Request $request , FileInterface $file)
+    public function slide_handle_add(Request $request, FileInterface $file)
     {
         $data = array();
         $validator = Validator::make(
@@ -189,7 +190,7 @@ class AdminBannerController extends Controller
                 $data['status'] = $request->stt;
                 $data['author_post'] = Auth::user()->name;
                 $path = "admin/images/slides/";
-                $data['img'] = $file->storeFileImg($request->img , $path);
+                $data['img'] = $file->storeFileImg($request->img, $path);
             }
             // ///
             Slides::create($data);
@@ -288,6 +289,41 @@ class AdminBannerController extends Controller
         }
         $data['html'] = $output;
         return response()->json($data);
+    }
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function ads_view_add(Request $request)
+    {
+        $ads = Ads::all();
+        return view('admin.slides_banners.ads.add', compact('ads'));
+    }
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function ads_handle_add(Request $request, FileInterface $file)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'link' => 'required',
+                'img' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+            ],
+
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            $data['active'] = $request->active;
+            $data['link'] = $request->link;
+            $data['type'] = $request->type;
+            $path = "admin/images/ads/";
+            $data['img'] = $file->storeFileImg($request->img, $path);
+            Ads::create($data);
+            return redirect()->back()->with('ok', 1);
+        }
     }
 
     ////////////////////////////////////////

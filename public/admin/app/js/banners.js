@@ -10,6 +10,10 @@ $(function () {
         var file = $(this)[0].files;
         $("#forBanner").html(file[0].name);
     });
+    $(document).on('change', "#imgAds", function () {
+        var file = $(this)[0].files;
+        $("#forAds").html(file[0].name);
+    });
     $(document).on('change', "#imgSlide", function () {
         var file = $(this)[0].files;
         $("#forSlide").html(file[0].name);

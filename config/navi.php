@@ -11,11 +11,12 @@ return [
         "2" => "Đã Gỡ"
     ),
     'realted_posts' => array(
-        'category' => "Danh Mục" ,
+        'category' => "Danh Mục",
         'product' => "Sản Phẩm"
     ),
     'realted_products' => array(
-        'blog' => "Bài Viết" ,
+        'blog' => "Bài Viết",
         'product' => "Sản Phẩm"
     ),
+    'ads_type' => array('popup', 'ads'),
 ];
