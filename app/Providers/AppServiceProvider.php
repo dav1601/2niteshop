@@ -45,5 +45,6 @@ class AppServiceProvider extends ServiceProvider
         } else {
             \Debugbar::enable();
         }
+        
     }
 }

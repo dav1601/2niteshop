@@ -65,10 +65,13 @@ class ProductsController extends Controller
       public function product_properties(){}
     /**
      * List all products.
-     * Lấy danh sách sản phẩm.
+     * Lấy danh sách sản phẩm theo danh mục hoặc tất cả.
      * @group PRODUCTS API
+     * @header access-control-allow-origin *
+     * @header access-control-allow-methods *
+     * @header access-control-allow-headers Content-Type, X-Auth-Token, Origin, Authorization, X-CSRF-Token
      * @queryParam token_api string required Example: 19aIotXOerK
-     * @queryParam category int Default: null For All Cate Example: 1
+     * @queryParam category string Default: null For All Cate Example: ps5
      * @queryParam genre string Default: null For All Genre Game Example: Action,Adventure
      * @queryParam sort string ASC/DESC Default: DESC Example: DESC
      * @queryParam key_sort string Default: id Example: id
@@ -86,15 +89,17 @@ class ProductsController extends Controller
         $page =  $request->has('page') && $request->page != null ? $request->page : 1;
         $products = new Products();
         if ($category != 0) {
+            $category = Category::where('slug', $category)->firstOrFail()->id;
             if ($category != 129) {
-                $products = $products->where(function ($query) use ($category) {
-                    $query->where('cat_id', '=', $category)
-                        ->orWhere('cat_2_id', '=', $category)
-                        ->orWhere('cat_2_sub', '=', $category)
-                        ->orWhere('sub_1_cat_id', '=', $category)
-                        ->orWhere('sub_2_cat_id', '=', $category)
-                        ->orWhere('op_sub_1_id', '=', $category)
-                        ->orWhere('op_sub_2_id', '=', $category);
+                $list_products = array();
+        foreach (Category::find(78)->products()->select('products_id')->get()->toArray() as $item) {
+            $list_products[] = $item['products_id'];
+        }
+                $products = $products->where(function ($query) use ($category , $list_products) {
+                    $query->where('cat_id',  $category)
+                        ->orWhere('sub_1_cat_id', $category)
+                        ->orWhere('sub_2_cat_id',  $category)
+                        ->orWhereIn('id', $list_products);
                 });
             } else {
                 $products = Products::where('usage_stt', '=', 2);
@@ -124,15 +129,16 @@ class ProductsController extends Controller
     }
     /**
      * Retrieve a product.
-     * API này cho phép bạn truy xuất và xem một sản phẩm cụ thể bằng ID
+     * API này cho phép bạn truy xuất và xem một sản phẩm cụ thể bằng SLUG
      * @group PRODUCTS API
+     * @urlParam slug string required Example: nintendo-switch-oled-model-with-neon-red-blue-joycon
      * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/products/product.json
      */
-    public function retrieve_product($id, Request $request)
+    public function retrieve_product($slug, Request $request)
     {
-        $product = Products::where('id', '=', $id)->firstOrFail();
-        $fullset = 0;
+        $product = Products::where('slug',  $slug)->firstOrFail();
+        $id = $product->id;
         $policies = array();
         $banner = gllProducts::where('products_id', '=', $product->id)->where('index', '=', 1)->where('size', '=', 700)->first();
         $policy = explode(",", $product->policy);
