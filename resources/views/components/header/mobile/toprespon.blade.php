@@ -1,7 +1,7 @@
 <div id="biad__header--top" class="d-none resposive position-relative">
     <div class="header__content--search --mobile d-none position-absolute w-100">
         <form action="{{ route('search_main') }}" method="get" class="d-flex position-relative" value="">
-            <input type="text" name="keyword" id="search"
+            <input type="text" name="keyword" id="search_term"
                 value="@if (Request::has('keyword')) {{ Request::get('keyword') }}@endif"
                 placeholder="Nhập từ khoá sản phẩm cần tìm.....">
             <button type="submit"><i class="fas fa-search"></i></button>
