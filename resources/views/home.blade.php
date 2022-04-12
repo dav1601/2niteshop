@@ -5,7 +5,7 @@
 @section('banner')
 <div class="banner">
     <a href="{{ url($banner->link) }}" class="d-block">
-        <img src="{{ $file->ver_img($banner->img) }}" alt="{{ $banner->name }}" class="img-fluid">
+        <img src="{{ $file->ver_img($banner->img) }}" alt="{{ $banner->name }}" class="img-fluid lazy">
     </a>
 </div>
 @endsection
@@ -70,15 +70,15 @@ $bg = asset(getVal('background')->value);
                         @if ($loop->first)
                         <div class="carousel-item active">
                             <a href="{{ url($slide->link) }}" class="d-block">
-                                <img src="{{ $file->ver_img($slide->img) }}" class="d-block w-100 img-fluid"
-                                    alt="{{ $slide->name }}">
+                                <img  class="d-block w-100 img-fluid lazy"
+                                    alt="{{ $slide->name }}"   src="{{ $file->ver_img($slide->img) }}" >
                             </a>
                         </div>
                         @else
                         <div class="carousel-item">
                             <a href="{{ url($slide->link) }}" class="d-block">
-                                <img src="{{ $file->ver_img($slide->img)}}" class="d-block w-100 img-fluid"
-                                    alt="{{ $slide->name }}">
+                                <img  class="d-block w-100 img-fluid lazy"
+                                    alt="{{ $slide->name }}"   src="{{ $file->ver_img($slide->img) }}">
                             </a>
                         </div>
                         @endif
@@ -97,7 +97,7 @@ $bg = asset(getVal('background')->value);
                 @foreach ($banners as $bn )
                 @if ($bn -> position == "Phải")
                 <a href="{{ url($bn->link) }}" class="d-block">
-                    <img src="{{ $file->ver_img($bn->img) }}" alt="{{ $bn->name }}" width="100%" height="auto"
+                    <img src="{{ $file->ver_img($bn->img) }}"  class="lazy" alt="{{ $bn->name }}" width="100%" height="auto"
                         alt="{{ $bn->name }}">
                 </a>
                 @endif
@@ -112,7 +112,7 @@ $bg = asset(getVal('background')->value);
         @if ($bt -> position == "Dưới")
         <div class="item bot__banner--item">
             <a href="{{ url($bt->link) }}" class="d-block w-100">
-                <img src="{{ $file->ver_img($bt->img) }}" class="img-fluid" alt="{{ $bt->name }}">
+                <img src="{{ $file->ver_img($bt->img) }}"  class="img-fluid lazy" alt="{{ $bt->name }}">
             </a>
         </div>
         @endif
@@ -122,22 +122,22 @@ $bg = asset(getVal('background')->value);
     <div class="w-100  owl-carousel owl-theme mb-4">
         <div class="item">
             <a  class="d-block w-100">
-                <img src="{{ $file->ver_img('client/images/plc-1.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+                <img src="{{ $file->ver_img('client/images/plc-1.png') }}"  class="img-fluid lazy" alt="{{ $bt->name }}">
             </a>
         </div>
         <div class="item">
             <a  class="d-block w-100">
-                <img src="{{ $file->ver_img('client/images/plc-2.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+                <img  src="{{ $file->ver_img('client/images/plc-2.png') }}"  class="img-fluid lazy" alt="{{ $bt->name }}">
             </a>
         </div>
         <div class="item">
             <a  class="d-block w-100">
-                <img src="{{ $file->ver_img('client/images/plc-3.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+                <img src="{{ $file->ver_img('client/images/plc-3.png') }}"  class="img-fluid lazy" alt="{{ $bt->name }}">
             </a>
         </div>
         <div class="item">
             <a  class="d-block w-100">
-                <img src="{{ $file->ver_img('client/images/plc-4.png') }}" class="img-fluid" alt="{{ $bt->name }}">
+                <img src="{{ $file->ver_img('client/images/plc-4.png') }}"  class="img-fluid lazy" alt="{{ $bt->name }}">
             </a>
         </div>
     </div>
@@ -245,35 +245,35 @@ $bg = asset(getVal('background')->value);
             <div class="box__banner">
                 <div class="box__banner--main">
                     <a href="{{ url($cf->main_link) }}" class="d-block">
-                        <img src="{{ $file->ver_img($cf->main_img) }}" alt="{{ $cf->name }}" class="img-fluid">
+                        <img   src="{{ $file->ver_img($cf->main_img) }}" alt="{{ $cf->name }}" class="img-fluid lazy">
                     </a>
                 </div>
                 <div class="box__banner--sub owl-carousel owl-theme">
                     @if ($cf->use_img != NULL)
                     <div class="item pl-0">
                         <a href="{{ $cf->use_link }}" class="d-block">
-                            <img src="{{ $file->ver_img($cf->use_img)  }}" alt="{{ $cf->name }}" class="img-fluid">
+                            <img  src="{{ $file->ver_img($cf->use_img)  }}" alt="{{ $cf->name }}" class="img-fluid lazy">
                         </a>
                     </div>
                     @endif
                     @if ($cf->instruct_img != NULL)
                     <div class="item">
                         <a href="{{ $cf->instruct_link	 }}" class="d-block">
-                            <img src="{{ $file->ver_img($cf->instruct_img)  }}" alt="{{ $cf->name }}" class="img-fluid">
+                            <img  src="{{ $file->ver_img($cf->instruct_img)  }}" alt="{{ $cf->name }}" class="img-fluid lazy">
                         </a>
                     </div>
                     @endif
                     @if ($cf->access_img != NULL)
                     <div class="item">
                         <a href="{{ $cf->access_link	}}" class="d-block">
-                            <img src="{{ $file->ver_img($cf->access_img)  }}" alt="{{ $cf->name }}" class="img-fluid">
+                            <img  src="{{ $file->ver_img($cf->access_img)  }}" alt="{{ $cf->name }}" class="img-fluid lazy">
                         </a>
                     </div>
                     @endif
                     @if ($cf->fix_img != NULL)
                     <div class="item pr-0">
                         <a href="{{ $cf->fix_link	}}" class="d-block">
-                            <img src="{{ $file->ver_img($cf->fix_img)  }}" alt="{{ $cf->name }}" class="img-fluid">
+                            <img  src="{{ $file->ver_img($cf->fix_img)  }}" alt="{{ $cf->name }}" class="img-fluid lazy">
                         </a>
                     </div>
                     @endif
@@ -600,7 +600,7 @@ $bg = asset(getVal('background')->value);
     <div id="home__blogs--content" class="container">
         <a href="{{ url('tin-tuc') }}" id="home__blogs--title">
             <img src="{{ $file->ver_img('client/images/bang-tin-home-banner-1280x80.jpg') }}" alt="Bảng Tin"
-                class="img-fluid">
+                class="img-fluid lazy">
         </a>
         <div id="area__blogs">
             <div class="tab-content" id="myTabContent__blogs">

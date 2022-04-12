@@ -141,12 +141,12 @@ class ProductsController extends Controller
         $id = $product->id;
         $policies = array();
         $banner = gllProducts::where('products_id', '=', $product->id)->where('index', '=', 1)->where('size', '=', 700)->first();
-        $policy = explode(",", $product->policy);
+        $policy = Products::find($product->id)->policies;
         foreach ($policy as $item) {
-            if (Policy::where('id', '=', $item)->first()->fullset == 1) {
+            if (Policy::where('id', '=', $item->plc_id)->first()->fullset == 1) {
                 $fullset = $item;
             } else {
-                $policies[] = Policy::where('id', '=', $item)->first();
+                $policies[] = Policy::where('id', '=', $item->plc_id)->first();
             }
         }
         $policies = collect($policies);

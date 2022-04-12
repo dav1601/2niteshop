@@ -64,7 +64,7 @@
             </div>
             @if ($category->img != NULL)
             <div id="category__banner">
-                <img src="{{ $file->ver_img($category->img) }}" height="auto" width="100%" alt="{{ $category->name }}">
+                <img src="{{ $file->ver_img($category->img) }}" class="lazy" height="auto" width="100%" alt="{{ $category->name }}">
             </div>
             @endif
             @if (count($list_banner) > 0)
@@ -72,7 +72,7 @@
                 @foreach ($list_banner as $banner )
                 <div class="item">
                     <a href="{{ url('category/'.$banner->link) }}" class="d-block">
-                        <img src="{{ $file->ver_img($banner->path) }}" class="img-fluid" alt="{{ $category->name }}">
+                        <img src="{{ $file->ver_img($banner->path) }}" class="img-fluid lazy" alt="{{ $category->name }}">
                     </a>
                 </div>
                 @endforeach

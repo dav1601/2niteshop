@@ -7,9 +7,6 @@ $(function () {
     //
     //
     $('[data-toggle="tooltip"]').tooltip();
-    $(window).resize(function () {
-        settingBtnModal();
-    });
 
     $(".tawk-button").css("width", "30px !important");
     //  chỉnh chiều cao cho ảnh phải banner
@@ -59,9 +56,6 @@ $(function () {
     // }
 
     setHeight();
-    $(window).resize(function () {
-        setHeight();
-    });
     $(document).on("click", ".btn-number", function (e) {
         e.preventDefault();
         var fieldName = $(this).attr("data-field");
@@ -631,6 +625,9 @@ $(function () {
         }
     );
     $(window).resize(function () {
+        $(".lazy").Lazy();
+        setHeight();
+        settingBtnModal();
         var right = parseInt($(".cart__mobile").css("right"));
         var windowWidth = $(window).width();
         if (right < 0) {
