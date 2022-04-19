@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
+        \App\Http\Middleware\Cors::class,
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -68,5 +69,6 @@ class Kernel extends HttpKernel
         'superAdmin' => \App\Http\Middleware\superAdmin::class,
         'auth.api.admin' => \App\Http\Middleware\Api\AdminAuth::class,
         'auth.api.docs' => \App\Http\Middleware\Api\DocsApi::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 }

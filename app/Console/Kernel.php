@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\MinifyFile::class,
         Commands\ClearDebugbar::class,
-        Commands\ClearHistory::class
+        Commands\ClearHistory::class,
+        Commands\CleanAll::class
     ];
     /**
      * Define the application's command schedule.
