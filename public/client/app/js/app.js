@@ -625,7 +625,6 @@ $(function () {
         }
     );
     $(window).resize(function () {
-        $(".lazy").Lazy();
         setHeight();
         settingBtnModal();
         var right = parseInt($(".cart__mobile").css("right"));
@@ -657,7 +656,4 @@ $(function () {
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });
-window.addEventListener("DOMContentLoaded", function () {
-    $("#loading").css("display", "none");
-    $("#bg-loading").css("display", "none");
-});
+

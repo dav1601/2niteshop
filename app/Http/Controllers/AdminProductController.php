@@ -5,28 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Policy;
 use App\Models\CatGame;
 use App\Models\Category;
+use App\Models\PreOrder;
 use App\Models\Producer;
 use App\Models\Products;
 use App\Models\Insurance;
-use App\Models\gllProducts;
-use App\Models\PreOrder;
-use App\Models\ProductCategories;
 use App\Models\ProductIns;
 use App\Models\ProductPlc;
-use App\Models\RelatedPosts;
+use App\Models\gllProducts;
 use App\Models\typeProduct;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use App\Models\RelatedPosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\RelatedProducts;
-use App\Repositories\CustomerInterface;
-use App\Repositories\FileInterface;
+use App\Models\ProductCategories;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\FileInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use App\Repositories\CustomerInterface;
 use Illuminate\Support\Facades\Validator;
+use Spatie\ResponseCache\Facades\ResponseCache;
 
 class AdminProductController extends Controller
 {
@@ -105,7 +106,7 @@ class AdminProductController extends Controller
         $related_blog = Products::find($id)->related_blogs()->get()->toArray();
         $product_categories = Products::find($id)->categories()->select('category_id')->get()->toArray();
         $array_pc = array();
-        foreach($product_categories as $pc) {
+        foreach ($product_categories as $pc) {
             $array_pc[] = $pc['category_id'];
         }
         if (count($related) > 0) {
@@ -129,7 +130,7 @@ class AdminProductController extends Controller
             $selected_js_blog = "";
         }
         $url = route('product_view_edit', ['id' => $id]);
-        return view('admin.products.edit', compact('id', 'category', 'ins', 'policy', 'producer', 'cat_game', 'type', 'cat_s2', 'product', 'sub_type', 'selected', 'selected_blog', 'url', 'selected_js_product', 'selected_js_blog', 'array_products', 'array_blogs', 'product_policies', 'product_ins' ,'array_pc'));
+        return view('admin.products.edit', compact('id', 'category', 'ins', 'policy', 'producer', 'cat_game', 'type', 'cat_s2', 'product', 'sub_type', 'selected', 'selected_blog', 'url', 'selected_js_product', 'selected_js_blog', 'array_products', 'array_blogs', 'product_policies', 'product_ins', 'array_pc'));
     }
     // //////////////////////////////////////// end view edit
     public function product_handle_add(Request $request)
@@ -225,8 +226,6 @@ class AdminProductController extends Controller
             $data_create['author_id'] = Auth::id();
             $data_create['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
             $data_create['video'] = $request->video;
-            $data_create['cat_2_id'] = $request->cat_2;
-            $data_create['cat_2_sub'] = $request->cat_2_id;
 
             // /////////////////////////////////
             if ($request->has('banner')) {
@@ -407,27 +406,15 @@ class AdminProductController extends Controller
             $data_update['model'] = $request->model;
             $data_update['cat_id'] = $request->cat;
             $data_update['cat_name'] = Category::where('id', '=', $request->cat)->first()->name;
-            $data_update['cat_2_id'] = $request->cat_2;
-            $data_update['cat_2_sub'] = $request->cat_2_id;
             if ($request->cat_1 != null) {
                 $data_update['sub_1_cat_id'] = $request->cat_1;
                 $data_update['sub_1_cat_name'] = Category::where('id', '=', $request->cat_1)->first()->name;
-            } else {
-                $data_update['sub_1_cat_id'] = $request->cat;
-                $data_update['sub_1_cat_name'] = Category::where('id', '=', $request->cat)->first()->name;
             }
             if ($request->cat_2 != 0) {
                 $data_update['sub_2_cat_id'] = $request->cat_2;
                 $data_update['sub_2_cat_name'] = Category::where('id', '=', $request->cat_2)->first()->name;
             }
-            if ($request->op_sub_1 != "") {
-                $data_update['op_sub_1_id'] = $request->op_sub_1;
-                $data_update['op_sub_1_name'] = Category::where('id', '=', $request->op_sub_1)->first()->name;
-            }
-            if ($request->op_sub_2 != 0) {
-                $data_update['op_sub_2_id'] = $request->op_sub_2;
-                $data_update['op_sub_2_name'] = Category::where('id', '=', $request->op_sub_2)->first()->name;
-            }
+
             if ($request->sub_type != 0) {
                 $data_update['sub_type'] = typeProduct::where('id', '=', $request->sub_type)->first()->name;
             } else {
@@ -506,7 +493,7 @@ class AdminProductController extends Controller
                 $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
             }
             // update product
-            Products::where('id', '=', $id)->update($data_update);
+            Products::where('id', $id )->update($data_update);
             // ///////// update pre order product
             if ($request->stock == 1) {
                 PreOrder::where('products_id', '=', $id)->update([
@@ -584,7 +571,6 @@ class AdminProductController extends Controller
                 }
             }
             // end 80000000000000000000000000000000
-
             return redirect()->back()->with('ok', '1');
         }
     }

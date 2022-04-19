@@ -410,7 +410,12 @@ $bg = asset($product->bg);
             {{-- end else type game --}}
             @php
             $sub_1_cat_id = $product->sub_1_cat_id;
-            $games = App\Models\Products::where('sub_1_cat_id', '=', $sub_1_cat_id);
+            $cat_2_sub = $product->cat_2_sub;
+            $games = App\Models\Products::where(function ($query) use ($sub_1_cat_id , $cat_2_sub)
+            {
+            $query->where('sub_1_cat_id', '=', $sub_1_cat_id)
+            ->orWhere('cat_2_sub', '=', $cat_2_sub);
+            });
             $games = $games -> where('type' , 'LIKE' , 'game')->orderBy('id' , 'DESC') ->get();
             @endphp
             @if (count($games) > 0 )

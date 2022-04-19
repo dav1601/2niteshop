@@ -1,4 +1,3 @@
-
 $(function () {
     $.ajaxSetup({
         headers: {
@@ -46,10 +45,9 @@ $(function () {
                     }
                 });
                 // stats profit all day in month
-
                 var arrayCheck = [];
                 $.each(data.stats, function (key2, val2) {
-                    
+
                     dataPoints.push({ x: parseInt(val2.day), y: parseInt(val2.profit) });
                     arrayCheck.push(parseInt(val2.day));
                 });
@@ -83,7 +81,6 @@ $(function () {
                         dataPoints2.push({ x: valueOfElement, y: parseInt(0) });
                     }
                 });
-                console.log(dataPoints , dataPoints2);
                 var chart = new CanvasJS.Chart("chartContainer", {
                     animationEnabled: true,
                     exportEnabled: true,
@@ -128,7 +125,7 @@ $(function () {
                             dataPoints: dataPoints2,
                         }
                     ]
-                    
+
                 });
                 // //////////////////////
                 chart.render();

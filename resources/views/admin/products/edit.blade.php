@@ -40,7 +40,7 @@ Chỉnh sửa sản phẩm
         <div class="w-100">
             <div class="card">
                 <div class="card-header text-center">
-                    Cập Nhật Sản Phẩm
+                    Cập Nhật Sản Phẩm 
                 </div>
 
                 <div class="card-body" id="product__add">

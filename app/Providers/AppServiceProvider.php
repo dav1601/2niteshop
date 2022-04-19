@@ -39,12 +39,9 @@ class AppServiceProvider extends ServiceProvider
         View::share('carbon', new Carbon());
         View::share('daviUser', $daviUser);
         View::share('file', $file);
-        if (config('app.env') == "production") {
-            \Debugbar::disable();
+        if (env('FORCUS_HTTPS')) {
             URL::forceScheme('https');
-        } else {
-            \Debugbar::enable();
         }
-        
+
     }
 }

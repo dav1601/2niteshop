@@ -1,2 +1,1 @@
-$(function(){$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});jQuery.loading=function loading(){$("#loading").css('display','flex');$("#bg-loading").css('display','blog')}
-jQuery.end_loading=function end_loading(){$("#loading").css('display','none');$("#bg-loading").css('display','none')}})
+$(function(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content"),},});jQuery.loading=function loading(){$("#bg-loading").css("display","block");$("#loading").css("display","flex")};jQuery.end_loading=function end_loading(){$("#bg-loading").css("display","none");$("#loading").css("display","none")}})

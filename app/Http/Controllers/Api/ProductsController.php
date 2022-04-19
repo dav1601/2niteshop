@@ -147,7 +147,7 @@ class ProductsController extends Controller
                 $fullset = $item;
             } else {
                 $policies[] = Policy::where('id', '=', $item->plc_id)->first();
-            }
+            }   
         }
         $policies = collect($policies);
         $policies = $policies->sortBy('position');
