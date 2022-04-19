@@ -1,0 +1,122 @@
+name: 'Reset Password Api'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/auth/reset/passowrd/forgot
+    metadata:
+      title: 'Forgot Password.'
+      description: 'Api dùng để xác nhận số điện thoại và gửi OTP để khôi phục mật khẩu.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters:
+      phone:
+        name: phone
+        description: 'max:15'
+        required: true
+        example: '0986868568'
+        type: string
+        custom: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "check": true,
+              "send_code": true,
+              "code": 160101,
+              "phone": "0858467890",
+              "message": "Gửi mã OTP thành công",
+              "phone_format": "+84858467890"
+            }
+        headers: []
+        description: '200'
+    responseFields: []
+  -
+    httpMethods:
+      - POST
+    uri: api/auth/reset/passowrd/verification
+    metadata:
+      title: 'Api Verification OTP.'
+      description: 'Api dùng đẻ xác nhận mã OTP có trong hệ thống.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters:
+      code:
+        name: code
+        description: 'max:6'
+        required: true
+        example: 160101
+        type: integer
+        custom: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "info": {
+                "phone": "0858458469",
+                "code": 600728,
+                "created_at": "2022-03-22 18:46:15"
+              },
+              "code": "600728",
+              "verification": true
+            }
+        headers: []
+        description: '200'
+    responseFields: []
+  -
+    httpMethods:
+      - POST
+    uri: api/auth/reset/passowrd/new_password
+    metadata:
+      title: 'Api New Password.'
+      description: 'Api dùng để thay đổi mật khẩu mới.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters:
+      code:
+        name: code
+        description: 'max:6'
+        required: true
+        example: 160101
+        type: integer
+        custom: []
+      phone:
+        name: phone
+        description: 'max:15'
+        required: true
+        example: '0801160169'
+        type: string
+        custom: []
+      password:
+        name: password
+        description: ''
+        required: true
+        example: TestApi1612001
+        type: string
+        custom: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "changed_password": true,
+              "message": "Đã thay đổi mật khẩu thành công"
+            }
+        headers: []
+        description: '200'
+    responseFields: []
