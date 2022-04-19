@@ -42,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
         if (env('FORCUS_HTTPS')) {
             URL::forceScheme('https');
         }
-
+        if (env('DEBUGBAR_ENABLED')) {
+            \Debugbar::enable();
+        } else {
+            \Debugbar::disable();
+        }
     }
 }

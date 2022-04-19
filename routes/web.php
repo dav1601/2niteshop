@@ -18,31 +18,57 @@ use Illuminate\Support\Facades\Request;
 |
 */
 
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('contact', 'HomeController@contact')->name('contact');
-Route::get('update_api', 'HomeController@api');
-Route::get('test/template', function () {
-    return view('admin.api.mail.send_security_code');
+Route::middleware(['speedUp'])->group(function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('contact', 'HomeController@contact')->name('contact');
+    Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
+    Route::get('products/{slug}', 'ClientProductsController@detail_product')->name('detail_product');
+    Route::get('products/{parent_1?}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_2');
+    Route::get('products/{parent_1?}/{parent_2}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_3');
+
+    Route::get('pages/{slug}', 'ClientPageController@index')->name('detail_page');
+    Route::get('producer/{slug}', 'ClientProductsController@producer')->name('producer');
+
+    Route::get('category/{slug}', 'ClientProductsController@index')->name('index_product');
+    Route::get('category/{parent_1}/{slug}', 'ClientProductsController@index')->name('index_product_1');
+    Route::get('category/{parent_1}/{parent_2}/{slug}', 'ClientProductsController@index')->name('index_product_2');
+
+    Route::get('tin-tuc/{cat?}', 'ClientBlogController@index')->name('blog');
+    Route::get('tin-tuc/{cat}/{slug}', 'ClientBlogController@detail')->name('detail_blog');
+    Route::get('search', 'HomeController@search_main')->name('search_main');
+    Route::post('search_main', 'HomeController@search_main_ajax')->name('search_main_ajax');
+    Route::post('pre-order', 'HomeController@pre_order')->name('pre_order');
+
+    Route::prefix('cart/')->group(function () {
+        Route::get('show', 'CartController@show')->name('show_cart');
+        Route::post('add_cart', 'CartController@handle_cart')->name('add_cart');
+        Route::get('checkout', 'CartController@checkout')->name('checkout');
+        Route::post('checkout_handle', 'CartController@handle_checkout')->name('handle_checkout');
+        Route::get('checkout_s', 'CartController@checkout_s')->name('checkout_s');
+    });
+    Route::prefix('ajax/')->group(function () {
+        Route::post('format', 'ClientProductsController@format')->name('format');
+        Route::post('set_cookie', 'OptionController@set_cookie')->name('set_cookie');
+        Route::post('set_nsp', 'OptionController@set_nsp')->name('set_nsp');
+        Route::post('change_address', 'CartController@change_address')->name('change_address');
+        Route::post('change_address_2', 'AdminOrderController@change_address')->name('change_address_2');
+        Route::prefix('category/')->group(function () {
+            Route::post('index_ajax', 'ClientProductsController@index_ajax')->name('index_ajax');
+        });
+        Route::post('loadDataQuickView', 'ClientProductsController@loadDataQuickView')->name('loadDataQuickView');
+        Route::post('search', 'HomeController@search')->name('search');
+        Route::post('render_skeleton', 'ClientProductsController@render_skeleton')->name('render_skeleton_product');
+    });
 });
-Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
+
+// Route::get('update_api', 'HomeController@api');
+// Route::get('test/template', function () {
+//     return view('admin.api.mail.send_security_code');
+// });
+
 Auth::routes();
 
-Route::get('products/{slug}', 'ClientProductsController@detail_product')->name('detail_product');
-Route::get('products/{parent_1?}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_2');
-Route::get('products/{parent_1?}/{parent_2}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_3');
 
-Route::get('pages/{slug}', 'ClientPageController@index')->name('detail_page');
-Route::get('producer/{slug}', 'ClientProductsController@producer')->name('producer');
-
-Route::get('category/{slug}', 'ClientProductsController@index')->name('index_product');
-Route::get('category/{parent_1}/{slug}', 'ClientProductsController@index')->name('index_product_1');
-Route::get('category/{parent_1}/{parent_2}/{slug}', 'ClientProductsController@index')->name('index_product_2');
-
-Route::get('tin-tuc/{cat?}', 'ClientBlogController@index')->name('blog');
-Route::get('tin-tuc/{cat}/{slug}', 'ClientBlogController@detail')->name('detail_blog');
-Route::get('search', 'HomeController@search_main')->name('search_main');
-Route::post('search_main', 'HomeController@search_main_ajax')->name('search_main_ajax');
-Route::post('pre-order', 'HomeController@pre_order')->name('pre_order');
 Route::prefix('ajax/')->group(function () {
     Route::post('load__chart', 'AdminAjaxDashBoardController@load__chart')->name('load__chart');
 });
@@ -67,27 +93,9 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::prefix('cart/')->group(function () {
-    Route::get('show', 'CartController@show')->name('show_cart');
-    Route::post('add_cart', 'CartController@handle_cart')->name('add_cart');
-    Route::get('checkout', 'CartController@checkout')->name('checkout');
-    Route::post('checkout_handle', 'CartController@handle_checkout')->name('handle_checkout');
-    Route::get('checkout_s', 'CartController@checkout_s')->name('checkout_s');
-});
 
-Route::prefix('ajax/')->group(function () {
-    Route::post('format', 'ClientProductsController@format')->name('format');
-    Route::post('set_cookie', 'OptionController@set_cookie')->name('set_cookie');
-    Route::post('set_nsp', 'OptionController@set_nsp')->name('set_nsp');
-    Route::post('change_address', 'CartController@change_address')->name('change_address');
-    Route::post('change_address_2', 'AdminOrderController@change_address')->name('change_address_2');
-    Route::prefix('category/')->group(function () {
-        Route::post('index_ajax', 'ClientProductsController@index_ajax')->name('index_ajax');
-    });
-    Route::post('loadDataQuickView', 'ClientProductsController@loadDataQuickView')->name('loadDataQuickView');
-    Route::post('search', 'HomeController@search')->name('search');
-    Route::post('render_skeleton', 'ClientProductsController@render_skeleton')->name('render_skeleton_product');
-});
+
+
 
 Route::prefix('login/social/')->group(function () {
     Route::get('google', 'Auth\LoginController@redirectToGoogle')->name('login_google');
