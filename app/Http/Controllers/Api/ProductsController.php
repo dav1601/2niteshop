@@ -62,14 +62,13 @@ class ProductsController extends Controller
      * @bodyParam author_name varchar Tên người đăng sản phẩm
      * @response {"Đây là tất cả thuộc tính của bảng sản phẩm"}
      * */
-      public function product_properties(){}
+    public function product_properties()
+    {
+    }
     /**
      * List all products.
      * Lấy danh sách sản phẩm theo danh mục hoặc tất cả.
      * @group PRODUCTS API
-     * @header access-control-allow-origin *
-     * @header access-control-allow-methods *
-     * @header access-control-allow-headers Content-Type, X-Auth-Token, Origin, Authorization, X-CSRF-Token
      * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam category string Default: null For All Cate Example: ps5
      * @queryParam genre string Default: null For All Genre Game Example: Action,Adventure
@@ -81,51 +80,55 @@ class ProductsController extends Controller
      * */
     public function index(Request $request)
     {
-        $category = $request->has('category') && $request->category != null ? $request->category : 0;
-        $genre = $request->has('genre') && $request->genre != null ? $request->genre : 0;
-        $sort =  $request->has('sort') && $request->sort != null ? $request->sort : "DESC";
-        $key_sort =  $request->has('key_sort') && $request->key_sort != null ? $request->key_sort : "id";
-        $per_page =  $request->has('per_page') && $request->per_page != null ? $request->per_page : 10;
-        $page =  $request->has('page') && $request->page != null ? $request->page : 1;
-        $products = new Products();
-        if ($category != 0) {
-            $category = Category::where('slug', $category)->firstOrFail()->id;
-            if ($category != 129) {
-                $list_products = array();
-        foreach (Category::find(78)->products()->select('products_id')->get()->toArray() as $item) {
-            $list_products[] = $item['products_id'];
-        }
-                $products = $products->where(function ($query) use ($category , $list_products) {
-                    $query->where('cat_id',  $category)
-                        ->orWhere('sub_1_cat_id', $category)
-                        ->orWhere('sub_2_cat_id',  $category)
-                        ->orWhereIn('id', $list_products);
-                });
-            } else {
-                $products = Products::where('usage_stt', '=', 2);
+        try {
+            $category = $request->has('category') && $request->category != null ? $request->category : 0;
+            $genre = $request->has('genre') && $request->genre != null ? $request->genre : 0;
+            $sort =  $request->has('sort') && $request->sort != null ? $request->sort : "DESC";
+            $key_sort =  $request->has('key_sort') && $request->key_sort != null ? $request->key_sort : "id";
+            $per_page =  $request->has('per_page') && $request->per_page != null ? $request->per_page : 10;
+            $page =  $request->has('page') && $request->page != null ? $request->page : 1;
+            $products = new Products();
+            if ($category != 0) {
+                $category = Category::where('slug', $category)->firstOrFail()->id;
+                if ($category != 129) {
+                    $list_products = array();
+                    foreach (Category::find(78)->products()->select('products_id')->get()->toArray() as $item) {
+                        $list_products[] = $item['products_id'];
+                    }
+                    $products = $products->where(function ($query) use ($category, $list_products) {
+                        $query->where('cat_id',  $category)
+                            ->orWhere('sub_1_cat_id', $category)
+                            ->orWhere('sub_2_cat_id',  $category)
+                            ->orWhereIn('id', $list_products);
+                    });
+                } else {
+                    $products = Products::where('usage_stt', '=', 2);
+                }
             }
+            if ($genre != 0) {
+                $genres = explode(",", $genre);
+                $products = $products->whereIn('cat_game_id', explode(",", $genre));
+            } else {
+                $genres = array();
+            }
+            $count = $products->count();
+            $start = ($page - 1) * $per_page;
+            $number_page = ceil($count / $per_page);
+            $products = $products->orderBy($key_sort, $sort)->offset($start)->limit($per_page)->get();
+            $responses['category'] = $category;
+            $responses['genres'] = $genres;
+            $responses['number_page'] = $number_page;
+            $responses['count'] = $count;
+            $responses['genre'] = $genre;
+            $responses['sort'] = $sort;
+            $responses['key_sort'] = $key_sort;
+            $responses['per_page'] = $per_page;
+            $responses['page'] = $page;
+            $responses['products'] = $products;
+            return response()->json($responses);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 503);
         }
-        if ($genre != 0) {
-            $genres = explode(",", $genre);
-            $products = $products->whereIn('cat_game_id', explode(",", $genre));
-        } else {
-            $genres = array();
-        }
-        $count = $products->count();
-        $start = ($page - 1) * $per_page;
-        $number_page = ceil($count / $per_page);
-        $products = $products->orderBy($key_sort, $sort)->offset($start)->limit($per_page)->get();
-        $responses['category'] = $category;
-        $responses['genres'] = $genres;
-        $responses['number_page'] = $number_page;
-        $responses['count'] = $count;
-        $responses['genre'] = $genre;
-        $responses['sort'] = $sort;
-        $responses['key_sort'] = $key_sort;
-        $responses['per_page'] = $per_page;
-        $responses['page'] = $page;
-        $responses['products'] = $products;
-        return response()->json($responses);
     }
     /**
      * Retrieve a product.
@@ -147,7 +150,7 @@ class ProductsController extends Controller
                 $fullset = $item;
             } else {
                 $policies[] = Policy::where('id', '=', $item->plc_id)->first();
-            }   
+            }
         }
         $policies = collect($policies);
         $policies = $policies->sortBy('position');
@@ -205,24 +208,30 @@ class ProductsController extends Controller
                 'errors' => $validator->errors(),
             ]);
         }
-        $kw = $request->kw;
-        $per_page =  $request->has('per_page') && $request->per_page != null ? $request->per_page : 10;
-        $page =  $request->has('page') && $request->page != null ? $request->page : 1;
-        $products = new Products();
-        $products =  $products->where('name', 'LIKE', '%' . $kw . '%');
-        $count = $products->count();
-        $start = ($page - 1) * $per_page;
-        $number_page = ceil($count / $per_page);
-        $products = $products->offset($start)->limit($per_page)->get();
-        if (count($products) > 0) {
-            $responses['products'] = $products;
-        } else {
-            $responses['products'] = 0;
+        try {
+            $kw = $request->kw;
+            $per_page =  $request->has('per_page') && $request->per_page != null ? $request->per_page : 10;
+            $page =  $request->has('page') && $request->page != null ? $request->page : 1;
+            $products = new Products();
+            $products =  $products->where('name', 'LIKE', '%' . $kw . '%');
+            $count = $products->count();
+            $start = ($page - 1) * $per_page;
+            $number_page = ceil($count / $per_page);
+            $products = $products->offset($start)->limit($per_page)->get();
+            if (count($products) > 0) {
+                $responses['products'] = $products;
+            } else {
+                $responses['products'] = 0;
+            }
+            $responses['number_page'] = $number_page;
+            $responses['count'] = $count;
+            $responses['per_page'] = $per_page;
+            $responses['page'] = $page;
+            return response()->json($responses);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 503);
         }
-        $responses['number_page'] = $number_page;
-        $responses['count'] = $count;
-        $responses['per_page'] = $per_page;
-        $responses['page'] = $page;
-        return response()->json($responses);
+        //throw $th;
+
     }
 }
