@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Request;
 |
 */
 
-Route::middleware(['speedUp'])->group(function () {
+
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('contact', 'HomeController@contact')->name('contact');
     Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
@@ -59,7 +59,6 @@ Route::middleware(['speedUp'])->group(function () {
         Route::post('search', 'HomeController@search')->name('search');
         Route::post('render_skeleton', 'ClientProductsController@render_skeleton')->name('render_skeleton_product');
     });
-});
 
 // Route::get('update_api', 'HomeController@api');
 // Route::get('test/template', function () {

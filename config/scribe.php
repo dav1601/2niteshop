@@ -72,7 +72,9 @@ return [
                 /*
                  * Additional headers to be added to the example requests
                  */
-                'headers' => [],
+                'headers' => [
+                    'Accept' => 'application/json',
+                ],
 
                 /*
                  * If no @response or @transformer declarations are found for the route,

@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="{{ asset("vendor/scribe/css/theme-default.style.css") }}" media="screen">
     <link rel="stylesheet" href="{{ asset("vendor/scribe/css/theme-default.print.css") }}" media="print">
-    <link rel="shortcut icon" href="http://localhost/nava/public/client/images/email-logo.png?ver=1650364703" type="image/x-icon">
+    <link rel="shortcut icon" href="http://localhost/nava/public/client/images/email-logo.png?ver=1650562083" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 
     <link rel="stylesheet"
@@ -26,13 +26,13 @@
             </style>
 
     <script>
-        var baseUrl = "http://localhost/nava/";
+        var baseUrl = "http://localhost/nava";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
-    <script src="{{ asset("vendor/scribe/js/tryitout-3.24.1.js") }}"></script>
+    <script src="{{ asset("vendor/scribe/js/tryitout-3.26.0.js") }}"></script>
 
-    <script src="{{ asset("vendor/scribe/js/theme-default-3.24.1.js") }}"></script>
+    <script src="{{ asset("vendor/scribe/js/theme-default-3.26.0.js") }}"></script>
 
 </head>
 
@@ -208,7 +208,7 @@
                             <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
                     </ul>
         <ul class="toc-footer" id="last-updated">
-        <li>Last updated: April 19 2022</li>
+        <li>Last updated: April 22 2022</li>
     </ul>
 </div>
 
@@ -222,7 +222,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 <blockquote>
 <p>Base URL</p>
 </blockquote>
-<pre><code class="language-yaml">http://localhost/nava/</code></pre>
+<pre><code class="language-yaml">http://localhost/nava</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
 <p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
@@ -248,7 +248,8 @@ You can switch the language used with the tabs at the top right (or from the nav
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost/nava/api/auth/logout" \
-    --header "Authorization: Bearer {token}"</code></pre></div>
+    --header "Authorization: Bearer {token}" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -294,7 +295,7 @@ is_logout =&gt; true
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}"}'
+      data-headers='{"Authorization":"Bearer {token}","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-logout', this);">
     <h3>
@@ -342,13 +343,14 @@ is_logout =&gt; true
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/auth/me/quod" \
-    --header "Authorization: Bearer {token}"</code></pre></div>
+    --get "http://localhost/nava/api/auth/me/natus" \
+    --header "Authorization: Bearer {token}" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/nava/api/auth/me/quod"
+    "http://localhost/nava/api/auth/me/natus"
 );
 
 const headers = {
@@ -402,7 +404,7 @@ fetch(url, {
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}"}'
+      data-headers='{"Authorization":"Bearer {token}","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-me--id-', this);">
     <h3>
@@ -440,7 +442,7 @@ fetch(url, {
                 <input type="text"
                name="id"
                data-endpoint="GETapi-auth-me--id-"
-               value="quod"
+               value="natus"
                data-component="url" hidden>
     <br>
 <p>The ID of the me.</p>
@@ -461,13 +463,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/auth/me/orders/esse" \
-    --header "Authorization: Bearer {token}"</code></pre></div>
+    --get "http://localhost/nava/api/auth/me/orders/dicta" \
+    --header "Authorization: Bearer {token}" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/nava/api/auth/me/orders/esse"
+    "http://localhost/nava/api/auth/me/orders/dicta"
 );
 
 const headers = {
@@ -506,7 +509,7 @@ fetch(url, {
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}"}'
+      data-headers='{"Authorization":"Bearer {token}","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-me-orders--id-', this);">
     <h3>
@@ -544,7 +547,7 @@ fetch(url, {
                 <input type="text"
                name="id"
                data-endpoint="GETapi-auth-me-orders--id-"
-               value="esse"
+               value="dicta"
                data-component="url" hidden>
     <br>
 <p>The ID of the order.</p>
@@ -565,23 +568,24 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/nava/api/auth/update/et" \
+    "http://localhost/nava/api/auth/update/cupiditate" \
     --header "Authorization: Bearer {token}" \
+    --header "Accept: application/json" \
     --header "Content-Type: multipart/form-data" \
     --form "name=VUong Anh" \
     --form "phone=0987687678" \
-    --form "avatar=@C:\Users\Admin\AppData\Local\Temp\phpC39.tmp" </code></pre></div>
+    --form "avatar=@C:\Users\Admin\AppData\Local\Temp\php67BC.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/nava/api/auth/update/et"
+    "http://localhost/nava/api/auth/update/cupiditate"
 );
 
 const headers = {
     "Authorization": "Bearer {token}",
-    "Content-Type": "multipart/form-data",
     "Accept": "application/json",
+    "Content-Type": "multipart/form-data",
 };
 
 const body = new FormData();
@@ -638,7 +642,7 @@ fetch(url, {
       data-authed="1"
       data-hasfiles="1"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}","Content-Type":"multipart\/form-data"}'
+      data-headers='{"Authorization":"Bearer {token}","Accept":"application\/json","Content-Type":"multipart\/form-data"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-update--id-', this);">
     <h3>
@@ -676,7 +680,7 @@ fetch(url, {
                 <input type="text"
                name="id"
                data-endpoint="POSTapi-auth-update--id-"
-               value="et"
+               value="cupiditate"
                data-component="url" hidden>
     <br>
 <p>The ID of the update.</p>
@@ -731,7 +735,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/blogs/list?token_api=19aIotXOerK&amp;category=tin-moi&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1"</code></pre></div>
+    --get "http://localhost/nava/api/blogs/list?token_api=19aIotXOerK&amp;category=tin-moi&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -750,8 +755,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -822,7 +832,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-list', this);">
     <h3>
@@ -922,12 +932,13 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/blogs/blog/facilis?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://localhost/nava/api/blogs/blog/quia?token_api=19aIotXOerK" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/nava/api/blogs/blog/facilis"
+    "http://localhost/nava/api/blogs/blog/quia"
 );
 
 const params = {
@@ -936,8 +947,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -1015,7 +1031,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-blog--slug-', this);">
     <h3>
@@ -1045,7 +1061,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-blogs-blog--slug-"
-               value="facilis"
+               value="quia"
                data-component="url" hidden>
     <br>
 
@@ -1077,9 +1093,10 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost/nava/api/blogs/search_blog?token_api=19aIotXOerK&amp;kw=Sony+c%C3%B4ng+b%E1%BB%91+PlayStation+VR+2+4K+HDR+v%C3%A0+game+Horizon+Call+of+the+Mountain+m%E1%BB%9Bi&amp;per_page=10&amp;page=1" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
-    \"kw\": \"aut\"
+    \"kw\": \"possimus\"
 }"
 </code></pre></div>
 
@@ -1099,12 +1116,12 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
-    "kw": "aut"
+    "kw": "possimus"
 };
 
 fetch(url, {
@@ -1162,7 +1179,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-search_blog', this);">
     <h3>
@@ -1233,7 +1250,7 @@ fetch(url, {
                 <input type="text"
                name="kw"
                data-endpoint="GETapi-blogs-search_blog"
-               value="aut"
+               value="possimus"
                data-component="body" hidden>
     <br>
 
@@ -1254,18 +1271,19 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost/nava/api/blogs/blog_properties" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
-    \"title\": \"deserunt\",
-    \"slug\": \"aspernatur\",
-    \"desc\": \"voluptatem\",
-    \"img\": \"in\",
-    \"cat_id\": \"enim\",
-    \"cat_sub_id\": \"maxime\",
-    \"users_id\": \"accusantium\",
-    \"views\": \"est\",
-    \"author\": \"occaecati\",
-    \"active\": 6
+    \"title\": \"non\",
+    \"slug\": \"est\",
+    \"desc\": \"quae\",
+    \"img\": \"quo\",
+    \"cat_id\": \"et\",
+    \"cat_sub_id\": \"ipsum\",
+    \"users_id\": \"molestiae\",
+    \"views\": \"asperiores\",
+    \"author\": \"vero\",
+    \"active\": 13
 }"
 </code></pre></div>
 
@@ -1276,21 +1294,21 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
-    "title": "deserunt",
-    "slug": "aspernatur",
-    "desc": "voluptatem",
-    "img": "in",
-    "cat_id": "enim",
-    "cat_sub_id": "maxime",
-    "users_id": "accusantium",
-    "views": "est",
-    "author": "occaecati",
-    "active": 6
+    "title": "non",
+    "slug": "est",
+    "desc": "quae",
+    "img": "quo",
+    "cat_id": "et",
+    "cat_sub_id": "ipsum",
+    "users_id": "molestiae",
+    "views": "asperiores",
+    "author": "vero",
+    "active": 13
 };
 
 fetch(url, {
@@ -1325,7 +1343,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-blog_properties', this);">
     <h3>
@@ -1355,7 +1373,7 @@ fetch(url, {
                 <input type="text"
                name="title"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="deserunt"
+               value="non"
                data-component="body" hidden>
     <br>
 <p>Tiêu đề bài viết</p>
@@ -1365,7 +1383,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="aspernatur"
+               value="est"
                data-component="body" hidden>
     <br>
 <p>Slug bài viết</p>
@@ -1375,7 +1393,7 @@ fetch(url, {
                 <input type="text"
                name="desc"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="voluptatem"
+               value="quae"
                data-component="body" hidden>
     <br>
 <p>Mô tả ngắn bài viết</p>
@@ -1385,7 +1403,7 @@ fetch(url, {
                 <input type="text"
                name="img"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="in"
+               value="quo"
                data-component="body" hidden>
     <br>
 <p>Path hình ảnh bài viết</p>
@@ -1395,7 +1413,7 @@ fetch(url, {
                 <input type="text"
                name="cat_id"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="enim"
+               value="et"
                data-component="body" hidden>
     <br>
 <p>Danh mục chính bài viết</p>
@@ -1405,7 +1423,7 @@ fetch(url, {
                 <input type="text"
                name="cat_sub_id"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="maxime"
+               value="ipsum"
                data-component="body" hidden>
     <br>
 <p>Danh mục phụ bài viết</p>
@@ -1415,7 +1433,7 @@ fetch(url, {
                 <input type="text"
                name="users_id"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="accusantium"
+               value="molestiae"
                data-component="body" hidden>
     <br>
 <p>Id tác giả</p>
@@ -1425,7 +1443,7 @@ fetch(url, {
                 <input type="text"
                name="views"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="est"
+               value="asperiores"
                data-component="body" hidden>
     <br>
 <p>Lượt xem bài viết</p>
@@ -1435,7 +1453,7 @@ fetch(url, {
                 <input type="text"
                name="author"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="occaecati"
+               value="vero"
                data-component="body" hidden>
     <br>
 <p>Tên tác giả</p>
@@ -1445,7 +1463,7 @@ fetch(url, {
                 <input type="number"
                name="active"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="6"
+               value="13"
                data-component="body" hidden>
     <br>
 <p>Trạng thái bài viết (1: được đăng , 2: đã gỡ)</p>
@@ -1470,10 +1488,11 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost/nava/api/blogs/categories/properties" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
-    \"name\": \"similique\",
-    \"slug\": \"voluptatem\"
+    \"name\": \"a\",
+    \"slug\": \"ea\"
 }"
 </code></pre></div>
 
@@ -1484,13 +1503,13 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
-    "name": "similique",
-    "slug": "voluptatem"
+    "name": "a",
+    "slug": "ea"
 };
 
 fetch(url, {
@@ -1525,7 +1544,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-categories-properties', this);">
     <h3>
@@ -1555,7 +1574,7 @@ fetch(url, {
                 <input type="text"
                name="name"
                data-endpoint="GETapi-blogs-categories-properties"
-               value="similique"
+               value="a"
                data-component="body" hidden>
     <br>
 <p>Tiêu đề danh mục</p>
@@ -1565,7 +1584,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-blogs-categories-properties"
-               value="voluptatem"
+               value="ea"
                data-component="body" hidden>
     <br>
 <p>Slug danh mục</p>
@@ -1585,7 +1604,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/blogs/categories/list_all?token_api=19aIotXmkjH"</code></pre></div>
+    --get "http://localhost/nava/api/blogs/categories/list_all?token_api=19aIotXmkjH" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -1599,8 +1619,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -1660,7 +1685,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-categories-list_all', this);">
     <h3>
@@ -1714,7 +1739,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/products/list?token_api=19aIotXOerK&amp;category=ps5&amp;genre=Action%2CAdventure&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1"</code></pre></div>
+    --get "http://localhost/nava/api/products/list?token_api=19aIotXOerK&amp;category=ps5&amp;genre=Action%2CAdventure&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -1734,8 +1760,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -1825,7 +1856,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-list', this);">
     <h3>
@@ -1935,7 +1966,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/products/product/nintendo-switch-oled-model-with-neon-red-blue-joycon?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://localhost/nava/api/products/product/nintendo-switch-oled-model-with-neon-red-blue-joycon?token_api=19aIotXOerK" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -1949,8 +1981,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2175,7 +2212,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-product--slug-', this);">
     <h3>
@@ -2237,9 +2274,10 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost/nava/api/products/search_product?token_api=19aIotXOerK&amp;kw=DualSense+-+PS5+Wireless+Game+Controller+Ch%C3%ADnh+H%C3%A3ng&amp;per_page=10&amp;page=1" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
-    \"kw\": \"suscipit\"
+    \"kw\": \"error\"
 }"
 </code></pre></div>
 
@@ -2259,12 +2297,12 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
-    "kw": "suscipit"
+    "kw": "error"
 };
 
 fetch(url, {
@@ -2354,7 +2392,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-search_product', this);">
     <h3>
@@ -2425,7 +2463,7 @@ fetch(url, {
                 <input type="text"
                name="kw"
                data-endpoint="GETapi-products-search_product"
-               value="suscipit"
+               value="error"
                data-component="body" hidden>
     <br>
 
@@ -2450,17 +2488,18 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost/nava/api/products/categories/properties" \
+    --header "Accept: application/json" \
     --header "Content-Type: multipart/form-data" \
-    --form "name=neque" \
-    --form "title=molestiae" \
-    --form "desc=sed" \
-    --form "keywords=assumenda" \
-    --form "parent_id=14" \
-    --form "slug=voluptas" \
-    --form "icon=aut" \
-    --form "level=11" \
-    --form "is_game=8" \
-    --form "img=@C:\Users\Admin\AppData\Local\Temp\phpBD9.tmp" </code></pre></div>
+    --form "name=culpa" \
+    --form "title=modi" \
+    --form "desc=est" \
+    --form "keywords=ullam" \
+    --form "parent_id=6" \
+    --form "slug=magni" \
+    --form "icon=sit" \
+    --form "level=17" \
+    --form "is_game=14" \
+    --form "img=@C:\Users\Admin\AppData\Local\Temp\php675C.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -2469,20 +2508,20 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "multipart/form-data",
     "Accept": "application/json",
+    "Content-Type": "multipart/form-data",
 };
 
 const body = new FormData();
-body.append('name', 'neque');
-body.append('title', 'molestiae');
-body.append('desc', 'sed');
-body.append('keywords', 'assumenda');
-body.append('parent_id', '14');
-body.append('slug', 'voluptas');
-body.append('icon', 'aut');
-body.append('level', '11');
-body.append('is_game', '8');
+body.append('name', 'culpa');
+body.append('title', 'modi');
+body.append('desc', 'est');
+body.append('keywords', 'ullam');
+body.append('parent_id', '6');
+body.append('slug', 'magni');
+body.append('icon', 'sit');
+body.append('level', '17');
+body.append('is_game', '14');
 body.append('img', document.querySelector('input[name="img"]').files[0]);
 
 fetch(url, {
@@ -2517,7 +2556,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="1"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"multipart\/form-data"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"multipart\/form-data"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-properties', this);">
     <h3>
@@ -2547,7 +2586,7 @@ fetch(url, {
                 <input type="text"
                name="name"
                data-endpoint="GETapi-products-categories-properties"
-               value="neque"
+               value="culpa"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục</p>
@@ -2557,7 +2596,7 @@ fetch(url, {
                 <input type="text"
                name="title"
                data-endpoint="GETapi-products-categories-properties"
-               value="molestiae"
+               value="modi"
                data-component="body" hidden>
     <br>
 <p>Tiêu đề danh mục</p>
@@ -2567,7 +2606,7 @@ fetch(url, {
                 <input type="text"
                name="desc"
                data-endpoint="GETapi-products-categories-properties"
-               value="sed"
+               value="est"
                data-component="body" hidden>
     <br>
 <p>Mô tả ngắn danh mục</p>
@@ -2577,7 +2616,7 @@ fetch(url, {
                 <input type="text"
                name="keywords"
                data-endpoint="GETapi-products-categories-properties"
-               value="assumenda"
+               value="ullam"
                data-component="body" hidden>
     <br>
 <p>Keywords SEO or Tag danh mục</p>
@@ -2587,7 +2626,7 @@ fetch(url, {
                 <input type="number"
                name="parent_id"
                data-endpoint="GETapi-products-categories-properties"
-               value="14"
+               value="6"
                data-component="body" hidden>
     <br>
 <p>id danh mục cha (0: là danh mục gốc)</p>
@@ -2597,7 +2636,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-products-categories-properties"
-               value="voluptas"
+               value="magni"
                data-component="body" hidden>
     <br>
 <p>Slug danh mục</p>
@@ -2617,7 +2656,7 @@ fetch(url, {
                 <input type="text"
                name="icon"
                data-endpoint="GETapi-products-categories-properties"
-               value="aut"
+               value="sit"
                data-component="body" hidden>
     <br>
 <p>Icon danh mục</p>
@@ -2627,7 +2666,7 @@ fetch(url, {
                 <input type="number"
                name="level"
                data-endpoint="GETapi-products-categories-properties"
-               value="11"
+               value="17"
                data-component="body" hidden>
     <br>
 <p>Level danh mục (danh mục gốc level = 0)</p>
@@ -2637,7 +2676,7 @@ fetch(url, {
                 <input type="number"
                name="is_game"
                data-endpoint="GETapi-products-categories-properties"
-               value="8"
+               value="14"
                data-component="body" hidden>
     <br>
 <p>(2: không là danh mục game , 1: là danh mục game)</p>
@@ -2657,7 +2696,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/products/categories/list_all?token_api=19aIotXmkjH"</code></pre></div>
+    --get "http://localhost/nava/api/products/categories/list_all?token_api=19aIotXmkjH" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -2671,8 +2711,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2850,7 +2895,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-list_all', this);">
     <h3>
@@ -2900,7 +2945,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/products/categories/game?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://localhost/nava/api/products/categories/game?token_api=19aIotXOerK" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -2914,8 +2960,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2959,7 +3010,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-game', this);">
     <h3>
@@ -3009,7 +3060,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/products/categories/producer?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://localhost/nava/api/products/categories/producer?token_api=19aIotXOerK" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -3023,8 +3075,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -3070,7 +3127,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-producer', this);">
     <h3>
@@ -3125,49 +3182,50 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost/nava/api/products/product_properties" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
-    \"name\": \"facere\",
-    \"slug\": \"minima\",
-    \"des\": \"consequatur\",
-    \"keywords\": \"vero\",
-    \"price\": \"a\",
-    \"historical_cost\": \"ratione\",
-    \"content\": \"laudantium\",
-    \"info\": \"eos\",
-    \"insurance\": \"aliquam\",
-    \"policy\": \"error\",
-    \"model\": \"ipsa\",
-    \"video\": \"eos\",
-    \"banner\": \"iusto\",
-    \"banner_link\": \"neque\",
-    \"main_img\": \"officia\",
-    \"sub_img\": \"quis\",
-    \"bg\": \"quidem\",
-    \"type\": \"ratione\",
-    \"sub_type\": \"occaecati\",
-    \"cat_id\": \"quas\",
-    \"cat_name\": \"occaecati\",
-    \"sub_1_cat_id\": \"quos\",
-    \"sub_1_cat_name\": \"iste\",
-    \"sub_2_cat_id\": \"vero\",
-    \"sub_2_cat_name\": \"omnis\",
-    \"cat_id_2\": \"numquam\",
-    \"op_sub_1_id\": \"itaque\",
-    \"op_sub_1_name\": \"nemo\",
-    \"op_sub_2_id\": \"fugiat\",
-    \"op_sub_2_name\": \"ut\",
-    \"cat_2_sub\": \"molestiae\",
-    \"producer_id\": \"suscipit\",
-    \"producer_slug\": \"corporis\",
-    \"cat_game_id\": \"nisi\",
-    \"stock\": 8,
-    \"new\": 16,
+    \"name\": \"quod\",
+    \"slug\": \"vero\",
+    \"des\": \"qui\",
+    \"keywords\": \"maxime\",
+    \"price\": \"laborum\",
+    \"historical_cost\": \"cupiditate\",
+    \"content\": \"et\",
+    \"info\": \"aut\",
+    \"insurance\": \"alias\",
+    \"policy\": \"consectetur\",
+    \"model\": \"deserunt\",
+    \"video\": \"repellat\",
+    \"banner\": \"excepturi\",
+    \"banner_link\": \"itaque\",
+    \"main_img\": \"vel\",
+    \"sub_img\": \"quo\",
+    \"bg\": \"possimus\",
+    \"type\": \"sit\",
+    \"sub_type\": \"suscipit\",
+    \"cat_id\": \"voluptatem\",
+    \"cat_name\": \"natus\",
+    \"sub_1_cat_id\": \"cum\",
+    \"sub_1_cat_name\": \"voluptas\",
+    \"sub_2_cat_id\": \"ullam\",
+    \"sub_2_cat_name\": \"molestiae\",
+    \"cat_id_2\": \"sunt\",
+    \"op_sub_1_id\": \"libero\",
+    \"op_sub_1_name\": \"qui\",
+    \"op_sub_2_id\": \"aspernatur\",
+    \"op_sub_2_name\": \"dolor\",
+    \"cat_2_sub\": \"natus\",
+    \"producer_id\": \"rem\",
+    \"producer_slug\": \"illo\",
+    \"cat_game_id\": \"earum\",
+    \"stock\": 18,
+    \"new\": 15,
     \"usage_stt\": 17,
-    \"num_orders\": \"inventore\",
-    \"highlight\": 4,
-    \"author_id\": \"expedita\",
-    \"author_name\": \"qui\"
+    \"num_orders\": \"iusto\",
+    \"highlight\": 14,
+    \"author_id\": \"culpa\",
+    \"author_name\": \"inventore\"
 }"
 </code></pre></div>
 
@@ -3178,52 +3236,52 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
-    "name": "facere",
-    "slug": "minima",
-    "des": "consequatur",
-    "keywords": "vero",
-    "price": "a",
-    "historical_cost": "ratione",
-    "content": "laudantium",
-    "info": "eos",
-    "insurance": "aliquam",
-    "policy": "error",
-    "model": "ipsa",
-    "video": "eos",
-    "banner": "iusto",
-    "banner_link": "neque",
-    "main_img": "officia",
-    "sub_img": "quis",
-    "bg": "quidem",
-    "type": "ratione",
-    "sub_type": "occaecati",
-    "cat_id": "quas",
-    "cat_name": "occaecati",
-    "sub_1_cat_id": "quos",
-    "sub_1_cat_name": "iste",
-    "sub_2_cat_id": "vero",
-    "sub_2_cat_name": "omnis",
-    "cat_id_2": "numquam",
-    "op_sub_1_id": "itaque",
-    "op_sub_1_name": "nemo",
-    "op_sub_2_id": "fugiat",
-    "op_sub_2_name": "ut",
-    "cat_2_sub": "molestiae",
-    "producer_id": "suscipit",
-    "producer_slug": "corporis",
-    "cat_game_id": "nisi",
-    "stock": 8,
-    "new": 16,
+    "name": "quod",
+    "slug": "vero",
+    "des": "qui",
+    "keywords": "maxime",
+    "price": "laborum",
+    "historical_cost": "cupiditate",
+    "content": "et",
+    "info": "aut",
+    "insurance": "alias",
+    "policy": "consectetur",
+    "model": "deserunt",
+    "video": "repellat",
+    "banner": "excepturi",
+    "banner_link": "itaque",
+    "main_img": "vel",
+    "sub_img": "quo",
+    "bg": "possimus",
+    "type": "sit",
+    "sub_type": "suscipit",
+    "cat_id": "voluptatem",
+    "cat_name": "natus",
+    "sub_1_cat_id": "cum",
+    "sub_1_cat_name": "voluptas",
+    "sub_2_cat_id": "ullam",
+    "sub_2_cat_name": "molestiae",
+    "cat_id_2": "sunt",
+    "op_sub_1_id": "libero",
+    "op_sub_1_name": "qui",
+    "op_sub_2_id": "aspernatur",
+    "op_sub_2_name": "dolor",
+    "cat_2_sub": "natus",
+    "producer_id": "rem",
+    "producer_slug": "illo",
+    "cat_game_id": "earum",
+    "stock": 18,
+    "new": 15,
     "usage_stt": 17,
-    "num_orders": "inventore",
-    "highlight": 4,
-    "author_id": "expedita",
-    "author_name": "qui"
+    "num_orders": "iusto",
+    "highlight": 14,
+    "author_id": "culpa",
+    "author_name": "inventore"
 };
 
 fetch(url, {
@@ -3258,7 +3316,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-product_properties', this);">
     <h3>
@@ -3288,7 +3346,7 @@ fetch(url, {
                 <input type="text"
                name="name"
                data-endpoint="GETapi-products-product_properties"
-               value="facere"
+               value="quod"
                data-component="body" hidden>
     <br>
 <p>Tên sản phẩm</p>
@@ -3298,7 +3356,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-products-product_properties"
-               value="minima"
+               value="vero"
                data-component="body" hidden>
     <br>
 <p>Slug sản phẩm</p>
@@ -3308,7 +3366,7 @@ fetch(url, {
                 <input type="text"
                name="des"
                data-endpoint="GETapi-products-product_properties"
-               value="consequatur"
+               value="qui"
                data-component="body" hidden>
     <br>
 <p>Mô tả ngắn sản phẩm</p>
@@ -3318,7 +3376,7 @@ fetch(url, {
                 <input type="text"
                name="keywords"
                data-endpoint="GETapi-products-product_properties"
-               value="vero"
+               value="maxime"
                data-component="body" hidden>
     <br>
 <p>Keywords SEO or Tag sản phẩm</p>
@@ -3328,7 +3386,7 @@ fetch(url, {
                 <input type="text"
                name="price"
                data-endpoint="GETapi-products-product_properties"
-               value="a"
+               value="laborum"
                data-component="body" hidden>
     <br>
 <p>Giá bán của sản phẩm</p>
@@ -3338,7 +3396,7 @@ fetch(url, {
                 <input type="text"
                name="historical_cost"
                data-endpoint="GETapi-products-product_properties"
-               value="ratione"
+               value="cupiditate"
                data-component="body" hidden>
     <br>
 <p>Giá gốc của sản phẩm</p>
@@ -3348,7 +3406,7 @@ fetch(url, {
                 <input type="text"
                name="content"
                data-endpoint="GETapi-products-product_properties"
-               value="laudantium"
+               value="et"
                data-component="body" hidden>
     <br>
 <p>Nội dung của sản phẩm</p>
@@ -3358,7 +3416,7 @@ fetch(url, {
                 <input type="text"
                name="info"
                data-endpoint="GETapi-products-product_properties"
-               value="eos"
+               value="aut"
                data-component="body" hidden>
     <br>
 <p>Thông tin của sản phẩm</p>
@@ -3368,7 +3426,7 @@ fetch(url, {
                 <input type="text"
                name="insurance"
                data-endpoint="GETapi-products-product_properties"
-               value="aliquam"
+               value="alias"
                data-component="body" hidden>
     <br>
 <p>Chính sách bảo hành,options đi kèm với của sản phẩm</p>
@@ -3378,7 +3436,7 @@ fetch(url, {
                 <input type="text"
                name="policy"
                data-endpoint="GETapi-products-product_properties"
-               value="error"
+               value="consectetur"
                data-component="body" hidden>
     <br>
 <p>Chính sách của cửa hàng</p>
@@ -3388,7 +3446,7 @@ fetch(url, {
                 <input type="text"
                name="model"
                data-endpoint="GETapi-products-product_properties"
-               value="ipsa"
+               value="deserunt"
                data-component="body" hidden>
     <br>
 <p>Model của sản phẩm</p>
@@ -3398,7 +3456,7 @@ fetch(url, {
                 <input type="text"
                name="video"
                data-endpoint="GETapi-products-product_properties"
-               value="eos"
+               value="repellat"
                data-component="body" hidden>
     <br>
 <p>Mã nhúng utube của sản phẩm</p>
@@ -3408,7 +3466,7 @@ fetch(url, {
                 <input type="text"
                name="banner"
                data-endpoint="GETapi-products-product_properties"
-               value="iusto"
+               value="excepturi"
                data-component="body" hidden>
     <br>
 <p>Banner đi kèm với sản phẩm</p>
@@ -3418,7 +3476,7 @@ fetch(url, {
                 <input type="text"
                name="banner_link"
                data-endpoint="GETapi-products-product_properties"
-               value="neque"
+               value="itaque"
                data-component="body" hidden>
     <br>
 <p>Link banner của sản phẩm</p>
@@ -3428,7 +3486,7 @@ fetch(url, {
                 <input type="text"
                name="main_img"
                data-endpoint="GETapi-products-product_properties"
-               value="officia"
+               value="vel"
                data-component="body" hidden>
     <br>
 <p>Hình ảnh chính của sản phẩm</p>
@@ -3438,7 +3496,7 @@ fetch(url, {
                 <input type="text"
                name="sub_img"
                data-endpoint="GETapi-products-product_properties"
-               value="quis"
+               value="quo"
                data-component="body" hidden>
     <br>
 <p>Hình ảnh phụ của sản phẩm</p>
@@ -3448,7 +3506,7 @@ fetch(url, {
                 <input type="text"
                name="bg"
                data-endpoint="GETapi-products-product_properties"
-               value="quidem"
+               value="possimus"
                data-component="body" hidden>
     <br>
 <p>Hình ảnh background của sản phẩm</p>
@@ -3458,7 +3516,7 @@ fetch(url, {
                 <input type="text"
                name="type"
                data-endpoint="GETapi-products-product_properties"
-               value="ratione"
+               value="sit"
                data-component="body" hidden>
     <br>
 <p>Kiểu sản phẩm</p>
@@ -3468,7 +3526,7 @@ fetch(url, {
                 <input type="text"
                name="sub_type"
                data-endpoint="GETapi-products-product_properties"
-               value="occaecati"
+               value="suscipit"
                data-component="body" hidden>
     <br>
 <p>Kiểu phụ sản phẩm</p>
@@ -3478,7 +3536,7 @@ fetch(url, {
                 <input type="text"
                name="cat_id"
                data-endpoint="GETapi-products-product_properties"
-               value="quas"
+               value="voluptatem"
                data-component="body" hidden>
     <br>
 <p>ID Danh mục chính sản phẩm</p>
@@ -3488,7 +3546,7 @@ fetch(url, {
                 <input type="text"
                name="cat_name"
                data-endpoint="GETapi-products-product_properties"
-               value="occaecati"
+               value="natus"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục chính</p>
@@ -3498,7 +3556,7 @@ fetch(url, {
                 <input type="text"
                name="sub_1_cat_id"
                data-endpoint="GETapi-products-product_properties"
-               value="quos"
+               value="cum"
                data-component="body" hidden>
     <br>
 <p>ID danh mục phụ 1 của danh mục chính</p>
@@ -3508,7 +3566,7 @@ fetch(url, {
                 <input type="text"
                name="sub_1_cat_name"
                data-endpoint="GETapi-products-product_properties"
-               value="iste"
+               value="voluptas"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục phụ 1 của danh mục chính</p>
@@ -3518,7 +3576,7 @@ fetch(url, {
                 <input type="text"
                name="sub_2_cat_id"
                data-endpoint="GETapi-products-product_properties"
-               value="vero"
+               value="ullam"
                data-component="body" hidden>
     <br>
 <p>ID danh mục phụ 2 của danh mục chính</p>
@@ -3528,7 +3586,7 @@ fetch(url, {
                 <input type="text"
                name="sub_2_cat_name"
                data-endpoint="GETapi-products-product_properties"
-               value="omnis"
+               value="molestiae"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục phụ 2 của danh mục chính</p>
@@ -3538,7 +3596,7 @@ fetch(url, {
                 <input type="text"
                name="cat_id_2"
                data-endpoint="GETapi-products-product_properties"
-               value="numquam"
+               value="sunt"
                data-component="body" hidden>
     <br>
 <p>ID Danh mục chính 2 của sản phẩm</p>
@@ -3548,7 +3606,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_1_id"
                data-endpoint="GETapi-products-product_properties"
-               value="itaque"
+               value="libero"
                data-component="body" hidden>
     <br>
 <p>ID option 1 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3558,7 +3616,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_1_name"
                data-endpoint="GETapi-products-product_properties"
-               value="nemo"
+               value="qui"
                data-component="body" hidden>
     <br>
 <p>Tên option 1 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3568,7 +3626,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_2_id"
                data-endpoint="GETapi-products-product_properties"
-               value="fugiat"
+               value="aspernatur"
                data-component="body" hidden>
     <br>
 <p>ID option 2 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3578,7 +3636,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_2_name"
                data-endpoint="GETapi-products-product_properties"
-               value="ut"
+               value="dolor"
                data-component="body" hidden>
     <br>
 <p>Tên option 2 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3588,7 +3646,7 @@ fetch(url, {
                 <input type="text"
                name="cat_2_sub"
                data-endpoint="GETapi-products-product_properties"
-               value="molestiae"
+               value="natus"
                data-component="body" hidden>
     <br>
 <p>ID Danh mục phụ 1 của danh mục chính 2 sản phẩm</p>
@@ -3598,7 +3656,7 @@ fetch(url, {
                 <input type="text"
                name="producer_id"
                data-endpoint="GETapi-products-product_properties"
-               value="suscipit"
+               value="rem"
                data-component="body" hidden>
     <br>
 <p>ID nhà sản xuất sản phẩm</p>
@@ -3608,7 +3666,7 @@ fetch(url, {
                 <input type="text"
                name="producer_slug"
                data-endpoint="GETapi-products-product_properties"
-               value="corporis"
+               value="illo"
                data-component="body" hidden>
     <br>
 <p>Slug nhà sản xuất sản phẩm</p>
@@ -3618,7 +3676,7 @@ fetch(url, {
                 <input type="text"
                name="cat_game_id"
                data-endpoint="GETapi-products-product_properties"
-               value="nisi"
+               value="earum"
                data-component="body" hidden>
     <br>
 <p>thể loại game của sản phẩm</p>
@@ -3628,7 +3686,7 @@ fetch(url, {
                 <input type="number"
                name="stock"
                data-endpoint="GETapi-products-product_properties"
-               value="8"
+               value="18"
                data-component="body" hidden>
     <br>
 <p>Tình trạng kho của sản phẩm (1: còn hàng , 2: hàng sắp về , 3:hết hàng)</p>
@@ -3638,7 +3696,7 @@ fetch(url, {
                 <input type="number"
                name="new"
                data-endpoint="GETapi-products-product_properties"
-               value="16"
+               value="15"
                data-component="body" hidden>
     <br>
 <p>Trạng thái mới của sản phẩm (1: mới đăng , 2: bình thường)</p>
@@ -3658,7 +3716,7 @@ fetch(url, {
                 <input type="text"
                name="num_orders"
                data-endpoint="GETapi-products-product_properties"
-               value="inventore"
+               value="iusto"
                data-component="body" hidden>
     <br>
 <p>Số lượt mua sản phẩm</p>
@@ -3668,7 +3726,7 @@ fetch(url, {
                 <input type="number"
                name="highlight"
                data-endpoint="GETapi-products-product_properties"
-               value="4"
+               value="14"
                data-component="body" hidden>
     <br>
 <p>Sản Phẩm nổi bật (1: sp bình thương , 2: sp hot)</p>
@@ -3678,7 +3736,7 @@ fetch(url, {
                 <input type="text"
                name="author_id"
                data-endpoint="GETapi-products-product_properties"
-               value="expedita"
+               value="culpa"
                data-component="body" hidden>
     <br>
 <p>Id người đăng sản phẩm</p>
@@ -3688,7 +3746,7 @@ fetch(url, {
                 <input type="text"
                name="author_name"
                data-endpoint="GETapi-products-product_properties"
-               value="qui"
+               value="inventore"
                data-component="body" hidden>
     <br>
 <p>Tên người đăng sản phẩm</p>
@@ -3713,6 +3771,7 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost/nava/api/auth/reset/passowrd/forgot" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
     \"phone\": \"0986868568\"
@@ -3726,8 +3785,8 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
@@ -3773,7 +3832,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-reset-passowrd-forgot', this);">
     <h3>
@@ -3824,6 +3883,7 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost/nava/api/auth/reset/passowrd/verification" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
     \"code\": 160101
@@ -3837,8 +3897,8 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
@@ -3885,7 +3945,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-reset-passowrd-verification', this);">
     <h3>
@@ -3936,6 +3996,7 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost/nava/api/auth/reset/passowrd/new_password" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
     \"code\": 160101,
@@ -3951,8 +4012,8 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
@@ -3996,7 +4057,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-reset-passowrd-new_password', this);">
     <h3>
@@ -4070,7 +4131,8 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/nava/api/users?token_api=19aIotXOerK&amp;sort=DESC&amp;key_sort=id&amp;item_page=10&amp;page=1"</code></pre></div>
+    --get "http://localhost/nava/api/users?token_api=19aIotXOerK&amp;sort=DESC&amp;key_sort=id&amp;item_page=10&amp;page=1" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -4088,8 +4150,13 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -4152,7 +4219,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-users', this);">
     <h3>
@@ -4243,6 +4310,7 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost/nava/api/auth/login" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
     \"email\": \"2niteshop@gmail.com\",
@@ -4257,8 +4325,8 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
@@ -4357,7 +4425,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-login', this);">
     <h3>
@@ -4418,6 +4486,7 @@ fetch(url, {
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost/nava/api/auth/signup" \
+    --header "Accept: application/json" \
     --header "Content-Type: application/json" \
     --data "{
     \"name\": \"Vuong Anh\",
@@ -4435,8 +4504,8 @@ fetch(url, {
 );
 
 const headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 };
 
 let body = {
@@ -4482,7 +4551,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Accept":"application\/json","Content-Type":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-signup', this);">
     <h3>

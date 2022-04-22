@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ClientBlogController extends Controller
 {
-    function index($cat = 0, Request $request)
+    function index(Request $request , $cat = 0)
     {
         if ($request->has('search')) {
             if ($request->search != '') {

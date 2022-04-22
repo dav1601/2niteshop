@@ -12,7 +12,8 @@ endpoints:
       description: 'Lấy danh sách sản phẩm theo danh mục hoặc tất cả.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters: []
     queryParameters:
       token_api:
@@ -144,7 +145,8 @@ endpoints:
       description: 'API này cho phép bạn truy xuất và xem một sản phẩm cụ thể bằng SLUG'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters:
       slug:
         name: slug
@@ -376,6 +378,7 @@ endpoints:
       authenticated: false
       custom: []
     headers:
+      Accept: application/json
       Content-Type: application/json
     urlParameters: []
     queryParameters:
@@ -412,7 +415,7 @@ endpoints:
         name: kw
         description: ''
         required: true
-        example: suscipit
+        example: error
         type: string
         custom: []
     responses:

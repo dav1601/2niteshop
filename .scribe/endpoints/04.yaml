@@ -11,6 +11,7 @@ endpoints:
       authenticated: false
       custom: []
     headers:
+      Accept: application/json
       Content-Type: multipart/form-data
     urlParameters: []
     queryParameters: []
@@ -19,42 +20,42 @@ endpoints:
         name: name
         description: 'Tên danh mục'
         required: false
-        example: neque
+        example: culpa
         type: varchar(255)
         custom: []
       title:
         name: title
         description: 'Tiêu đề danh mục'
         required: false
-        example: molestiae
+        example: modi
         type: mediumtext
         custom: []
       desc:
         name: desc
         description: 'Mô tả ngắn danh mục'
         required: false
-        example: sed
+        example: est
         type: longtext
         custom: []
       keywords:
         name: keywords
         description: 'Keywords SEO or Tag danh mục'
         required: false
-        example: assumenda
+        example: ullam
         type: longtext
         custom: []
       parent_id:
         name: parent_id
         description: 'id danh mục cha (0: là danh mục gốc)'
         required: false
-        example: 14
+        example: 6
         type: integer
         custom: []
       slug:
         name: slug
         description: 'Slug danh mục'
         required: false
-        example: voluptas
+        example: magni
         type: varchar
         custom: []
       img:
@@ -68,21 +69,21 @@ endpoints:
         name: icon
         description: 'Icon danh mục'
         required: false
-        example: aut
+        example: sit
         type: varchar
         custom: []
       level:
         name: level
         description: 'Level danh mục (danh mục gốc level = 0)'
         required: false
-        example: 11
+        example: 17
         type: integer
         custom: []
       is_game:
         name: is_game
         description: '(2: không là danh mục game , 1: là danh mục game)'
         required: false
-        example: 8
+        example: 14
         type: integer
         custom: []
     responses:
@@ -101,7 +102,8 @@ endpoints:
       description: 'Cây Danh Mục sản phẩm.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters: []
     queryParameters:
       token_api:
@@ -278,7 +280,8 @@ endpoints:
       description: 'Lấy danh sách danh mục game của sản phẩm.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters: []
     queryParameters:
       token_api:
@@ -321,7 +324,8 @@ endpoints:
       description: 'Lấy danh sách nhà sản xuất.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters: []
     queryParameters:
       token_api:

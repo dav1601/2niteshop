@@ -10,7 +10,8 @@ endpoints:
       description: 'Lấy danh sách bài viết.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters: []
     queryParameters:
       token_api:
@@ -116,13 +117,14 @@ endpoints:
       description: 'API này cho phép bạn truy xuất và xem một bài viết cụ thể bằng ID'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters:
       slug:
         name: slug
         description: ''
         required: true
-        example: facilis
+        example: quia
         type: string
         custom: []
     queryParameters:
@@ -201,6 +203,7 @@ endpoints:
       authenticated: false
       custom: []
     headers:
+      Accept: application/json
       Content-Type: application/json
     urlParameters: []
     queryParameters:
@@ -237,7 +240,7 @@ endpoints:
         name: kw
         description: ''
         required: true
-        example: aut
+        example: possimus
         type: string
         custom: []
     responses:
@@ -281,6 +284,7 @@ endpoints:
       authenticated: false
       custom: []
     headers:
+      Accept: application/json
       Content-Type: application/json
     urlParameters: []
     queryParameters: []
@@ -289,70 +293,70 @@ endpoints:
         name: title
         description: 'Tiêu đề bài viết'
         required: false
-        example: deserunt
+        example: non
         type: varchar(255)
         custom: []
       slug:
         name: slug
         description: 'Slug bài viết'
         required: false
-        example: aspernatur
+        example: est
         type: longtext
         custom: []
       desc:
         name: desc
         description: 'Mô tả ngắn bài viết'
         required: false
-        example: voluptatem
+        example: quae
         type: longtext
         custom: []
       img:
         name: img
         description: 'Path hình ảnh bài viết'
         required: false
-        example: in
+        example: quo
         type: varchar
         custom: []
       cat_id:
         name: cat_id
         description: 'Danh mục chính bài viết'
         required: false
-        example: enim
+        example: et
         type: bigint
         custom: []
       cat_sub_id:
         name: cat_sub_id
         description: 'Danh mục phụ bài viết'
         required: false
-        example: maxime
+        example: ipsum
         type: bigint
         custom: []
       users_id:
         name: users_id
         description: 'Id tác giả'
         required: false
-        example: accusantium
+        example: molestiae
         type: bigint
         custom: []
       views:
         name: views
         description: 'Lượt xem bài viết'
         required: false
-        example: est
+        example: asperiores
         type: bigint
         custom: []
       author:
         name: author
         description: 'Tên tác giả'
         required: false
-        example: occaecati
+        example: vero
         type: varchar
         custom: []
       active:
         name: active
         description: 'Trạng thái bài viết (1: được đăng , 2: đã gỡ)'
         required: false
-        example: 6
+        example: 13
         type: integer
         custom: []
     responses:

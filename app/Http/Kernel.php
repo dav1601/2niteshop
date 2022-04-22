@@ -46,16 +46,6 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Fruitcake\Cors\HandleCors::class,
         ],
-        'speedUp' => [
-            \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
-            //\RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls::class,
-            //\RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace::class, // Note: This middleware invokes "RemoveComments::class" before it runs.
-            \RenatoMarinho\LaravelPageSpeed\Middleware\DeferJavascript::class,
-        ]
     ];
 
     /**
@@ -78,7 +68,7 @@ class Kernel extends HttpKernel
         'checkRole' =>  \App\Http\Middleware\checkRole::class,
         'superAdmin' => \App\Http\Middleware\superAdmin::class,
         'auth.api.admin' => \App\Http\Middleware\Api\AdminAuth::class,
-        'auth.api.docs' => \App\Http\Middleware\Api\DocsApi::class,
         'cors' => \App\Http\Middleware\Cors::class,
+        'EnforceJson' => \App\Http\Middleware\EnforceJson::class,
     ];
 }

@@ -13,6 +13,7 @@ endpoints:
       authenticated: false
       custom: []
     headers:
+      Accept: application/json
       Content-Type: application/json
     urlParameters: []
     queryParameters: []
@@ -21,14 +22,14 @@ endpoints:
         name: name
         description: 'Tiêu đề danh mục'
         required: false
-        example: similique
+        example: a
         type: varchar
         custom: []
       slug:
         name: slug
         description: 'Slug danh mục'
         required: false
-        example: voluptatem
+        example: ea
         type: varchar
         custom: []
     responses:
@@ -47,7 +48,8 @@ endpoints:
       description: 'Danh mục bài viết.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters: []
     queryParameters:
       token_api:

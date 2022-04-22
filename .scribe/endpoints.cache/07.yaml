@@ -12,7 +12,8 @@ endpoints:
       description: 'Api này cho phép bạn lấy danh sách user.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Accept: application/json
     urlParameters: []
     queryParameters:
       token_api:
@@ -103,6 +104,7 @@ endpoints:
       authenticated: false
       custom: []
     headers:
+      Accept: application/json
       Content-Type: application/json
     urlParameters: []
     queryParameters: []
@@ -198,6 +200,7 @@ endpoints:
       authenticated: false
       custom: []
     headers:
+      Accept: application/json
       Content-Type: application/json
     urlParameters: []
     queryParameters: []

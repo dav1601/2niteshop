@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Passport\RefreshToken;
-use Laravel\Passport\Token;
+use Laravel\Passport\Passport;
 use phpDocumentor\Reflection\Types\Null_;
 
 class AuthController extends Controller
@@ -122,7 +121,7 @@ class AuthController extends Controller
         Cart::instance('shopping')->destroy();
         Cart::instance('shopping')->restore(Auth::id());
         $user = Auth::user();
-        $tokenResult = $user->createToken('Personal Access Token 2');
+        $tokenResult = $user->createToken('authToken');
         $token = $tokenResult->token;
         if ($remember_me == true) {
             $token->expires_at = Carbon::now()->addMonth(120);
@@ -154,6 +153,7 @@ class AuthController extends Controller
     public function logout()
     {
         $user = Auth::user()->token();
+        dd($user);
         $user->revoke();
         return response()->json([
             'is_logout' => true,
