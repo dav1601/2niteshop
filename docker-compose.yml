@@ -64,7 +64,7 @@ services:
 
 
     npm:
-        image: node:latest
+        image: node
         container_name: dav-npm
         working_dir: /var/www
         restart: always
@@ -74,7 +74,7 @@ services:
             - "3106:80"
         networks:
             - davlaravel
-        entrypoint: ["npm" , "run" , "watch"]
+        entrypoint: ["npm"]
 
 
     nginx:
