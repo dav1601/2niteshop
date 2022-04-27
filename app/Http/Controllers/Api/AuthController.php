@@ -167,9 +167,10 @@ class AuthController extends Controller
      * @authenticated
      * @responseFile 200 responses/me.json
      */
-    public function me($id, Request $request)
+    public function me(Request $request)
     {
-        $user = User::where('id', $id)->where('role_id', '>', 3)->first();
+        $user = auth('api')->user();
+        // $user = User::where('id', $id)->where('role_id', '>', 3)->first();
         if (!$user)
             return response()->json(['find' => false, 'message' => "Không tìm thấy user"], 401);
         $data['user'] = $user;
@@ -186,8 +187,9 @@ class AuthController extends Controller
      * @bodyParam avatar file
      * @responseFile 200 responses/update_user.json
      */
-    public function update(Request $request, $id, FileInterface $file)
+    public function update(Request $request,  FileInterface $file)
     {
+        $id = auth('api')->user()->id;
         $user = User::where('id', '=', $id)->firstOrFail();
         $validator = Validator::make(
             $request->all(),
@@ -240,8 +242,9 @@ class AuthController extends Controller
      * @authenticated
      * @responseFile 200 responses/me_orders.json
      */
-    public function me_orders($id, Request $request)
+    public function me_orders(Request $request)
     {
+        $id = auth('api')->user()->id;
         $orders = User::findOrFail($id)->orders()->get();
         foreach ($orders as $item) {
             $item->cart = unserialize($item->cart);
