@@ -12,19 +12,18 @@ $name = Route::currentRouteName();
     <meta property="fb:app_id" content="349901006628885" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
-    <title>@yield('title' , config('2niteseo.meta.defaults.title'))</title>
+    <title>@yield('title', config('2niteseo.meta.defaults.title'))</title>
     <link rel="canonical" href="{{ URL::current() }}">
-    <meta name='description' itemprop='description' content='@yield(' meta-desc' ,
-        config('2niteseo.meta.defaults.description'))' />
-    <meta name='keywords' content='@yield(' meta-keyword' , config('2niteseo.meta.defaults.keywords'))' />
-    <meta property="og:description" content="@yield('og-desc' , config('2niteseo.meta.defaults.description'))" />
-    <meta property="og:title" content="@yield('og-title' , config('2niteseo.meta.defaults.title'))" />
-    <meta property="og:image" content="@yield('og-image' , $file->ver_img('client/images/banner_2nite.png'))" />
-    <meta property="og:site_name" content="@yield('site_name' , config('2niteseo.meta.defaults.title'))" />
-    <meta property="og:type" content="@yield('og-type' , 'website')" />
+    <meta name='description' itemprop='description' content='@yield(' meta-desc', config('2niteseo.meta.defaults.description'))' />
+    <meta name='keywords' content='@yield(' meta-keyword', config('2niteseo.meta.defaults.keywords'))' />
+    <meta property="og:description" content="@yield('og-desc', config('2niteseo.meta.defaults.description'))" />
+    <meta property="og:title" content="@yield('og-title', config('2niteseo.meta.defaults.title'))" />
+    <meta property="og:image" content="@yield('og-image', $file->ver_img('client/images/banner_2nite.png'))" />
+    <meta property="og:site_name" content="@yield('site_name', config('2niteseo.meta.defaults.title'))" />
+    <meta property="og:type" content="@yield('og-type', 'website')" />
     <meta property="og:url" content="{{ Url::current() }}" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="@yield('twitter-title' , config('2niteseo.meta.defaults.title'))" />
+    <meta name="twitter:title" content="@yield('twitter-title', config('2niteseo.meta.defaults.title'))" />
     {{-- link css --}}
     <link rel="stylesheet" href="{{ $file->ver('plugin/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ $file->ver('plugin/reset.css') }}">
@@ -49,8 +48,7 @@ $name = Route::currentRouteName();
     <script src="{{ $file->import_js('helper.js') }}"></script>
     @yield('import_js')
     @routes
-    <script src="{{ $file->import_js('app.js') }}">
-    </script>
+    <script src="{{ $file->import_js('app.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"
         integrity="sha512-XdUZ5nrNkVySQBnnM5vzDqHai823Spoq1W3pJoQwomQja+o4Nw0Ew1ppxo5bhF2vMug6sfibhKWcNJsG8Vj9tg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -58,15 +56,12 @@ $name = Route::currentRouteName();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{ $file->ver('client/zoom-master/jquery.zoom.min.js') }}">
-    </script>
-    @if($name != 'search_main' && $name != 'show_cart')
-    <script src="{{ $file->import_js('product.js') }}"></script>
+    <script src="{{ $file->ver('client/zoom-master/jquery.zoom.min.js') }}"></script>
+    @if ($name != 'search_main' && $name != 'show_cart')
+        <script src="{{ $file->import_js('product.js') }}"></script>
     @endif
-    <script src="{{ $file->ver('client/owl/dist/owl.carousel.min.js') }}">
-    </script>
-    <script src="{{ $file->ver('client/ls/dist/js/lightslider.min.js') }}">
-    </script>
+    <script src="{{ $file->ver('client/owl/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ $file->ver('client/ls/dist/js/lightslider.min.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     {{-- end script --}}
@@ -76,26 +71,49 @@ $name = Route::currentRouteName();
     <img src="{{ $file->ver_img('admin/images/layout/loading-unscreen.gif') }}" alt="Loading......." width="200">
 </div>
 <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/620a40269bd1f31184dc8432/1frs0l6ee';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+<!-- Messenger Plugin chat Code -->
+<div id="fb-root"></div>
+
+<!-- Your Plugin chat code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
+
+<script>
+    var chatbox = document.getElementById('fb-customer-chat');
+    chatbox.setAttribute("page_id", "102195108617874");
+    chatbox.setAttribute("attribution", "biz_inbox");
+</script>
+
+<!-- Your SDK code -->
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            xfbml: true,
+            version: 'v14.0'
+        });
+    };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 </script>
 <!--End of Tawk.to Script-->
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SB7F2KSJJL"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-SB7F2KSJJL');
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-SB7F2KSJJL');
 </script>
 {{-- END OF GOOGLE ANSL --}}
 
@@ -106,7 +124,7 @@ $name = Route::currentRouteName();
     <x-mobile.menu />
     <x-mobile.cart.wp />
     @if (Gate::allows('group-admin'))
-    <x-admin.navbar />
+        <x-admin.navbar />
     @endif
     @yield('banner')
     <div id="b1ad">
@@ -114,7 +132,7 @@ $name = Route::currentRouteName();
             <x-header.top />
             <x-header.mobile.def />
             <x-header.mobile.toprespon />
-            {{-- --}}
+            {{--  --}}
             <x-header.bottom :name="$name" />
             {{-- end header botttttt --}}
             <div id="header__scroll" class="d-none">
@@ -128,8 +146,10 @@ $name = Route::currentRouteName();
         <x-Footer />
     </div>
     <input type="hidden" name="" value="{{ $name }}" id="nameRoute">
-    <input type="hidden" name="" id="cookie_view" value="{{ Cookie::has('view') ? Cookie::get('view'): " grid" }}">
-    <input type="hidden" name="" id="no-show-popup" value="{{ Session::has('nsp') ? Session::get('nsp') : 0 }}">
+    <input type="hidden" name="" id="cookie_view"
+        value="{{ Cookie::has('view') ? Cookie::get('view') : ' grid' }}">
+    <input type="hidden" name="" id="no-show-popup"
+        value="{{ Session::has('nsp') ? Session::get('nsp') : 0 }}">
     <x-modal.Product />
     <x-modal.preorder />
     <x-Ajax />
