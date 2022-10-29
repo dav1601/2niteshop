@@ -60,4 +60,11 @@ class FileRepository implements FileInterface
             return $save;
         return NULL;
     }
+    public function deleteFile($path)
+    {
+        if (file_exists($path)) {
+            return  unlink($path);
+        }
+        return;
+    }
 }

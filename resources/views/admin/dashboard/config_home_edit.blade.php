@@ -330,7 +330,7 @@ Dashboard
                         </select>
                     </div>
                     <div class="form-group mb-5">
-                        <input type="submit" value="Cập nhật Config Home" class="btn navi_btn w-100">
+                        <input type="submit" value="CẬP NHẬT CONFIG HOME" class="btn navi_btn w-100">
                     </div>
                     {!! Form::close() !!}
                 </div>

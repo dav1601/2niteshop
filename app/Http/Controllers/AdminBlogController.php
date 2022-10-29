@@ -308,7 +308,7 @@ class AdminBlogController extends Controller
             $data['desc'] = $request->desc;
             if ($request->has('img')) {
                 if ($blog->img != NULL)
-                    unlink('public/' . $blog->img);
+                    $this->file->deleteFile('public/' . $blog->img);
                 $path_img = $path . Str::slug($cat_name) . "/"  . "main/";
                 $data['img'] = $file->storeFileImg($request->img, $path_img);
             }

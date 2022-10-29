@@ -287,7 +287,7 @@ class AdminDashBoardController extends Controller
             // main img
             if ($request->has('main_img')) {
                 if ($conf->main_img != NULL)
-                    unlink("public/" . $conf->main_img);
+                    $this->file->deleteFile("public/" . $conf->main_img);
                 $path_main = "admin/images/show_home/" . $request->name . "/" . "main/";
                 $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
             }
@@ -295,7 +295,7 @@ class AdminDashBoardController extends Controller
             // use img
             if ($request->has('use_img')) {
                 if ($conf->use_img != NULL)
-                    unlink("public/" . $conf->use_img);
+                    $this->file->deleteFile("public/" . $conf->use_img);
                 $path_use = "admin/images/show_home/" . $request->name . "/" . "use/";
                 $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
             }
@@ -303,7 +303,7 @@ class AdminDashBoardController extends Controller
             // instruct img
             if ($request->has('instruct_img')) {
                 if ($conf->instruct_img != NULL)
-                    unlink("public/" . $conf->instruct_img);
+                    $this->file->deleteFile("public/" . $conf->instruct_img);
                 $path_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/";
                 $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
             }
@@ -311,7 +311,7 @@ class AdminDashBoardController extends Controller
             // fix img
             if ($request->has('fix_img')) {
                 if ($conf->fix_img != NULL)
-                    unlink("public/" . $conf->fix_img);
+                    $this->file->deleteFile("public/" . $conf->fix_img);
                 $path_fix = "admin/images/show_home/" . $request->name . "/" . "fix/";
                 $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
             }
@@ -319,7 +319,7 @@ class AdminDashBoardController extends Controller
             // access img
             if ($request->has('access_img')) {
                 if ($conf->access_img != NULL)
-                    unlink("public/" . $conf->access_img);
+                    $this->file->deleteFile("public/" . $conf->access_img);
                 $path_access = "admin/images/show_home/" . $request->name . "/" . "access/";
                 $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
             }
@@ -379,7 +379,7 @@ class AdminDashBoardController extends Controller
             $data_create['type'] = $request->type;
             if ($request->has('value_img')) {
                 $path = "admin/images/info/";
-                $data_create['value'] = $this->file->storeFileImg($request->value_img);
+                $data_create['value'] = $this->file->storeFileImg($request->value_img , $path);
             } else {
                 $data_create['value'] = $request->value;
             }
@@ -417,16 +417,16 @@ class AdminDashBoardController extends Controller
             $data_update['type'] = $request->type;
             if ($request->has('value_img')) {
                 if ($config_info->value != NULL) {
-                    unlink("public/" . $config_info->value);
+                    $this->file->deleteFile("public/" . $config_info->value);
                 }
                 $path = "admin/images/info/";
-                $data_update['value'] = $this->file->storeFileImg($request->value_img);
+                $data_update['value'] = $this->file->storeFileImg($request->value_img , $path);
             } else {
                 $data_update['value'] = $request->value;
             }
             if ($request->has('setNull')) {
                 if ($config_info->value != NULL) {
-                    unlink("public/" . $config_info->value);
+                    $this->file->deleteFile("public/" . $config_info->value);
                 }
                 $data_update['value'] = NULL;
             }

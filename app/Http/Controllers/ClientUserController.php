@@ -128,7 +128,7 @@ class ClientUserController extends Controller
             $data['phone'] = $request->phone;
             if ($request->has('avatar')) {
                 if($user->avatar != NULL)
-                unlink("public/".$user->avatar);
+                $this->file->deleteFile("public/".$user->avatar);
                 $path = "admin/images/avatar/";
                 $data['avatar'] = $file->storeFileImg($request->avatar, $path);
             }
@@ -202,7 +202,7 @@ class ClientUserController extends Controller
         $data_create = array();
         $data_update = array();
         $error = array();
-        unlink($request->path);
+        $this->file->deleteFile($request->path);
         $data['pong'] = $request->path;
         return response()->json($data);
     }

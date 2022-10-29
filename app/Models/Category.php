@@ -89,6 +89,7 @@ class Category extends Model
         }
         return $uri;
     }
+    // tạo đƯờng dẫn thư mục từ gốc đến cha con cho category slug
     static function createUriCategory($categories , $implode="/")
     {
         $uri = self::treeUriParent($categories);

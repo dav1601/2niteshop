@@ -328,7 +328,7 @@ class AdminUserController extends Controller
         $data_create = array();
         $data_update = array();
         $error = array();
-        unlink($request->path);
+        $this->file->deleteFile($request->path);
         $data['pong'] = $request->path;
         return response()->json($data);
     }
@@ -364,7 +364,7 @@ class AdminUserController extends Controller
             $user = User::where('id', '=', $id)->first();
             if ($request->has('avatar')) {
                 if ($user->avatar != NULL)
-                    unlink("public/" . $user->avatar);
+                    $this->file->deleteFile("public/" . $user->avatar);
                 $path = "admin/images/avatar/";
                 $data_update_user['avatar'] = $this->handle_file->storeFileImg($request->avatar, $path);
             }

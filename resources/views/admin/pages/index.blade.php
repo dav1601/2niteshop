@@ -69,7 +69,7 @@ Quản Lý Trang
                         @enderror
                     </div>
                     <div class="form-group mb-5">
-                        <input type="submit" value="Thêm Trang" class="btn w-100 text-center navi_btn">
+                        <input type="submit" value="THÊM TRANG" class="btn w-100 text-center navi_btn">
                     </div>
                     {!! Form::close() !!}
                 </div>

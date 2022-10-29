@@ -60,7 +60,7 @@ Quản Lý Trang
                         @enderror
                     </div>
                     <div class="form-group mb-5">
-                        <input type="submit" value="Sửa Trang" class="btn w-100 text-center navi_btn">
+                        <input type="submit" value="CẬP NHẬT TRANG" class="btn w-100 text-center navi_btn">
                     </div>
                     {!! Form::close() !!}
                     <div class="form-group mb-5">

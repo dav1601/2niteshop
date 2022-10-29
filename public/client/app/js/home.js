@@ -4,7 +4,7 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
+     
     $(document).on('change', "#sort__search--main", function () {
         var page = 1;
         var dataView = $(this).attr('data-view');

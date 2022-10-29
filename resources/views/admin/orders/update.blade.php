@@ -157,7 +157,7 @@ Update đơn hàng đặt trước
                         </div>
                     </div>
                     <div class="form-group mb-5">
-                        <input type="submit" value="Cập Nhật Đơn đặt hàng" class="btn navi_btn w-100">
+                        <input type="submit" value="CẬP NHẬT ĐƠN ĐẶT HÀNG" class="btn navi_btn w-100">
                     </div>
 
 

@@ -126,7 +126,7 @@ Dashboard
                         @enderror
                     </div>
                     <div class="form-group mb-5">
-                        <input type="submit" value="Sửa Config Thông Tin" class="btn navi_btn w-100">
+                        <input type="submit" value="CẬP NHẬT THÔNG TIN" class="btn navi_btn w-100">
                     </div>
                     {!! Form::close() !!}
                 </div>

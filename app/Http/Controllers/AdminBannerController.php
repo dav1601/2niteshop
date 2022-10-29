@@ -110,7 +110,7 @@ class AdminBannerController extends Controller
             $data['link'] = $request->link;
             if ($request->has('img')) {
                 if ($banner->img != NULL)
-                    unlink("public/" . $banner->img);
+                    $this->file->deleteFile("public/" . $banner->img);
                 $path_img = "admin/images/banners/";
                 $data['img'] = $file->storeFileImg($request->img, $path_img);
             }

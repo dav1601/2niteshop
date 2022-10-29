@@ -267,14 +267,14 @@ class AdminCategoryController extends Controller
             }
             if ($request->has('img')) {
                 if ($category->img != NULL)
-                    unlink("public/" . $category->img);
+                    $this->file->deleteFile("public/" . $category->img);
                 $path = "admin/images/category/banner/";
                 $data['img'] = $file->storeFileImg($request->img, $path);
             }
             if ($request->has('icon')) {
                 if ($request->parent == 0) {
                     if ($category->icon != NULL)
-                        unlink("public/" . $category->icon);
+                        $this->file->deleteFile("public/" . $category->icon);
                     $path_icon = "admin/images/category/icon/";
                     $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
                 } else {

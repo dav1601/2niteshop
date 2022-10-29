@@ -465,7 +465,7 @@ class AdminProductController extends Controller
             // /////////////////////////////////
             if ($request->has('banner')) {
                 if ($product->banner != NULL) {
-                    unlink("public/" . $product->banner);
+                    $this->file->deleteFile("public/" . $product->banner);
                 }
                 $path_banner = $path . Str::slug($data_update['cat_name']) . "/"  . "banner/";
                 $data_update['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
@@ -487,7 +487,7 @@ class AdminProductController extends Controller
             // start backgroup img
             if ($request->has('bg')) {
                 if ($product->bg != NULL && $product->bg != '') {
-                    unlink("public/" . $product->bg);
+                    $this->file->deleteFile("public/" . $product->bg);
                 }
                 $path_bg =  $path . Str::slug($data_update['cat_name']) . "/"  . "backgroud/";
                 $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
