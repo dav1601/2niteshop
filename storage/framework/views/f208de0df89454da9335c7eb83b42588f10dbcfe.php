@@ -1,10 +1,13 @@
 <div id="collapse-<?php echo e($id); ?>" class="collapse multi-collapse" data-id="<?php echo e($id); ?>" aria-labelledby="headingOne"  >
 <ul class="nite__menu lv-<?php echo e($level); ?>">
     <?php if (isset($component)) { $__componentOriginal60e598b48b6ed397697efe971f94a2c8191f8780 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Category\Categories::class, ['categories' => $category]); ?>
+<?php $component = App\View\Components\Category\Categories::resolve(['categories' => $category] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('category.categories'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Category\Categories::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
 <?php $component->withAttributes([]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

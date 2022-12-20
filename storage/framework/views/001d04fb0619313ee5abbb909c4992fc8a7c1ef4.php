@@ -15,7 +15,7 @@
             <div class="container d-flex justify-content-between align-items-center">
                 <div class="header__content--logo">
                     <a href="<?php echo e(route('home')); ?>" class="d-block">
-                        <img src="<?php echo e($file->ver_img('client/images/logo.png')); ?>" alt="">
+                        <img src="<?php echo e($file->ver_img(getVal('logo')->value)); ?>" alt="logo">
                     </a>
                 </div>
                 <div class="header__content--action d-flex align-items-center">

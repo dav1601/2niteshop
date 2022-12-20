@@ -243,7 +243,7 @@
             flex: 0 0 165px;
             max-width: 165px;
             margin-left: 10px;
-             @include responsive_h(iphone5-se, down) {
+            @include responsive_h(iphone5-se, down) {
                 flex: 1;
                 max-width: 100%;
                 margin-right: 10px;
@@ -271,8 +271,8 @@
     .info__product {
         flex: 1;
         padding-left: 20px;
-         @include responsive_h(iphone5-se, down) {
-         padding-left: 0;
+        @include responsive_h(iphone5-se, down) {
+            padding-left: 0;
         }
         width: 100%;
         .prdcer {
@@ -1007,20 +1007,26 @@
             line-height: 26.5px;
             margin: 0px 0px 10px;
             text-align: justify;
+            height: 100%;
+            width: 100%;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            display: -webkit-box !important;
         }
     }
     &__title {
         margin: 12px 0;
         a {
             white-space: normal;
-            overflow: visible;
-            text-overflow: initial;
+            overflow: hidden;
+            text-overflow: inherit;
             font-family: "Montserrat";
             font-weight: 900;
             font-size: 16px;
             line-height: 22px;
             color: rgba(58, 71, 84, 1);
-            text-align: justify;
+            text-align: left;
             text-decoration: none;
             &:hover {
                 color: #277b8c;
@@ -1352,8 +1358,8 @@
 // end btn-preorder
 // start navbar for admin in client
 #headerForAdmin {
-     @include responsive_h(iphoneX, down) {
-         display: none;
+    @include responsive_h(iphoneX, down) {
+        display: none;
     }
     .bd-grid {
         max-width: 1024px;
@@ -1562,7 +1568,7 @@
     top: 0;
     width: $width-cart;
     @include responsive_h(iphone5-se, down) {
-        right: -100% ;
+        right: -100%;
         width: 100%;
     }
     background: #fff;
@@ -1574,7 +1580,7 @@
     &--header {
         @include responsive_v(iphone5-se, down) {
             margin-bottom: 50px;
-           }
+        }
         position: relative;
         width: 100%;
         height: 45px;
@@ -1645,8 +1651,8 @@
         border-left: 1px solid rgba(221, 221, 221, 1);
         .cart__drop {
             margin: 20px 20px auto 20px;
-             @include responsive_v(iphone6-7-8plus, down) {
-                margin:0;
+            @include responsive_v(iphone6-7-8plus, down) {
+                margin: 0;
             }
             width: 100%;
             #ckOrCart {
@@ -1690,25 +1696,25 @@
                 background: #fafafa;
                 margin-top: 10px;
                 padding: 10px;
-                 @include responsive_v(iphone6-7-8plus, down) {
-                  padding: 0;
+                @include responsive_v(iphone6-7-8plus, down) {
+                    padding: 0;
                 }
                 color: #333333;
                 border: 1px solid #f5f6fa;
                 width: 100%;
                 li {
                     .qty {
-                         @include responsive_v(iphone6-7-8plus, down) {
-                         width: 10px;
-                         margin-right: 15px;
+                        @include responsive_v(iphone6-7-8plus, down) {
+                            width: 10px;
+                            margin-right: 15px;
                         }
                     }
                     .remove {
                         span {
-                             @include responsive_v(iphone5-se, down) {
-                               position: absolute;
-                               top: -7px;
-                               right: -2px;
+                            @include responsive_v(iphone5-se, down) {
+                                position: absolute;
+                                top: -7px;
+                                right: -2px;
                             }
                         }
                     }
@@ -1743,6 +1749,42 @@
                 padding: 0;
                 margin-right: 15px;
             }
+        }
+    }
+}
+/////////////////////
+.module__block {
+    position: relative;
+    background: rgba(247, 231, 231, 1);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(221, 14, 28, 1);
+    padding: 10px;
+    padding-left: 20px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    &--item {
+        border-width: 0;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: rgba(249, 19, 34, 0.22);
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left;
+        .block__content {
+            &--title {
+                font-family: "Montserrat";
+                font-weight: 700;
+                font-size: 15px;
+                text-transform: uppercase;
+                margin-bottom: 6px;
+                display: block;
+            }
+        }
+        &:last-child {
+            border-bottom-width: 0;
         }
     }
 }

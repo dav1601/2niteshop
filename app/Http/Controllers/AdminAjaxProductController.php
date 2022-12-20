@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlockProduct;
 use App\Models\Blogs;
 use App\Models\bundled_accessory_cat;
 use App\Models\Category;
@@ -9,18 +10,29 @@ use App\Models\CatGame;
 use App\Models\gllProducts;
 use App\Models\Insurance;
 use App\Models\Policy;
+use App\Models\PrdRelaBlock;
+use App\Models\PrdRelaBlog;
 use App\Models\Producer;
 use App\Models\Products;
 use App\Models\RelatedPosts;
 use App\Models\RelatedProducts;
 use App\Models\typeProduct;
 use App\Models\User;
+use App\Repositories\AdminPrdRepo;
+use App\Repositories\ModelInterface;
 use Illuminate\Http\Request;
+use stdClass;
 
 class AdminAjaxProductController extends Controller
 {
     //////////////////////////////////////
-
+    private $error = 0;
+    private $data = array();
+    private $html = '';
+    public function __construct(AdminPrdRepo $repo_prd)
+    {
+        $this->repoPrd = $repo_prd;
+    }
     public function handle_reload(Request $request)
     {
         $data = array();
@@ -126,8 +138,7 @@ class AdminAjaxProductController extends Controller
             $skin = category_child(Category::all(), $id);
             $cat_2 = Category::where('parent_id', '=', $id)->get();
             $access =  Products::where(function ($query) use ($id) {
-                $query->where('cat_id', '=', $id)
-                    ->orWhere('cat_2_id', '=', $id);
+                $query->where('cat_id', '=', $id);
             });
             if ($request->sub_type == 1) {
                 $access = $access->where('sub_type', 'LIKE', 'controller');
@@ -217,8 +228,6 @@ class AdminAjaxProductController extends Controller
         $error = array();
         $id = $request->id;
         $page = $request->page;
-        $item_page = config('product.item_page');
-        $start = ($page - 1) * $item_page;
         if ($request->action == "update_new") {
             Products::where('id', '=', $id)->update([
                 'new' => $request->val
@@ -277,20 +286,17 @@ class AdminAjaxProductController extends Controller
                 $product = $product->whereBetween('price', [$request->pF, $request->pT]);
             }
         }
-        $count = $product->count();
-        $number_page = ceil($count / $item_page);
-        $products = $product->orderBy($request->option, $request->sort)->offset($start)->limit($item_page)->get();;
-        if (count($products) > 0) {
+        $products = $this->repoPrd->pagination($product, [$request->val_sort, $request->sort], $page, null);
+        if (count($products)) {
             foreach ($products as $prd) {
                 $output .= view('components.admin.product.item', compact('prd'));
             }
         } else {
             $output .= view('components.empty.nodata');
         }
-        if ($number_page > 0) {
-            $pagination =  navi_ajax_page($number_page, $page, "", "justify-content-center", "mt-2");
+        if ($products->number_page > 0) {
+            $pagination =  navi_ajax_page($products->number_page, $page, "", "justify-content-center", "mt-2");
         }
-
 
         $data['html'] = $output;
         $data['page'] = $pagination;
@@ -527,9 +533,9 @@ class AdminAjaxProductController extends Controller
             if ($request->type == "product") {
                 if ($request->kw != NULL) {
                     $kw = $request->kw;
-                    $products = Products::where(function($q) use ($kw) {
-                        $q -> where('name', 'LIKE', '%' . $kw . '%')
-                           -> orWhere('id' , $kw);
+                    $products = Products::where(function ($q) use ($kw) {
+                        $q->where('name', 'LIKE', '%' . $kw . '%')
+                            ->orWhere('id', $kw);
                     })->get();
                     if (count($products) > 0) {
                         $array = $selected;
@@ -623,6 +629,330 @@ class AdminAjaxProductController extends Controller
         $data['html'] = $output;
         return response()->json($data);
     }
+    //////////////////////////////////////
+    public function loadBlock($relaId, $relaName, $model = "prd")
+    {
+        $selected = [];
+
+        switch ($model) {
+            case 'prd':
+                switch ($relaName) {
+                    case 'block':
+                        $getRela = PrdRelaBlock::where('block_id', $relaId)
+                            ->with(['infoPrd' => function ($query) {
+                                $query->select('id');
+                            }])
+                            ->get();
+                        if ($getRela) {
+                            foreach ($getRela as $rela) {
+                                $selected[] = $rela->infoPrd->id;
+                            }
+                        }
+                        break;
+                    case 'product':
+                        $getRela = RelatedProducts::where('product_id', $relaId)
+                            ->with(['infoPrd' => function ($query) {
+                                $query->select('id');
+                            }])
+                            ->get();
+                        if ($getRela) {
+                            foreach ($getRela as $rela) {
+                                $selected[] = $rela->infoPrd->id;
+                            }
+                        }
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                break;
+            case 'blog':
+                switch ($relaName) {
+                    case 'product':
+                        $getRela = PrdRelaBlog::where('products_id', $relaId)
+                            ->with(['infoBlog' => function ($query) {
+                                $query->select('id');
+                            }])
+                            ->get();
+                        if ($getRela) {
+                            foreach ($getRela as $rela) {
+                                $selected[] = $rela->infoBlog->id;
+                            }
+                        }
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+            case 'block':
+                switch ($relaName) {
+                    case 'product':
+                        $getRela = PrdRelaBlock::where('products_id', $relaId)
+                            ->with(['infoBlock' => function ($query) {
+                                $query->select('id');
+                            }])
+                            ->get();
+                        if ($getRela) {
+                            foreach ($getRela as $rela) {
+                                $selected[] = $rela->infoBlock->id;
+                            }
+                        }
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+            default:
+                break;
+        }
+
+        return $selected;
+    }
+    public function handle_model_rela(Request $request, ModelInterface $vam)
+    {
+        $relaId = (int) $request->relaId;
+        $selected = !empty($request->selected) ? array_map('intval', $request->selected) : [];
+        $model = $request->model ? $request->model : "prd";
+        $act = $request->act;
+        $page = $request->page;
+        $relaName = $request->relaName;
+        $option = json_decode($request->option);
+        $html_tags = "";
+        $selectedId = [];
+        $queryPrd = new Products();
+        $queryBlock = new BlockProduct();
+        $queryBlog = new Blogs();
+        $query = null;
+        $m = $model;
+        $p = "name";
+        if ($model === "prd") {
+            switch ($act) {
+                case "load":
+                    $selected = $this->loadBlock($relaId, $relaName, $model);
+                    break;
+                case  "save":
+                    switch ($relaName) {
+                        case 'block':
+                            try {
+                                if (count($selected) > 0) {
+                                    PrdRelaBlock::whereNotIn('products_id', $selected)->where('block_id', $relaId)->delete();
+                                    foreach ($selected as $prdId) {
+                                        $has = PrdRelaBlock::where('block_id',  $relaId)->where('products_id', $prdId)->first();
+                                        if (!$has) {
+                                            PrdRelaBlock::create([
+                                                'block_id' => $relaId,
+                                                'products_id' => $prdId
+                                            ]);
+                                        }
+                                    }
+                                } else {
+                                    PrdRelaBlock::where('block_id', $relaId)->delete();
+                                }
+                                $selected = $this->loadBlock($relaId, $relaName, $model);
+                            } catch (\Exception $e) {
+                                $this->error = 1;
+                                $this->html = $e->getMessage();
+                            }
+                            break;
+                        case 'product':
+                            try {
+                                if (count($selected) > 0) {
+                                    RelatedProducts::whereNotIn('products_id', $selected)->where('product_id', $relaId)->delete();
+                                    foreach ($selected as $prdId) {
+                                        $has = RelatedProducts::where('product_id',  $relaId)->where('products_id', $prdId)->first();
+                                        if (!$has) {
+                                            RelatedProducts::create([
+                                                'product_id' => $relaId,
+                                                'products_id' => $prdId
+                                            ]);
+                                        }
+                                    }
+                                } else {
+                                    RelatedProducts::where('product_id', $relaId)->delete();
+                                }
+                                $selected = $this->loadBlock($relaId, $relaName, $model);
+                            } catch (\Exception $e) {
+                                $this->error = 1;
+                                $this->html = $e->getMessage();
+                            }
+                            break;
+                    }
+                    break;
+                case "search":
+                    if ($option->keyword) {
+                        $queryPrd = $queryPrd->where('name', 'LIKE', '%' . $option->keyword . '%');
+                        $page = 1;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            $vadata = $vam->pagination($queryPrd, null, $page, null,  []);
+            $selectedId = $selected;
+            $array = [];
+            foreach ($selected as $id) {
+                $prd = Products::select('name')->where('id', $id)->first();
+                if ($prd) {
+                    $array[$id] = $prd->name;
+                }
+                unset($prd);
+            }
+
+            $selected = $array;
+        }
+        // end model prd
+        if ($model === "block") {
+            $p = "title";
+            switch ($act) {
+                case "load":
+                    $selected = $this->loadBlock($relaId, $relaName, $model);
+                    break;
+                case  "save":
+                    try {
+                        if (count($selected) > 0) {
+                            PrdRelaBlock::whereNotIn('block_id', $selected)->where('products_id', $relaId)->delete();
+                            foreach ($selected as $block_id) {
+                                $has = PrdRelaBlock::where('products_id',  $relaId)->where('block_id', $block_id)->first();
+                                if (!$has) {
+                                    PrdRelaBlock::create([
+                                        'products_id' => $relaId,
+                                        'block_id' => $block_id
+                                    ]);
+                                }
+                            }
+                        } else {
+                            PrdRelaBlock::where('products_id', $relaId)->delete();
+                        }
+                        $selected = $this->loadBlock($relaId, $relaName, $model);
+                    } catch (\Exception $e) {
+                        $this->error = 1;
+                        $this->html = $e->getMessage();
+                    }
+                    break;
+                case "search":
+
+                    break;
+                default:
+                    break;
+            }
+            $vadata = $vam->pagination($queryBlock, null, $page, null, []);
+            $selectedId = $selected;
+            $array = [];
+            foreach ($selected as $id) {
+                $block = BlockProduct::select('title')->where('id', $id)->first();
+                if ($block) {
+                    $array[$id] = $block->title;
+                }
+                unset($block);
+            }
+
+            $selected = $array;
+        }
+        // end block
+        if ($model === "blog") {
+            $p = "title";
+            switch ($act) {
+                case "load":
+                    $selected = $this->loadBlock($relaId, $relaName, $model);
+                    break;
+                case  "save":
+                    switch ($relaName) {
+                        case 'product':
+                            try {
+                                if (count($selected) > 0) {
+                                    PrdRelaBlog::whereNotIn('blogs_id', $selected)->where('products_id', $relaId)->delete();
+                                    foreach ($selected as $blogId) {
+                                        $has = PrdRelaBlog::where('blogs_id', $blogId)->where('products_id', $relaId)->first();
+                                        if (!$has) {
+                                            PrdRelaBlog::create([
+                                                'products_id' => $relaId,
+                                                'blogs_id' => $blogId
+                                            ]);
+                                        }
+                                    }
+                                } else {
+                                    PrdRelaBlog::where('products_id', $relaId)->delete();
+                                }
+                                $selected = $this->loadBlock($relaId, $relaName, $model);
+                            } catch (\Exception $e) {
+                                $this->error = 1;
+                                $this->html = $e->getMessage();
+                            }
+                            break;
+
+                        default:
+                            # code...
+                            break;
+                    }
+
+                    break;
+                case "search":
+                    $page = 1;
+                    if ($option->keyword) {
+                        $queryBlog =  $queryBlog->where('title', 'LIKE', '%' . $option->keyword . '%');
+                    }
+                    break;
+                default:
+                    break;
+            }
+            $vadata = $vam->pagination($queryBlog, null, $page, null, []);
+            $selectedId = $selected;
+            $array = [];
+            foreach ($selected as $id) {
+                $blog = Blogs::select('title')->where('id', $id)->first();
+                if ($blog) {
+                    $array[$id] = $blog->title;
+                }
+                unset($blog);
+            }
+
+            $selected = $array;
+        }
+        $this->html .= view('components.admin.product.select.table', compact('m',  'selected', 'page', 'vadata', 'p'));
+        $html_tags .= view('components.admin.tags.select', compact('selected'));
+        $this->data['error'] = $this->error;
+        $this->data['html'] = $this->html;
+        $this->data['selected'] = $selectedId;
+        $this->data['html_tags'] = $html_tags;
+        return response()->json($this->data);
+    }
+    //////////////////////////////////////
+
+    public function renderSelected(Request $request)
+    {
+        $m = $request->model;
+        $selected = $request->selected ? $request->selected : [];
+        $reloadTable = $request->reloadTable;
+        $html_tags = '';
+        try {
+            switch ($m) {
+                case 'prd':
+                    if (count($selected) >= 0) {
+                        $array = [];
+                        foreach ($selected as $prdId) {
+                            $array[$prdId] = Products::select('name')->where('id', $prdId)->first()->name;
+                        }
+                        $html_tags .= view('components.admin.tags.select', compact('selected'));
+                    }
+                    break;
+
+                default:
+                    $this->error = 1;
+                    $this->html = "Không tồn tại model";
+                    break;
+            }
+        } catch (\Exception $e) {
+            $this->error = 1;
+            $this->html = $e->getMessage();
+        }
+        $this->data['error'] = $this->error;
+        $this->data['html'] = $this->html;
+        $this->data['html_tags'] = $html_tags;
+        return response()->json($this->data);
+    }
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
 
     ////////////////////////////////////////
 }

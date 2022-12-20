@@ -2,6 +2,14 @@
   display: flex;
 }
 
+.c-pointer {
+  cursor: pointer;
+}
+
+.char__255 {
+  width: 200px;
+}
+
 #sidebar {
   transition: all 0.5s;
   flex: 0 0 310px;
@@ -47,6 +55,11 @@ hr {
   opacity: 0.25;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.vadark {
+  background: #222e3c !important;
+  color: white;
 }
 
 #content {

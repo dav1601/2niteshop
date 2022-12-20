@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class RelatedPosts extends Model
 {
     use HasFactory;
-    protected $table = 'related_posts';
+    protected $table = 'blog_rela_cat';
     protected $fillable = [
         'posts',
-        'product_id',
         'cat_id',
-        'for',
     ];
+    public function infoBlog()
+    {
+        return $this->belongsTo('App\Models\Blogs', 'posts', 'id');
+    }
 }

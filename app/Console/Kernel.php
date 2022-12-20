@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
         Commands\MinifyFile::class,
         Commands\ClearDebugbar::class,
         Commands\ClearHistory::class,
-        Commands\CleanAll::class
+        Commands\CleanAll::class,
+        Commands\UploadFileFromLocalToCloudinary::class
     ];
     /**
      * Define the application's command schedule.
@@ -26,7 +27,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
     }
 
     /**
@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

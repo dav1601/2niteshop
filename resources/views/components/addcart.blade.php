@@ -4,7 +4,7 @@
     </div>
 <div class="d-flex">
     <a href="{{ route('detail_product', ['slug'=>$item->slug]) }}" class="success__add--img">
-        <img src="{{ $file->ver_img($item->main_img) }}" alt="">
+        <img src="{{ $file->ver_img($item->main_img) }}" alt=" {{ $item->name }} ">
     </a>
     <div class="success__add--content">
          <a href="{{ route('detail_product', ['slug'=>$item->slug]) }}" class="name">

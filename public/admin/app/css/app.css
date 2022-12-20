@@ -98,6 +98,14 @@
   display: flex;
 }
 
+.c-pointer {
+  cursor: pointer;
+}
+
+.char__255 {
+  width: 200px;
+}
+
 #sidebar {
   transition: all 0.5s;
   flex: 0 0 310px;
@@ -143,6 +151,11 @@ hr {
   opacity: 0.25;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.vadark {
+  background: #222e3c !important;
+  color: white;
 }
 
 #content {
@@ -201,6 +214,24 @@ body {
   line-height: 1.6;
   font-weight: 400;
   background: #19222c;
+}
+
+.swal2-container {
+  z-index: 50000;
+}
+
+i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
+  content: "[FONT-AWESOME-CONTENT]";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  color: #000;
+  font-size: 1.5em;
+  padding-right: 0.5em;
+  position: absolute;
+  top: 15%;
+  left: 0;
 }
 
 .form-control,
@@ -445,10 +476,10 @@ body {
   font-weight: 600;
 }
 .navi_btn:hover {
-  background: #0575E6;
+  background: #0575e6;
   /* fallback for old browsers */
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #021B79, #0575E6);
+  background: linear-gradient(to right, #021b79, #0575e6);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #ffffff;
 }
@@ -664,10 +695,10 @@ body {
   font-weight: 600;
 }
 #content__dashboard .card-footer a.see-all:hover {
-  background: #0575E6;
+  background: #0575e6;
   /* fallback for old browsers */
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #021B79, #0575E6);
+  background: linear-gradient(to right, #021b79, #0575e6);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 #content__dashboard .card__users--item:first-child, #content__dashboard .card__users--item:nth-child(5) {
@@ -729,10 +760,10 @@ body {
   font-weight: 600;
 }
 #content #task__add--btn:hover {
-  background: #0575E6;
+  background: #0575e6;
   /* fallback for old browsers */
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #021B79, #0575E6);
+  background: linear-gradient(to right, #021b79, #0575e6);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 #content .modal-content {

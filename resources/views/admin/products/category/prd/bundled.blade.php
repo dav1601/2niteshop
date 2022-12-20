@@ -25,9 +25,6 @@ Thêm Sản Phẩm
     toastr.success("Xoá Bundled Thành Công");
 </script>
 @endif
-<input type="hidden" name="" value="{{ route('handle_search') }}" id="url__handle--search">
-<input type="hidden" name="" value="{{ route('handle_cat') }}" id="url__handle--cat">
-<input type="hidden" name="" value="{{ route('handle_reload') }}" id="url__handle--reload">
 <div class="row mx-0">
     <div class="col-12 mt-4 p-0">
         <div class="w-100">
@@ -119,7 +116,7 @@ Thêm Sản Phẩm
                                     @endphp
                                     @if (count($ba) > 0)
                                     <ul>
-                                        @foreach ($ba as $k => $b )                                       
+                                        @foreach ($ba as $k => $b )
                                         <li class="d-flex align-items-center"><i class="fas fa-circle pr-2 mt-0" style="font-size: 8px !important;"></i> {{ App\Models\Products::where('id', '=' , $b)->first()->name }},</li>
                                         @endforeach
                                     </ul>

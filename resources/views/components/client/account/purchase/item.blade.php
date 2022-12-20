@@ -31,7 +31,7 @@ $cart = unserialize($item->cart);
     <div class="products">
       @foreach ($cart as $product )
       <div class="product d-flex justify-content-between  mb-3">
-        <img src="{{ $file->ver_img($product->options->image) }}" width="100" alt="">
+        <img src="{{ $file->ver_img($product->options->image) }}" width="100" alt=" {{ $product->name }} ">
         <div class="content d-block">
           <a href="{{ route('detail_product', ['slug'=>Str::slug($product->name)]) }}" class="name">
             {{ $product->name }}

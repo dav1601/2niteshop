@@ -6,13 +6,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-
+/**
+ * @group User
+ *
+ * APIs for managing users
+ */
 class UserApiController extends Controller
 {
     /**
      * GET USERS.
-     * Api này cho phép bạn lấy danh sách user.
-     * @group Users Api
      * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam sort string ASC/DESC Default: DESC Example: DESC
      * @queryParam key_sort string  Default: id Example: id

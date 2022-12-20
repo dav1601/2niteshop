@@ -15,6 +15,10 @@ use App\Models\RelatedPosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\bundled_skin_cat;
+use App\Models\CatGame;
+use App\Models\PrdRelaBlog;
+use App\Models\ProductCategories;
+use App\Repositories\ModelInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -24,135 +28,92 @@ class ClientProductsController extends Controller
 {
     ////////////////////////////////////////
 
-    public function index($slug, Request $request)
+    public function index($slug, Request $request, ModelInterface $vam)
     {
-        $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('category/'), '', url()->current())));
-        $slug = collect($bc)->last();
+        if (!$request->has('isAjax')) {
+            $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('category/'), '', url()->current())));
+            $slug = collect($bc)->last();
+        }
         $category =  Category::where('slug', 'LIKE', $slug)->firstOrFail();
         $view = $request->cookie('view');
-        if ($request->has('page')) {
-            $page = $request->page;
-        } else {
-            $page = 1;
-        }
+        $page = $request->has('page') ? $request->page : 1;
         $list_banner = gllCat::where('cate_id', '=', $category->id)->get();
         $id = $category->id;
-        $list_products = array();
-        foreach (Category::find($id)->products()->select('products_id')->get()->toArray() as $item) {
-            $list_products[] = $item['products_id'];
+        // FIX CÁC RELATIONSHIP MANY-MANY
+        $products = Products::with(['categories' => function ($q) use ($category) {
+            $q->where('slug', 'LIKE', $category->slug);
+        }])->whereHas(
+            'categories',
+            function ($q) use ($category) {
+                $q->where('slug', 'LIKE', $category->slug);
+            }
+
+        );
+        $genre = [];
+        if ($category->is_game) {
+            $genre = $products->with(['product', 'product.cat_game'])->get();
+            $genre = collect($genre)->groupBy(function ($item, $key) {
+                return $item->product->cat_game;
+            })->all();
+            $newArr = [];
+            foreach ($genre as $key => $value) {
+                $newArr[] = json_decode($key);
+            }
+            $genre = $newArr;
         }
-        if ($id != 129) {
-            $products = Products::where(function ($query) use ($id, $list_products) {
-                $query->where('cat_id', '=', $id)
-                    ->orWhere('sub_1_cat_id', '=', $id)
-                    ->orWhere('sub_2_cat_id', '=', $id)
-                    ->orWhereIn('id', $list_products);
-            });
-        } else {
-            $products = Products::where('usage_stt', '=', 2);
-        }
-        $count = $products->count();
-        $item_page = 16;
-        $start = ($page - 1) * $item_page;
-        $number_page = ceil($count / $item_page);
-        if ($request->has('genre')) {
+        $genres = [];
+        if ($request->has('genre') && $request->genre) {
             $genres = explode(",", $request->genre);
             $products = $products->whereIn('cat_game_id', $genres);
-        } else {
-            $genres = array();
         }
-        if ($request->has('sort')) {
-            $products = $products->orderBy($request->sort, $request->ord);
-            $sort = $request->sort;
-            $ord = $request->ord;
-        } else {
-            $products = $products->orderBy('id', 'DESC');
-            $sort = 0;
-            $ord = "";
-        }
-        $products = $products->offset($start)->limit($item_page)->get();
+        $orderBy = [];
+        $sort = $request->has('sort') && $request->sort ? $request->sort : "id";
+        $ord = $request->has('ord') && $request->ord ? strtolower($request->ord) : "desc";
+        $orderBy[] = $sort;
+        $orderBy[] = $ord;
+        $products = $vam->pagination($products, $orderBy, $page, 16, null);
 
-        return view('client.product.index', compact('products', 'category', 'view', 'page', 'number_page', 'id', 'sort', 'ord', 'genres', 'list_banner', 'bc' ,'list_products'));
+
+        if ($request->has('isAjax')) {
+            $data = array();
+            $pagination = 0;
+            $output = '';
+            $output_2 = '';
+            if ($category->is_game == 1) {
+                $col = "col-lg-3 col-md-4 col-12 col-sm-6";
+            } else {
+                $col = "col-lg-3 col-md-4 col-12 col-sm-6";
+            }
+            if ($products->count > 0) {
+                foreach ($products->data as $product) {
+                    $type = 1;
+                    $class = "prdcat";
+                    $class = "prdcat";
+                    $output .= '<div class="' . $col . ' item w-100">';
+                    $output .= view('components.product.itemgrid', ['message' => $product, 'type' => $type, 'class' => $class]);
+                    $output .= '</div>';
+                    $output_2 .= ' <div class="item w-100">';
+                    $output_2 .= view('components.listitem', ['message' => $product]);
+                    $output_2 .= '</div>';
+                }
+                if ($products->number_page > 1) {
+                    $pagination = navi_ajax_page($products->number_page, $products->page,  "pagination-sm", "justify-content-center", "mt-4");
+                }
+            }
+
+            $data['html'] = $output;
+            $data['html_2'] = $output_2;
+            $data['page'] = $pagination;
+            $data['view'] = $view;
+            return response()->json($data);
+        }
+        return view('client.product.index', compact('products',  'category', 'view', 'id', 'sort', 'ord', 'genres', 'list_banner', 'bc', 'genre'));
     }
     //////////////////////////////////////
 
-    public function index_ajax(Request $request)
-    {
-        $data = array();
-        $pagination = 0;
-        $output = '';
-        $output_2 = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        if ($request->has('page')) {
-            $page = $request->page;
-        } else {
-            $page = 1;
-        }
-        $id = $request->id;
-        $sort = $request->sort;
-        $ord = $request->ord;
-        $view = $request->view;
-        $list_products = array();
-        foreach (Category::find($id)->products()->select('products_id')->get()->toArray() as $item) {
-            $list_products[] = $item['products_id'];
-        }
-        if ($id != 129) {
-            $products = Products::where(function ($query) use ($id, $list_products) {
-                $query->where('cat_id', '=', $id)
-                    ->orWhere('sub_1_cat_id', '=', $id)
-                    ->orWhere('sub_2_cat_id', '=', $id)
-                    ->orWhereIn('id', $list_products);
-            });
-        } else {
-            $products = Products::where('usage_stt', '=', 2);
-        }
-        $count = $products->count();
-        $item_page = 16;
-        $start = ($page - 1) * $item_page;
-        $number_page = ceil($count / $item_page);
-        if ($request->genre != 0) {
-            $products = $products->whereIn('cat_game_id', explode(",", $request->genre));
-        }
-        if ($request->has('sort')) {
-            $products = $products->orderBy($request->sort, $request->ord);
-        } else {
-            $products = $products->orderBy('id', 'DESC');
-        }
-        $products = $products->offset($start)->limit($item_page)->get();
-        if (Category::where('id', '=', $id)->first()->is_game == 1) {
-            $col = "col-lg-3 col-md-4 col-12 col-sm-6";
-        } else {
-            $col = "col-lg-3 col-md-4 col-12 col-sm-6";
-        }
-        foreach ($products as $message) {
-            $type = 1;
-            $class = "prdcat";
-            $output .= '<div class="' . $col . ' item w-100">';
-            $output .= view('components.product.itemgrid', compact('message', 'type', 'class'));
-            $output .= '</div>';
-        }
-        unset($message);
-        foreach ($products as $prd) {
-            $message = $prd;
-            $output_2 .= ' <div class="item w-100">';
-            $output_2 .= view('components.listitem', compact('message'));
-            $output_2 .= '</div>';
-        }
-        if ($number_page > 1) {
-            $pagination = navi_ajax_page($number_page, $page, $size = "pagination-sm", "justify-content-center", $mt = "mt-4");
-        }
 
-        $data['html'] = $output;
-        $data['html_2'] = $output_2;
-        $data['page'] = $pagination;
-        $data['view'] = $view;
-        return response()->json($data);
-    }
 
-    ////////////////////////////////////////
-    ////////////////////////////////////////
+
     ////////////////////////////////////////
     public function detail_product(Request $request)
     {
@@ -172,14 +133,15 @@ class ClientProductsController extends Controller
         }
         $policies = collect($policies);
         $policies = $policies->sortBy('position');
-        $related_blog = Products::find($product->id)->related_blogs()->get();
-        $related_cat = Category::find($product->sub_1_cat_id)->related_blogs()->get();
+        $related_blog = PrdRelaBlog::with('infoBlog')->where('products_id', $product->id)->get();
+        $related_cat = RelatedPosts::with('infoBlog')->where('cat_id',  $product->sub_1_cat_id)->get();
         $related_cat_blog  = $related_blog->merge($related_cat);
         $related_product = Products::find($product->id)->related_products()->get();
         $bundled_skin = bundled_skin_cat::where('cat_id', '=', $product->sub_1_cat_id)->first();
         $bundled_accessory = Category::find($product->sub_1_cat_id)->bundled_accessory()->get();
         $product_ins = collect(Products::find($product->id)->ins()->get()->toArray())->groupBy('group_id');
-        return view('client.product.detail', compact('product', 'policies', 'fullset', 'related_blog', 'banner',  'related_product', 'related_cat_blog', 'bundled_skin', 'bundled_accessory', 'product_ins' , 'bc'));
+        $blocks = Products::with(['blocks', 'blocks.info'])->find($product->id)->blocks;
+        return view('client.product.detail', compact('product', 'policies', 'fullset', 'banner',  'related_blog', 'related_product', 'related_cat_blog', 'bundled_skin', 'bundled_accessory', 'product_ins', 'bc', 'blocks'));
     }
 
     ////////////////////////////////////////

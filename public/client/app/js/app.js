@@ -4,8 +4,24 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-    //
-    //
+    //////////////////////
+    $(window).scroll(function (event) {
+        var scroll = $(window).scrollTop();
+        var element = $("#wrapper__header--top");
+        if ($(window).width() <= 1024) {
+            if (scroll >= 250) {
+                element.addClass(
+                    "fixed__top animate__animated animate__bounceInDown"
+                );
+            } else {
+                element.removeClass(
+                    "fixed__top animate__animated animate__bounceInDown"
+                );
+            }
+        }
+    });
+
+    //////////////////////
     $('[data-toggle="tooltip"]').tooltip();
 
     $(".tawk-button").css("width", "30px !important");
@@ -131,7 +147,6 @@ $(function () {
             title: $title,
         });
     }
-    var view = $("#cookie_view").val();
     var nsp = $("#no-show-popup").val();
     if (nsp == 0) {
         const myTimeout = setTimeout(myPopup, 2000);
@@ -147,9 +162,8 @@ $(function () {
         }
     });
     var url__preOrder = route("pre_order");
-    set_cookie_view(view);
+    set_cookie_view(cookie_view);
     var urlQv = route("loadDataQuickView");
-    var nameRoute = $("#nameRoute").val();
     var offset = $("#biad__header--bot").offset().top;
     var height = $("#biad__header--bot").height();
     var scroll = offset + height;
@@ -656,4 +670,3 @@ $(function () {
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });
-

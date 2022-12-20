@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Repositories\CustomerInterface;
 use App\Repositories\FileInterface;
 use App\Repositories\MailOrderInterface;
+use App\Repositories\ModelInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -47,71 +48,52 @@ class AdminUserController extends Controller
     // /////////////////////////////////////
     ////////////////////////////////////////
 
-    public function profile($id, Request $request, UserInterface $daviUser)
+    public function profile($id, Request $request, UserInterface $daviUser, ModelInterface $repom)
     {
+        $output = "";
         if (!Gate::allows('admin-action')) {
             $this->authorize('setting-profile', $id);
         }
+        $page = $request->has('page') ? $request->page : 1;
         $user = User::where('id', '=', $id)->firstOrFail();
         $profile = infoAdmin::where('user_id', '=', $id)->firstOrFail();
-        $page = 1;
-        $item_page = 6;
-        $start = ($page - 1) * $item_page;
-        $blogs = Blogs::where('users_id', '=', $id)->offset($start)->limit($item_page)->orderBy('created_at', 'DESC')->get();
-        $products = Products::where('author_id', '=', $id)->offset($start)->limit($item_page)->orderBy('created_at', 'DESC')->get();
-        $count_blogs = Blogs::where('users_id', '=', $id)->count();
-        $count_products = Products::where('author_id', '=', $id)->count();
-        $activities = $products->merge($blogs);
-        $count = $count_blogs + $count_products;
-        $number_page = ceil($count / $item_page);
+        $item_page = config('product.item_page') / 2;
+        $blogs = $repom->pagination(Blogs::where('users_id', '=', $id), ['created_at', 'DESC'], $page, $item_page);
+        $products = $repom->pagination(Products::where('author_id', '=', $id), ['created_at', 'DESC'], $page, $item_page);
+        $merge = $products->data;
+        $activities = $merge->merge($blogs->data);
+        $count = $blogs->count + $products->count;
+        $number_page = $blogs->number_page + $products->number_page;
         $sorted = $activities->sortByDesc('created_at');
+        if ($request->isAjax) {
+            $output .= view('components.admin.profile.itemactivities', compact('sorted'));
+            $data['html'] = $output;
+            return response()->json($data);
+        }
         return view('admin.users.profile', compact('id', 'user', 'profile', 'daviUser', 'sorted', 'number_page'));
     }
 
     ////////////////////////////////////////
     //////////////////////////////////////
 
-    public function profile_ajax(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $page = $request->page;
-        $id = $request->id;
-        $item_page = 6;
-        $start = ($page - 1) * $item_page;
-        $blogs = Blogs::where('users_id', '=', $id)->offset($start)->limit($item_page)->orderBy('created_at', 'DESC')->get();
-        $products = Products::where('author_id', '=', $id)->offset($start)->limit($item_page)->orderBy('created_at', 'DESC')->get();
-        $activities = $products->merge($blogs);
-        $sorted = $activities->sortByDesc('created_at');
-        $output .= view('components.admin.profile.itemactivities', compact('sorted'));
-        $data['html'] = $output;
-        return response()->json($data);
-    }
+
 
     ////////////////////////////////////////
     // ///////////////////
-    public function show_user()
+    public function show_user(ModelInterface $repom)
     {
         $this->authorize('group-4');
-        $page = 1;
-        $item_page = 10;
-        $start = ($page - 1) * $item_page;
-        $count =  User::where('id', '!=', Auth::id())->count();
-        $number = ceil($count / $item_page);
-        $users = User::where('id', '!=', Auth::id())->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();
-        return view('admin.users.show_user', compact('users', 'page', 'number'));
+        $users = $repom->pagination(User::where('id', '!=', Auth::id()), null, null, null);
+        return view('admin.users.show_user', compact('users'));
     }
     // /////////
-    public function show_user_ajax(Request $request)
+    public function show_user_ajax(Request $request, ModelInterface $repom)
     {
         $output = '';
         $sort = $request->sort;
         $role = $request->role;
         $user = new User();
+        $user->where('id', '!=', Auth::id());
         if ($role != 0) {
             $user = $user->where('role_id', '=', $role);
         }
@@ -132,13 +114,11 @@ class AdminUserController extends Controller
             $user = $user->where('provider_id', 'LIKE', '%' . $request->provId . '%');
         }
         $page = $request->page;
-        $item_page = 10;
-        $start = ($page - 1) * $item_page;
-        $count =  $user->where('id', '!=', Auth::id())->count();
-        $number = ceil($count / $item_page);
-        $users = $user->where('id', '!=', Auth::id())->orderBy('id', $sort)->offset($start)->limit($item_page)->get();
-        if (count($users) > 0) {
-            $output .= view('components.admin.users.table.showusers', compact('users', 'number', 'page'));
+        $repoRes = $repom->pagination($user, ['id', $sort], $page, null);
+        $users = $repoRes->data;
+        $number = $repoRes->number_page;
+        if ($repoRes->count > 0) {
+            $output .= view('components.admin.users.table.showusers', compact('users', 'page', 'number'));
         } else {
             $output .= view('components.empty.nodata');
         }

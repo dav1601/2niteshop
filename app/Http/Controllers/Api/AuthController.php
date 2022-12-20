@@ -17,12 +17,16 @@ use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token;
 use phpDocumentor\Reflection\Types\Null_;
 
+/**
+ * @group Auth
+ *
+ * APIs for Auth
+ */
 class AuthController extends Controller
 {
     /**
      * Singup.
      * Api này cho phép bạn đăng ký tài khoản user trong hệ thống.
-     * @group Users Api
      * @bodyParam name string required max 255 Example: Vuong Anh
      * @bodyParam email string required max 255 Example: 2niteshop@gmail.com
      * @bodyParam password string required min:6  Example: Anh$1234
@@ -79,7 +83,6 @@ class AuthController extends Controller
     /**
      * Login.
      * Api cho phép bạn đăng nhập vào hệ thống.
-     * @group Users Api
      * @bodyParam email string required max 255 Example: 2niteshop@gmail.com
      * @bodyParam password string required min:6  Example: Anh$1234
      * @responseFile 200 responses/login.json

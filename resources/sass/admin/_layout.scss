@@ -2,6 +2,12 @@
 #wrapper {
     display: flex;
 }
+.c-pointer {
+    cursor: pointer;
+}
+.char__255 {
+    width: 200px;
+}
 // AREA SIDEBAR
 #sidebar {
     transition: all 0.5s;
@@ -40,7 +46,7 @@
 hr {
     background-color: currentColor;
     color: inherit;
-    opacity: .25;
+    opacity: 0.25;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -49,6 +55,10 @@ hr {
 // END HEADER
 
 // CONTENT
+.vadark {
+    background: $vadark !important;
+    color: rgb(255, 255, 255);
+}
 #content {
     flex: 1;
     margin-left: $width-sidebar;

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
 {
-    use HasFactory ;
+    use HasFactory;
     protected $table = 'products';
     protected $fillable = [
         'name',
@@ -56,7 +56,7 @@ class Products extends Model
     }
     public function related_blogs()
     {
-        return $this->hasMany('App\Models\RelatedPosts', 'product_id')->orderBy('posts', 'DESC');
+        return $this->hasMany('App\Models\PrdRelaBlog', 'products_id')->orderBy('blogs_id', 'DESC');
     }
     public function policies()
     {
@@ -66,8 +66,17 @@ class Products extends Model
     {
         return $this->hasMany('App\Models\ProductIns', 'products_id');
     }
+    public function cat_game()
+    {
+        return $this->belongsTo('App\Models\CatGame', 'cat_game_id', 'name');
+    }
     public function categories()
     {
-        return $this->hasMany('App\Models\ProductCategories', 'products_id');
+        return $this->belongsToMany('App\Models\Category', 'product_categories', 'products_id', 'category_id');
+    }
+
+    public function blocks()
+    {
+        return $this->hasMany('App\Models\PrdRelaBlock', 'products_id');
     }
 }

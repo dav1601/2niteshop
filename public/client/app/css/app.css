@@ -2479,20 +2479,26 @@ body::-webkit-scrollbar-thumb,
   line-height: 26.5px;
   margin: 0px 0px 10px;
   text-align: justify;
+  height: 100%;
+  width: 100%;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box !important;
 }
 .bis__title {
   margin: 12px 0;
 }
 .bis__title a {
   white-space: normal;
-  overflow: visible;
-  text-overflow: initial;
+  overflow: hidden;
+  text-overflow: inherit;
   font-family: "Montserrat";
   font-weight: 900;
   font-size: 16px;
   line-height: 22px;
   color: #3a4754;
-  text-align: justify;
+  text-align: left;
   text-decoration: none;
 }
 .bis__title a:hover {
@@ -3188,6 +3194,40 @@ body::-webkit-scrollbar-thumb,
   }
 }
 
+.module__block {
+  position: relative;
+  background: #f7e7e7;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #dd0e1c;
+  padding: 10px;
+  padding-left: 20px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+.module__block--item {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: rgba(249, 19, 34, 0.22);
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: left;
+}
+.module__block--item .block__content--title {
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+.module__block--item:last-child {
+  border-bottom-width: 0;
+}
+
 @media (max-width: 1024px) {
   .mobile__header {
     display: block !important;
@@ -3692,6 +3732,15 @@ body {
   align-items: center;
   margin-bottom: 0;
   position: relative;
+}
+#biad__header--top .header__content--info .info__menu--item {
+  margin: 0 7px;
+}
+#biad__header--top .header__content--info .info__menu--item:last-child {
+  margin-right: 0;
+}
+#biad__header--top .header__content--info .info__menu--item:first-child {
+  margin-left: 0;
 }
 #biad__header--top .header__content--info .info__menu--item .b1ad__drop {
   position: absolute;
@@ -5821,4 +5870,32 @@ body {
 }
 #nite__contact--content .info__contribute .info .module-wrapper .module__item--content .text p:not(p:last-child) {
   margin-bottom: 5px;
+}
+
+.nblock__installment {
+  background: #c41921;
+  padding: 5px;
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  text-transform: uppercase;
+}
+.nblock__installment:first-child {
+  margin-right: 5px;
+}
+.nblock__installment:last-child {
+  margin-left: 5px;
+}
+.nblock__installment span {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+}
+
+.fixed__top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  z-index: 100000;
 }

@@ -4,7 +4,7 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    var url = $("#url__chart").val();
+var url = route('load__chart');
     function load__chart() {
         $.ajax({
             type: "post",

@@ -16,7 +16,6 @@ Cập Nhật Danh Mục
 @section('content')
 <input type="hidden" name="" id="url__selected" value="{{ $url }}">
 <input type="hidden" name="" id="array__selected--blog" value="{{ $selected_js_blog }}">
-<input type="hidden" name="" id="url__handle--related" value="{{ route('handle_related_all') }}">
 <input type="hidden" name="" id="product_id" value="{{ $id }}">
 <div id="cat__add--product">
     <div class="row mx-0">

@@ -76,32 +76,26 @@ $pages = App\Models\Pages::where('id' , '!=' , 7)->orderBy('id' , 'ASC')->get();
                     <div class="box__ft--cont">
                         <div class="my__box">
                             <a href="" class="d-block my__box--fb">
-                                <img src="{{ $file->ver_img('client/images/facebook.png') }}" alt="">
-                                <span>2NITE</span>
+                                <img src="{{ $file->ver_img_local('client/images/facebook.png') }}" alt="icon facebook">
+                                <span>2NITE SHOP</span>
                             </a>
                         </div>
-                        {{-- <div class="my__box">
-                            <a href="https://vachill.com/" class="d-block my__box--web">
-                                <img src="{{ $file->ver_img('client/images/web.png') }}" alt="">
-                                <span>My website 2</span>
-                            </a>
-                        </div> --}}
                         <div class="my__box">
                             <a href="" class="d-block my__box--git">
-                                <img src="{{ $file->ver_img('client/images/github-2.png') }}" alt="">
-                                <span>2NITE</span>
+                                <img src="{{ $file->ver_img_local('client/images/github-2.png') }}" alt="icon github">
+                                <span>dav1601</span>
                             </a>
                         </div>
                         <div class="my__box">
                             <a href="" class="d-block my__box--vscode">
-                                <img src="{{ $file->ver_img('client/images/code.png') }}" alt="">
+                                <img src="{{ $file->ver_img_local('client/images/code.png') }}" alt="icon code">
                                 <span>My Extention</span>
                             </a>
                         </div>
                         <div class="my__box">
                             <a href="" class="d-block my__box--youtube">
-                                <img src="{{ $file->ver_img('client/images/youtube.png') }}" alt="">
-                                <span>My Channel</span>
+                                <img src="{{ $file->ver_img_local('client/images/youtube.png') }}" alt="icon youtube">
+                                <span>Channel Demo</span>
                             </a>
                         </div>
 
@@ -129,7 +123,7 @@ $pages = App\Models\Pages::where('id' , '!=' , 7)->orderBy('id' , 'ASC')->get();
                                 </a>
                             </li>
                             <li class="tax-info">
-                                <img src="{{ $file->ver_img('client/images/tax.png') }}" width="220px" height="85px" alt="">
+                                <img src="{{ $file->ver_img_local('client/images/tax.png') }}" width="220px" height="85px" alt="img tax">
                             </li>
                         </ul>
                     </div>

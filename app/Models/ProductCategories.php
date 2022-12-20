@@ -14,4 +14,13 @@ class ProductCategories extends Model
         'category_id',
         'category_name'
     ];
+    public function cat()
+    {
+        return $this->belongsTo('App\Models\Category', 'category_id', 'id');
+    }
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Products', 'products_id', 'id');
+    }
+    
 }

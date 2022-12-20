@@ -8,12 +8,16 @@ use App\Models\CatGame;
 use App\Models\Producer;
 use Illuminate\Http\Request;
 
+/**
+ * @group ProductsCategories
+ *
+ * APIs for managing Products
+ */
 class ProductCategoriesController extends Controller
 {
     /**
      * Product category properties.
      * Các thuộc tính của danh mục sản phẩm.
-     * @group Product Categories
      * @bodyParam name varchar(255) Tên danh mục
      * @bodyParam title mediumtext Tiêu đề danh mục
      * @bodyParam desc longtext Mô tả ngắn danh mục
@@ -32,7 +36,6 @@ class ProductCategoriesController extends Controller
     /**
      * List all product categories.
      * Cây Danh Mục sản phẩm.
-     * @group Product Categories
      * @queryParam token_api string required Example: 19aIotXmkjH
      * @responseFile 200 responses/products/categories.json
      * */
@@ -44,7 +47,6 @@ class ProductCategoriesController extends Controller
     /**
      * List all Game Genre.
      * Lấy danh sách danh mục game của sản phẩm.
-     * @group Product Categories
      * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/products/categories_game.json
      * */
@@ -56,7 +58,6 @@ class ProductCategoriesController extends Controller
     /**
      * List all Producer.
      * Lấy danh sách nhà sản xuất.
-     * @group Product Categories
      * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/products/producer.json
      * */

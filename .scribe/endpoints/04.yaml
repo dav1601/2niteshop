@@ -1,0 +1,135 @@
+name: BlogCategories
+description: |-
+
+  APIs for managing BlogCategories
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/blogs/categories/properties
+    metadata:
+      groupName: BlogCategories
+      groupDescription: |-
+
+        APIs for managing BlogCategories
+      subgroup: null
+      subgroupDescription: null
+      title: 'Blog category properties.'
+      description: 'Các thuộc tính của danh mục bài viết.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'Tiêu đề danh mục'
+        required: false
+        example: pariatur
+        type: varchar
+        custom: []
+      slug:
+        name: slug
+        description: 'Slug danh mục'
+        required: false
+        example: nisi
+        type: varchar
+        custom: []
+    cleanBodyParameters:
+      name: pariatur
+      slug: nisi
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"Danh sách thuộc tính của bảng danh mục bài viết"}'
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/blogs/categories/list_all
+    metadata:
+      groupName: BlogCategories
+      groupDescription: |-
+
+        APIs for managing BlogCategories
+      subgroup: null
+      subgroupDescription: null
+      title: 'List all blog categories.'
+      description: 'Danh mục bài viết.'
+      authenticated: false
+      custom: []
+    headers: []
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      token_api:
+        name: token_api
+        description: ''
+        required: true
+        example: 19aIotXmkjH
+        type: string
+        custom: []
+    cleanQueryParameters:
+      token_api: 19aIotXmkjH
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "categories": [
+                  {
+                      "id": 1,
+                      "name": "Sửa chữa",
+                      "slug": "sua-chua",
+                      "created_at": "2022-01-05T06:05:29.000000Z",
+                      "updated_at": "2022-01-05T06:05:29.000000Z"
+                  },
+                  {
+                      "id": 2,
+                      "name": "Tin mới",
+                      "slug": "tin-moi",
+                      "created_at": "2022-01-05T06:06:33.000000Z",
+                      "updated_at": "2022-01-05T06:06:33.000000Z"
+                  },
+                  {
+                      "id": 3,
+                      "name": "Đập Hộp - Review",
+                      "slug": "dap-hop-review",
+                      "created_at": "2022-01-05T06:06:43.000000Z",
+                      "updated_at": "2022-01-05T06:06:43.000000Z"
+                  },
+                  {
+                      "id": 4,
+                      "name": "Hướng Dẫn - Thủ Thuật",
+                      "slug": "huong-dan-thu-thuat",
+                      "created_at": "2022-01-05T06:06:49.000000Z",
+                      "updated_at": "2022-01-05T06:06:49.000000Z"
+                  }
+
+              ]
+          }
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

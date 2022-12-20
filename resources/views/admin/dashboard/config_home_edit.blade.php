@@ -18,9 +18,7 @@ Dashboard
     toastr.success("Cập nhật Config Thành Công");
 </script>
 @endif
-<input type="hidden" name="" value="{{ route('handle_search') }}" id="url__handle--search">
-<input type="hidden" name="" value="{{ route('handle_cat') }}" id="url__handle--cat">
-<input type="hidden" name="" value="{{ route('handle_reload') }}" id="url__handle--reload">
+
 <div class="row mx-0">
     <div class="col-12 mt-4 p-0">
         <div class="w-100">
@@ -61,7 +59,7 @@ Dashboard
                         </div>
                         @enderror
                         <div class="show_main mt-4">
-                            <img src="{{ asset($config->main_img) }}" alt="">
+                            <img src="{{ $file->ver_img($config->main_img) }}" alt="">
                         </div>
                     </div>
                     <div class="form-group mb-5">
@@ -92,7 +90,7 @@ Dashboard
                         </div>
                         @enderror
                         <div class="show_main mt-4">
-                            <img src="{{ asset($config->use_img) }}" alt="">
+                            <img src="{{ $file->ver_img($config->use_img) }}" alt="">
                         </div>
                     </div>
                     <div class="form-group mb-5">
@@ -123,7 +121,7 @@ Dashboard
                         </div>
                         @enderror
                         <div class="show_main mt-4">
-                            <img src="{{ asset($config->instruct_img) }}" alt="">
+                            <img src="{{ $file->ver_img($config->instruct_img) }}" alt="">
                         </div>
                     </div>
                     <div class="form-group mb-5">
@@ -154,7 +152,7 @@ Dashboard
                         </div>
                         @enderror
                         <div class="show_main mt-4">
-                            <img src="{{ asset($config->access_img) }}" alt="">
+                            <img src="{{ $file->ver_img($config->access_img) }}" alt="">
                         </div>
                     </div>
                     <div class="form-group mb-5">
@@ -185,7 +183,7 @@ Dashboard
                         </div>
                         @enderror
                         <div class="show_main mt-4">
-                            <img src="{{ asset($config->fix_img) }}" alt="">
+                            <img src="{{ $file->ver_img($config->fix_img) }}" alt="">
                         </div>
                     </div>
                     <div class="form-group mb-5">

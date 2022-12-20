@@ -12,13 +12,16 @@ use App\Models\bundled_skin_cat;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @group Products
+ *
+ * APIs for managing Products
+ */
 class ProductsController extends Controller
 {
 
     /**
      * Product properties.
-     * Các thuộc tính của sản phẩm.
-     * @group Product Properties
      * @bodyParam name varchar(255) Tên sản phẩm
      * @bodyParam slug longtext Slug sản phẩm
      * @bodyParam des longtext Mô tả ngắn sản phẩm
@@ -67,8 +70,6 @@ class ProductsController extends Controller
     }
     /**
      * List all products.
-     * Lấy danh sách sản phẩm theo danh mục hoặc tất cả.
-     * @group PRODUCTS API
      * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam category string Default: null For All Cate Example: ps5
      * @queryParam genre string Default: null For All Genre Game Example: Action,Adventure
@@ -132,8 +133,6 @@ class ProductsController extends Controller
     }
     /**
      * Retrieve a product.
-     * API này cho phép bạn truy xuất và xem một sản phẩm cụ thể bằng SLUG
-     * @group PRODUCTS API
      * @urlParam slug string required Example: nintendo-switch-oled-model-with-neon-red-blue-joycon
      * @queryParam token_api string required Example: 19aIotXOerK
      * @responseFile 200 responses/products/product.json
@@ -182,8 +181,6 @@ class ProductsController extends Controller
     }
     /**
      * Search Products.
-     * API này cho phép bạn tìm kiếm sản phẩm theo từ khoá.
-     * @group PRODUCTS API
      * @queryParam token_api string required Example: 19aIotXOerK
      * @queryParam kw string required Example: DualSense - PS5 Wireless Game Controller Chính Hãng
      * @queryParam per_page int  Default: 10 Example: 10

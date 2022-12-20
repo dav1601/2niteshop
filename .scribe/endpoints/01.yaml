@@ -1,0 +1,907 @@
+name: Products
+description: |-
+
+  APIs for managing Products
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/products/list
+    metadata:
+      groupName: Products
+      groupDescription: |-
+
+        APIs for managing Products
+      subgroup: null
+      subgroupDescription: null
+      title: 'List all products.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers: []
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      token_api:
+        name: token_api
+        description: ''
+        required: true
+        example: 19aIotXOerK
+        type: string
+        custom: []
+      category:
+        name: category
+        description: 'Default: null For All Cate'
+        required: false
+        example: ps5
+        type: string
+        custom: []
+      genre:
+        name: genre
+        description: 'Default: null For All Genre Game'
+        required: false
+        example: 'Action,Adventure'
+        type: string
+        custom: []
+      sort:
+        name: sort
+        description: 'ASC/DESC Default: DESC'
+        required: false
+        example: DESC
+        type: string
+        custom: []
+      key_sort:
+        name: key_sort
+        description: 'Default: id'
+        required: false
+        example: id
+        type: string
+        custom: []
+      per_page:
+        name: per_page
+        description: 'Default: 10'
+        required: false
+        example: 10
+        type: integer
+        custom: []
+      page:
+        name: page
+        description: 'Default: all'
+        required: false
+        example: 1
+        type: integer
+        custom: []
+    cleanQueryParameters:
+      token_api: 19aIotXOerK
+      category: ps5
+      genre: 'Action,Adventure'
+      sort: DESC
+      key_sort: id
+      per_page: 10
+      page: 1
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |+
+          {
+              "category": "81",
+              "genres": [
+                  "Action Adventure",
+                  "Action"
+              ],
+              "number_page": 1,
+              "count": 6,
+              "sort": "DESC",
+              "key_sort": "id",
+              "per_page": "10",
+              "page": "1",
+              "products": [
+                  {
+                      "id": 103,
+                      "name": "Dying Light 2 Stay Human - US",
+                      "slug": "dying-light-2-stay-human-us",
+                      "des": "Thông tin game Thể loạiAction Adventure Hệ máyPS4, Xbox One/Series, PS5 ESRBMature 17+Violence, blood and gore, sexual content and/or strong language. Ngày phát hành4/02/2022 Nhà sản xuất & phát hànhTechland..",
+                      "keywords": null,
+                      "price": 1630000,
+                      "historical_cost": 1150000,
+                      "content": "<table class=\"table table-bordered attribute\" style=\"border-spacing: 0px; border-collapse: inherit; background-color: #ffffff; margin: 20px auto; border-width: 0px 0px 2px; border-style: solid; border-color: transparent transparent #b30000; width: 1098px; max-width: 100%; padding: 10px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px;\">\r\n<thead style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; font-size: 13px; font-weight: bold; text-transform: uppercase; background: #ffe000; border-top: 0px; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\" colspan=\"2\"><span style=\"box-sizing: border-box;\">TH&Ocirc;NG TIN GAME</span></td>\r\n</tr>\r\n</thead>\r\n<tbody style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\">Thể loại</td>\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-bottom-style: solid; border-left-style: solid; border-bottom-color: transparent; border-left-color:",
+                      "insurance": null,
+                      "policy": "4,5,8,9",
+                      "model": "P5G106",
+                      "video": null,
+                      "banner": null,
+                      "banner_link": null,
+                      "main_img": "admin/images/products/playstation-5/main/dying-light-2-stay-human-ps5-305x305h.jpg",
+                      "sub_img": "admin/images/products/playstation-5/sub/dying-light-2-stay-human-41-305x305.jpg",
+                      "bg": null,
+                      "type": "game",
+                      "sub_type": null,
+                      "cat_id": 77,
+                      "cat_name": "PlayStation 5",
+                      "cat_2_id": 0,
+                      "cat_2_sub": 0,
+                      "sub_1_cat_id": 81,
+                      "sub_1_cat_name": "Game PS5",
+                      "sub_2_cat_id": null,
+                      "sub_2_cat_name": null,
+                      "op_sub_1_id": null,
+                      "op_sub_1_name": null,
+                      "op_sub_2_id": null,
+                      "op_sub_2_name": null,
+                      "producer_id": 36,
+                      "producer_slug": "techland",
+                      "cat_game_id": "Action Adventure",
+                      "option_color": null,
+                      "option": null,
+                      "stock": 1,
+                      "new": 1,
+                      "usage_stt": 1,
+                      "num_orders": 0,
+                      "highlight": 2,
+                      "author": "2NITEE",
+                      "author_id": 1,
+                      "created_at": "2022-02-22T18:57:25.000000Z",
+                      "updated_at": "2022-03-22T11:12:10.000000Z"
+                  }
+              ]
+          }
+
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/products/product/{slug}'
+    metadata:
+      groupName: Products
+      groupDescription: |-
+
+        APIs for managing Products
+      subgroup: null
+      subgroupDescription: null
+      title: 'Retrieve a product.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers: []
+    urlParameters:
+      slug:
+        name: slug
+        description: ''
+        required: true
+        example: nintendo-switch-oled-model-with-neon-red-blue-joycon
+        type: string
+        custom: []
+    cleanUrlParameters:
+      slug: nintendo-switch-oled-model-with-neon-red-blue-joycon
+    queryParameters:
+      token_api:
+        name: token_api
+        description: ''
+        required: true
+        example: 19aIotXOerK
+        type: string
+        custom: []
+    cleanQueryParameters:
+      token_api: 19aIotXOerK
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "product": {
+                "id": 40,
+                "name": "PlayStation 5 / PS5 Standard Edition - VN [ CFI-1118A 01 ]",
+                "slug": "playstation-5-ps5-standard-edition-vn-cfi-1118a-01",
+                "des": "Về thiết kế PS5 sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, không vuông vức \"đậm chất Sony\" như PS4, hay Sony Xperia...bắt mắt với tông màu trắng chủ đạo kết hợp màu đen bên trong thân máy cùng đèn LED xanh dương mang lại cảm giác đây chính là thiết kế của tương lai. Vỏ ngoài PS5 ..",
+                "keywords": "sony, sony playstation, playstation 5, ps5, may choi game ps5",
+                "price": 20800000,
+                "historical_cost": 17500000,
+                "content": "<p>&nbsp;</p>\r\n<p><iframe style=\"box-sizing: border-box; max-width: 100%; border-width: initial; border-style: none; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://www.youtube.com/embed/xUJplfTW8XQ\" width=\"700\" height=\"394\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">VỀ THIẾT KẾ</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/index.php?route=product/search&amp;search=playstation%205&amp;category_id=668\">PS5</a>&nbsp;sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, kh&ocirc;ng vu&ocirc;ng vức \"đậm chất Sony\" như PS4, hay Sony Xperia...bắt mắt với t&ocirc;ng m&agrave;u trắng chủ đạo kết hợp m&agrave;u đen b&ecirc;n trong th&acirc;n m&aacute;y c&ugrave;ng đ&egrave;n LED xanh dương mang lại cảm gi&aacute;c đ&acirc;y ch&iacute;nh l&agrave; thiết kế của tương lai.",
+                "insurance": "7,8",
+                "policy": "9,18,21",
+                "model": "14720",
+                "video": "<iframe width=\"310\" height=\"200\" src=\"https://www.youtube.com/embed/z7xQitZX0uw\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>",
+                "banner": "admin/images/products/playstation-5/banner/len-doi-ps5-new-product-banner-630x239(4).jpg",
+                "banner_link": "thong-tin/len-doi-ps5-tiet-kiem-den-6-trieu",
+                "main_img": "admin/images/products/playstation-5/main/ps5-standard-vn-00-305x305.jpg",
+                "sub_img": "admin/images/products/playstation-5/sub/ps5-40-305x305.jpg",
+                "bg": null,
+                "type": "machine",
+                "sub_type": null,
+                "cat_id": 77,
+                "cat_name": "PlayStation 5",
+                "cat_2_id": 0,
+                "cat_2_sub": 0,
+                "sub_1_cat_id": 79,
+                "sub_1_cat_name": "Máy PS5",
+                "sub_2_cat_id": null,
+                "sub_2_cat_name": null,
+                "op_sub_1_id": null,
+                "op_sub_1_name": null,
+                "op_sub_2_id": null,
+                "op_sub_2_name": null,
+                "producer_id": 3,
+                "producer_slug": "sony-playstation-world",
+                "cat_game_id": null,
+                "option_color": null,
+                "option": null,
+                "stock": 1,
+                "new": 2,
+                "usage_stt": 1,
+                "num_orders": 0,
+                "highlight": 1,
+                "author": "2NITE",
+                "author_id": 1,
+                "created_at": "2021-11-24T10:37:49.000000Z",
+                "updated_at": "2022-03-22T18:27:56.000000Z"
+              },
+              "policies": {
+                "0": {
+                  "id": 9,
+                  "title": "THANH TOÁN & TRẢ GÓP",
+                  "content": "<p>Miễn ph&iacute; thanh to&aacute;n thẻ ATM.<br />Thanh to&aacute;n thẻ Visa, Master +2%.<br />Trả G&oacute;p: Trả trước 10% + CMND + Hộ khẩu / Bằng l&aacute;i (<a href=\"https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop\" target=\"_blank\" rel=\"noopener\">Xem chi tiết</a>)<br />Trả G&oacute;p: D&ugrave;ng thẻ t&iacute;n dụng l&atilde;i suất 0% (<a href=\"https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop#2\" target=\"_blank\" rel=\"noopener\">Xem chi tiết</a>)</p>",
+                  "icon": "<i class=\"fas fa-shield-alt\"></i>",
+                  "position": 3,
+                  "fullset": 0,
+                  "created_at": "2021-10-23T12:44:18.000000Z",
+                  "updated_at": "2021-10-23T12:44:18.000000Z"
+                },
+                "1": {
+                  "id": 18,
+                  "title": "BẢO HÀNH",
+                  "content": "<p>Bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng</p>",
+                  "icon": "<i class=\"fas fa-shield-alt\"></i>",
+                  "position": 0,
+                  "fullset": 0,
+                  "created_at": "2021-10-28T10:22:28.000000Z",
+                  "updated_at": "2021-10-28T10:22:28.000000Z"
+                },
+                "2": {
+                  "id": 21,
+                  "title": "GÓI BẢO HÀNH 7 NGÀY",
+                  "content": "<p>&Aacute;p dụng b&aacute;n tại cửa h&agrave;ng hoặc giao h&agrave;ng t&iacute;nh ph&iacute;</p>",
+                  "icon": "<i class=\"fas fa-exclamation-circle\"></i>",
+                  "position": 0,
+                  "fullset": 0,
+                  "created_at": "2021-10-29T14:36:40.000000Z",
+                  "updated_at": "2021-10-29T14:36:40.000000Z"
+                }
+              },
+              "fullset": 0,
+              "related_blog": [],
+              "banner": {
+                "id": 238,
+                "link": "admin/images/products/playstation-5/images_700x700/ps5-0-standard-vn-00-700x700.jpg",
+                "products_id": 40,
+                "size": 700,
+                "index": 1,
+                "created_at": "2021-11-24T10:37:49.000000Z",
+                "updated_at": "2021-11-24T10:37:49.000000Z"
+              },
+              "group": 1,
+              "related_product": [],
+              "related_cat_blog": [
+                {
+                  "id": 14,
+                  "posts": "4",
+                  "product_id": null,
+                  "cat_id": 79,
+                  "for": "category",
+                  "created_at": "2022-03-15T07:17:10.000000Z",
+                  "updated_at": "2022-03-15T07:17:10.000000Z"
+                },
+                {
+                  "id": 12,
+                  "posts": "22",
+                  "product_id": null,
+                  "cat_id": 79,
+                  "for": "category",
+                  "created_at": "2022-03-15T07:17:10.000000Z",
+                  "updated_at": "2022-03-15T07:17:10.000000Z"
+                },
+                {
+                  "id": 11,
+                  "posts": "21",
+                  "product_id": null,
+                  "cat_id": 79,
+                  "for": "category",
+                  "created_at": "2022-03-15T07:17:10.000000Z",
+                  "updated_at": "2022-03-15T07:17:10.000000Z"
+                },
+                {
+                  "id": 13,
+                  "posts": "20",
+                  "product_id": null,
+                  "cat_id": 79,
+                  "for": "category",
+                  "created_at": "2022-03-15T07:17:10.000000Z",
+                  "updated_at": "2022-03-15T07:17:10.000000Z"
+                }
+              ],
+              "bundled_skin": {
+                "id": 2,
+                "skin_cat_id": 86,
+                "cat_id": 79,
+                "created_at": "2022-03-15T06:49:28.000000Z",
+                "updated_at": "2022-03-15T07:17:10.000000Z"
+              },
+              "bundled_accessory": [
+                {
+                  "id": 4,
+                  "products_id": 30,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                },
+                {
+                  "id": 5,
+                  "products_id": 31,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                },
+                {
+                  "id": 6,
+                  "products_id": 32,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                },
+                {
+                  "id": 7,
+                  "products_id": 33,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                },
+                {
+                  "id": 8,
+                  "products_id": 34,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                },
+                {
+                  "id": 9,
+                  "products_id": 35,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                },
+                {
+                  "id": 10,
+                  "products_id": 45,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                },
+                {
+                  "id": 11,
+                  "products_id": 46,
+                  "cat_id": 79,
+                  "created_at": "2022-03-15T06:32:29.000000Z",
+                  "updated_at": "2022-03-15T06:32:29.000000Z"
+                }
+              ]
+            }
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/products/search_product
+    metadata:
+      groupName: Products
+      groupDescription: |-
+
+        APIs for managing Products
+      subgroup: null
+      subgroupDescription: null
+      title: 'Search Products.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      token_api:
+        name: token_api
+        description: ''
+        required: true
+        example: 19aIotXOerK
+        type: string
+        custom: []
+      kw:
+        name: kw
+        description: ''
+        required: true
+        example: 'DualSense - PS5 Wireless Game Controller Chính Hãng'
+        type: string
+        custom: []
+      per_page:
+        name: per_page
+        description: 'Default: 10'
+        required: false
+        example: 10
+        type: integer
+        custom: []
+      page:
+        name: page
+        description: 'Default: all'
+        required: false
+        example: 1
+        type: integer
+        custom: []
+    cleanQueryParameters:
+      token_api: 19aIotXOerK
+      kw: 'DualSense - PS5 Wireless Game Controller Chính Hãng'
+      per_page: 10
+      page: 1
+    bodyParameters:
+      kw:
+        name: kw
+        description: ''
+        required: true
+        example: dolor
+        type: string
+        custom: []
+    cleanBodyParameters:
+      kw: dolor
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "products": [
+                {
+                  "id": 30,
+                  "name": "DualSense - PS5 Wireless Game Controller Chính Hãng",
+                  "slug": "dualsense-ps5-wireless-game-controller-chinh-hang",
+                  "des": "Khác với mọi năm, thay vì lấy tên DualShock như 4 đời console trước đó, Sony đã chọn cái tên DualSense để bày tỏ về những công nghệ mới đặc biệt được tích hợp trên tay cầm PlayStation 5 - cỗ máy next-gen năm nay. Hướng dẫn kết nối tay cầm DualSense với thiết bị khác Hướng dẫn vệ sinh tay cầm D..",
+                  "keywords": "sony, sony playstation, playstation 5, ps5, tay cam ps5, dualshock 5, dualsense, tay cam playstation 5, dualsense chinh hang",
+                  "price": 1980000,
+                  "historical_cost": 1100000,
+                  "content": "<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; color: red;\"><span style=\"box-sizing: border-box; font-weight: bold;\">Sản phẩm được ph&acirc;n phối ch&iacute;nh h&atilde;ng Sony PlayStation VN, bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng.</span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\">Kh&aacute;c với mọi năm, thay v&igrave; lấy t&ecirc;n DualShock như 4 đời console trước đ&oacute;, Sony đ&atilde; chọn c&aacute;i t&ecirc;n&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/dualsense-wireless-controller\">DualSense</a>&nbsp;để b&agrave;y tỏ về những c&ocirc;ng nghệ mới đặc biệt được t&iacute;ch hợp tr&ecirc;n tay cầm&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/may-ps5\">PlayStation 5</a>&nbsp;- cỗ m&aacute;y next-gen năm nay.",
+                  "info": null,
+                  "insurance": null,
+                  "policy": "8,9,18",
+                  "model": "15118",
+                  "video": "<iframe width=\"630\" height=\"354\" src=\"https://www.youtube.com/embed/I11b1xpjDdI\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>",
+                  "banner": null,
+                  "banner_link": null,
+                  "main_img": "admin/images/products/playstation-5/main/dualsense-ps5-00-305x305.jpg",
+                  "sub_img": "admin/images/products/playstation-5/sub/dualsense-ps5-41-305x305w.jpg",
+                  "bg": null,
+                  "type": "access",
+                  "sub_type": "controller",
+                  "cat_id": 77,
+                  "cat_name": "PlayStation 5",
+                  "cat_2_id": 0,
+                  "cat_2_sub": 0,
+                  "sub_1_cat_id": 82,
+                  "sub_1_cat_name": "Phụ kiện PS5",
+                  "sub_2_cat_id": null,
+                  "sub_2_cat_name": null,
+                  "op_sub_1_id": null,
+                  "op_sub_1_name": null,
+                  "op_sub_2_id": null,
+                  "op_sub_2_name": null,
+                  "producer_id": 3,
+                  "producer_slug": "sony-playstation-world",
+                  "cat_game_id": null,
+                  "option_color": null,
+                  "option": null,
+                  "stock": 3,
+                  "new": 1,
+                  "usage_stt": 1,
+                  "num_orders": 0,
+                  "highlight": 1,
+                  "author": "2NITE",
+                  "author_id": 1,
+                  "created_at": "2021-11-24T09:23:01.000000Z",
+                  "updated_at": "2022-03-22T18:27:56.000000Z"
+                }
+              ],
+              "number_page": 1,
+              "count": 1,
+              "per_page": 10,
+              "page": 1
+            }
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/products/product_properties
+    metadata:
+      groupName: Products
+      groupDescription: |-
+
+        APIs for managing Products
+      subgroup: null
+      subgroupDescription: null
+      title: 'Product properties.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'Tên sản phẩm'
+        required: false
+        example: iste
+        type: varchar(255)
+        custom: []
+      slug:
+        name: slug
+        description: 'Slug sản phẩm'
+        required: false
+        example: dolores
+        type: longtext
+        custom: []
+      des:
+        name: des
+        description: 'Mô tả ngắn sản phẩm'
+        required: false
+        example: alias
+        type: longtext
+        custom: []
+      keywords:
+        name: keywords
+        description: 'Keywords SEO or Tag sản phẩm'
+        required: false
+        example: at
+        type: longtext
+        custom: []
+      price:
+        name: price
+        description: 'Giá bán của sản phẩm'
+        required: false
+        example: qui
+        type: bigint
+        custom: []
+      historical_cost:
+        name: historical_cost
+        description: 'Giá gốc của sản phẩm'
+        required: false
+        example: quis
+        type: bigint
+        custom: []
+      content:
+        name: content
+        description: 'Nội dung của sản phẩm'
+        required: false
+        example: ipsam
+        type: longtext
+        custom: []
+      info:
+        name: info
+        description: 'Thông tin của sản phẩm'
+        required: false
+        example: exercitationem
+        type: longtext
+        custom: []
+      insurance:
+        name: insurance
+        description: 'Chính sách bảo hành,options đi kèm với của sản phẩm'
+        required: false
+        example: non
+        type: longtext
+        custom: []
+      policy:
+        name: policy
+        description: 'Chính sách của cửa hàng'
+        required: false
+        example: adipisci
+        type: longtext
+        custom: []
+      model:
+        name: model
+        description: 'Model của sản phẩm'
+        required: false
+        example: a
+        type: varchar
+        custom: []
+      video:
+        name: video
+        description: 'Mã nhúng utube của sản phẩm'
+        required: false
+        example: id
+        type: longtext
+        custom: []
+      banner:
+        name: banner
+        description: 'Banner đi kèm với sản phẩm'
+        required: false
+        example: voluptate
+        type: varchar
+        custom: []
+      banner_link:
+        name: banner_link
+        description: 'Link banner của sản phẩm'
+        required: false
+        example: qui
+        type: varchar
+        custom: []
+      main_img:
+        name: main_img
+        description: 'Hình ảnh chính của sản phẩm'
+        required: false
+        example: voluptas
+        type: varchar
+        custom: []
+      sub_img:
+        name: sub_img
+        description: 'Hình ảnh phụ của sản phẩm'
+        required: false
+        example: ratione
+        type: varchar
+        custom: []
+      bg:
+        name: bg
+        description: 'Hình ảnh background của sản phẩm'
+        required: false
+        example: a
+        type: longtext
+        custom: []
+      type:
+        name: type
+        description: 'Kiểu sản phẩm'
+        required: false
+        example: dolorem
+        type: varchar
+        custom: []
+      sub_type:
+        name: sub_type
+        description: 'Kiểu phụ sản phẩm'
+        required: false
+        example: sint
+        type: varchar
+        custom: []
+      cat_id:
+        name: cat_id
+        description: 'ID Danh mục chính sản phẩm'
+        required: false
+        example: aut
+        type: bigint
+        custom: []
+      cat_name:
+        name: cat_name
+        description: 'Tên danh mục chính'
+        required: false
+        example: ab
+        type: varchar
+        custom: []
+      sub_1_cat_id:
+        name: sub_1_cat_id
+        description: 'ID danh mục phụ 1 của danh mục chính'
+        required: false
+        example: culpa
+        type: bigint
+        custom: []
+      sub_1_cat_name:
+        name: sub_1_cat_name
+        description: 'Tên danh mục phụ 1 của danh mục chính'
+        required: false
+        example: rem
+        type: varchar
+        custom: []
+      sub_2_cat_id:
+        name: sub_2_cat_id
+        description: 'ID danh mục phụ 2 của danh mục chính'
+        required: false
+        example: sit
+        type: bigint
+        custom: []
+      sub_2_cat_name:
+        name: sub_2_cat_name
+        description: 'Tên danh mục phụ 2 của danh mục chính'
+        required: false
+        example: ea
+        type: varchar
+        custom: []
+      cat_id_2:
+        name: cat_id_2
+        description: 'ID Danh mục chính 2 của sản phẩm'
+        required: false
+        example: tempore
+        type: bigint
+        custom: []
+      op_sub_1_id:
+        name: op_sub_1_id
+        description: 'ID option 1 của dạnh mục phụ 1 của danh mục chính'
+        required: false
+        example: animi
+        type: bigint
+        custom: []
+      op_sub_1_name:
+        name: op_sub_1_name
+        description: 'Tên option 1 của dạnh mục phụ 1 của danh mục chính'
+        required: false
+        example: voluptatem
+        type: varchar
+        custom: []
+      op_sub_2_id:
+        name: op_sub_2_id
+        description: 'ID option 2 của dạnh mục phụ 1 của danh mục chính'
+        required: false
+        example: facere
+        type: bigint
+        custom: []
+      op_sub_2_name:
+        name: op_sub_2_name
+        description: 'Tên option 2 của dạnh mục phụ 1 của danh mục chính'
+        required: false
+        example: laborum
+        type: varchar
+        custom: []
+      cat_2_sub:
+        name: cat_2_sub
+        description: 'ID Danh mục phụ 1 của danh mục chính 2 sản phẩm'
+        required: false
+        example: et
+        type: bigint
+        custom: []
+      producer_id:
+        name: producer_id
+        description: 'ID nhà sản xuất sản phẩm'
+        required: false
+        example: veniam
+        type: bigint
+        custom: []
+      producer_slug:
+        name: producer_slug
+        description: 'Slug nhà sản xuất sản phẩm'
+        required: false
+        example: sunt
+        type: varchar
+        custom: []
+      cat_game_id:
+        name: cat_game_id
+        description: 'thể loại game của sản phẩm'
+        required: false
+        example: quas
+        type: ID
+        custom: []
+      stock:
+        name: stock
+        description: 'Tình trạng kho của sản phẩm (1: còn hàng , 2: hàng sắp về , 3:hết hàng)'
+        required: false
+        example: 6
+        type: integer
+        custom: []
+      new:
+        name: new
+        description: 'Trạng thái mới của sản phẩm (1: mới đăng , 2: bình thường)'
+        required: false
+        example: 8
+        type: integer
+        custom: []
+      usage_stt:
+        name: usage_stt
+        description: 'Trạng thái sử dụng sản phẩm (1: sản phẩm chưa qua sử dụng , 2: sản phẩm đã qua sử dụng)'
+        required: false
+        example: 1
+        type: integer
+        custom: []
+      num_orders:
+        name: num_orders
+        description: 'Số lượt mua sản phẩm'
+        required: false
+        example: nihil
+        type: bigint
+        custom: []
+      highlight:
+        name: highlight
+        description: 'Sản Phẩm nổi bật (1: sp bình thương , 2: sp hot)'
+        required: false
+        example: 14
+        type: integer
+        custom: []
+      author_id:
+        name: author_id
+        description: 'Id người đăng sản phẩm'
+        required: false
+        example: id
+        type: bigint
+        custom: []
+      author_name:
+        name: author_name
+        description: 'Tên người đăng sản phẩm'
+        required: false
+        example: porro
+        type: varchar
+        custom: []
+    cleanBodyParameters:
+      name: iste
+      slug: dolores
+      des: alias
+      keywords: at
+      price: qui
+      historical_cost: quis
+      content: ipsam
+      info: exercitationem
+      insurance: non
+      policy: adipisci
+      model: a
+      video: id
+      banner: voluptate
+      banner_link: qui
+      main_img: voluptas
+      sub_img: ratione
+      bg: a
+      type: dolorem
+      sub_type: sint
+      cat_id: aut
+      cat_name: ab
+      sub_1_cat_id: culpa
+      sub_1_cat_name: rem
+      sub_2_cat_id: sit
+      sub_2_cat_name: ea
+      cat_id_2: tempore
+      op_sub_1_id: animi
+      op_sub_1_name: voluptatem
+      op_sub_2_id: facere
+      op_sub_2_name: laborum
+      cat_2_sub: et
+      producer_id: veniam
+      producer_slug: sunt
+      cat_game_id: quas
+      stock: 6
+      new: 8
+      usage_stt: 1
+      num_orders: nihil
+      highlight: 14
+      author_id: id
+      author_name: porro
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"Đây là tất cả thuộc tính của bảng sản phẩm"}'
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

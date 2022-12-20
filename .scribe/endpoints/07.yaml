@@ -1,0 +1,241 @@
+name: 'Auth Api'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/auth/logout
+    metadata:
+      groupName: 'Auth Api'
+      groupDescription: ''
+      subgroup: null
+      subgroupDescription: null
+      title: Logout.
+      description: 'Api cho phép bạn logout và xoá token user trong hệ thống.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {token}'
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+          is_logout => true
+          }
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer VEDvgehdPa3Zf4k6bc618a5'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/auth/me/{id}'
+    metadata:
+      groupName: 'Auth Api'
+      groupDescription: ''
+      subgroup: null
+      subgroupDescription: null
+      title: 'GET USER LOGGED.'
+      description: 'Api này cho phép lấy user đã đăng nhập.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {token}'
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the me.'
+        required: true
+        example: ut
+        type: string
+        custom: []
+    cleanUrlParameters:
+      id: ut
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "user": {
+                  "id": 337,
+                  "role_id": 5,
+                  "name": "Garrison Farrell",
+                  "email": "tkub@example.org",
+                  "phone": "0944373354",
+                  "email_verified_at": null,
+                  "avatar": null,
+                  "provider_id": null,
+                  "provider": null,
+                  "ban": 0,
+                  "created_at": "2022-02-19T08:40:34.000000Z",
+                  "updated_at": "2022-02-19T08:40:34.000000Z"
+              }
+          }
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer aEDf6e145aZcPg8dVbk63hv'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/auth/me/orders/{id}'
+    metadata:
+      groupName: 'Auth Api'
+      groupDescription: ''
+      subgroup: null
+      subgroupDescription: null
+      title: 'GET ORDERS USER LOGGED.'
+      description: 'Api này cho phép lấy danh sách đơn hàng user đã đăng nhập.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {token}'
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the order.'
+        required: true
+        example: et
+        type: string
+        custom: []
+    cleanUrlParameters:
+      id: et
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: ''
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 1b8D6465dackfaeZ3gvEhVP'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/auth/update/{id}'
+    metadata:
+      groupName: 'Auth Api'
+      groupDescription: ''
+      subgroup: null
+      subgroupDescription: null
+      title: 'POST UPDATE INFO USER.'
+      description: 'Api này cho phép cập nhật thông tin của user.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {token}'
+      Content-Type: multipart/form-data
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the update.'
+        required: true
+        example: blanditiis
+        type: string
+        custom: []
+    cleanUrlParameters:
+      id: blanditiis
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'max 255'
+        required: true
+        example: 'VUong Anh'
+        type: string
+        custom: []
+      phone:
+        name: phone
+        description: 'min:6'
+        required: true
+        example: '0987687678'
+        type: string
+        custom: []
+      avatar:
+        name: avatar
+        description: ''
+        required: false
+        example: null
+        type: file
+        custom: []
+    cleanBodyParameters:
+      name: 'VUong Anh'
+      phone: '0987687678'
+    fileParameters:
+      avatar: null
+    responses:
+      -
+        status: 200
+        content: |
+          {
+              "success": 1,
+              "updated_fail": false,
+              "user": {
+                  "id": 1,
+                  "role_id": 1,
+                  "name": "2NITEAPI",
+                  "email": "2nitetestapi@gmail.com",
+                  "phone": "0811122260",
+                  "email_verified_at": null,
+                  "avatar": "admin/images/avatar/245119900_260411806011768_6267318235776841110_n.jpg",
+                  "provider_id": null,
+                  "provider": null,
+                  "ban": 0,
+                  "created_at": "2022-02-19T08:06:28.000000Z",
+                  "updated_at": "2022-03-22T11:39:20.000000Z"
+              }
+          }
+        headers: []
+        description: '200'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6dDEVae6143cZ5a8Pgkfbvh'
+    controller: null
+    method: null
+    route: null
+    custom: []

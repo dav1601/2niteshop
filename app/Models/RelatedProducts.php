@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class RelatedProducts extends Model
 {
     use HasFactory;
-    protected $table = 'related_products';
+    protected $table = 'product_rela_product';
     protected $fillable = [
         'products_id',
         'product_id',
-        'blog_id',
-        'for',
     ];
+    public function infoPrd()
+    {
+        return $this->belongsTo('App\Models\Products', 'products_id', 'id');
+    }
 }

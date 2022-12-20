@@ -6,7 +6,7 @@ $(function () {
     });
     function handle_select($act = "load") {
         var kw = $("#search__name").val();
-        var url_ajax = $("#url__handle--related").val();
+        var url_ajax = route('handle_related_all');
         var selected = $.get_checked('select__blog');
         var url_selected = new URL($("#url__selected").val());
         var sps = url_selected.searchParams;
@@ -44,11 +44,10 @@ $(function () {
     });
      $(document).on('change' , "#realatedFor" , function(){
          var act = "change";
-         var url = $("#url__handle--relatedFor").val();
          var forRealted = $(this).val();
             $.ajax({
                 type: "post",
-                url: url,
+                url: route('handle_related_for'),
                 data: {act:act , forR:forRealted},
                 dataType: "json",
                 success: function(data) {
@@ -59,10 +58,9 @@ $(function () {
         $(document).on('keyup' , "#search__product" , function(){
             var kw = $(this).val();
             var act = "search";
-            var url = $("#url__handle--relatedFor").val();
                $.ajax({
                    type: "post",
-                   url: url,
+                   url: route('handle_related_for'),
                    data: {act:act , kw:kw},
                    dataType: "json",
                    success: function(data) {

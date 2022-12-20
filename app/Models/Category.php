@@ -90,7 +90,7 @@ class Category extends Model
         return $uri;
     }
     // tạo đƯờng dẫn thư mục từ gốc đến cha con cho category slug
-    static function createUriCategory($categories , $implode="/")
+    static function createUriCategory($categories, $implode = "/")
     {
         $uri = self::treeUriParent($categories);
         return implode($implode, collect($uri)->reverse()->toArray());
@@ -113,6 +113,6 @@ class Category extends Model
     }
     public function products()
     {
-        return $this->hasMany('App\Models\ProductCategories', 'category_id');
+        return $this->belongsToMany('App\Models\Products', 'product_categories', 'products_id', 'id');
     }
 }

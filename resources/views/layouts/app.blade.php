@@ -1,74 +1,21 @@
 @php
-$name = Route::currentRouteName();
+    $name = Route::currentRouteName();
+    $customTitle = 'Test';
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta property="fb:admins" content="100007446334009" />
-    <meta property="fb:app_id" content="349901006628885" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
-    <title>@yield('title', config('2niteseo.meta.defaults.title'))</title>
-    <link rel="canonical" href="{{ URL::current() }}">
-    <meta name='description' itemprop='description' content='@yield(' meta-desc', config('2niteseo.meta.defaults.description'))' />
-    <meta name='keywords' content='@yield(' meta-keyword', config('2niteseo.meta.defaults.keywords'))' />
-    <meta property="og:description" content="@yield('og-desc', config('2niteseo.meta.defaults.description'))" />
-    <meta property="og:title" content="@yield('og-title', config('2niteseo.meta.defaults.title'))" />
-    <meta property="og:image" content="@yield('og-image', $file->ver_img('client/images/banner_2nite.png'))" />
-    <meta property="og:site_name" content="@yield('site_name', config('2niteseo.meta.defaults.title'))" />
-    <meta property="og:type" content="@yield('og-type', 'website')" />
-    <meta property="og:url" content="{{ Url::current() }}" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="@yield('twitter-title', config('2niteseo.meta.defaults.title'))" />
+    @include('layouts.meta', ['customTitle' => "dasdsadas"])
     {{-- link css --}}
-    <link rel="stylesheet" href="{{ $file->ver('plugin/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ $file->ver('plugin/reset.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-        integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ $file->ver('client/owl/dist/assets/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ $file->ver('client/owl/dist/assets/owl.theme.default.css') }}">
-    <link rel="stylesheet" href="{{ $file->ver('client/ls/dist/css/lightslider.min.css') }}">
-    <link rel="stylesheet" href="{{ $file->import_css('app.css') }}">
-    @yield('import_css')
+    @include('layouts.css')
     {{-- end link css --}}
-    <script src="{{ $file->ver('plugin/bootstrap/js/jquery-3.5.1.min.js') }}"></script>
-    <script src="{{ $file->ver('plugin/bootstrap/js/popper.min.js') }}"></script>
-    <script src="{{ $file->ver('plugin/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ $file->import_js('helper.js') }}"></script>
-    @yield('import_js')
-    @routes
-    <script src="{{ $file->import_js('app.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"
-        integrity="sha512-XdUZ5nrNkVySQBnnM5vzDqHai823Spoq1W3pJoQwomQja+o4Nw0Ew1ppxo5bhF2vMug6sfibhKWcNJsG8Vj9tg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{ $file->ver('client/zoom-master/jquery.zoom.min.js') }}"></script>
-    @if ($name != 'search_main' && $name != 'show_cart')
-        <script src="{{ $file->import_js('product.js') }}"></script>
-    @endif
-    <script src="{{ $file->ver('client/owl/dist/owl.carousel.min.js') }}"></script>
-    <script src="{{ $file->ver('client/ls/dist/js/lightslider.min.js') }}"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    @include('layouts.js', ['name' => $name])
     {{-- end script --}}
 </head>
 <div id="bg-loading"></div>
 <div id="loading">
-    <img src="{{ $file->ver_img('admin/images/layout/loading-unscreen.gif') }}" alt="Loading......." width="200">
+    <img src="{{ $file->ver_img_local('admin/images/layout/loading-unscreen.gif') }}" alt="Loading......." width="200">
 </div>
 <!--Start of Tawk.to Script-->
 <!-- Messenger Plugin chat Code -->
@@ -144,15 +91,9 @@ $name = Route::currentRouteName();
         </div>
         <x-Footer />
     </div>
-    <input type="hidden" name="" value="{{ $name }}" id="nameRoute">
-    <input type="hidden" name="" id="cookie_view"
-        value="{{ Cookie::has('view') ? Cookie::get('view') : ' grid' }}">
-    <input type="hidden" name="" id="no-show-popup"
-        value="{{ Session::has('nsp') ? Session::get('nsp') : 0 }}">
     <x-modal.Product />
     <x-modal.preorder />
     <x-Ajax />
-    <x-popup />
 </body>
 
 

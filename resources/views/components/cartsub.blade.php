@@ -9,7 +9,7 @@ $group = 0;
 <div class="card__item--sub d-flex justify-content-between align-items-center position-relative">
     <div class="img">
         <a href="{{ route('detail_product', ['slug'=>$prd->slug]) }}">
-            <img src="{{ $file->ver_img($prd->main_img) }}" width="60" alt="">
+            <img src="{{ $file->ver_img($prd->main_img) }}" width="60" alt=" {{ $prd->name }} ">
         </a>
     </div>
     <div class="info">

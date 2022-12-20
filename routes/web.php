@@ -21,9 +21,8 @@ use Illuminate\Support\Facades\Request;
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('contact', 'HomeController@contact')->name('contact');
 Route::get('update_api', 'HomeController@api');
-Route::get('test/template', function () {
-    return view('admin.api.mail.send_security_code');
-});
+Route::get('testview', 'TestController@index');
+Route::post('test', 'TestController@handle')->name('test');
 Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
 Auth::routes();
 
@@ -128,7 +127,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
                 Route::post('handle_add_user', 'AdminUserController@handle_add')->name('hanle_add_user');
                 Route::get('edit/{id}', 'AdminUserController@edit')->name('edit_user')->where('id', '^[0-9]+$');
                 Route::post('handle_edit/{id}', 'AdminUserController@handle_edit')->name('hanle_edit_user')->where('id', '^[0-9]+$');
-                Route::get('handle_delete/{id}{action}', 'AdminUserController@handle_delete')->name('handle_delete_user')->where('id', '^[0-9]+$');
+                Route::get('handle_delete/{id}/{action}', 'AdminUserController@handle_delete')->name('handle_delete_user')->where('id', '^[0-9]+$');
                 Route::prefix('list/')->group(function () {
                     Route::get('admin', 'AdminUserController@show_admin')->name('show_admin');
                     Route::get('user', 'AdminUserController@show_user')->name('show_user');
@@ -153,6 +152,10 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             });
         });
         Route::prefix('ajax/')->group(function () {
+            Route::prefix('rela/')->group(function () {
+                Route::post('handle_model', 'AdminAjaxProductController@handle_model_rela')->name('handle_model_rela');
+                Route::post('render_selected', 'AdminAjaxProductController@renderSelected')->name('render_selected');
+            });
             Route::post('todos', 'AdminAjaxDashBoardController@todos')->name('todos');
             Route::post('price', 'AdminAjaxDashBoardController@price')->name('price');
             Route::prefix('product/')->group(function () {
@@ -204,6 +207,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             // /////////////////////////////////////////
             Route::get('add_product', 'AdminProductController@product_view_add')->name('add_product_view');
             Route::post('add_product', 'AdminProductController@product_handle_add')->name('product_handle_add');
+            Route::get('block/view', 'AdminProductController@block__prodcut__view')->name('product_block_view');
+            Route::post('block/handle', 'AdminProductController@block__product__handle')->name('product_block_handle');
             Route::get('show_product', 'AdminProductController@show_product')->name('show_product');
             Route::get('edit_product/{id}', 'AdminProductController@product_view_edit')->name('product_view_edit')->where('id', '^[0-9]+$');
             Route::post('edit_product/{id}', 'AdminProductController@product_handle_edit')->name('product_handle_edit')->where('id', '^[0-9]+$');

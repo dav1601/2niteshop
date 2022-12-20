@@ -31,7 +31,7 @@ Danh Mục Bài Viết
 </script>
 @endif
 <div class="row mx-0">
-    <input type="hidden" name="" id="blogs__ajax" value="{{ route("handle_ajax_blogs") }}">
+
     <div class="col-12 mt-4 p-0">
         <div class="w-100">
             <div class="card">
@@ -65,7 +65,7 @@ Danh Mục Bài Viết
                                 placeholder="Tìm theo tiêu đề hoặc id bài viết">
                         </div>
                     </div>
-               
+
                     <div class="col-2 pl-0 mb-4">
                         <div class="form-group">
                             <label for="">Danh Mục Chính</label>
@@ -113,7 +113,7 @@ Danh Mục Bài Viết
                        </span>
                         </div>
                     </div>
-                 
+
                 </div>
             </div>
         </div>
@@ -130,5 +130,5 @@ Danh Mục Bài Viết
                 </div>
             </div>
         </div>
-                
+
 @endsection

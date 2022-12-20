@@ -4,7 +4,7 @@ $prd = App\Models\Products::where('id', '=' , $cart->id)->first();
 <div class="cart__item">
     <div class="cart__item--image">
         <a href="{{ route('detail_product', ['slug'=>$prd->slug]) }}" class="d-block">
-            <img src="{{ $file->ver_img($cart->options->image) }}" width="100" alt="">
+            <img src="{{ $file->ver_img($cart->options->image) }}" width="100" alt=" {{ $prd->name }} ">
         </a>
     </div>
     <div class="cart__item--caption">

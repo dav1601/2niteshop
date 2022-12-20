@@ -4,7 +4,7 @@
         <a href="{{ route('index_product' , ['slug'=>$category->slug]) }}">
             <div class="icon-name">
                 @if ($category->icon != NULL)
-                <img src="{{ $file->ver_img($category->icon) }}" width="25" height="25" alt="">
+                <img src="{{ $file->ver_img($category->icon) }}" width="25" height="25" alt="{{ $category->name }}">
                 @endif
                 <span>{{ $category->name }}</span>
             </div>
@@ -30,7 +30,7 @@ $category_120 = App\Models\Category::OneCatTree(120);
         <a href="{{ route('index_product' , ['slug'=>$category->slug]) }}">
             <div class="icon-name">
                 @if ($category->icon != NULL)
-                <img src="{{ $file->ver_img($category->icon) }}" width="25" height="25" alt="">
+                <img src="{{ $file->ver_img($category->icon) }}" width="25" height="25" alt=" {{ $category->name }} ">
                 @endif
                 <span>{{ $category->name }}</span>
             </div>

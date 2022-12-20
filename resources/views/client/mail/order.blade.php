@@ -331,7 +331,7 @@
     <th class="column_logo" style="mso-line-height-rule: exactly; padding-top: 13px; padding-bottom: 13px;" align="center" bgcolor="#ffffff">
     <!-- Logo : BEGIN -->
     <a href="{{ url('') }}" target="_blank" style="color: #c3c3c3; text-decoration: none !important; text-underline: none;">
-    <img src="{{ $file->ver_img('client/images/email-logo.png') }} " class="logo" width="200" border="0" style="width: 200px; height: auto !important; display: block; text-align: center; margin: auto;" />
+    <img src="{{ $file->ver_img_local('client/images/email-logo.png') }} " class="logo" width="200" border="0" style="width: 200px; height: auto !important; display: block; text-align: center; margin: auto;" />
     </a>
     <!-- Logo : END -->
     </th>
@@ -745,7 +745,7 @@
     bgcolor="#ffffff"
     valign="middle"
     >
-    <img width="40" style="width: 40px; vertical-align: middle; height: auto !important; font-weight: bold;" alt="Mastercard Icon" src="{{ $file->ver_img('client/images/cod.png') }}" />
+    <img width="40" style="width: 40px; vertical-align: middle; height: auto !important; font-weight: bold;" alt="Mastercard Icon" src="{{ $file->ver_img_local('client/images/cod.png') }}" />
     </th>
     <th
     style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: bold; color: #666363; padding: 8px 0;"
@@ -765,7 +765,7 @@
     bgcolor="#ffffff"
     valign="middle"
     >
-    <img width="40" style="width: 40px; vertical-align: middle; height: auto !important; font-weight: bold;" alt="Mastercard Icon" src="{{ $file->ver_img('client/images/transfer.png') }}" />
+    <img width="40" style="width: 40px; vertical-align: middle; height: auto !important; font-weight: bold;" alt="Mastercard Icon" src="{{ $file->ver_img_local('client/images/transfer.png') }}" />
     </th>
     <th
     style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: bold; color: #666363; padding: 8px 0;"

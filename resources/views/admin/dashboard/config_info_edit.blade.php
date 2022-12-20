@@ -24,10 +24,6 @@ Dashboard
     toastr.error("Cập Nhật Config Thất Bại");
 </script>
 @endif
-
-<input type="hidden" name="" value="{{ route('handle_search') }}" id="url__handle--search">
-<input type="hidden" name="" value="{{ route('handle_cat') }}" id="url__handle--cat">
-<input type="hidden" name="" value="{{ route('handle_reload') }}" id="url__handle--reload">
 <div class="row mx-0">
     <div class="col-12 mt-4 p-0">
         <div class="w-100">

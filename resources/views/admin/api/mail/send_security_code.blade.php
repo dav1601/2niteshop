@@ -25,7 +25,8 @@
                                     align="center" bgcolor="#71b6f9" valign="top">
                                     {{-- <a href="#" style="font-size:32px;color:#fff;">vachill.com</a> <br> --}}
                                     <span style="margin-top: 10px;display: block;  text-transform: uppercase; ">Lưu Ý:
-                                        KHÔNG được cung cấp Mã Bảo Vệ Hoặc Api Cho Những Bên Không Liên Quan Hoặc Những
+                                        <strong>KHÔNG ĐƯỢC</strong> cung cấp Mã Bảo Vệ Hoặc Api Cho Những Bên Không Liên
+                                        Quan Hoặc Những
                                         Người Không Đủ quyền hạn.Nếu vi phạm sẽ bị xử lý theo quy định của công
                                         ty!.</span>
                                 </td>
@@ -43,9 +44,8 @@
                                                 <td class="content-block"
                                                     style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                                     valign="top">
-                                                    {{ $type == 2 ? "API TOKEN:" : "SECURITY CODE:" }} <strong
-                                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">{{
-                                                        $code }}</strong>
+                                                    {{ $type == 2 ? 'API TOKEN:' : 'SECURITY CODE:' }} <strong
+                                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">{{ $code }}</strong>
                                                 </td>
                                             </tr>
                                             <tr
@@ -57,23 +57,27 @@
                                                 </td>
                                             </tr>
                                             @if ($type == 2)
-                                            <tr
-                                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                <td class="content-block"
-                                                    style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
-                                                    valign="top">
-                                                    <a href="{{ route('identity_confirmation' , ['token_api' => $token_api , 'security_code' => $security_code]) }}" class="btn-primary"
-                                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f1556c; margin: 0; border-color: #f1556c; border-style: solid; border-width: 8px 16px;">Truy Cập Docs Api</a>
-                                                </td>
-                                            </tr>
-                                            <tr
-                                            style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                            <td class="content-block"
-                                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
-                                                valign="top">
-                                                Nếu bạn gặp vấn đề khi click vào nút "Truy Cập Docs Api", hãy sao chép dán địa chỉ bên dưới vào trình duyệt web của bạn: <a href="{{ route('identity_confirmation' , ['token_api' => $token_api , 'security_code' => $security_code]) }}">{{ route('identity_confirmation' , ['token_api' => $token_api , 'security_code' => $security_code]) }}</a>
-                                            </td>
-                                        </tr>
+                                                <tr
+                                                    style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                    <td class="content-block"
+                                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
+                                                        valign="top">
+                                                        <a href="{{ route('identity_confirmation', ['token_api' => $token_api, 'security_code' => $security_code]) }}"
+                                                            class="btn-primary"
+                                                            style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f1556c; margin: 0; border-color: #f1556c; border-style: solid; border-width: 8px 16px;">Truy
+                                                            Cập Docs Api</a>
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                    <td class="content-block"
+                                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
+                                                        valign="top">
+                                                        Nếu bạn gặp vấn đề khi click vào nút "Truy Cập Docs Api", hãy
+                                                        sao chép dán địa chỉ bên dưới vào trình duyệt web của bạn: <a
+                                                            href="{{ route('identity_confirmation', ['token_api' => $token_api, 'security_code' => $security_code]) }}">{{ route('identity_confirmation', ['token_api' => $token_api, 'security_code' => $security_code]) }}</a>
+                                                    </td>
+                                                </tr>
                                             @endif
 
                                         </tbody>

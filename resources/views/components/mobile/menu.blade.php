@@ -13,7 +13,7 @@ $categories = App\Models\Category::tree();
                 <li class="nite__menu--item">
                     <a href="tel:{{ str_replace(' ', '', getVal('switchboard')->value)}}"  >
                         <div class="icon-name">
-                            <img src="{{ $file->ver_img('client/images/phone-call.png') }}" width="25" height="25" alt="">
+                            <img src="{{ $file->ver_img_local('client/images/phone-call.png') }}" width="25" height="25" alt="icon phone call">
                             <strong class="d-block ml-2">Mua Hàng: {{ str_replace(' ', '', getVal('switchboard')->value)}}</strong>
                         </div>
                     </a>
@@ -21,7 +21,7 @@ $categories = App\Models\Category::tree();
                 <li class="nite__menu--item">
                     <a href="https://suachua.haloshop.vn">
                         <div class="icon-name">
-                            <img src="{{ $file->ver_img('client/images/service.png') }}" width="25" height="25" alt="">
+                            <img src="{{ $file->ver_img_local('client/images/service.png') }}" width="25" height="25" alt="icon service">
                             <strong class="d-block ml-2">Sữa Chữa</strong>
                         </div>
                     </a>

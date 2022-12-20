@@ -145,40 +145,44 @@ $(function () {
             },
         });
     }
+    console.log(category);
     function loading_data_product($page = 1) {
         var page = $page;
-        var genre = get_checked("game_genre");
+        var genre = get_checked("game_genre").toString();
         var dataView = $("#sort").attr("data-view");
         var id = $("#sort").attr("data-id");
         var val = $("#sort").val();
         var op = $("#sort :selected").attr("ord");
-        var url1 = route("index_ajax");
-        var url = new URL($("#index_current_url").val());
+        // var url1 = route("index_ajax");
+        var url = new URL(window.location.href);
         var sps = url.searchParams;
         if (val != "id") {
-            sps.append("sort", val);
-            sps.append("ord", op);
+            sps.set("sort", val);
+            sps.set("ord", op);
         }
         if (page != 1) {
-            sps.append("page", page);
+            sps.set("page", page);
+        } else {
+            sps.delete("page");
         }
         if (genre.length != 0) {
-            sps.append("genre", genre.toString());
-            var genres = genre.toString();
+            sps.set("genre", genre);
         } else {
-            var genres = 0;
+            sps.delete("genre");
+            genre = "";
         }
         history.replaceState("", "", url.toString());
         $.ajax({
-            type: "post",
-            url: url1,
+            type: "get",
+            url: route("index_product", { slug: category.slug }),
             data: {
-                id: id,
+                id: category.slug,
                 page: page,
                 ord: op,
                 sort: val,
                 view: dataView,
-                genre: genres,
+                genre: genre,
+                isAjax: true,
             },
             dataType: "json",
             beforeSend: function () {
@@ -203,6 +207,8 @@ $(function () {
     $(document).on("click", ".products__page .page-link", function () {
         loading_data_product($(this).attr("data-page"));
     });
+    // ////////////////////
+    var selectedProduct = [];
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

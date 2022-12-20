@@ -60,7 +60,7 @@ $(function () {
     // /////////////////////////////////
     var prefix = "#ord__filter--";
     var prefix_2 = "#ord_cus--";
-    var url_2 = $(prefix + "url2").val();
+    var url_2 = route('change_address_2');
     var route = $("#route").val();
     var load_data = function load_data(
         $action = "load",
@@ -78,10 +78,9 @@ $(function () {
         $page = 1,
         $val = 0
     ) {
-        var url = $(prefix + "url").val();
         $.ajax({
             type: "post",
-            url: url,
+            url: route('handle_ajax_orders'),
             data: {
                 act: $action,
                 type: $type,
@@ -292,10 +291,10 @@ $(function () {
         $w = $(prefix_2 + "ward").val(),
         $page = 1
     ) {
-        var url_customers = $(prefix_2 + "urlAjax").val();
+
         $.ajax({
             type: "post",
-            url: url_customers,
+            url: route('handle_ajax_customers'),
             data: {
                 act: $action,
                 vip: $vip,

@@ -52,7 +52,7 @@
     @else
 
         <div id="cart__empty" class="d-flex flex-column align-items-center">
-             <img src="{{ $file->ver_img('client/images/empty-cart.png') }}" alt="">
+             <img src="{{ $file->ver_img_local('client/images/empty-cart.png') }}" alt="empty cart">
              <span class="d-block my-2 text-uppercase mr-4" style="font-size: 20px; font-weight:600;">Giỏ hàng bạn đang trống</span>
         </div>
     @endif

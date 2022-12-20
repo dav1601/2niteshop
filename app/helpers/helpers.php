@@ -16,7 +16,7 @@ if (!function_exists('show_array')) {
     }
 }
 if (!function_exists('category_child')) {
-    function category_child($data , $parent_id = 0)
+    function category_child($data, $parent_id = 0)
     {
         $result = array();
         foreach ($data  as $item) {
@@ -71,7 +71,7 @@ if (!function_exists('timeDiff')) {
     }
 }
 if (!function_exists('navi_ajax_page')) {
-    function navi_ajax_page($number_pages, $page, $size = "", $position = "justify-content-center", $mt = "mt-4")
+    function navi_ajax_page($number_pages, $page, $size = "", $position = "justify-content-center", $mt = "mt-4", $class = "")
     {
         $output = '';
         $output .= " <nav aria-label='Page navigation example' class='$mt  mr-3'>";
@@ -97,8 +97,8 @@ if (!function_exists('navi_ajax_page')) {
             unset($active);
         }
         if ($page < $number_pages - 2) {
-            $output .= " <li class='page-item '><a class='page-link' data-page='" . $number_pages . "' >...</a></li>";
-            $output .= " <li class='page-item '><a class='page-link' data-page='" . $number_pages . "'> " . $number_pages . "</a></li>";
+            $output .= " <li class='page-item'><a class='page-link' data-page='" . $number_pages . "' >...</a></li>";
+            $output .= " <li class='page-item'><a class='page-link' data-page='" . $number_pages . "'> " . $number_pages . "</a></li>";
         }
         if ($page <  $number_pages) {
             $p_next = $page + 1;
@@ -134,12 +134,18 @@ function stock_stt($stt)
 }
 function highlight_stt($stt)
 {
-    if ($stt == 2) {
-        $output = "HOT";
-    } else {
-        $output = "Bình thường";
+    $name = "";
+    switch ($stt) {
+        case 1:
+            $name =  "HOT";
+            break;
+        case 2:
+            $name =  "Bình Thường";
+            break;
+        default:
+            break;
     }
-    return $output;
+    return $name;
 }
 function usage_stt($stt)
 {
@@ -161,7 +167,13 @@ function slide_stt($stt)
 }
 function getVal($key = "")
 {
-    return Config::select('value')->where('name', 'LIKE' , $key )->first();
+    $data = Config::select('value')->where('name', 'LIKE', $key)->first();
+    if (!$data) {
+        $result = new stdClass();
+        $result->value = "";
+        return $result;
+    }
+    return $data;
 }
 function total()
 {

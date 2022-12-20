@@ -16,8 +16,7 @@
 Danh Sách Sản Phẩm
 @endsection
 @section('content')
-<input type="hidden" name="" value="{{ route('handle_ajax_customers') }}" id="ord_cus--urlAjax">
-<input type="hidden" name="" value="{{ route('change_address_2') }}" id="ord__filter--url2">
+
 
 <div class="row mx-0">
     <div class="col-12 mt-4 p-0">

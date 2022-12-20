@@ -16,12 +16,16 @@ use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @group Password
+ *
+ * APIs for managing Password
+ */
 class PasswordResetSmsController extends Controller
 {
     /**
      * Forgot Password.
      * Api dùng để xác nhận số điện thoại và gửi OTP để khôi phục mật khẩu.
-     * @group Reset Password Api
      * @bodyParam phone string required max:15 Example: 0986868568
      * @responseFile 200 responses/forgot.json
      */
@@ -80,7 +84,6 @@ class PasswordResetSmsController extends Controller
     /**
      * Api Verification OTP.
      * Api dùng đẻ xác nhận mã OTP có trong hệ thống.
-     * @group Reset Password Api
      * @bodyParam code int required max:6 Example: 160101
      * @responseFile 200 responses/verification.json
      */
@@ -112,7 +115,6 @@ class PasswordResetSmsController extends Controller
     /**
      * Api New Password.
      * Api dùng để thay đổi mật khẩu mới.
-     * @group Reset Password Api
      * @bodyParam code int required max:6 Example: 160101
      * @bodyParam phone string required max:15 Example: 0801160169
      * @bodyParam password string required Example: TestApi1612001

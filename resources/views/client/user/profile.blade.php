@@ -86,7 +86,7 @@ Toast.fire({
     </div>
     <div class="col-12 col-sm-4 edit__pro5--right pr-0 ">
            <div class="plborder d-flex flex-column align-items-center">
-            <img src="{{ $daviUser->getAvatarUser(Auth::id()) }}" width="100" height="100" class=" rounded-circle " id="davishop__avatar--edit" alt="">
+            <img src="{{ $daviUser->getAvatarUser(Auth::id()) }}" width="100" height="100" class=" rounded-circle " id="davishop__avatar--edit" alt="user avatar edit">
             <input type="file" name="avatar" id="dvsAvatar" class="d-none">
             <button id="target__file" class="btn">Chọn Ảnh</button>
             @error('avatar')

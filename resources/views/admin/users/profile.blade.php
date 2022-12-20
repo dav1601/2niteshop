@@ -13,7 +13,6 @@ Hồ sơ
 @endsection
 
 @section('content')
-<input type="hidden" name="" value="{{ route('admin_profile_ajax') }}" id="load__more--url">
 <input type="hidden" name="" value="{{ $id }}" id="IdUser">
 <div id="admin__profile">
     <div class="row mx-0">

@@ -28,8 +28,6 @@ Danh Mục Bài Viết
 <div class="row mx-0">
     <input type="hidden" name="" id="array__selected" value="{{ $selected }}">
     <input type="hidden" name="" id="url__selected" value="{{ $url }}">
-    <input type="hidden" name="" id="url__handle--related" value="{{ route('handle_related') }}">
-    <input type="hidden" name="" id="url__handle--relatedFor" value="{{ route('handle_related_for') }}">
     <div class="col-12 mt-4 p-0">
         <div class="w-100">
             <div class="card">
@@ -117,14 +115,14 @@ Danh Mục Bài Viết
                                     {{ $ord->posts }}
                                 </td>
                                 <td>
-                                    @if ($ord->product_id != NULL) 
+                                    @if ($ord->product_id != NULL)
                                     {{ App\Models\Products::where('id', '=' , $ord->product->id)->first()->name }}
                                         @else
                                         Không Có
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($ord->cat_id != NULL) 
+                                    @if ($ord->cat_id != NULL)
                                     {{ App\Models\Category::where('id', '=' , $ord->cat_id)->first()->name }}
                                         @else
                                         Không Có
@@ -141,7 +139,7 @@ Danh Mục Bài Viết
                             </tr>
                             @endforeach
                         </tbody>
-                    
+
                     </table>
                 </div>
             </div>

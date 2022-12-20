@@ -2,9 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @include('layouts.meta' , ["title" => "ĐĂNG NHẬP"]);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -14,19 +12,9 @@
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>ĐĂNG NHẬP</title>
-    <link rel="shortcut icon" href="{{ $file->ver_img('client/images/email-logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ $file->ver_img_local('client/images/email-logo.png') }}" type="image/x-icon">
     <link rel="canonical" href="{{ URL::current() }}">
-    <meta name='description' itemprop='description' content='@yield('meta-desc' ,
-        config('2niteseo.meta.defaults.description'))' />
-    <meta name='keywords' content='@yield('meta-keyword' , config('2niteseo.meta.defaults.keywords'))' />
-    <meta property="og:description" content="@yield('og-desc' , config('2niteseo.meta.defaults.description'))" />
-    <meta property="og:title" content="@yield('og-title' , config('2niteseo.meta.defaults.title'))" />
-    <meta property="og:image" content="@yield('og-image' , $file->ver_img('client/images/banner_2nite.png'))" />
-    <meta property="og:site_name" content="@yield('site_name' , config('2niteseo.meta.defaults.title'))" />
-    <meta property="og:type" content="@yield('og-type' , 'website')" />
-    <meta property="og:url" content="{{ Url::current() }}" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="@yield('twitter-title' , config('2niteseo.meta.defaults.title'))" />
+
 </head>
 
 <body>

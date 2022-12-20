@@ -7,7 +7,6 @@ $(function () {
 function handle_select_all($act = "load", $type = "all") {
     var kw_blog = $("#search__name--blog").val();
     var kw = $("#search__name").val();
-    var url_ajax = $("#url__handle--related").val();
     var selected_blog = $.get_checked('select__blog');
     var selected = $.get_checked('select__product');
     var url_selected = new URL($("#url__selected").val());

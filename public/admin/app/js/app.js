@@ -10,7 +10,6 @@ $(function () {
         $("#sidebar").toggleClass("hide-sidebar");
         $("#content").toggleClass("full-content");
     });
-    var url_cart = $("#url__add--cart").val();
     // PRICE
     $(document).on("keyup", "#ins_price", function () {
         $.format_price($(this).val());
@@ -19,7 +18,7 @@ $(function () {
         $.format_price($(this).val());
     });
     //
-     
+
 
     // END PRICE
 

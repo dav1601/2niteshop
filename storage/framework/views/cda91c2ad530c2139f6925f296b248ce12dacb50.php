@@ -11,10 +11,13 @@ $menu_fix = App\Models\FixMenu::all();
             </a>
             <div class="bot__left--drop">
                 <?php if (isset($component)) { $__componentOriginalc6b64e917876d8219b5822a2249f530fc2ec18df = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Client\Menu\Menu::class, []); ?>
+<?php $component = App\View\Components\Client\Menu\Menu::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('client.menu.menu'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Client\Menu\Menu::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
 <?php $component->withAttributes([]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -64,10 +67,13 @@ $menu_fix = App\Models\FixMenu::all();
                         <?php $__currentLoopData = Cart::instance('shopping')->content(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cartsub): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li>
                             <?php if (isset($component)) { $__componentOriginal9f4678081f50f8e67443ed53ee37ec3f5df3dd29 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Cartsub::class, ['cartsub' => $cartsub]); ?>
+<?php $component = App\View\Components\Cartsub::resolve(['cartsub' => $cartsub] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('cartsub'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Cartsub::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
 <?php $component->withAttributes([]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

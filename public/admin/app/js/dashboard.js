@@ -47,13 +47,12 @@ $(function () {
         var file = $(this)[0].files;
         $("#foraccess").html(file[0].name);
     });
-    var url_cat = $("#url__handle--cat").val();
     $(document).on('change', "#cat", function () {
         var cat_id = $(this).val();
         if (cat_id != '') {
             $.ajax({
                 type: "post",
-                url: url_cat,
+                url: route('handle_cat'),
                 data: { cat_id: cat_id, type: 1, sub_type: 1 },
                 dataType: "json",
                 beforeSend: function () {
@@ -71,7 +70,7 @@ $(function () {
     });
     // /////////////////////////// end show home
     function load_task($action = "load", $id = 0, $name = "", $time = "", $unit = "", $done = 0, $page = 1) {
-        var url = $("#url__ajax--task").val();
+        var url = route('todos');
         $.ajax({
             type: "post",
             url: url,
@@ -137,8 +136,8 @@ $(function () {
         return false;
     });
     // fullcalender
-    var url1 = $("#url__calender").val();
-    var url2 = $("#url__ajax--calender").val();
+    var url1 = route('fullcalender');
+    var url2 = route('fullcalender_ajax');
     var calendar = $('#calendar').fullCalendar({
         header: {
             left: 'prev,next today',

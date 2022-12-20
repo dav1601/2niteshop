@@ -23,10 +23,7 @@ Chinh sách của shop
     toastr.success("Cập Nhật User Thất Bại");
 </script>
 @endif
-<input type="hidden" name="" id="ajax__avatar" value="{{ route('ajax__avatar') }}">
-<input type="hidden" name="" id="ajax__avatar--delete" value="{{ route('ajax__avatar__delete') }}">
 <input type="hidden" name="" id="ajax__avatar--loading" value="{{ url('public/client/images/fire.svg') }}">
-<input type="hidden" name="" value="{{ route('change_address') }}" id="url__ajax--address">
 {!! Form::open(['url' => route('save_setting_profile' , ['id' => $id]) , 'method' => "POST" ,'files' => true ]) !!}
 <div id="plc" class="row mx-0">
     <div class="col-12 mt-4 p-0">

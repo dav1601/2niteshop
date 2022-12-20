@@ -4,7 +4,7 @@
         <a href="<?php echo e(route('index_product' , ['slug'=>$category->slug])); ?>">
             <div class="icon-name">
                 <?php if($category->icon != NULL): ?>
-                <img src="<?php echo e($file->ver_img($category->icon)); ?>" width="25" height="25" alt="">
+                <img src="<?php echo e($file->ver_img($category->icon)); ?>" width="25" height="25" alt="<?php echo e($category->name); ?>">
                 <?php endif; ?>
                 <span><?php echo e($category->name); ?></span>
             </div>
@@ -17,10 +17,13 @@
     </div>
     <?php if(count($category->children) > 0 ): ?>
     <?php if (isset($component)) { $__componentOriginal151164b18f4d25ca2d01e5917911f544cf7c0068 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Category\Arcord::class, ['category' => $category->children,'id' => $category->id,'level' => $category->level]); ?>
+<?php $component = App\View\Components\Category\Arcord::resolve(['category' => $category->children,'id' => $category->id,'level' => $category->level] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('category.arcord'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Category\Arcord::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
 <?php $component->withAttributes([]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -41,7 +44,7 @@ $category_120 = App\Models\Category::OneCatTree(120);
         <a href="<?php echo e(route('index_product' , ['slug'=>$category->slug])); ?>">
             <div class="icon-name">
                 <?php if($category->icon != NULL): ?>
-                <img src="<?php echo e($file->ver_img($category->icon)); ?>" width="25" height="25" alt="">
+                <img src="<?php echo e($file->ver_img($category->icon)); ?>" width="25" height="25" alt=" <?php echo e($category->name); ?> ">
                 <?php endif; ?>
                 <span><?php echo e($category->name); ?></span>
             </div>
@@ -54,10 +57,13 @@ $category_120 = App\Models\Category::OneCatTree(120);
     </div>
     <?php if(count($category->children) > 0 ): ?>
     <?php if (isset($component)) { $__componentOriginal151164b18f4d25ca2d01e5917911f544cf7c0068 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Category\Arcord::class, ['category' => $category->children,'id' => $category->id,'level' => $category->level]); ?>
+<?php $component = App\View\Components\Category\Arcord::resolve(['category' => $category->children,'id' => $category->id,'level' => $category->level] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('category.arcord'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Category\Arcord::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
 <?php $component->withAttributes([]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

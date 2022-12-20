@@ -25,7 +25,7 @@ $orders_all = App\Models\User::find(Auth::id())->orders()->get();
       @else
       <div class="empty__orders">
         <div class="empty__orders--cont">
-          <img src="{{ $file->ver_img('client/images/empty-orders.png') }}" alt="">
+          <img src="{{ $file->ver_img('client/images/empty-orders.png') }}" alt="empty orders">
           <span class="d-block mt-2">Chưa có đơn hàng</span>
         </div>
       </div>
@@ -47,7 +47,7 @@ $orders_all = App\Models\User::find(Auth::id())->orders()->get();
       @else
       <div class="empty__orders">
         <div class="empty__orders--cont">
-          <img src="{{ $file->ver_img('client/images/empty-orders.png') }}" alt="">
+          <img src="{{ $file->ver_img('client/images/empty-orders.png') }}" alt="empty orders">
           <span class="d-block mt-2">Chưa có đơn hàng</span>
         </div>
       </div>

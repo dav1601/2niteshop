@@ -18,7 +18,6 @@ Quản lý Slides
     toastr.success("Thêm Slide Thành Công");
 </script>
 @endif
-<input type="hidden" name="" id="url__ajax--slide" value="{{ route('handle_update_slide') }}">
 <div class="row mx-0">
     <div class="col-12 mt-4 p-0">
         <div class="w-100">
