@@ -23,22 +23,13 @@ class table extends Component
     public $p;
     public $m;
     public $q;
-    public function __construct($m, $page, $selected, ModelInterface $model)
+    public function __construct($m, $page, $selected, $p = "title", ModelInterface $model)
     {
         $this->m = $m;
+        $this->p = $p;
         $this->page = $page;
-        if ($this->m === "prd") {
-            $this->p = "name";
-            $this->q = new Products();
-        }
-        if ($this->m === "blog") {
-            $this->p = "title";
-            $this->q = new Blogs();
-        }
-        if ($this->m === "block") {
-            $this->p = "title";
-            $this->q = new BlockProduct();
-        }
+        $model_name = '\\App\Models\\' . $m;
+        $this->q = new $model_name;
         $this->vadata = $model->pagination($this->q, null, $page, null, []);
         $this->selected = $selected;
     }

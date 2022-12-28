@@ -10,6 +10,9 @@
     <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
     </script>
     <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"
+        integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {{-- <script src="{{ asset('admin/app/js/related_all.js') }}"></script> --}}
 @endsection
 
@@ -18,11 +21,12 @@
 @endsection
 
 @section('content')
-    @if (session('ok'))
+    @if (Session::has('ok'))
         <script>
             toastr.success("Thêm Sản Phẩm Thành Công");
         </script>
     @endif
+
     <div id="product" class="row mx-0">
         <div class="col-12 mt-4 p-0">
             <div class="w-100">
@@ -30,12 +34,23 @@
                     <div class="card-header text-center">
                         Thêm Sản Phẩm
                     </div>
+
                     <div class="card-body" id="product__add">
+                        {!! Form::open(['url' => route('crawler'), 'method' => 'post']) !!}
+                        <div class="form-group d-flex mb-5">
+                            <input type="text" class="form-control" required name="url" value=""
+                                placeholder="Nhập Url để tự động crawl dữ liệu">
+                            <input type="submit" value="Crawl Data" class="btn navi_btn mb-5 ml-2">
+                        </div>
+
+                        {!! Form::close() !!}
+
+                        {{-- ----------- --}}
                         {!! Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]) !!}
                         <div class="form-group mb-5">
                             <label for="">Tên sản phẩm</label>
                             <input type="text" class="form-control" name="name" id=""
-                                value="{{ old('name') }}" placeholder="">
+                                value="{{ old('name') }}{{ get_crawler($crawler, 'page_title') }}" placeholder="">
                             @error('name')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -47,7 +62,16 @@
                         </div>
                         <div class="form-group mb-5">
                             <label for="">Mô tả ngắn</label>
-                            <textarea class="form-control" name="des" id="" rows="4"></textarea>
+                            @php
+                                $desc = '';
+                                $kws = '';
+                                if (count($crawler) > 0) {
+                                    $meta = get_crawler($crawler, 'meta');
+                                    $desc = $meta['desc'];
+                                    $kws = $meta['kws'];
+                                }
+                            @endphp
+                            <textarea class="form-control" name="des" id="" rows="4">{{ $desc }}</textarea>
                             @error('des')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -59,7 +83,8 @@
                         </div>
                         <div class="form-group mb-5">
                             <label for="">Keywords</label>
-                            <input type="text" data-role="tagsinput" class="form-control" name="keywords" value="">
+                            <input type="text" data-role="tagsinput" class="form-control" name="keywords"
+                                value="{{ $kws }}">
                             @error('keywords')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -70,9 +95,18 @@
                             @enderror
                         </div>
                         <div class="form-group mb-5">
+                            @php
+                                $price = '';
+                                $price_cost = '';
+                                if (count($crawler) > 0) {
+                                    $price = (int) get_crawler($crawler, 'price') != 0 ? (int) get_crawler($crawler, 'price') : (int) get_crawler($crawler, 'price_new');
+                                    $price_cost = $price - ($price * 20) / 100;
+                                }
+
+                            @endphp
                             <label for="">Giá Sản Phẩm</label>
-                            <input type="text" class="form-control" name="price" value="{{ old('price') }}"
-                                id="prd_price" placeholder="">
+                            <input type="text" class="form-control" name="price"
+                                value="{{ old('price') }}{{ $price }}" id="prd_price" placeholder="">
                             <div class="box_output mt-3">
                                 <span>Bạn Đang Nhập:<strong class="output_price pl-2">0đ</strong></span>
                             </div>
@@ -88,7 +122,8 @@
                         <div class="form-group mb-5">
                             <label for="">Giá gốc Sản Phẩm</label>
                             <input type="text" class="form-control" name="historical_cost"
-                                value="{{ old('historical_cost') }}" id="historical_cost" placeholder="">
+                                value="{{ old('historical_cost') }}{{ $price_cost }} " id="historical_cost"
+                                placeholder="">
                             <div class="box_output mt-3">
                                 <span>Bạn Đang Nhập:<strong class="output_price--cost pl-2">0đ</strong></span>
                             </div>
@@ -103,8 +138,9 @@
                         </div>
                         <div class="form-group mb-5">
                             <label for="">Model</label>
-                            <input type="text" class="form-control" name="model" value="{{ old('model') }}"
-                                id="" placeholder="">
+                            <input type="text" class="form-control" name="model"
+                                value="{{ old('model') }}{{ get_crawler($crawler, 'model') }}" id=""
+                                placeholder="">
                             @error('model')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -129,7 +165,7 @@
                         </div>
                         <div class="form-group mb-5">
                             <label for="">Thông Tin</label>
-                            <textarea name="info" id="info__tiny" class="form-control my-editor">{!! old('info') !!}</textarea>
+                            <textarea name="info" id="info__tiny" class="form-control my-editor">{!! old('info') !!}{!! get_crawler($crawler, 'spec') !!}</textarea>
                             @error('info')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -446,120 +482,120 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group mb-5">
-                            <div class="d-flex align-items-center mx-0 mb-4">
-                                <label for="" class="mb-0 p-0">Chinh sách bảo hành </label>
-                                <button class="btn navi_btn ml-3" id="reload__ins"><i
-                                        class="fas fa-sync-alt pr-2"></i>Làm
-                                    Mới</button>
-                            </div>
-                            <div class="row inner-cis mx-0">
-                                @foreach ($ins as $in)
-                                    <div class="col-3 cis_item mb-4">
-                                        <div class="va-checkbox d-flex align-items-center w-100">
-                                            <input type="checkbox" name="ins[]" value="{{ $in->id }}"
-                                                id="ci__{{ $in->id }}" class="check_ins">
-                                            <label for="ci__{{ $in->id }}" data-toggle="tooltip"
-                                                data-placement="top" title="Giá Bảo Hành: {{ crf($in->price) }} ">
-                                                {{ $in->name }}
-                                            </label>
+                        <div class="row">
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <div class="w-100">
+                                    <div class="card">
+                                        <div class="card-header text-center">
+                                            Chính sách bảo hành
                                         </div>
-                                    </div>
-                                @endforeach
-                            </div>
-
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="d-flex align-items-center mx-0 mb-4">
-                                <label for="" class="mb-0 p-0">Chinh sách của shop</label>
-                                <button class="btn navi_btn ml-3" id="reload__plc"><i
-                                        class="fas fa-sync-alt pr-2"></i>Làm
-                                    Mới</button>
-                            </div>
-                            <div class="row inner-plc mx-0">
-                                @foreach ($policy as $plc)
-                                    <div class="col-3 plc_item mb-4">
-                                        <div class="va-checkbox d-flex align-items-center w-100">
-                                            <input type="checkbox" name="plc[]" value="{{ $plc->id }}"
-                                                id="plc__{{ $plc->id }}" class="check_plc">
-                                            <label for="plc__{{ $plc->id }}" data-toggle="tooltip" data-html="true"
-                                                data-placement="top" title="{{ $plc->content }}">
-                                                {{ $plc->title }} (Pos: {{ $plc->position }})
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        {{-- --}}
-                        <div class="col-12 my-4 p-0">
-                            <div class="w-100">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        Thêm Sản Phẩm Mua Kèm
-                                    </div>
-                                    <div class="card-body d-flex justify-content-center">
-                                        <input type="hidden" name="rela__products" id="init__add--prd" value="">
-                                        <button type="button" id="" class="btn btn-primary btn-lg init__select"
-                                            data-model="prd" relaName="product" relaId="0">
-                                            Xem và thêm liên kết
-                                            <span class="btn btn-outline-light" id="count__prd">0 Item</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- --}}
-                        <div class="col-12 my-4 p-0">
-                            <div class="w-100">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        Bài viết liên quan
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="selected_blog" class="d-flex justify-content-center mb-4">
-                                            <input type="hidden" name="rela__blogs" id="init__add--blog"
-                                                value="">
+                                        <div class="card-body d-flex justify-content-center">
+                                            <input type="hidden" name="rela__ins" value="">
                                             <button type="button" id=""
-                                                class="btn btn-primary btn-lg init__select" data-model="blog"
-                                                relaName="product" relaId="0">
-                                                Xem và thêm liên kết
-                                                <span class="btn btn-outline-light" id="count__blog">0 Item</span>
+                                                class="btn btn-primary btn-lg init__select" data-model="Insurance"
+                                                relaName="products" relaKey="ins" relaId="0">
+                                                Xem và thêm chính sách bảo hành
+                                                <span class="btn btn-outline-light">0 Item</span>
                                             </button>
-
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {{-- --}}
-                        {{-- --}}
-                        <div class="col-12 my-4 p-0">
-                            <div class="w-100">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        Block Sản Phẩm
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="selected_blog" class="d-flex justify-content-center mb-4">
-                                            <input type="hidden" name="rela__block" id="init__add--block"
-                                                value="">
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <div class="w-100">
+                                    <div class="card">
+                                        <div class="card-header text-center">
+                                            Chính sách của shop
+                                        </div>
+                                        <div class="card-body d-flex justify-content-center">
+                                            <input type="hidden" name="rela__plc" value="">
                                             <button type="button" id=""
-                                                class="btn btn-primary btn-lg init__select" data-model="block"
-                                                relaName="product" relaId="0">
-                                                Xem và thêm liên kết
-                                                <span class="btn btn-outline-light" id="count__block">0 Item</span>
+                                                class="btn btn-primary btn-lg init__select" data-model="Policy"
+                                                relaName="products" relaKey="plc" relaId="0">
+                                                Xem và thêm chính sách của shop
+                                                <span class="btn btn-outline-light">0 Item</span>
                                             </button>
-
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <div class="w-100">
+                                    <div class="card">
+                                        <div class="card-header text-center">
+                                            Thêm Sản Phẩm Mua Kèm
+                                        </div>
+                                        <div class="card-body d-flex justify-content-center">
+                                            <input type="hidden" name="rela__products" value="">
+                                            <button type="button" id=""
+                                                class="btn btn-primary btn-lg init__select" data-model="Products"
+                                                relaName="product" relaKey="products" relaModel="RelatedProducts"
+                                                relaId="0">
+                                                Xem và thêm sản phẩm mua kèm
+                                                <span class="btn btn-outline-light">0 Item</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <div class="w-100">
+                                    <div class="card">
+                                        <div class="card-header text-center">
+                                            Bài viết liên quan
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-center mb-4">
+                                                <input type="hidden" name="rela__blogs" value="">
+                                                <button type="button" id=""
+                                                    class="btn btn-primary btn-lg init__select" data-model="Blogs"
+                                                    relaName="products" relaKey="blogs" relaId="0"
+                                                    relaModel="PrdRelaBlog">
+                                                    Xem và thêm bài viết liên quan
+                                                    <span class="btn btn-outline-light">0 Item</span>
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <div class="w-100">
+                                    <div class="card">
+                                        <div class="card-header text-center">
+                                            Block Sản Phẩm
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-center mb-4">
+                                                <input type="hidden" name="rela__block" value="">
+                                                <button type="button" id=""
+                                                    class="btn btn-primary btn-lg init__select" data-model="BlockProduct"
+                                                    relaName="products" relaId="0" relaKey="block"
+                                                    relaModel="PrdRelaBlock">
+                                                    Xem và thêm block sản phẩm
+                                                    <span class="btn btn-outline-light">0
+                                                        Item</span>
+                                                </button>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- --}}
                         </div>
-                        {{-- --}}
+
                         <div class="form-group mb-5">
                             <input type="submit" value="Thêm Sản Phẩm" class="btn navi_btn w-100">
                         </div>

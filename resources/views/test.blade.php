@@ -9,11 +9,18 @@
 </head>
 
 <body>
-    <form action=" {{ route('test') }} " method="post" enctype="multipart/form-data">
-        @csrf
-        <input type="file" name="file" id="">
-        <input type="submit" value="Upload">
-    </form>
+    @if (session('crawler'))
+        @dd(Session::get('crawler'))
+    @endif
+    {!! Form::open(['url' => route('crawler'), 'method' => 'post']) !!}
+    <div class="form-group d-flex mb-5">
+        <input type="text" class="form-control" required name="url" value=""
+            placeholder="Nhập Url để tự động crawl dữ liệu">
+        <input type="submit" value="Crawl Data" class="btn navi_btn mb-5 ml-2">
+    </div>
+
+    {!! Form::close() !!}
+
 </body>
 
 </html>

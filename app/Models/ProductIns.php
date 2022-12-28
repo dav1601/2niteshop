@@ -14,4 +14,16 @@ class ProductIns extends Model
         'ins_id',
         'group_id'
     ];
+    public function products()
+    {
+        return $this->belongsTo('App\Models\Products', 'products', 'id');
+    }
+    public function ins()
+    {
+        return $this->belongsTo('App\Models\Insurance', 'ins_id', 'id');
+    }
+    public function group()
+    {
+        return $this->belongsTo('App\Models\bundled_product', 'group_id', 'id');
+    }
 }

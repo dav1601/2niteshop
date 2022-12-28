@@ -21,34 +21,32 @@ class select extends Component
     public $elId;
     public $relaName;
     public $model;
+    public $enable;
+    public $p;
     public function __construct($btn, Request $req)
 
     {
-        $this->elId = $req->has('relaId') ? $req->relaId : null;
-        $this->model = $req->has('model') ? $req->model : "prd";
-        $this->relaName = $req->has('relaName') ? $req->relaName : "block";
-        $this->page = $req->has('s_page') ? $req->s_page : 1;
+        $this->elId = $req->relaId;
+        $this->model = $req->model;
+        $this->relaName =  $req->relaName;
+        $this->page = $req->s_page;
+        $this->relaKey = $req->relaKey;
+        $this->relaModel = $req->relaModel;
         $this->btn = $btn;
+        $this->enable = $req->has("enable_modal") ? true : false;
         $array = [];
+        $this->p = "title";
+        if ($this->model === "Products" || $this->model === "Insurance") {
+            $this->p = "name";
+        }
+        $model_name = '\\App\Models\\' . $this->model;
         $this->selected = $req->selected ? explode(",", $req->selected) : [];
         if (count($this->selected) > 0) {
-            switch ($this->model) {
-                case 'blog':
-                    foreach ($this->selected as  $value) {
-                        $nameBlog = Blogs::select('title')->where('id', $value)->first()->title;
-                        $array[$value] = $nameBlog;
-                    }
-                    $this->selected = $array;
-                    break;
-                    break;
-                default:
-                    foreach ($this->selected as  $value) {
-                        $namePrd = Products::select('name')->where('id', $value)->first()->name;
-                        $array[$value] = $namePrd;
-                    }
-                    $this->selected = $array;
-                    break;
+            foreach ($this->selected as  $value) {
+                $namePrd =  $model_name::select($this->p)->where('id', $value)->first();
+                $array[$value] = collect($namePrd)->get($this->p);
             }
+            $this->selected = $array;
         }
     }
 

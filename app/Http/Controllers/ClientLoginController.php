@@ -17,6 +17,7 @@ class ClientLoginController extends Controller
 
     public function login(Request $request)
     {
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -31,7 +32,7 @@ class ClientLoginController extends Controller
             ]
         );
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
+            return redirect()->route("login")->withInput()->withErrors($validator);
         } else {
             $remember = false;
             if ($request->has('remember')) {
@@ -41,13 +42,12 @@ class ClientLoginController extends Controller
             if (Auth::attempt($credentials, $remember)) {
                 Cart::instance('shopping')->destroy();
                 Cart::instance('shopping')->restore(Auth::id());
-                $user = Auth::user();
-                if ($user->role_id <= 3) {
+                if (Auth::user()->role_id <= 3) {
                     return redirect()->route('dashboard');
                 }
                 return redirect()->route('home');
             } else {
-                return redirect()->back()->with('error', '1');
+                return redirect()->route("login")->with('error', '1');
             }
         }
     }

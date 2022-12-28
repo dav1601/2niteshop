@@ -71,33 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-2 mb-4 pl-0">
-                            <div class="form-group">
-                                <label for="">Danh Mục Chính</label>
-                                <select class="custom-select" name="" id="prd__filter--cat">
-                                    <option value="0">Tất Cả</option>
-                                    @foreach ($category as $cat)
-                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-2 mb-4 pl-0">
-                            <div class="form-group">
-                                <label for="">Danh Mục Phụ 1</label>
-                                <select class="custom-select" name="" id="prd__filter--cat_s1">
-                                    <option value="">Tất cả</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-2 mb-4 pl-0">
-                            <div class="form-group">
-                                <label for="">Danh Mục Phụ 2</label>
-                                <select class="custom-select" name="" id="prd__filter--cat_s2">
-                                    <option value="">Tất cả</option>
-                                </select>
-                            </div>
-                        </div>
+                      
                         <div class="col-3 mb-4 pl-0">
                             <div class="form-group">
                                 <label for="">Nhà sản xuất</label>

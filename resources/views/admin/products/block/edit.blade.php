@@ -33,7 +33,7 @@
             <div class="w-100">
                 <div class="card">
                     <div class="card-header text-center">
-                        Thêm Block Sản Phẩm
+                        Update Block Sản Phẩm
                     </div>
                     <div class="card-body" id="block__product__add">
                         {!! Form::open([

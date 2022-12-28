@@ -37,8 +37,9 @@
                         id="modal__select--search">
                 </div>
                 <div id="modal__select--body">
-                    <?php if (isset($component)) { $__componentOriginal40027ead75602a56eb8c058776beeb41a406b8dc = $component; } ?>
-<?php $component = App\View\Components\Admin\Product\Select\Table::resolve(['m' => $model,'page' => $page,'selected' => $selected] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+                    <?php if($enable): ?>
+                        <?php if (isset($component)) { $__componentOriginal40027ead75602a56eb8c058776beeb41a406b8dc = $component; } ?>
+<?php $component = App\View\Components\Admin\Product\Select\Table::resolve(['m' => $model,'page' => $page,'p' => $p,'selected' => $selected] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.product.select.table'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -52,6 +53,8 @@
 <?php $component = $__componentOriginal40027ead75602a56eb8c058776beeb41a406b8dc; ?>
 <?php unset($__componentOriginal40027ead75602a56eb8c058776beeb41a406b8dc); ?>
 <?php endif; ?>
+                    <?php endif; ?>
+
                 </div>
             </div>
             <div class="modal-footer">

@@ -29,15 +29,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use App\View\Components\Modal\Product;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-
 
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $config = showHome::where('active' , '=' , 1)->get();
+        $config = showHome::where('active', '=', 1)->get();
         $company = Config::all();
         $banners = Banners::where('index', '!=', 0)->get();
         $menu_fix = FixMenu::all();
@@ -231,6 +231,6 @@ class HomeController extends Controller
     ////////////////////////////////////////
     public function api(Request $request, DavjCartInterface $dci)
     {
-       return;
+        return;
     }
 }

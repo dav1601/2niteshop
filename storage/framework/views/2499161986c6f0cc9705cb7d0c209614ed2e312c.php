@@ -6,21 +6,6 @@
         </div>
         <div class="prd-info p-3">
             <span class="name d-block"><?php echo e($prd->name); ?></span>
-            <div class="accordion" style="margin-bottom:15px" id="parent_category-<?php echo e($prd->id); ?>">
-                <div class="d-flex justify-content-between align-items-center category" data-toggle="collapse"
-                    data-target="#item-category-<?php echo e($prd->id); ?>" aria-controls="item-category">
-                    <span><img src="<?php echo e($file->ver_img(App\Models\Category::where('id', '=' , $prd->cat_id)->first()->icon)); ?>"
-                            width="40px" alt="" class="pr-2"> <?php echo e($prd->cat_name); ?></span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div id="item-category-<?php echo e($prd->id); ?>" class="collapse" style="padding: 5px;"
-                    aria-labelledby="headingOne" data-parent="#parent_category-<?php echo e($prd->id); ?>">
-                    <span class="d-block mb-0 pt-2">---- <?php echo e($prd->sub_1_cat_name); ?></span>
-                    <?php if($prd->sub_2_cat_name != NULL): ?>
-                    <span class="d-block mb-0 pt-2">-------- <?php echo e($prd->sub_2_cat_name); ?></span>
-                    <?php endif; ?>
-                </div>
-            </div>
             <span class="price d-block"><i class="fas fa-tags pr-1"></i>Giá bán: <?php echo e(crf($prd->price)); ?></span>
             <span class="price__cost price d-block" style="color:#dd991b;"><i class="fas fa-tags pr-1"></i>Giá gốc: <?php echo e(crf($prd->historical_cost)); ?></span>
             <span class="prdcer d-block"><i class="fas fa-building pr-1"></i>Producer: <?php echo e(App\Models\Producer::where('id', '=' , $prd->producer_id)->first()->name); ?></span>

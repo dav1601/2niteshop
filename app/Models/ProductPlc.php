@@ -13,4 +13,12 @@ class ProductPlc extends Model
         'products_id',
         'plc_id',
     ];
+    public function plc()
+    {
+        return $this->belongsTo('App\Models\Policy', 'plc_id', 'id');
+    }
+    public function products()
+    {
+        return $this->belongsTo('App\Models\Products', 'products_id', 'id');
+    }
 }

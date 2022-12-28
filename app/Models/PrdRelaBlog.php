@@ -14,11 +14,11 @@ class PrdRelaBlog extends Model
         'blogs_id'
     ];
     public $timestamps = false;
-    public function infoPrd()
+    public function products()
     {
         return $this->belongsTo('App\Models\Products', 'products_id', 'id');
     }
-    public function infoBlog()
+    public function blogs()
     {
         return $this->belongsTo('App\Models\Blogs', 'blogs_id', 'id');
     }

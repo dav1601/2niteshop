@@ -13,7 +13,7 @@ class RelatedProducts extends Model
         'products_id',
         'product_id',
     ];
-    public function infoPrd()
+    public function products()
     {
         return $this->belongsTo('App\Models\Products', 'products_id', 'id');
     }

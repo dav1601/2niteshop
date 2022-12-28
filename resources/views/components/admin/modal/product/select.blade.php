@@ -23,7 +23,11 @@
                         id="modal__select--search">
                 </div>
                 <div id="modal__select--body">
-                    <x-admin.product.select.table :m="$model" :page="$page" :selected="$selected" />
+                    @if ($enable)
+                        <x-admin.product.select.table :m="$model" :page="$page" :p="$p"
+                            :selected="$selected" />
+                    @endif
+
                 </div>
             </div>
             <div class="modal-footer">

@@ -13,15 +13,15 @@ class PrdRelaBlock extends Model
         'products_id',
         'block_id'
     ];
-    public function info()
-    {
-        return $this->belongsTo('App\Models\BlockProduct', 'block_id', 'id');
-    }
-    public function infoPrd()
+    // public function info()
+    // {
+    //     return $this->belongsTo('App\Models\BlockProduct', 'block_id', 'id');
+    // }
+    public function products()
     {
         return $this->belongsTo('App\Models\Products', 'products_id', 'id');
     }
-    public function infoBlock()
+    public function block()
     {
         return $this->belongsTo('App\Models\BlockProduct', 'block_id', 'id');
     }

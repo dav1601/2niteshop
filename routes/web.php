@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
-
+use Nette\Utils\Arrays;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +18,15 @@ use Illuminate\Support\Facades\Request;
 |
 */
 
+Auth::routes();
+
+
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('contact', 'HomeController@contact')->name('contact');
 Route::get('update_api', 'HomeController@api');
-Route::get('testview', 'TestController@index');
+Route::get('testview', 'TestController@index')->name("view_test");
 Route::post('test', 'TestController@handle')->name('test');
 Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
-Auth::routes();
-
 Route::get('products/{slug}', 'ClientProductsController@detail_product')->name('detail_product');
 Route::get('products/{parent_1?}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_2');
 Route::get('products/{parent_1?}/{parent_2}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_3');
@@ -45,7 +46,7 @@ Route::post('pre-order', 'HomeController@pre_order')->name('pre_order');
 Route::prefix('ajax/')->group(function () {
     Route::post('load__chart', 'AdminAjaxDashBoardController@load__chart')->name('load__chart');
 });
-
+Route::post('crawler', 'AdminProductController@crawler')->name('crawler');
 Route::get('minify', 'HomeController@minify')->name('minify');
 
 Route::middleware(['auth'])->group(function () {
@@ -273,6 +274,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
     });
 });
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['auth', 'web']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });

@@ -6,21 +6,6 @@
         </div>
         <div class="prd-info p-3">
             <span class="name d-block">{{ $prd->name }}</span>
-            <div class="accordion" style="margin-bottom:15px" id="parent_category-{{ $prd->id }}">
-                <div class="d-flex justify-content-between align-items-center category" data-toggle="collapse"
-                    data-target="#item-category-{{ $prd->id }}" aria-controls="item-category">
-                    <span><img src="{{ $file->ver_img(App\Models\Category::where('id', '=' , $prd->cat_id)->first()->icon) }}"
-                            width="40px" alt="" class="pr-2"> {{ $prd->cat_name }}</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div id="item-category-{{ $prd->id }}" class="collapse" style="padding: 5px;"
-                    aria-labelledby="headingOne" data-parent="#parent_category-{{ $prd->id }}">
-                    <span class="d-block mb-0 pt-2">---- {{ $prd->sub_1_cat_name }}</span>
-                    @if ($prd->sub_2_cat_name != NULL)
-                    <span class="d-block mb-0 pt-2">-------- {{ $prd->sub_2_cat_name }}</span>
-                    @endif
-                </div>
-            </div>
             <span class="price d-block"><i class="fas fa-tags pr-1"></i>Giá bán: {{ crf($prd->price)
                 }}</span>
             <span class="price__cost price d-block" style="color:#dd991b;"><i class="fas fa-tags pr-1"></i>Giá gốc: {{ crf($prd->historical_cost)

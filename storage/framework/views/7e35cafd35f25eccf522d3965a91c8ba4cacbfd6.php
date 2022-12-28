@@ -6,8 +6,11 @@
             </th>
             <th scope="col" class="text-center">ID</th>
             <th scope="col">Tên Item</th>
-            <?php if($m === 'block'): ?>
-                <th scope="col">Content</th>
+            <?php if($m === 'BlockProduct' || $m === 'Policy' || $m === 'Insurance'): ?>
+                <th scope="col" class="text-center">Content</th>
+            <?php endif; ?>
+            <?php if($m === 'Policy'): ?>
+                <th scope="col" class="text-center">Position</th>
             <?php endif; ?>
         </tr>
     </thead>
@@ -34,10 +37,26 @@
                 </td>
                 <td style="width:160px;" class="text-center"> <?php echo e($item->id); ?> </td>
                 <td> <?php echo e($name); ?> </td>
-                <?php if($m === 'block'): ?>
-                    <td>
+                <?php if($m === 'Insurance'): ?>
+                    <td class="text-center">
+                        Giá: <?php echo e(crf($item->price)); ?>
+
+                    </td>
+                <?php endif; ?>
+                <?php if($m === 'BlockProduct'): ?>
+                    <td class="text-center">
                         <button type="button" data-content=" <?php echo e($item->text); ?>"
                             class="btn btn-primary content__block"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                <?php endif; ?>
+                <?php if($m === 'Policy'): ?>
+                    <td class="text-center">
+                        <button type="button" data-content=" <?php echo e($item->content); ?>"
+                            class="btn btn-primary content__block"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                    <td class="text-center">
+                        <?php echo e($item->position); ?>
+
                     </td>
                 <?php endif; ?>
             </tr>
@@ -50,13 +69,13 @@
     <?php echo navi_ajax_page($vadata->number_page, $page, '', 'justify-content-center', 'mt-2'); ?>
 
 </div>
-<?php if($m === 'block'): ?>
+<?php if($m === 'BlockProduct' || $m === 'Policy'): ?>
     <div class="modal fade" id="view__content__block" tabindex="-1" role="dialog"
         aria-labelledby="view__content__blockTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-dark" id="view__content__blockTitle">Block Content</h5>
+                    <h5 class="modal-title text-dark" id="view__content__blockTitle">Content</h5>
                 </div>
                 <div class="modal-body" id="view__content__block__body">
 

@@ -81,6 +81,21 @@
 </head>
 
 <body>
+    <?php if (isset($component)) { $__componentOriginal78455ba16b5a14b6a2e98bc3b8a09f0ca8d12fb9 = $component; } ?>
+<?php $component = App\View\Components\Layout\Pageloading::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('layout.pageloading'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Layout\Pageloading::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal78455ba16b5a14b6a2e98bc3b8a09f0ca8d12fb9)): ?>
+<?php $component = $__componentOriginal78455ba16b5a14b6a2e98bc3b8a09f0ca8d12fb9; ?>
+<?php unset($__componentOriginal78455ba16b5a14b6a2e98bc3b8a09f0ca8d12fb9); ?>
+<?php endif; ?>
     <div id="wrapper">
         <div id="sidebar">
             <div class="sidebar">

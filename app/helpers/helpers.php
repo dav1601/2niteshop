@@ -7,12 +7,54 @@ use App\Models\Insurance;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
-if (!function_exists('show_array')) {
-    function show_array($arr)
+function get_crawler($crawler = [], $key = null)
+{
+    if (count($crawler) <= 0) {
+        return "";
+    }
+    return $crawler[$key];
+}
+if (!function_exists('va_get_meta')) {
+    function va_get_meta($url)
     {
-        echo "<pre>";
-        print_r($arr);
-        echo "</pre>";
+        $data = [];
+        // Extract HTML using curl
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+        $res = curl_exec($ch);
+        curl_close($ch);
+
+        // Load HTML to DOM object
+        $dom = new DOMDocument();
+        @$dom->loadHTML($res);
+
+        // Parse DOM to get Title data
+        $nodes = $dom->getElementsByTagName('title');
+        $data['title'] = $nodes->item(0)->nodeValue;
+        // Parse DOM to get meta data
+        $metas = $dom->getElementsByTagName('meta');
+
+        $data['desc'] = $data['kws'] = $data['ogimg'] = '';
+        for ($i = 0; $i < $metas->length; $i++) {
+            $meta = $metas->item($i);
+
+            if ($meta->getAttribute('name') == 'description') {
+                $data['desc'] = $meta->getAttribute('content');
+            }
+
+            if ($meta->getAttribute('name') == 'keywords') {
+                $data['kws']  = $meta->getAttribute('content');
+            }
+            if ($meta->getAttribute('property') == 'og:image') {
+                $data['ogimg'] = $meta->getAttribute('content');
+            }
+        }
+
+        return $data;
     }
 }
 if (!function_exists('category_child')) {

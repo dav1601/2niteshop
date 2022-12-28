@@ -41,18 +41,34 @@ $(function () {
     $(document).on("change", prefix + "role", function () {
         load_data();
     });
-    $(document).on("keyup", prefix + "nameId", function () {
-        load_data();
-    });
-    $(document).on("keyup", prefix + "phone", function () {
-        load_data();
-    });
-    $(document).on("keyup", prefix + "provider", function () {
-        load_data();
-    });
-    $(document).on("keyup", prefix + "providerID", function () {
-        load_data();
-    });
+    $(document).on(
+        "keyup",
+        prefix + "nameId",
+        _.debounce(function () {
+            load_data();
+        }, 300)
+    );
+    $(document).on(
+        "keyup",
+        prefix + "phone",
+        _.debounce(function () {
+            load_data();
+        }, 300)
+    );
+    $(document).on(
+        "keyup",
+        prefix + "provider",
+        _.debounce(function () {
+            load_data();
+        }, 300)
+    );
+    $(document).on(
+        "keyup",
+        prefix + "providerID",
+        _.debounce(function () {
+            load_data();
+        }, 300)
+    );
     $(document).on("click", ".page-item .page-link", function () {
         load_data(
             ($sort = $(prefix + "sort").val()),

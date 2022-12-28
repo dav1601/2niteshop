@@ -81,6 +81,7 @@
 </head>
 
 <body>
+    <x-layout.pageloading />
     <div id="wrapper">
         <div id="sidebar">
             <div class="sidebar">

@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BlockProduct;
+
+use stdClass;
+use App\Models\User;
 use App\Models\Blogs;
-use App\Models\bundled_accessory_cat;
-use App\Models\Category;
-use App\Models\CatGame;
-use App\Models\gllProducts;
-use App\Models\Insurance;
 use App\Models\Policy;
-use App\Models\PrdRelaBlock;
-use App\Models\PrdRelaBlog;
+use App\Models\CatGame;
+use App\Models\Category;
 use App\Models\Producer;
 use App\Models\Products;
-use App\Models\RelatedPosts;
-use App\Models\RelatedProducts;
+use App\Models\Insurance;
+use App\Models\gllProducts;
+use App\Models\PrdRelaBlog;
 use App\Models\typeProduct;
-use App\Models\User;
+use App\Models\PrdRelaBlock;
+use App\Models\RelatedPosts;
+use Illuminate\Http\Request;
+use App\Models\RelatedProducts;
 use App\Repositories\AdminPrdRepo;
 use App\Repositories\ModelInterface;
-use Illuminate\Http\Request;
-use stdClass;
+use App\Models\bundled_accessory_cat;
 
 class AdminAjaxProductController extends Controller
 {
@@ -630,81 +630,108 @@ class AdminAjaxProductController extends Controller
         return response()->json($data);
     }
     //////////////////////////////////////
-    public function loadBlock($relaId, $relaName, $model = "prd")
+    public function loadBlock($relaId = 0, $relaName = "", $relaKey = "", $modelRela)
     {
         $selected = [];
-
-        switch ($model) {
-            case 'prd':
-                switch ($relaName) {
-                    case 'block':
-                        $getRela = PrdRelaBlock::where('block_id', $relaId)
-                            ->with(['infoPrd' => function ($query) {
-                                $query->select('id');
-                            }])
-                            ->get();
-                        if ($getRela) {
-                            foreach ($getRela as $rela) {
-                                $selected[] = $rela->infoPrd->id;
-                            }
-                        }
-                        break;
-                    case 'product':
-                        $getRela = RelatedProducts::where('product_id', $relaId)
-                            ->with(['infoPrd' => function ($query) {
-                                $query->select('id');
-                            }])
-                            ->get();
-                        if ($getRela) {
-                            foreach ($getRela as $rela) {
-                                $selected[] = $rela->infoPrd->id;
-                            }
-                        }
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
-                break;
-            case 'blog':
-                switch ($relaName) {
-                    case 'product':
-                        $getRela = PrdRelaBlog::where('products_id', $relaId)
-                            ->with(['infoBlog' => function ($query) {
-                                $query->select('id');
-                            }])
-                            ->get();
-                        if ($getRela) {
-                            foreach ($getRela as $rela) {
-                                $selected[] = $rela->infoBlog->id;
-                            }
-                        }
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
-            case 'block':
-                switch ($relaName) {
-                    case 'product':
-                        $getRela = PrdRelaBlock::where('products_id', $relaId)
-                            ->with(['infoBlock' => function ($query) {
-                                $query->select('id');
-                            }])
-                            ->get();
-                        if ($getRela) {
-                            foreach ($getRela as $rela) {
-                                $selected[] = $rela->infoBlock->id;
-                            }
-                        }
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
-            default:
-                break;
+        $relaKey = str_replace("_id", "", $relaKey);
+        $getRela = $modelRela::where($relaName, $relaId)
+            ->with([$relaKey => function ($query) {
+                $query->select('id');
+            }])
+            ->get();
+        if ($getRela) {
+            foreach ($getRela as $rela) {
+                $selected[] = collect($rela)->get($relaKey)->id;
+            }
         }
+        // switch ($model) {
+        //     case 'prd':
+        //         switch ($relaName) {
+        //             case 'block':
+        //                 $getRela = PrdRelaBlock::where('block_id', $relaId)
+        //                     ->with(['infoPrd' => function ($query) {
+        //                         $query->select('id');
+        //                     }])
+        //                     ->get();
+        //                 if ($getRela) {
+        //                     foreach ($getRela as $rela) {
+        //                         $selected[] = $rela->infoPrd->id;
+        //                     }
+        //                 }
+        //                 break;
+        //             case 'product':
+        //                 $getRela = RelatedProducts::where('product_id', $relaId)
+        //                     ->with(['infoPrd' => function ($query) {
+        //                         $query->select('id');
+        //                     }])
+        //                     ->get();
+        //                 if ($getRela) {
+        //                     foreach ($getRela as $rela) {
+        //                         $selected[] = $rela->infoPrd->id;
+        //                     }
+        //                 }
+        //                 break;
+        //             default:
+        //                 # code...
+        //                 break;
+        //         }
+        //         break;
+        //     case 'blog':
+        //         switch ($relaName) {
+        //             case 'product':
+        //                 $getRela = PrdRelaBlog::where('products_id', $relaId)
+        //                     ->with(['infoBlog' => function ($query) {
+        //                         $query->select('id');
+        //                     }])
+        //                     ->get();
+        //                 if ($getRela) {
+        //                     foreach ($getRela as $rela) {
+        //                         $selected[] = $rela->infoBlog->id;
+        //                     }
+        //                 }
+        //                 break;
+        //             default:
+        //                 # code...
+        //                 break;
+        //         }
+        //     case 'block':
+        //         switch ($relaName) {
+        //             case 'product':
+        //                 $getRela = PrdRelaBlock::where('products_id', $relaId)
+        //                     ->with(['infoBlock' => function ($query) {
+        //                         $query->select('id');
+        //                     }])
+        //                     ->get();
+        //                 if ($getRela) {
+        //                     foreach ($getRela as $rela) {
+        //                         $selected[] = $rela->infoBlock->id;
+        //                     }
+        //                 }
+        //                 break;
+        //             default:
+        //                 # code...
+        //                 break;
+        //         }
+        //     case 'plc':
+        //         switch ($relaName) {
+        //             case 'product':
+        //                 $getRela = PrdRelaBlock::where('products_id', $relaId)
+        //                     ->with(['plc' => function ($query) {
+        //                         $query->select('id');
+        //                     }])
+        //                     ->get();
+        //                 if ($getRela) {
+        //                     foreach ($getRela as $rela) {
+        //                         $selected[] = $rela->plc->id;
+        //                     }
+        //                 }
+        //                 break;
+        //             default:
+        //                 break;
+        //         }
+        //     default:
+        //         break;
+        // }
 
         return $selected;
     }
@@ -712,202 +739,320 @@ class AdminAjaxProductController extends Controller
     {
         $relaId = (int) $request->relaId;
         $selected = !empty($request->selected) ? array_map('intval', $request->selected) : [];
-        $model = $request->model ? $request->model : "prd";
+        $model = $request->model ? $request->model : "Products";
+        $modelRela = $request->relaModel ? $request->relaModel : "RelatedProducts";
         $act = $request->act;
         $page = $request->page;
-        $relaName = $request->relaName;
+        $relaKey = $request->relaKey . "_id";
+        $relaName = $request->relaName . "_id";
         $option = json_decode($request->option);
         $html_tags = "";
         $selectedId = [];
-        $queryPrd = new Products();
-        $queryBlock = new BlockProduct();
-        $queryBlog = new Blogs();
-        $query = null;
-        $m = $model;
-        $p = "name";
-        if ($model === "prd") {
-            switch ($act) {
-                case "load":
-                    $selected = $this->loadBlock($relaId, $relaName, $model);
-                    break;
-                case  "save":
-                    switch ($relaName) {
-                        case 'block':
-                            try {
-                                if (count($selected) > 0) {
-                                    PrdRelaBlock::whereNotIn('products_id', $selected)->where('block_id', $relaId)->delete();
-                                    foreach ($selected as $prdId) {
-                                        $has = PrdRelaBlock::where('block_id',  $relaId)->where('products_id', $prdId)->first();
-                                        if (!$has) {
-                                            PrdRelaBlock::create([
-                                                'block_id' => $relaId,
-                                                'products_id' => $prdId
-                                            ]);
-                                        }
-                                    }
-                                } else {
-                                    PrdRelaBlock::where('block_id', $relaId)->delete();
-                                }
-                                $selected = $this->loadBlock($relaId, $relaName, $model);
-                            } catch (\Exception $e) {
-                                $this->error = 1;
-                                $this->html = $e->getMessage();
-                            }
-                            break;
-                        case 'product':
-                            try {
-                                if (count($selected) > 0) {
-                                    RelatedProducts::whereNotIn('products_id', $selected)->where('product_id', $relaId)->delete();
-                                    foreach ($selected as $prdId) {
-                                        $has = RelatedProducts::where('product_id',  $relaId)->where('products_id', $prdId)->first();
-                                        if (!$has) {
-                                            RelatedProducts::create([
-                                                'product_id' => $relaId,
-                                                'products_id' => $prdId
-                                            ]);
-                                        }
-                                    }
-                                } else {
-                                    RelatedProducts::where('product_id', $relaId)->delete();
-                                }
-                                $selected = $this->loadBlock($relaId, $relaName, $model);
-                            } catch (\Exception $e) {
-                                $this->error = 1;
-                                $this->html = $e->getMessage();
-                            }
-                            break;
-                    }
-                    break;
-                case "search":
-                    if ($option->keyword) {
-                        $queryPrd = $queryPrd->where('name', 'LIKE', '%' . $option->keyword . '%');
-                        $page = 1;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            $vadata = $vam->pagination($queryPrd, null, $page, null,  []);
-            $selectedId = $selected;
-            $array = [];
-            foreach ($selected as $id) {
-                $prd = Products::select('name')->where('id', $id)->first();
-                if ($prd) {
-                    $array[$id] = $prd->name;
-                }
-                unset($prd);
-            }
-
-            $selected = $array;
+        // $queryPrd = new Products();
+        // $queryBlock = new BlockProduct();
+        // $queryBlog = new Blogs();
+        // $queryPlc = new Policy();
+        $m  = $model;
+        $model_name = '\\App\Models\\' . $model;
+        $model = new $model_name;
+        $p = "title";
+        if ($m == "Products" || $m === "Insurance") {
+            $p = "name";
         }
-        // end model prd
-        if ($model === "block") {
-            $p = "title";
-            switch ($act) {
-                case "load":
-                    $selected = $this->loadBlock($relaId, $relaName, $model);
-                    break;
-                case  "save":
-                    try {
-                        if (count($selected) > 0) {
-                            PrdRelaBlock::whereNotIn('block_id', $selected)->where('products_id', $relaId)->delete();
-                            foreach ($selected as $block_id) {
-                                $has = PrdRelaBlock::where('products_id',  $relaId)->where('block_id', $block_id)->first();
-                                if (!$has) {
-                                    PrdRelaBlock::create([
-                                        'products_id' => $relaId,
-                                        'block_id' => $block_id
-                                    ]);
-                                }
+        switch ($act) {
+            case "load":
+                $selected = $this->loadBlock($relaId, $relaName, $relaKey, $model);
+                break;
+            case  "save":
+                try {
+                    if (count($selected) > 0) {
+                        $modelRela::whereNotIn($relaKey, $selected)->where($relaName, $relaId)->delete();
+                        foreach ($selected as $item) {
+                            $has = $modelRela::where($relaName,  $relaId)->where($relaKey, $item)->first();
+                            if (!$has) {
+                                $modelRela::create([
+                                    $relaName => $relaId,
+                                    $relaKey => $item
+                                ]);
                             }
-                        } else {
-                            PrdRelaBlock::where('products_id', $relaId)->delete();
                         }
-                        $selected = $this->loadBlock($relaId, $relaName, $model);
-                    } catch (\Exception $e) {
-                        $this->error = 1;
-                        $this->html = $e->getMessage();
+                    } else {
+                        $modelRela::where($relaName, $relaId)->delete();
                     }
-                    break;
-                case "search":
-
-                    break;
-                default:
-                    break;
-            }
-            $vadata = $vam->pagination($queryBlock, null, $page, null, []);
-            $selectedId = $selected;
-            $array = [];
-            foreach ($selected as $id) {
-                $block = BlockProduct::select('title')->where('id', $id)->first();
-                if ($block) {
-                    $array[$id] = $block->title;
+                    $selected = $this->loadBlock($relaId, $relaName, $relaKey, $model);
+                } catch (\Exception $e) {
+                    $this->error = 1;
+                    $this->html = $e->getMessage();
                 }
-                unset($block);
-            }
+                break;
+                break;
+            case "search":
+                $page = 1;
+                break;
 
-            $selected = $array;
+            default:
+                break;
         }
-        // end block
-        if ($model === "blog") {
-            $p = "title";
-            switch ($act) {
-                case "load":
-                    $selected = $this->loadBlock($relaId, $relaName, $model);
-                    break;
-                case  "save":
-                    switch ($relaName) {
-                        case 'product':
-                            try {
-                                if (count($selected) > 0) {
-                                    PrdRelaBlog::whereNotIn('blogs_id', $selected)->where('products_id', $relaId)->delete();
-                                    foreach ($selected as $blogId) {
-                                        $has = PrdRelaBlog::where('blogs_id', $blogId)->where('products_id', $relaId)->first();
-                                        if (!$has) {
-                                            PrdRelaBlog::create([
-                                                'products_id' => $relaId,
-                                                'blogs_id' => $blogId
-                                            ]);
-                                        }
-                                    }
-                                } else {
-                                    PrdRelaBlog::where('products_id', $relaId)->delete();
-                                }
-                                $selected = $this->loadBlock($relaId, $relaName, $model);
-                            } catch (\Exception $e) {
-                                $this->error = 1;
-                                $this->html = $e->getMessage();
-                            }
-                            break;
-
-                        default:
-                            # code...
-                            break;
-                    }
-
-                    break;
-                case "search":
-                    $page = 1;
-                    if ($option->keyword) {
-                        $queryBlog =  $queryBlog->where('title', 'LIKE', '%' . $option->keyword . '%');
-                    }
-                    break;
-                default:
-                    break;
-            }
-            $vadata = $vam->pagination($queryBlog, null, $page, null, []);
-            $selectedId = $selected;
-            $array = [];
-            foreach ($selected as $id) {
-                $blog = Blogs::select('title')->where('id', $id)->first();
-                if ($blog) {
-                    $array[$id] = $blog->title;
-                }
-                unset($blog);
-            }
-
-            $selected = $array;
+        if ($option->keyword) {
+            $model = $model->where($p, 'LIKE', '%' . $option->keyword . '%');
         }
+        $vadata = $vam->pagination($model, null, $page, null,  []);
+        $selectedId = $selected;
+        $array = [];
+        foreach ($selected as $id) {
+            $item = $model_name::select($p)->where('id', $id)->first();
+            if ($item) {
+                $array[$id] = collect($item)->get($p);
+            }
+            unset($item);
+        }
+        $selected = $array;
+        // end model prd
+
+        //  //////////////////////////////////////// endrework
+        // if ($model === "prd") {
+        //     switch ($act) {
+        //         case "load":
+        //             $selected = $this->loadBlock($relaId, $relaName, $model);
+        //             break;
+        //         case  "save":
+        //             switch ($relaName) {
+        //                 case 'block':
+        //                     try {
+        //                         if (count($selected) > 0) {
+        //                             PrdRelaBlock::whereNotIn('products_id', $selected)->where('block_id', $relaId)->delete();
+        //                             foreach ($selected as $prdId) {
+        //                                 $has = PrdRelaBlock::where('block_id',  $relaId)->where('products_id', $prdId)->first();
+        //                                 if (!$has) {
+        //                                     PrdRelaBlock::create([
+        //                                         'block_id' => $relaId,
+        //                                         'products_id' => $prdId
+        //                                     ]);
+        //                                 }
+        //                             }
+        //                         } else {
+        //                             PrdRelaBlock::where('block_id', $relaId)->delete();
+        //                         }
+        //                         $selected = $this->loadBlock($relaId, $relaName, $model);
+        //                     } catch (\Exception $e) {
+        //                         $this->error = 1;
+        //                         $this->html = $e->getMessage();
+        //                     }
+        //                     break;
+        //                 case 'product':
+        //                     try {
+        //                         if (count($selected) > 0) {
+        //                             RelatedProducts::whereNotIn('products_id', $selected)->where('product_id', $relaId)->delete();
+        //                             foreach ($selected as $prdId) {
+        //                                 $has = RelatedProducts::where('product_id',  $relaId)->where('products_id', $prdId)->first();
+        //                                 if (!$has) {
+        //                                     RelatedProducts::create([
+        //                                         'product_id' => $relaId,
+        //                                         'products_id' => $prdId
+        //                                     ]);
+        //                                 }
+        //                             }
+        //                         } else {
+        //                             RelatedProducts::where('product_id', $relaId)->delete();
+        //                         }
+        //                         $selected = $this->loadBlock($relaId, $relaName, $model);
+        //                     } catch (\Exception $e) {
+        //                         $this->error = 1;
+        //                         $this->html = $e->getMessage();
+        //                     }
+        //                     break;
+        //             }
+        //             break;
+        //         case "search":
+        //             $page = 1;
+        //             break;
+
+        //         default:
+        //             break;
+        //     }
+        //     if ($option->keyword) {
+        //         $queryPrd = $queryPrd->where('name', 'LIKE', '%' . $option->keyword . '%');
+        //     }
+        //     $vadata = $vam->pagination($queryPrd, null, $page, null,  []);
+        //     $selectedId = $selected;
+        //     $array = [];
+        //     foreach ($selected as $id) {
+        //         $prd = Products::select('name')->where('id', $id)->first();
+        //         if ($prd) {
+        //             $array[$id] = $prd->name;
+        //         }
+        //         unset($prd);
+        //     }
+
+        //     $selected = $array;
+        // }
+        // // end model prd
+        // if ($model === "block") {
+        //     $p = "title";
+        //     switch ($act) {
+        //         case "load":
+        //             $selected = $this->loadBlock($relaId, $relaName, $model);
+        //             break;
+        //         case  "save":
+        //             try {
+        //                 if (count($selected) > 0) {
+        //                     PrdRelaBlock::whereNotIn('block_id', $selected)->where('products_id', $relaId)->delete();
+        //                     foreach ($selected as $block_id) {
+        //                         $has = PrdRelaBlock::where('products_id',  $relaId)->where('block_id', $block_id)->first();
+        //                         if (!$has) {
+        //                             PrdRelaBlock::create([
+        //                                 'products_id' => $relaId,
+        //                                 'block_id' => $block_id
+        //                             ]);
+        //                         }
+        //                     }
+        //                 } else {
+        //                     PrdRelaBlock::where('products_id', $relaId)->delete();
+        //                 }
+        //                 $selected = $this->loadBlock($relaId, $relaName, $model);
+        //             } catch (\Exception $e) {
+        //                 $this->error = 1;
+        //                 $this->html = $e->getMessage();
+        //             }
+        //             break;
+        //         case "search":
+        //             $page = 1;
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        //     if ($option->keyword) {
+        //         $queryBlog =  $queryBlock->where('title', 'LIKE', '%' . $option->keyword . '%');
+        //     }
+        //     $vadata = $vam->pagination($queryBlock, null, $page, null, []);
+        //     $selectedId = $selected;
+        //     $array = [];
+        //     foreach ($selected as $id) {
+        //         $block = BlockProduct::select('title')->where('id', $id)->first();
+        //         if ($block) {
+        //             $array[$id] = $block->title;
+        //         }
+        //         unset($block);
+        //     }
+
+        //     $selected = $array;
+        // }
+        // // end block
+        // if ($model === "blog") {
+        //     $p = "title";
+        //     switch ($act) {
+        //         case "load":
+        //             $selected = $this->loadBlock($relaId, $relaName, $model);
+        //             break;
+        //         case  "save":
+        //             switch ($relaName) {
+        //                 case 'product':
+        //                     try {
+        //                         if (count($selected) > 0) {
+        //                             PrdRelaBlog::whereNotIn('blogs_id', $selected)->where('products_id', $relaId)->delete();
+        //                             foreach ($selected as $blogId) {
+        //                                 $has = PrdRelaBlog::where('blogs_id', $blogId)->where('products_id', $relaId)->first();
+        //                                 if (!$has) {
+        //                                     PrdRelaBlog::create([
+        //                                         'products_id' => $relaId,
+        //                                         'blogs_id' => $blogId
+        //                                     ]);
+        //                                 }
+        //                             }
+        //                         } else {
+        //                             PrdRelaBlog::where('products_id', $relaId)->delete();
+        //                         }
+        //                         $selected = $this->loadBlock($relaId, $relaName, $model);
+        //                     } catch (\Exception $e) {
+        //                         $this->error = 1;
+        //                         $this->html = $e->getMessage();
+        //                     }
+        //                     break;
+
+        //                 default:
+        //                     # code...
+        //                     break;
+        //             }
+
+        //             break;
+        //         case "search":
+        //             $page = 1;
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        //     if ($option->keyword) {
+        //         $queryBlog =  $queryBlog->where('title', 'LIKE', '%' . $option->keyword . '%');
+        //     }
+        //     $vadata = $vam->pagination($queryBlog, null, $page, null, []);
+        //     $selectedId = $selected;
+        //     $array = [];
+        //     foreach ($selected as $id) {
+        //         $blog = Blogs::select('title')->where('id', $id)->first();
+        //         if ($blog) {
+        //             $array[$id] = $blog->title;
+        //         }
+        //         unset($blog);
+        //     }
+
+        //     $selected = $array;
+        // }
+        // //  //////////////////////////////////////// endfunction
+        // if ($model == "plc") {
+        //     $p = "title";
+        //     switch ($act) {
+        //         case "load":
+        //             $selected = $this->loadBlock($relaId, $relaName, $model);
+        //             break;
+        //         case  "save":
+        //             switch ($relaName) {
+        //                 case 'product':
+        //                     try {
+        //                         if (count($selected) > 0) {
+        //                             ProductPlc::whereNotIn('plc_id', $selected)->where('products_id', $relaId)->delete();
+        //                             foreach ($selected as $plcId) {
+        //                                 $has = ProductPlc::where('products_id',  $relaId)->where('plc_id', $plcId)->first();
+        //                                 if (!$has) {
+        //                                     ProductPlc::create([
+        //                                         'products_id' => $relaId,
+        //                                         'plc_id' => $plcId
+        //                                     ]);
+        //                                 }
+        //                             }
+        //                         } else {
+        //                             ProductPlc::where('products_id', $relaId)->delete();
+        //                         }
+        //                         $selected = $this->loadBlock($relaId, $relaName, $model);
+        //                     } catch (\Exception $e) {
+        //                         $this->error = 1;
+        //                         $this->html = $e->getMessage();
+        //                     }
+        //                     break;
+        //             }
+        //             break;
+        //         case "search":
+        //             $page = 1;
+        //             break;
+
+        //         default:
+        //             break;
+        //     }
+        //     if ($option->keyword) {
+        //         $queryPlc = $queryPlc->where('title', 'LIKE', '%' . $option->keyword . '%');
+        //     }
+        //     $vadata = $vam->pagination($queryPlc, null, $page, null, []);
+        //     $selectedId = $selected;
+        //     $array = [];
+        //     foreach ($selected as $id) {
+        //         $plc = Policy::select('title')->where('id', $id)->first();
+        //         if ($plc) {
+        //             $array[$id] = $plc->title;
+        //         }
+        //         unset($plc);
+        //     }
+        //     $selected = $array;
+        // }
+
         $this->html .= view('components.admin.product.select.table', compact('m',  'selected', 'page', 'vadata', 'p'));
         $html_tags .= view('components.admin.tags.select', compact('selected'));
         $this->data['error'] = $this->error;

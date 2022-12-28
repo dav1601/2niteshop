@@ -131,18 +131,22 @@ $(function () {
         }
     });
     // /////////////////////////////////////////////
-    $(document).on("keyup", "#search_pdc", function () {
-        var kw = $(this).val();
-        $.ajax({
-            type: "post",
-            url: url_search,
-            data: { kw: kw },
-            dataType: "json",
-            success: function (data) {
-                $("#producer").html(data.html);
-            },
-        });
-    });
+    $(document).on(
+        "keyup",
+        "#search_pdc",
+        _.debounce(function () {
+            var kw = $(this).val();
+            $.ajax({
+                type: "post",
+                url: url_search,
+                data: { kw: kw },
+                dataType: "json",
+                success: function (data) {
+                    $("#producer").html(data.html);
+                },
+            });
+        }, 300)
+    );
 
     // //////////////////////////////////
     $(document).on("click", "#reload__pdc", function () {
@@ -354,43 +358,63 @@ $(function () {
     $(document).on("change", prefix__filter + "prdcer", function () {
         load_products();
     });
-    $(document).on("keyup", prefix__filter + "name", function () {
-        load_products();
-    });
-    $(document).on("keyup", prefix__filter + "author", function () {
-        load_products();
-    });
-    $(document).on("keyup", prefix__filter + "model", function () {
-        load_products();
-    });
+    $(document).on(
+        "keyup",
+        prefix__filter + "name",
+        _.debounce(function () {
+            load_products();
+        }, 300)
+    );
+    $(document).on(
+        "keyup",
+        prefix__filter + "author",
+        _.debounce(function () {
+            load_products();
+        }, 300)
+    );
+    $(document).on(
+        "keyup",
+        prefix__filter + "model",
+        _.debounce(function () {
+            load_products();
+        }, 300)
+    );
     var url_filter_price = route("price");
-    $(document).on("keyup", "#prd__filter--priceT", function () {
-        var price = $(this).val();
-        $.ajax({
-            type: "post",
-            url: url,
-            data: { price: price },
-            dataType: "json",
-            success: function (data) {
-                $(".output_price_T").text(data.price);
-            },
-        });
-        load_products();
-    });
-    $(document).on("keyup", "#prd__filter--priceF", function () {
-        var price = $(this).val();
-        var url = route("price");
-        $.ajax({
-            type: "post",
-            url: url,
-            data: { price: price },
-            dataType: "json",
-            success: function (data) {
-                $(".output_price").text(data.price);
-            },
-        });
-        load_products();
-    });
+    $(document).on(
+        "keyup",
+        "#prd__filter--priceT",
+        _.debounce(function () {
+            var price = $(this).val();
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { price: price },
+                dataType: "json",
+                success: function (data) {
+                    $(".output_price_T").text(data.price);
+                },
+            });
+            load_products();
+        }, 300)
+    );
+    $(document).on(
+        "keyup",
+        "#prd__filter--priceF",
+        _.debounce(function () {
+            var price = $(this).val();
+            var url = route("price");
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { price: price },
+                dataType: "json",
+                success: function (data) {
+                    $(".output_price").text(data.price);
+                },
+            });
+            load_products();
+        }, 300)
+    );
     // //////
     $(document).on("click", "#product__show--page .page-link", function () {
         var page = $(this).attr("data-page");
@@ -543,19 +567,23 @@ $(function () {
     });
 
     // ////////////////// end
-    $(document).on("keyup", "#historical_cost", function () {
-        var price = $(this).val();
-        var url = route("price");
-        $.ajax({
-            type: "post",
-            url: url,
-            data: { price: price },
-            dataType: "json",
-            success: function (data) {
-                $(".output_price--cost").text(data.price);
-            },
-        });
-    });
+    $(document).on(
+        "keyup",
+        "#historical_cost",
+        _.debounce(function () {
+            var price = $(this).val();
+            var url = route("price");
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { price: price },
+                dataType: "json",
+                success: function (data) {
+                    $(".output_price--cost").text(data.price);
+                },
+            });
+        }, 300)
+    );
     // //////////////////////////////////// remove product
     $(document).on("click", ".remove__product", function () {
         Swal.fire({
@@ -649,6 +677,8 @@ $(function () {
     var selected = $.getParamsUrl("selected")
         ? converToNumber($.getParamsUrl("selected").split(","))
         : [];
+    var relaKey = $.getParamsUrl("relaKey");
+    var relaModel = $.getParamsUrl("relaModel");
     var option = {};
     function resetParams() {
         selected = [];
@@ -658,6 +688,8 @@ $(function () {
         $.delParamsUrl("relaId");
         $.delParamsUrl("relaName");
         $.delParamsUrl("s_page");
+        $.delParamsUrl("relaModel");
+        $.delParamsUrl("relaKey");
         return $.replaceNewUrl();
     }
     // function handle_select(id = null) {
@@ -679,7 +711,9 @@ $(function () {
         _model = "prd",
         _relaId = null,
         _relaName = "block",
-        _page = page
+        _page = page,
+        _relaModel = "",
+        _relaKey = ""
     ) {
         $.addParamsUrl("enable_modal", em);
         $.addParamsUrl("selected", _selected.toString());
@@ -687,6 +721,8 @@ $(function () {
         $.addParamsUrl("relaId", _relaId);
         $.addParamsUrl("relaName", _relaName);
         $.addParamsUrl("s_page", _page);
+        $.addParamsUrl("relaModel", _relaModel);
+        $.addParamsUrl("relaKey", _relaKey);
         return $.replaceNewUrl();
     }
 
@@ -707,11 +743,11 @@ $(function () {
     // }
 
     // /////////////////////
-    function saveInitAdd(model) {
+    function saveInitAdd() {
         let string = selected.toString();
-        let el = $(prefix_save + model);
-        el.val(string);
-        updateCount(model);
+        let inpSave = $("button[data-model='" + model + "']").prev();
+        inpSave.val(string);
+        updateCount();
         toastr.success("Lưu liên kết thành công");
     }
     function handle_select(id = null, remove = false) {
@@ -732,16 +768,22 @@ $(function () {
     }
     function handle_model_rela(
         m = model,
+        rM = relaModel,
+        rK = relaKey,
         riD = relaId,
         rName = relaName,
         act = "load",
         _page = 1,
-        _option = option,
+        _option = {},
         callback,
         _selected = selected
     ) {
         var rData = [];
-
+        let search = $("#modal__select--search");
+        _option["keyword"] = "";
+        if (search) {
+            _option["keyword"] = search.val();
+        }
         $.ajax({
             type: "post",
             url: route("handle_model_rela"),
@@ -752,6 +794,8 @@ $(function () {
                 selected: _selected.length <= 0 ? null : _selected,
                 page: _page,
                 relaName: rName,
+                relaModel: rM,
+                relaKey: rK,
                 option: JSON.stringify(_option),
                 enabel_modal: enabel_modal,
             },
@@ -766,7 +810,16 @@ $(function () {
                 const body = $(prefix_id_select + "body");
                 const bodyTag = $(prefix_id_select + "tags");
                 if (data.error === 0) {
-                    setModalParams(true, data.selected, m, riD, rName, _page);
+                    setModalParams(
+                        true,
+                        data.selected,
+                        m,
+                        riD,
+                        rName,
+                        _page,
+                        rM,
+                        rK
+                    );
                     body.html(data.html);
                     bodyTag.html(data.html_tags);
                     rData.success = true;
@@ -789,11 +842,17 @@ $(function () {
             relaName = $.getParamsUrl("relaName")
                 ? $.getParamsUrl("relaName")
                 : "block";
-            model = $.getParamsUrl("model") ? $.getParamsUrl("model") : "prd";
+            relaKey = $.getParamsUrl("relaKey");
+            modelRela = $.getParamsUrl("modelRela");
+            model = $.getParamsUrl("model")
+                ? $.getParamsUrl("model")
+                : "products";
             page = $.getParamsUrl("s_page");
             selected = $.getParamsUrl("selected")
                 ? converToNumber($.getParamsUrl("selected").split(","))
                 : [];
+            relaKey = $.getParamsUrl("relaKey");
+            relaModel = $.getParamsUrl("relaModel");
             updateCount(model);
         }
         return rData;
@@ -810,7 +869,15 @@ $(function () {
     $(document).on("click", "#select__prd--page .page-link", function (e) {
         e.preventDefault();
         const page = $(this).attr("data-page");
-        handle_model_rela("prd", null, "block", "paging", page);
+        handle_model_rela(
+            model,
+            relaModel,
+            relaKey,
+            relaId,
+            relaName,
+            "page",
+            page
+        );
     });
     function loading__select(el, load) {
         const loading = $(".init__select__loading");
@@ -823,15 +890,16 @@ $(function () {
         }
     }
     function updateCount(_model = model) {
-        const el = $("#count__" + _model);
-        if (el) {
-            el.text(selected.length + " Item");
-        }
+        let el = $("button[data-model='" + model + "'] span");
+        el.text(selected.length + " Item");
     }
     $(document).on("click", ".init__select", function (e) {
         e.preventDefault();
+        $("#modal__select--search").val("");
         let relaId = $(this).attr("relaId");
         let relaName = $(this).attr("relaName");
+        let relaModel = $(this).attr("relaModel");
+        let relaKey = $(this).attr("relaKey");
         let model = $(this).attr("data-model");
         let page = 1;
         let act = "load";
@@ -844,11 +912,13 @@ $(function () {
         loading__select($(this), true);
         const data = handle_model_rela(
             model,
+            relaModel,
+            relaKey,
             relaId,
             relaName,
             act,
             page,
-            true,
+            {},
             loading__select($(this), false),
             selected
         );
@@ -863,9 +933,17 @@ $(function () {
     });
     $(document).on("click", "#modal__select--save-blockPrd", function () {
         if (relaId == 0) {
-            saveInitAdd(model);
+            saveInitAdd();
         } else {
-            handle_model_rela(model, relaId, relaName, "save", page);
+            handle_model_rela(
+                model,
+                relaModel,
+                relaKey,
+                relaId,
+                relaName,
+                "save",
+                page
+            );
         }
     });
     $(document).on("click", ".select__prd--check", function () {
@@ -875,16 +953,43 @@ $(function () {
         } else {
             handle_select(id, true);
         }
-        handle_model_rela(model, relaId, relaName, "renderSelected", page);
+        handle_model_rela(
+            model,
+            relaModel,
+            relaKey,
+            relaId,
+            relaName,
+            "check",
+            page
+        );
     });
-    $(document).on("keyup", "#modal__select--search", function () {
-        option["keyword"] = $(this).val();
-        handle_model_rela(model, relaId, relaName, "search", page, option);
-    });
+    $(document).on(
+        "keyup",
+        "#modal__select--search",
+        _.debounce(function (e) {
+            handle_model_rela(
+                model,
+                relaModel,
+                relaKey,
+                relaId,
+                relaName,
+                "search",
+                page
+            );
+        }, 300)
+    );
     $(document).on("click", ".modal__select--tag-item", function () {
         let id = $(this).attr("data-id");
         handle_select(id, true);
-        handle_model_rela(model, relaId, relaName, "renderSelected", page);
+        handle_model_rela(
+            model,
+            relaModel,
+            relaKey,
+            relaId,
+            relaName,
+            "renderSelected",
+            page
+        );
     });
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });
