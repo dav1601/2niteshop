@@ -22,6 +22,7 @@ use App\Models\RelatedProducts;
 use App\Repositories\AdminPrdRepo;
 use App\Repositories\ModelInterface;
 use App\Models\bundled_accessory_cat;
+use App\Repositories\AdminPrdInterface;
 
 class AdminAjaxProductController extends Controller
 {
@@ -29,7 +30,8 @@ class AdminAjaxProductController extends Controller
     private $error = 0;
     private $data = array();
     private $html = '';
-    public function __construct(AdminPrdRepo $repo_prd)
+    public $repoPrd;
+    public function __construct(AdminPrdInterface $repo_prd)
     {
         $this->repoPrd = $repo_prd;
     }
@@ -217,7 +219,7 @@ class AdminAjaxProductController extends Controller
     ////////////////////////////////////////
     //////////////////////////////////////
 
-    public function handle_load(Request $request)
+    public function handle_load(Request $request, ModelInterface $repom)
     {
         $data = array();
         $pagination = '';
@@ -228,11 +230,6 @@ class AdminAjaxProductController extends Controller
         $error = array();
         $id = $request->id;
         $page = $request->page;
-        if ($request->action == "update_new") {
-            Products::where('id', '=', $id)->update([
-                'new' => $request->val
-            ]);
-        }
         if ($request->action == "update_stock") {
             Products::where('id', '=', $id)->update([
                 'stock' => $request->val
@@ -253,18 +250,8 @@ class AdminAjaxProductController extends Controller
         if ($request->author != null) {
             $product = $product->where('author', 'LIKE',  '%' . $request->author . '%');
         }
-        if ($request->cat_s2 != null) {
-            $cat_2 = $request->cat_s2;
-            $product =  $product->where(function ($query) use ($cat_2) {
-                $query->where('sub_2_cat_id', '=', $cat_2)
-                    ->orWhere('cat_2_sub', '=', $cat_2);
-            });
-        }
         if ($request->model != null) {
             $product = $product->where('model',  'LIKE', '%' . $request->model . '%');
-        }
-        if ($request->cat != 0) {
-            $product = $product->where('cat_id', '=', $request->cat);
         }
         if ($request->stock != 0) {
             $product = $product->where('stock', '=', $request->stock);
@@ -286,9 +273,15 @@ class AdminAjaxProductController extends Controller
                 $product = $product->whereBetween('price', [$request->pF, $request->pT]);
             }
         }
-        $products = $this->repoPrd->pagination($product, [$request->val_sort, $request->sort], $page, null);
-        if (count($products)) {
-            foreach ($products as $prd) {
+        if ($request->has('categories')) {
+            $categories = $request->categories;
+            $product = $product->whereHas('categories', function ($q) use ($categories) {
+                $q->whereIn('category_id', $categories);
+            });
+        }
+        $products = $repom->pagination($product, [$request->val_sort, $request->sort], $page, 12, null);
+        if ($products->count > 0) {
+            foreach ($products->data as $prd) {
                 $output .= view('components.admin.product.item', compact('prd'));
             }
         } else {
@@ -368,269 +361,14 @@ class AdminAjaxProductController extends Controller
     }
 
     ////////////////////////////////////////
+
     ////////////////////////////////////////
-    public function handle_related_product(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        if ($request->has('selected')) {
-            $selected = $request->selected;
-        } else {
-            $selected = [];
-        }
-        if ($request->act == "click") {
-            if (count($selected) > 0) {
-                foreach ($selected as $select) {
-                    $product = Products::where('id', '=', $select)->first();
-                    $array = $selected;
-                    $class = "select__product";
-                    $name = "products";
-                    $prefix = "product";
-                    $output .= view('components.admin.product.checkbox', compact('product', 'class', 'name', 'prefix', 'array'));
-                }
-            }
-        }
-        if ($request->act == "keyup") {
-            if ($request->kw != NULL) {
-                $products = Products::where('name', 'LIKE', '%' . $request->kw . '%')->get();
-                if (count($products) > 0) {
-                    $array = $selected;
-                    $class = "select__product";
-                    $name = "products_2";
-                    $prefix = "product_2";
-                    foreach ($products as $product) {
-                        if (!in_array($product->id, $selected)) {
-                            $output .= view('components.admin.product.checkbox', compact('product', 'class', 'name', 'prefix', 'array'));
-                        }
-                    }
-                } else {
-                    $output .= "Không có sản phẩm nào phù hợp từ khoá";
-                }
-            } else {
-                $output .= "Nhập tên sản phẩm cần tìm";
-            }
-        }
-        $data['html'] = $output;
-        return response()->json($data);
-    }
-    //////////////////////////////////////
-    ////////////////////////////////////////
-    public function handle_related_prd_for(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $category = category_child(Category::all(), 0);
-        $output_2 = '';
-        if ($request->forR != NULL) {
-            if ($request->forR == "blog") {
-                $output .= '
-                <label for="">Chọn Bài Viết</label>
-                <select class="custom-select mb-3" name="rFBlog" id="realatedForBlog">';
-                $output .= '<option value="">Nhập Bài Viết Muốn Tìm Vào Ô bên dưới</option>';
-                $output .= '</select>';
-                $output .= '<input type="text" name="" class="form-control" id="search__blog" placeholder="Nhập tên bài viết muốn tìm vào đây">
-                ';
-            } else {
-                $output .= '
-             <label for="">Chọn Sản Phẩm</label>
-             <select class="custom-select mb-3" name="rFPrd" id="realatedForPrd">';
-                $output .= '<option value="">Nhập Sản Phẩm Muốn Tìm Vào Ô bên dưới</option>';
-                $output .= '</select>';
-                $output .= '<input type="text" name="" class="form-control" id="search__product" placeholder="Nhập tên sản phẩm muốn tìm vào đây">
-             ';
-            }
-        }
-        if ($request->act == "search") {
-            if ($request->kw != NULL) {
-                $products = Products::where('name', 'LIKE', '%' . $request->kw . '%')->get();
-                if (count($products) > 0) {
-                    foreach ($products as $prd) {
-                        $output_2 .= '<option value="' . $prd->id . '">' . $prd->name . '</option>';
-                    }
-                } else {
-                    $output_2 .= '<option value="">Không có sản phẩm nào thuộc từ khoá (' . $request->kw . ')</option>';
-                }
-            } else {
-                $output_2 .= '<option value="">Nhập Sản Phẩm Muốn Tìm Vào Ô bên dưới</option>';
-            }
-        }
-        if ($request->act == "search_blog") {
-            if ($request->kw != NULL) {
-                $blogs = Blogs::where('title', 'LIKE', '%' . $request->kw . '%')->get();
-                if (count($blogs) > 0) {
-                    foreach ($blogs as   $blog) {
-                        $output_2 .= '<option value="' . $blog->id . '">' . $blog->title . '</option>';
-                    }
-                } else {
-                    $output_2 .= '<option value="">Không có bài viết nào thuộc từ khoá (' . $request->kw . ')</option>';
-                }
-            } else {
-                $output_2 .= '<option value="">Nhập Bài viết Muốn Tìm Vào Ô bên dưới</option>';
-            }
-        }
 
-        $data['html'] = $output;
-        $data['html_2'] = $output_2;
-        $data['test'] = $request->forR;
-        return response()->json($data);
-    }
-
-    ///////////////////////////////////////
-    ////////////////////////////////////////
-    public function handle_related_all(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $output_2 = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        if ($request->has('selected')) {
-            $selected = $request->selected;
-        } else {
-            $selected = [];
-        }
-        if ($request->has('selected_blog')) {
-            $selected_blog = $request->selected_blog;
-        } else {
-            $selected_blog = [];
-        }
-        if ($request->act == "click") {
-            if ($request->type == "product") {
-                if (count($selected) > 0) {
-                    foreach ($selected as $select) {
-                        $product = Products::where('id', '=', $select)->first();
-                        $array = $selected;
-                        $class = "select__product";
-                        $name = "products";
-                        $prefix = "product";
-                        $output .= view('components.admin.product.checkbox', compact('product', 'class', 'name', 'prefix', 'array'));
-                    }
-                }
-            } else {
-                if (count($selected_blog) > 0) {
-                    foreach ($selected_blog as $select_blog) {
-                        $blog = Blogs::where('id', '=', $select_blog)->first();
-                        $array = $selected_blog;
-                        $class = "select__blog";
-                        $name = "blogs";
-                        $prefix = "blog";
-                        $output .= view('components.admin.blogs.checkbox', compact('blog', 'class', 'name', 'prefix', 'array'));
-                    }
-                }
-            }
-        }
-        if ($request->act == "keyup") {
-            if ($request->type == "product") {
-                if ($request->kw != NULL) {
-                    $kw = $request->kw;
-                    $products = Products::where(function ($q) use ($kw) {
-                        $q->where('name', 'LIKE', '%' . $kw . '%')
-                            ->orWhere('id', $kw);
-                    })->get();
-                    if (count($products) > 0) {
-                        $array = $selected;
-                        $class = "select__product";
-                        $name = "products_2";
-                        $prefix = "product_2";
-                        foreach ($products as $product) {
-                            if (!in_array($product->id, $selected)) {
-                                $output .= view('components.admin.product.checkbox', compact('product', 'class', 'name', 'prefix', 'array'));
-                            }
-                        }
-                    } else {
-                        $output .= "Không có sản phẩm nào phù hợp từ khoá";
-                    }
-                } else {
-                    $output .= "Nhập tên sản phẩm cần tìm";
-                }
-            } else {
-                if ($request->kw_blog != NULL) {
-                    $blogs = Blogs::where('title', 'LIKE', '%' . $request->kw_blog . '%')->get();
-                    if (count($blogs) > 0) {
-                        $array = $selected_blog;
-                        $class = "select__blog";
-                        $name = "blogs_2";
-                        $prefix = "blog_2";
-                        foreach ($blogs as $blog) {
-                            if (!in_array($blog->id, $selected_blog)) {
-                                $output .= view('components.admin.blogs.checkbox', compact('blog', 'class', 'name', 'prefix', 'array'));
-                            }
-                        }
-                    } else {
-                        $output .= "Không có bài viết nào phù hợp từ khoá";
-                    }
-                } else {
-                    $output .= "Nhập tên bài viết cần tìm";
-                }
-            }
-        }
-        if ($request->type == "all") {
-            if (count($selected) > 0) {
-                foreach ($selected as $select) {
-                    $product = Products::where('id', '=', $select)->first();
-                    $array = $selected;
-                    $class = "select__product";
-                    $name = "products";
-                    $prefix = "product";
-                    $output .= view('components.admin.product.checkbox', compact('product', 'class', 'name', 'prefix', 'array'));
-                }
-            }
-            if (count($selected_blog) > 0) {
-                foreach ($selected_blog as $select_blog) {
-                    $blog = Blogs::where('id', '=', $select_blog)->first();
-                    $array = $selected_blog;
-                    $class = "select__blog";
-                    $name = "blogs";
-                    $prefix = "blog";
-                    $output_2 .= view('components.admin.blogs.checkbox', compact('blog', 'class', 'name', 'prefix', 'array'));
-                }
-            }
-        }
-        $data['html'] = $output;
-        $data['html_2'] = $output_2;
-        return response()->json($data);
-    }
     //////////////////////////////////////
 
-    // //////////// end delete gll edit product
-    //////////////////////////////////////
 
-    public function handle_related_delete(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $id = $request->id;
-        $type = $request->type;
-        $product_id = $request->product_id;
-        if ($type == "prd") {
-            RelatedProducts::where('product_id', $request->product_id)->where('products_id', $id)->delete();
-            bundled_accessory_cat::where('products_id', $id)->where('cat_id', $product_id)->delete();
-        }
-        if ($type == "blog") {
-            RelatedPosts::where(function ($query) use ($product_id) {
-                $query->where('product_id', $product_id)
-                    ->orWhere('cat_id', $product_id);
-            })->where('posts', $id)->delete();
-        }
-        $data['html'] = $output;
-        return response()->json($data);
-    }
     //////////////////////////////////////
-    public function loadBlock($relaId = 0, $relaName = "", $relaKey = "", $modelRela)
+    public function loadBlock($relaId = 0, $relaName = "", $relaKey = "", $modelRela = "")
     {
         $selected = [];
         $relaKey = str_replace("_id", "", $relaKey);
@@ -644,94 +382,6 @@ class AdminAjaxProductController extends Controller
                 $selected[] = collect($rela)->get($relaKey)->id;
             }
         }
-        // switch ($model) {
-        //     case 'prd':
-        //         switch ($relaName) {
-        //             case 'block':
-        //                 $getRela = PrdRelaBlock::where('block_id', $relaId)
-        //                     ->with(['infoPrd' => function ($query) {
-        //                         $query->select('id');
-        //                     }])
-        //                     ->get();
-        //                 if ($getRela) {
-        //                     foreach ($getRela as $rela) {
-        //                         $selected[] = $rela->infoPrd->id;
-        //                     }
-        //                 }
-        //                 break;
-        //             case 'product':
-        //                 $getRela = RelatedProducts::where('product_id', $relaId)
-        //                     ->with(['infoPrd' => function ($query) {
-        //                         $query->select('id');
-        //                     }])
-        //                     ->get();
-        //                 if ($getRela) {
-        //                     foreach ($getRela as $rela) {
-        //                         $selected[] = $rela->infoPrd->id;
-        //                     }
-        //                 }
-        //                 break;
-        //             default:
-        //                 # code...
-        //                 break;
-        //         }
-        //         break;
-        //     case 'blog':
-        //         switch ($relaName) {
-        //             case 'product':
-        //                 $getRela = PrdRelaBlog::where('products_id', $relaId)
-        //                     ->with(['infoBlog' => function ($query) {
-        //                         $query->select('id');
-        //                     }])
-        //                     ->get();
-        //                 if ($getRela) {
-        //                     foreach ($getRela as $rela) {
-        //                         $selected[] = $rela->infoBlog->id;
-        //                     }
-        //                 }
-        //                 break;
-        //             default:
-        //                 # code...
-        //                 break;
-        //         }
-        //     case 'block':
-        //         switch ($relaName) {
-        //             case 'product':
-        //                 $getRela = PrdRelaBlock::where('products_id', $relaId)
-        //                     ->with(['infoBlock' => function ($query) {
-        //                         $query->select('id');
-        //                     }])
-        //                     ->get();
-        //                 if ($getRela) {
-        //                     foreach ($getRela as $rela) {
-        //                         $selected[] = $rela->infoBlock->id;
-        //                     }
-        //                 }
-        //                 break;
-        //             default:
-        //                 # code...
-        //                 break;
-        //         }
-        //     case 'plc':
-        //         switch ($relaName) {
-        //             case 'product':
-        //                 $getRela = PrdRelaBlock::where('products_id', $relaId)
-        //                     ->with(['plc' => function ($query) {
-        //                         $query->select('id');
-        //                     }])
-        //                     ->get();
-        //                 if ($getRela) {
-        //                     foreach ($getRela as $rela) {
-        //                         $selected[] = $rela->plc->id;
-        //                     }
-        //                 }
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        //     default:
-        //         break;
-        // }
 
         return $selected;
     }
@@ -748,21 +398,15 @@ class AdminAjaxProductController extends Controller
         $option = json_decode($request->option);
         $html_tags = "";
         $selectedId = [];
-        // $queryPrd = new Products();
-        // $queryBlock = new BlockProduct();
-        // $queryBlog = new Blogs();
-        // $queryPlc = new Policy();
         $m  = $model;
         $model_name = '\\App\Models\\' . $model;
+        $modelRela = '\\App\Models\\' . $modelRela;
         $model = new $model_name;
         $p = "title";
         if ($m == "Products" || $m === "Insurance") {
             $p = "name";
         }
         switch ($act) {
-            case "load":
-                $selected = $this->loadBlock($relaId, $relaName, $relaKey, $model);
-                break;
             case  "save":
                 try {
                     if (count($selected) > 0) {
@@ -792,6 +436,9 @@ class AdminAjaxProductController extends Controller
 
             default:
                 break;
+        }
+        if ($relaName == "product_id" && $relaId != 0) {
+            $model = $model->where('id', '!=', $relaId);
         }
         if ($option->keyword) {
             $model = $model->where($p, 'LIKE', '%' . $option->keyword . '%');

@@ -6,7 +6,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    @include('layouts.meta', ['customTitle' => "dasdsadas"])
+    @include('layouts.meta', ['customTitle' => 'dasdsadas'])
     {{-- link css --}}
     @include('layouts.css')
     {{-- end link css --}}
@@ -95,6 +95,20 @@
     <x-modal.preorder />
     <x-Ajax />
 </body>
-
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 4,
+        slidesPerGroup: 4,
+        spaceBetween: 10,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+</script>
 
 </html>

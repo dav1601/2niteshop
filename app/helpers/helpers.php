@@ -4,8 +4,10 @@ use App\Models\Category;
 use App\Models\Config;
 use App\Models\Products;
 use App\Models\Insurance;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
+
 
 function get_crawler($crawler = [], $key = null)
 {
@@ -13,6 +15,86 @@ function get_crawler($crawler = [], $key = null)
         return "";
     }
     return $crawler[$key];
+}
+function is_product_new($created_at)
+{
+    $date1 = Carbon::create($created_at);
+    $date2 = Carbon::now()->subDays(7);
+    return $date1->gt($date2);
+}
+function handle_rela($request, $rela, $relaId = 0, $resever = false, $isEdit = false)
+{
+    $arrela = explode('-', $rela);
+    if ($resever) {
+        $arrela = array_reverse($arrela);
+    }
+    $key = $arrela[1];
+    $name = $arrela[0];
+    $qK = $key . "_id";
+    $qN = $name . "_id";
+    $rK = "rela__" . $key;
+    $model = '\\App\Models\\';
+    switch ($rela) {
+        case 'product-products':
+            $model  .= "RelatedProducts";
+            break;
+        case 'products-blogs':
+            $model  .= "PrdRelaBlog";
+            break;
+        case 'products-block':
+            $model  .= "PrdRelaBlock";
+            break;
+        case 'products-ins':
+            $model  .= "ProductIns";
+            break;
+
+        case 'products-plc':
+            $model  .= "ProductPlc";
+            break;
+        case 'products-category':
+            $model .= "ProductCategories";
+            break;
+        default:
+            return false;
+            break;
+    }
+    if (!$request->has($rK)) {
+        return;
+    }
+    if ($request->get($rK)) {
+        $selected = explode(",", $request->get($rK));
+        try {
+            if (count($selected) > 0) {
+                foreach ($selected as $id) {
+                    if ($isEdit) {
+                        $model::whereNotIn($qK,  $selected)->where($qN, $relaId)->delete();
+                        $has = $model::where($qK,  $id)->where($qN, $relaId)->first();
+                        if (!$has) {
+                            $model::create([
+                                $qK => $id,
+                                $qN => $relaId
+                            ]);
+                        }
+                    } else {
+                        $model::create([
+                            $qK => $id,
+                            $qN => $relaId
+                        ]);
+                    }
+                }
+                unset($id);
+            }
+            return true;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    } else {
+        if ($isEdit) {
+            $model::where($qN, $relaId)->delete();
+        }
+    }
+
+    return;
 }
 if (!function_exists('va_get_meta')) {
     function va_get_meta($url)

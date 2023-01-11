@@ -12,7 +12,7 @@ class ProductIns extends Model
     protected $fillable = [
         'products_id',
         'ins_id',
-        'group_id'
+
     ];
     public function products()
     {
@@ -22,8 +22,5 @@ class ProductIns extends Model
     {
         return $this->belongsTo('App\Models\Insurance', 'ins_id', 'id');
     }
-    public function group()
-    {
-        return $this->belongsTo('App\Models\bundled_product', 'group_id', 'id');
-    }
 }
+

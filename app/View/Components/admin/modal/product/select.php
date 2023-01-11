@@ -23,7 +23,8 @@ class select extends Component
     public $model;
     public $enable;
     public $p;
-    public function __construct($btn, Request $req)
+    public $type_save;
+    public function __construct($btn, $type_save = "temp", Request $req)
 
     {
         $this->elId = $req->relaId;
@@ -33,6 +34,7 @@ class select extends Component
         $this->relaKey = $req->relaKey;
         $this->relaModel = $req->relaModel;
         $this->btn = $btn;
+        $this->type_save = $type_save;
         $this->enable = $req->has("enable_modal") ? true : false;
         $array = [];
         $this->p = "title";

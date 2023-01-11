@@ -16,7 +16,67 @@ ul {
 a {
     text-decoration: none;
 }
+.show__home {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.swiper {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 25px;
+    .swiper-button-next {
+        right: 0 !important;
+    }
+    .swiper-button-prev {
+        left: 0 !important;
+    }
+    .swiper-button-next,
+    .swiper-button-prev {
+        z-index: 500;
+        width: 30px;
+        height: 30px;
+        background: rgba(44, 54, 64, 1);
+        border-width: 4px;
+        border-style: solid;
+        border-color: rgba(255, 255, 255, 1);
+        border-radius: 50%;
+        &:hover {
+            background-color: #0081c9;
+        }
+        &::after {
+            font-size: 14px;
+            color: white;
+            font-weight: bold !important;
+        }
+    }
+}
 
+// .swiper-slide {
+//     text-align: center;
+//     font-size: 18px;
+//     background: #fff;
+
+//     /* Center slide text vertically */
+//     display: -webkit-box;
+//     display: -ms-flexbox;
+//     display: -webkit-flex;
+//     display: flex;
+//     -webkit-box-pack: center;
+//     -ms-flex-pack: center;
+//     -webkit-justify-content: center;
+//     justify-content: center;
+//     -webkit-box-align: center;
+//     -ms-flex-align: center;
+//     -webkit-align-items: center;
+//     align-items: center;
+// }
+
+// .swiper-slide img {
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+// }
 body {
     font-family: $font-family-sans-serif;
     font-size: $font-size-base;
@@ -714,22 +774,26 @@ body {
             }
             // end bot banner
             .show__home {
-                @include responsive_h(iphoneX, down) {
-                    padding: 0 15px;
-                }
+                // @include responsive_h(iphoneX, down) {
+                //     padding: 0 15px;
+                // }
                 &--box {
                     .box__banner {
                         margin-bottom: 10px;
-                        .owl-nav {
-                            display: none;
-                        }
-                        .owl-dots {
-                            margin-top: 10px;
-                        }
+
                         &--main {
                             margin-bottom: 5px;
+                            padding-left: 1px;
+                            padding-right: 0.2rem;
+                            a {
+                                border-radius: 8px;
+                                img {
+                                    border-radius: inherit;
+                                }
+                            }
                         }
                         &--sub {
+                            padding-bottom: 0 !important;
                             .item {
                                 padding: 0px 5px;
                                 img {
@@ -743,27 +807,12 @@ body {
             // end show home
             .box__cat {
                 margin-top: 20px;
+                .tab-content {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
                 &--item {
                     position: relative;
-                    .owl-prev,
-                    .owl-next {
-                        position: absolute;
-                        top: 50%;
-                        z-index: 30;
-                        border-radius: 50%;
-                        background: rgba(44, 54, 64, 1);
-                        color: #ffffff;
-                        border: 4px solid #fafafa;
-                        &:hover {
-                            background: #277b8c;
-                        }
-                    }
-                    .owl-prev {
-                        left: -15px;
-                    }
-                    .owl-next {
-                        right: -15px;
-                    }
                 }
             }
             //   end box cat
@@ -1188,47 +1237,6 @@ body {
                                 margin-right: 10px;
                                 margin-bottom: 2px;
                             }
-                        }
-                        a.btn-number {
-                            width: 25px;
-                            height: 25px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            background-color: rgba(238, 238, 238, 1);
-                            border-width: 0 0 0 1px;
-                            border-color: inherit;
-                            border-style: inherit;
-                            font-size: 12px;
-                            cursor: pointer;
-                            transition: background 0.2s ease-in-out;
-                            color: rgba(105, 105, 115, 1);
-                            &:hover {
-                                text-decoration: none;
-                                background: #277b8c;
-                                color: $white;
-                            }
-                            &:first-child {
-                                border-top: 1px solid rgba(105, 105, 115, 1);
-                                border-right: 1px solid rgba(105, 105, 115, 1);
-                                border-bottom: 1px solid rgba(105, 105, 115, 1);
-                            }
-                            &:last-child {
-                                border-right: 1px solid rgba(105, 105, 115, 1);
-                                border-bottom: 1px solid rgba(105, 105, 115, 1);
-                            }
-                        }
-                        .col-1 {
-                            flex: 0 0 10%;
-                            max-width: 10%;
-                            @include responsive_h(iphoneX, down) {
-                                flex: 0 0 20%;
-                                max-width: 20%;
-                            }
-                        }
-                        .col-11 {
-                            flex: 1;
-                            margin-left: 10px;
                         }
                     }
                     &--insur {

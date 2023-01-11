@@ -9,12 +9,17 @@ use App\Repositories\AdminPrdInterface;
 
 class AdminPrdRepo implements AdminPrdInterface
 {
+    public $page;
+    public $item_page;
     public function __construct()
     {
         $this->item_page = config('product.item_page');
         $this->page = 1;
     }
-    
+    public function product($id)
+    {
+        return Products::with(['gll', 'policies', 'categories', 'ins', 'cat_game', 'blocks', 'related_products', 'related_blogs', 'related_products.products', 'producer'])->where('id', $id)->orWhere('slug', $id)->firstOrFail();
+    }
     public function pagination($model, $orderBy = [], $page = 1, $item_page)
     {
         try {
@@ -44,7 +49,7 @@ class AdminPrdRepo implements AdminPrdInterface
             $result->count = count($result);
             return $result;
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return false;
         }
     }
 }

@@ -13,20 +13,23 @@ use App\Models\Comments;
 use App\Models\Products;
 use App\Models\showHome;
 use App\Models\Statistics;
+use App\Models\SectionHome;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\FileInterface;
 use App\Repositories\UserInterface;
 use Symfony\Polyfill\Intl\Idn\Info;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Repositories\CustomerInterface;
-use App\Repositories\FileInterface;
 use Illuminate\Support\Facades\Validator;
 
 class AdminDashBoardController extends Controller
 {
+    public $customer;
+    public $file;
     public function __construct(CustomerInterface $customer, FileInterface $file)
     {
         $this->customer = $customer;
@@ -80,130 +83,113 @@ class AdminDashBoardController extends Controller
 
     public function add_cofhome_view(Request $request)
     {
-        $category = category_child(Category::all(), 0);
-        $config = showHome::orderBy('position', 'ASC')->get();
+
+        $config = showHome::with(['sections'])->orderBy('position', 'asc')->get();
         Carbon::setLocale('vi');
         $carbon = new Carbon();
-        return view('admin.dashboard.config_home', compact('config', 'category', 'carbon'));
+        return view('admin.dashboard.config_home', compact('config', 'carbon'));
     }
     ////////////////////////////////////////
     public function edit_cofhome_view($id, Request $request)
     {
-        $category = Category::where('parent_id', '=', 0)->get();
         $config = showHome::where('id', '=', $id)->first();
-        $cat_1 = $config->cat;
-        $cat_2 = $config->cat_2;
         Carbon::setLocale('vi');
         $carbon = new Carbon();
-        $access =  Products::where(function ($query) use ($cat_1) {
-            $query->where('cat_id', '=', $cat_1);
-        });
-        $access = $access->where('sub_type', 'LIKE', 'controller')->get();
-        return view('admin.dashboard.config_home_edit', compact('config', 'category', 'carbon', 'access'));
+        return view('admin.dashboard.config_home_edit', compact('config', 'carbon', 'id'));
     }
-    ////////////////////////////////////////
-    public function add_cofhome_handle(Request $request)
+    //    ///////////////////////////////////////
+    public function validatorCHome($request, $id = null)
     {
-        $data = array();
+        $name = $id ? "," . $id : "";
+        $rq = $id ? "" : "required|";
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required|unique:show_home',
-                'main_img' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+                'name' => 'required|unique:show_home,name' . $name,
+                'main_img' => $rq . 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
                 'use_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
                 'instruct_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
                 'access_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
                 'fix_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
                 'link_main' => 'required',
-                'cat'  => 'required',
                 'color'  => 'required',
-                'position' => 'unique:show_home',
             ],
-            [
-                'name.required' => "Bạn chưa nhập tên config",
-                'cat.required' => "Bạn chưa chọn danh mục config",
-                'color.required' => "Bạn chưa nhập màu sắc config",
-                'link_main.required' => "Bạn chưa nhập link",
-                'link_use.required' => "Bạn chưa nhập link",
-                'link_instruct.required' => "Bạn chưa nhập link",
-                'link_fix.required' => "Bạn chưa nhập link",
-                'link_access.required' => "Bạn chưa nhập link",
-                'name.unique' => "Config này đã tồn tại",
-                'position.unique' => "Vị trí này đã tồn tại",
-                'main_img.required' => "Không được để trống file ảnh",
-                'main_img.image' => "File không phải là file ảnh",
-                'main_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'main_img.max' => "File ảnh không vượt quá 500kb",
-                'use_img.required' => "Không được để trống file ảnh",
-                'use_img.image' => "File không phải là file ảnh",
-                'use_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'use_img.max' => "File ảnh không vượt quá 500kb",
-                'instruct_img.required' => "Không được để trống file ảnh",
-                'instruct_img.image' => "File không phải là file ảnh",
-                'instruct_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'instruct_img.max' => "File ảnh không vượt quá 500kb",
-                'access_img.required' => "Không được để trống file ảnh",
-                'access_img.image' => "File không phải là file ảnh",
-                'access_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'access_img.max' => "File ảnh không vượt quá 500kb",
-                'fix_img.required' => "Không được để trống file ảnh",
-                'fix_img.image' => "File không phải là file ảnh",
-                'fix_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'fix_img.max' => "File ảnh không vượt quá 500kb",
 
-            ]
         );
+        return $validator;
+    }
+    //  //////////////////////////////////////// end validatorCHome
+    ////////////////////////////////////////
+    public function add_cofhome_handle(Request $request)
+    {
+        $data = array();
+        $validator = $this->validatorCHome($request);
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
-        } else {
-            $data['name'] = $request->name;
-            $data['main_link'] = $request->link_main;
-            $data['use_link'] = $request->link_use;
-            $data['fix_link'] = $request->link_fix;
-            $data['instruct_link'] = $request->link_instruct;
-            $data['access_link'] = $request->link_access;
-            $data['cat'] = $request->cat;
-            $data['cat_2'] = $request->cat_2;
-            if ($request->has('access')) {
-                $data['option'] = implode(",", $request->access);
-            }
-            if ($request->cat_digital != 0) {
-                $data['cat_digital'] = $request->cat_digital;
-            }
-            $data['color'] = $request->color;
-            $data['tab'] = $request->tab;
-            $data['position'] = $request->position;
-            // main img
-            $path_main = "admin/images/show_home/" . $request->name . "/" . "main/";
-            $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
-            // end main img
-            // use img
-            if ($request->has('use_img')) {
-                $path_use = "admin/images/show_home/" . $request->name . "/" . "use/";
-                $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
-            }
-            // end use img
-            // instruct img
-            if ($request->has('instruct_img')) {
-                $path_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/";
-                $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
-            }
-            // end instruct img
-            // fix img
-            if ($request->has('fix_img')) {
-                $path_fix = "admin/images/show_home/" . $request->name . "/" . "fix/";
-                $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
-            }
-            // end fix img
-            // access img
-            if ($request->has('access_img')) {
-                $path_access = "admin/images/show_home/" . $request->name . "/" . "access/";
-                $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
-            }
-            // end access img
-            showHome::create($data);
-            return redirect()->back()->with('ok', '1');
+            return redirect()->back()->withInput()->withErrors($validator);
         }
+        $prefix = "section-category-";
+        $all_section = $request->section;
+        $data['name'] = $request->name;
+        $data['main_link'] = $request->link_main;
+        $data['use_link'] = $request->link_use;
+        $data['fix_link'] = $request->link_fix;
+        $data['instruct_link'] = $request->link_instruct;
+        $data['access_link'] = $request->link_access;
+        $data['color'] = $request->color;
+        $folder = "admin/images/show_home/";
+        // main img
+        $path_main = $folder . $request->name . "/" . "main/";
+        $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
+        // end main img
+        // use img
+        if ($request->has('use_img')) {
+            $path_use = $folder . $request->name . "/" . "use/";
+            $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
+        }
+        // end use img
+        // instruct img
+        if ($request->has('instruct_img')) {
+            $path_instruct = $folder . $request->name . "/" . "instruct/";
+            $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
+        }
+        // end instruct img
+        // fix img
+        if ($request->has('fix_img')) {
+            $path_fix = $folder . $request->name . "/" . "fix/";
+            $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
+        }
+        // end fix img
+        // access img
+        if ($request->has('access_img')) {
+            $path_access = $folder . $request->name . "/" . "access/";
+            $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
+        }
+        if ($request->has("category__digital")) {
+            $data['cat_digital'] = implode(",", $request->get("category__digital"));
+        }
+        // end access img
+        $created = showHome::create($data);
+        if ($created) {
+            $last_position = (int) showHome::latest()->first()->positon;
+            $position = $last_position + 1;
+            showHome::where('id', $created->id)->update(['position' =>  $position]);
+            if ($all_section != 0) {
+                for ($i = 0; $i < $all_section; $i++) {
+                    $section = $request->get($prefix . $i);
+                    if (count($section) > 0 && $section != 0) {
+                        foreach ($section as $category_id) {
+                            SectionHome::create([
+                                'show_id' => $created->id,
+                                'section' => $i,
+                                'category_id' => $category_id
+                            ]);
+                            unset($category_id);
+                        }
+                    }
+                }
+            }
+        }
+        return redirect()->back()->with('ok', '1');
     }
 
     //////////////////////////////////////// end add show_home
@@ -211,120 +197,85 @@ class AdminDashBoardController extends Controller
     {
         $data = array();
         $conf = showHome::where('id', '=', $id)->first();
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required',
-                'main_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'use_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'instruct_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'access_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'fix_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'link_main' => 'required',
-                'cat'  => 'required',
-                'color'  => 'required',
-            ],
-            [
-                'name.required' => "Bạn chưa nhập tên config",
-                'cat.required' => "Bạn chưa chọn danh mục config",
-                'color.required' => "Bạn chưa nhập màu sắc config",
-                'link_main.required' => "Bạn chưa nhập link",
-                'link_use.required' => "Bạn chưa nhập link",
-                'link_instruct.required' => "Bạn chưa nhập link",
-                'link_fix.required' => "Bạn chưa nhập link",
-                'link_access.required' => "Bạn chưa nhập link",
-                'name.unique' => "Config này đã tồn tại",
-                'position.unique' => "Vị trí này đã tồn tại",
-                'main_img.image' => "File không phải là file ảnh",
-                'main_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'main_img.max' => "File ảnh không vượt quá 500kb",
-                'use_img.required' => "Không được để trống file ảnh",
-                'use_img.image' => "File không phải là file ảnh",
-                'use_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'use_img.max' => "File ảnh không vượt quá 500kb",
-                'instruct_img.required' => "Không được để trống file ảnh",
-                'instruct_img.image' => "File không phải là file ảnh",
-                'instruct_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'instruct_img.max' => "File ảnh không vượt quá 500kb",
-                'access_img.required' => "Không được để trống file ảnh",
-                'access_img.image' => "File không phải là file ảnh",
-                'access_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'access_img.max' => "File ảnh không vượt quá 500kb",
-                'fix_img.required' => "Không được để trống file ảnh",
-                'fix_img.image' => "File không phải là file ảnh",
-                'fix_img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'fix_img.max' => "File ảnh không vượt quá 500kb",
-
-            ]
-        );
+        $validator = $this->validatorCHome($request, $id);
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        $prefix = "section-category-";
+        $all_section = $request->section;
+        $data['name'] = $request->name;
+        $data['main_link'] = $request->link_main;
+        $data['use_link'] = $request->link_use;
+        $data['fix_link'] = $request->link_fix;
+        $data['instruct_link'] = $request->link_instruct;
+        $data['access_link'] = $request->link_access;
+        if ($request->has('active')) {
+            $data['active'] = 1;
         } else {
-            $data['name'] = $request->name;
-            $data['main_link'] = $request->link_main;
-            $data['use_link'] = $request->link_use;
-            $data['fix_link'] = $request->link_fix;
-            $data['instruct_link'] = $request->link_instruct;
-            $data['access_link'] = $request->link_access;
-            $data['cat'] = $request->cat;
-            $data['cat_2'] = $request->cat_2;
-            if ($request->has('active')) {
-                $data['active'] = 1;
-            } else {
-                $data['active'] = 0;
+            $data['active'] = 0;
+        }
+        $data['color'] = $request->color;
+        if ($request->has("category__digital")) {
+            $data['cat_digital'] = implode(",", $request->get("category__digital"));
+        }
+        // main img
+        if ($request->has('main_img')) {
+            if ($conf->main_img != NULL)
+                $this->file->deleteFile($conf->main_img);
+            $path_main = "admin/images/show_home/" . $request->name . "/" . "main/";
+            $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
+        }
+        // end main img
+        // use img
+        if ($request->has('use_img')) {
+            if ($conf->use_img != NULL)
+                $this->file->deleteFile($conf->use_img);
+            $path_use = "admin/images/show_home/" . $request->name . "/" . "use/";
+            $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
+        }
+        // end use img
+        // instruct img
+        if ($request->has('instruct_img')) {
+            if ($conf->instruct_img != NULL)
+                $this->file->deleteFile($conf->instruct_img);
+            $path_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/";
+            $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
+        }
+        // end instruct img
+        // fix img
+        if ($request->has('fix_img')) {
+            if ($conf->fix_img != NULL)
+                $this->file->deleteFile($conf->fix_img);
+            $path_fix = "admin/images/show_home/" . $request->name . "/" . "fix/";
+            $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
+        }
+        // end fix img
+        // access img
+        if ($request->has('access_img')) {
+            if ($conf->access_img != NULL)
+                $this->file->deleteFile($conf->access_img);
+            $path_access = "admin/images/show_home/" . $request->name . "/" . "access/";
+            $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
+        }
+        // end access img
+        $updated = showHome::where('id', '=', $id)->update($data);
+        if ($updated) {
+            SectionHome::where('show_id', $id)->delete();
+            if ($all_section != 0) {
+                for ($i = 0; $i < $all_section; $i++) {
+                    $section = $request->get($prefix . $i);
+                    if ($section && count($section) > 0) {
+                        foreach ($section as $category_id) {
+                            SectionHome::create([
+                                'show_id' => $id,
+                                'section' => $i,
+                                'category_id' => $category_id
+                            ]);
+                            unset($category_id);
+                        }
+                    }
+                }
             }
-            if ($request->has('access')) {
-                $data['option'] = implode(",", $request->access);
-            }
-            if ($request->cat_digital != 0) {
-                $data['cat_digital'] = $request->cat_digital;
-            } else {
-                $data['cat_digital'] = NULL;
-            }
-            $data['color'] = $request->color;
-            $data['tab'] = $request->tab;
-            $data['position'] = $request->position;
-            // main img
-            if ($request->has('main_img')) {
-                if ($conf->main_img != NULL)
-                    $this->file->deleteFile($conf->main_img);
-                $path_main = "admin/images/show_home/" . $request->name . "/" . "main/";
-                $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
-            }
-            // end main img
-            // use img
-            if ($request->has('use_img')) {
-                if ($conf->use_img != NULL)
-                    $this->file->deleteFile($conf->use_img);
-                $path_use = "admin/images/show_home/" . $request->name . "/" . "use/";
-                $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
-            }
-            // end use img
-            // instruct img
-            if ($request->has('instruct_img')) {
-                if ($conf->instruct_img != NULL)
-                    $this->file->deleteFile($conf->instruct_img);
-                $path_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/";
-                $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
-            }
-            // end instruct img
-            // fix img
-            if ($request->has('fix_img')) {
-                if ($conf->fix_img != NULL)
-                    $this->file->deleteFile($conf->fix_img);
-                $path_fix = "admin/images/show_home/" . $request->name . "/" . "fix/";
-                $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
-            }
-            // end fix img
-            // access img
-            if ($request->has('access_img')) {
-                if ($conf->access_img != NULL)
-                    $this->file->deleteFile($conf->access_img);
-                $path_access = "admin/images/show_home/" . $request->name . "/" . "access/";
-                $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
-            }
-            // end access img
-            showHome::where('id', '=', $id)->update($data);;
             return redirect()->back()->with('ok', '1');
         }
     }

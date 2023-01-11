@@ -23,6 +23,20 @@ body {
         }
     }
 }
+
+
+.table-center {
+    td {
+        cursor: pointer;
+    }
+    th,
+    td {
+        a {
+            display: inline-block !important;
+        }
+        text-align: center !important;
+    }
+}
 .swal2-container {
     z-index: 50000;
 }

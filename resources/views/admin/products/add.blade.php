@@ -10,9 +10,9 @@
     <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
     </script>
     <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"
-        integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var producer = {{ Js::from($producer) }};
+    </script>
     {{-- <script src="{{ asset('admin/app/js/related_all.js') }}"></script> --}}
 @endsection
 
@@ -71,7 +71,7 @@
                                     $kws = $meta['kws'];
                                 }
                             @endphp
-                            <textarea class="form-control" name="des" id="" rows="4">{{ $desc }}</textarea>
+                            <textarea class="form-control" name="des" id="" rows="4">{{ $desc }}{{ old('des') }}</textarea>
                             @error('des')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -84,7 +84,7 @@
                         <div class="form-group mb-5">
                             <label for="">Keywords</label>
                             <input type="text" data-role="tagsinput" class="form-control" name="keywords"
-                                value="{{ $kws }}">
+                                value="{{ $kws }}{{ old('keywords') }}">
                             @error('keywords')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -296,77 +296,9 @@
 
                         <div class="form-group mb-5">
                             <div class="row mx-0">
-                                {{-- <div class="col-4 mb-5 pl-0">
-                                    <label for="">Danh Mục Chính</label>
-                                    <select class="custom-select" name="cat" id="cat">
-                                        <option value="">Chọn Danh Mục Chính</option>
-                                        @foreach ($category as $cate)
-                                            <option value="{{ $cate->id }}">{{ $cate->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('cat')
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            {{ $message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="col-4 mb-5">
-                                    <label for="">Danh Mục Phụ 1</label>
-                                    <select class="custom-select" name="cat_1" id="cat_1">
-                                        <option value="">Chưa Chọn Danh Mục Chính</option>
-                                    </select>
-                                    @error('cat_1')
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            {{ $message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @enderror
-                                </div> --}}
-                                {{-- end cat_2 --}}
 
-                                {{-- end products categories --}}
-                                {{-- <div class="col-4 pr-0">
-                                    <label for="">Danh Mục Phụ 2</label>
-                                    <select class="custom-select" name="cat_2" id="cat_2">
-                                        <option value="0">Chưa Chọn Danh Mục Phụ 1</option>
-                                    </select>
-                                </div> --}}
-                                {{-- end cat_2 --}}
-                                <div class="accordion col-6 pl-0" id="accordionExample">
-                                    <div class="card">
-                                        <div class="card-header p-0" id="headingOne">
-                                            <h2 class="mb-0">
-                                                <button
-                                                    class="btn btn-link btn-block navi_btn d-flex justify-content-between align-items-center text-light text-left"
-                                                    type="button" data-toggle="collapse" data-target="#collapseOne"
-                                                    aria-expanded="true" aria-controls="collapseOne">
-                                                    Danh Mục Sản Phẩm
-                                                    <i class="fa-solid fa-angles-down"></i>
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
-                                            data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                @foreach (category_child(App\Models\Category::all(), 0) as $cate)
-                                                    <div class="va-checkbox d-flex align-items-center w-100"
-                                                        style="margin-left: calc({{ $cate->level }} * 25px);">
-                                                        <input type="checkbox" name="categories[]"
-                                                            value="{{ $cate->id }}"
-                                                            id="category__{{ $cate->id }}" class="check_ins">
-                                                        <label for="category__{{ $cate->id }}">
-                                                            {{ $cate->name }}
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-12">
+                                    <x-admin.product.categories :show="true" />
                                 </div>
                                 {{-- end danh muc khac --}}
 
@@ -404,12 +336,12 @@
                             <div class="row mx-0">
                                 <div class="col-12 p-0">
                                     <label for="">Nhà Sản Xuất</label>
-                                    <select class="custom-select" name="producer" id="producer">
-                                        <option value="">Chọn NSX</option>
-                                        @foreach ($producer as $pdc)
-                                            <option value="{{ $pdc->id }}">{{ $pdc->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-group row mx-0 mt-4">
+                                        <input type="text" id="producer" name="producer"
+                                            value="{{ get_crawler($crawler, 'producer') }}" class="form-control"
+                                            placeholder="Nhập Tên Nhà sản xuất">
+
+                                    </div>
                                     @error('producer')
                                         <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                             {{ $message }}
@@ -418,15 +350,7 @@
                                             </button>
                                         </div>
                                     @enderror
-                                    <div class="form-group row mx-0 mt-4">
-                                        <input type="text" id="search_pdc" class="form-control col-6"
-                                            placeholder="Nhập Tên Nhà sản xuất">
-                                        <div class="col-3 pr-0">
-                                            <button class="btn navi_btn w-100" id="reload__pdc"><i
-                                                    class="fas fa-sync-alt pr-2"></i> Làm
-                                                Mới</button>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -452,7 +376,7 @@
                                 <div class="col-4">
                                     <label for="">Loại sản phẩm</label>
                                     <select class="custom-select" name="type" id="type">
-                                        <option value="">Chọn loại sản phẩm</option>
+                                        <option value="">Chọn</option>
                                         @foreach ($type as $t)
                                             <option value="{{ $t->id }}">{{ $t->name }}</option>
                                         @endforeach
@@ -482,120 +406,35 @@
                                 </div>
                             </div>
                         </div>
+                        {{-- area related --}}
                         <div class="row">
                             {{-- --}}
                             <div class="col-6 my-4 p-0">
-                                <div class="w-100">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            Chính sách bảo hành
-                                        </div>
-                                        <div class="card-body d-flex justify-content-center">
-                                            <input type="hidden" name="rela__ins" value="">
-                                            <button type="button" id=""
-                                                class="btn btn-primary btn-lg init__select" data-model="Insurance"
-                                                relaName="products" relaKey="ins" relaId="0">
-                                                Xem và thêm chính sách bảo hành
-                                                <span class="btn btn-outline-light">0 Item</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-admin.relation.rela rl="products-ins" />
+                            </div>
+
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <x-admin.relation.rela rl="products-plc" />
                             </div>
                             {{-- --}}
                             {{-- --}}
                             <div class="col-6 my-4 p-0">
-                                <div class="w-100">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            Chính sách của shop
-                                        </div>
-                                        <div class="card-body d-flex justify-content-center">
-                                            <input type="hidden" name="rela__plc" value="">
-                                            <button type="button" id=""
-                                                class="btn btn-primary btn-lg init__select" data-model="Policy"
-                                                relaName="products" relaKey="plc" relaId="0">
-                                                Xem và thêm chính sách của shop
-                                                <span class="btn btn-outline-light">0 Item</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-admin.relation.rela rl="product-products" />
+
+                            </div>
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <x-admin.relation.rela rl="products-blogs" />
                             </div>
                             {{-- --}}
                             {{-- --}}
                             <div class="col-6 my-4 p-0">
-                                <div class="w-100">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            Thêm Sản Phẩm Mua Kèm
-                                        </div>
-                                        <div class="card-body d-flex justify-content-center">
-                                            <input type="hidden" name="rela__products" value="">
-                                            <button type="button" id=""
-                                                class="btn btn-primary btn-lg init__select" data-model="Products"
-                                                relaName="product" relaKey="products" relaModel="RelatedProducts"
-                                                relaId="0">
-                                                Xem và thêm sản phẩm mua kèm
-                                                <span class="btn btn-outline-light">0 Item</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- --}}
-                            <div class="col-6 my-4 p-0">
-                                <div class="w-100">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            Bài viết liên quan
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-center mb-4">
-                                                <input type="hidden" name="rela__blogs" value="">
-                                                <button type="button" id=""
-                                                    class="btn btn-primary btn-lg init__select" data-model="Blogs"
-                                                    relaName="products" relaKey="blogs" relaId="0"
-                                                    relaModel="PrdRelaBlog">
-                                                    Xem và thêm bài viết liên quan
-                                                    <span class="btn btn-outline-light">0 Item</span>
-                                                </button>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- --}}
-                            {{-- --}}
-                            <div class="col-6 my-4 p-0">
-                                <div class="w-100">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            Block Sản Phẩm
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-center mb-4">
-                                                <input type="hidden" name="rela__block" value="">
-                                                <button type="button" id=""
-                                                    class="btn btn-primary btn-lg init__select" data-model="BlockProduct"
-                                                    relaName="products" relaId="0" relaKey="block"
-                                                    relaModel="PrdRelaBlock">
-                                                    Xem và thêm block sản phẩm
-                                                    <span class="btn btn-outline-light">0
-                                                        Item</span>
-                                                </button>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-admin.relation.rela rl="products-block" />
                             </div>
                             {{-- --}}
                         </div>
-
                         <div class="form-group mb-5">
                             <input type="submit" value="Thêm Sản Phẩm" class="btn navi_btn w-100">
                         </div>

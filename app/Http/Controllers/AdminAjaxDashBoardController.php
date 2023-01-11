@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Todos;
 use App\Models\Statistics;
+use App\Models\SectionHome;
+use App\Models\showHome;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -142,7 +145,54 @@ class AdminAjaxDashBoardController extends Controller
     }
 
     ////////////////////////////////////////
+    //    ///////////////////////////////////////
+    public function update__order(Request $request)
+    {
+        $order = $request->order;
+        foreach ($order as $key => $id) {
+            showHome::where('id', $id)->update(['position' => $key]);
+        }
+        return response()->json($order);
+    }
+    //  //////////////////////////////////////// end update__order
+    ////////////////////////////////////////
 
+    public function home__section(Request $request)
+    {
+        $data = [];
+        $section = $request->has('section') ? $request->get('section') : [];
+        $act = $request->act;
+        $html = "";
+        $id = $request->id;
+        switch ($act) {
+            case 'load':
+                $list_section = SectionHome::select(['category_id', 'section'])->where('show_id', $id)->get();
+                $list_section = collect($list_section)->groupBy("section")->toArray();
+                $array = [];
+                $i = 0;
+                foreach ($list_section as  $sections) {
+                    $array[$i] = Arr::pluck($sections, "category_id");
+                    array_unshift($array[$i], 0);
+                    $i++;
+                }
+                $section = $array;
+                break;
+
+            default:
+                break;
+        }
+        if (count($section) > 0) {
+            foreach ($section as $key => $item) {
+                $html .= view('components.admin.section.home', ['index' => $key, 'selected' => $item, 'showid' => $id]);
+                unset($item);
+            }
+        }
+        $data['sections'] = $section;
+        $data['html'] = $html;
+        return response()->json($data);
+    }
+
+    ////////////////////////////////////////
 
     //////////////////////////////////////
 

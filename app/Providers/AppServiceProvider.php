@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Config;
 use App\Repositories\DaviUser;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
@@ -11,6 +12,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Repositories\CustomerInterface;
+use App\Repositories\DavjCart;
+use App\Repositories\DavjCartInterface;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -42,8 +45,14 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(DaviUser $daviUser, FileRepository $file)
+    public function boot(DaviUser $daviUser, FileRepository $file, DavjCart $myCart)
     {
+        if (config('app.env') == "local") {
+            \Debugbar::enable();
+        } else {
+            \Debugbar::disable();
+            URL::forceScheme('https');
+        }
         Storage::extend('google', function ($app, $config) {
             $options = [];
 
@@ -66,8 +75,6 @@ class AppServiceProvider extends ServiceProvider
         View::share('carbon', new Carbon());
         View::share('daviUser', $daviUser);
         View::share('file', $file);
-        if (env('FORCUS_HTTPS')) {
-            URL::forceScheme('https');
-        }
+        View::share('myCart', $myCart);
     }
 }

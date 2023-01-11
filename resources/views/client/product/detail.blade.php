@@ -5,8 +5,8 @@
 @section('news_keywords', $product->keywords)
 @section('og-title', $product->name)
 @section('og-desc', $product->des)
-@if ($banner)
-    @section('og-image', $file->ver_img($banner->link))
+@if ($product->banner)
+    @section('og-image', $file->ver_img($product->banner_link))
 @endif
 @section('og-type', 'detail product')
 @section('twitter-title', $product->name)
@@ -18,6 +18,43 @@
 @section('margin')
 @endsection
 @section('content')
+    @php
+        $arrGll = collect($product->gll)
+            ->groupBy('size')
+            ->toArray();
+        $arrIns = collect($product->ins)
+            ->groupBy('group')
+            ->toArray();
+        $list_active = [];
+        $data_op = [];
+        if (count($arrIns) > 0) {
+            foreach ($arrIns as $group => $item_ins) {
+                $list_active[$group] = $item_ins[0];
+            }
+        }
+        $policies = collect($product->policies)->filter(function ($plc) {
+            return $plc->fullset == 0;
+        });
+        $fullset = collect($product->policies)
+            ->filter(function ($plc) {
+                return $plc->fullset != 0;
+            })
+            ->first();
+        $price = 0;
+        if (count($arrIns) > 0) {
+            if (count($list_active) > 0) {
+                foreach ($list_active as $group => $value) {
+                    $price += (int) $product->price + (int) $value['price'];
+                    $data_op[] = $value['id'];
+                }
+            }
+        } else {
+            if ($product->stock != 2) {
+                $price = (int) $product->price;
+            }
+        }
+    @endphp
+
     @if ($product->bg != null)
         @php
             $bg = asset($product->bg);
@@ -55,31 +92,31 @@
                     <li class="b__crumb--item">
                         <i class="fas fa-long-arrow-alt-right"></i>
                     </li>
-                    @php
-                        $index = count($bc);
-                    @endphp
-                    @foreach ($bc as $key => $b)
-                        @php
-                            $name = App\Models\Category::select('name')
-                                ->where('slug', $b)
-                                ->first();
-                        @endphp
-                        @if ($name)
-                            @if ($key != $index && $key != 0)
-                                <li class="b__crumb--item">
-                                    <i class="fas fa-long-arrow-alt-right"></i>
-                                </li>
-                            @endif
-                            <li class="b__crumb--item">
-                                <h1>{{ $name->name }}</h1>
-                            </li>
-                        @endif
-                    @endforeach
+                    {{-- @php
+            $index = count($bc);
+        @endphp
+        @foreach ($bc as $key => $b)
+            @php
+                $name = App\Models\Category::select('name')
+                    ->where('slug', $b)
+                    ->first();
+            @endphp
+            @if ($name)
+                @if ($key != $index && $key != 0)
                     <li class="b__crumb--item">
                         <i class="fas fa-long-arrow-alt-right"></i>
                     </li>
+                @endif
+                <li class="b__crumb--item">
+                    <h1>{{ $name->name }}</h1>
+                </li>
+            @endif
+        @endforeach --}}
+                    {{-- <li class="b__crumb--item">
+            <i class="fas fa-long-arrow-alt-right"></i>
+        </li> --}}
                     <li class="b__crumb--item">
-                        <h1>{{ $product->name }}</h1>
+                        {{ $product->name }}
                     </li>
                 </ol>
             </div>
@@ -95,31 +132,15 @@
                             <a class="my__action--next my__action">
                                 <i class="fas fa-chevron-down"></i>
                             </a>
+
                             <ul id="vertical">
-                                @foreach (App\Models\Products::find($product->id)->gll as $gll)
-                                    @if ($gll->size == 700)
-                                        @php
-                                            if (
-                                                App\Models\gllProducts::where('products_id', '=', $gll->products_id)
-                                                    ->where('index', '=', $gll->index)
-                                                    ->where('size', '=', 80)
-                                                    ->first()
-                                            ) {
-                                                $link_80 = App\Models\gllProducts::where('products_id', '=', $gll->products_id)
-                                                    ->where('index', '=', $gll->index)
-                                                    ->where('size', '=', 80)
-                                                    ->first()->link;
-                                            } else {
-                                                $link_80 = $gll->link;
-                                            }
-                                        @endphp
-                                        <li data-thumb="{{ $file->ver_img($link_80) }}?now={{ $carbon->now()->timestamp }}"
-                                            alt="{{ $product->name }}">
-                                            <img src="{{ $file->ver_img($gll->link) }}?now={{ $carbon->now()->timestamp }}"
-                                                alt="{{ $product->name }}" />
-                                            <x-productlabels :product="$product" />
-                                        </li>
-                                    @endif
+                                @foreach ($arrGll[700] as $key => $gll)
+                                    <li data-thumb="{{ $file->ver_img($arrGll[80][$key]['link']) }}?now={{ $carbon->now()->timestamp }}"
+                                        alt="{{ $product->name }}">
+                                        <img src="{{ $file->ver_img($gll['link']) }}?now={{ $carbon->now()->timestamp }}"
+                                            alt="{{ $product->name }}" />
+                                        <x-productlabels :product="$product" />
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -143,32 +164,21 @@
                         <div class="w-100" id="prd" class="prd__dtl">
 
                             <div class="prd__dtl--name">
-                                <h1>{{ $product->name }}</h1>
+                                {{ $product->name }}
                             </div>
                             <div class="prd__dtl--stats">
                                 <ul>
                                     <li><span>Nhà Sản Xuất:</span> <a
-                                            href="{{ url('producer/' . $product->producer_slug) }}"
-                                            class="">{{ App\Models\Producer::where('id', '=', $product->producer_id)->first()->name }}</a>
+                                            href="{{ url('producer/' . $product->producer->slug) }}"
+                                            class="">{{ $product->producer->name }}</a>
                                     </li>
                                     <li><span>Models: {{ $product->model }}</span></li>
                                 </ul>
                             </div>
-                            @php
-                                if ($product->insurance != null) {
-                                    $insurance = explode(',', $product->insurance);
-                                    $price = $product->price + App\Models\Insurance::where('id', '=', $insurance[0])->first()->price;
-                                } else {
-                                    if ($product->stock != 2) {
-                                        $price = $product->price;
-                                    } else {
-                                        $price = 0;
-                                    }
-                                }
-                            @endphp
-                            <input type="hidden" name="" id="price_prd" value="{{ $product->price }}">
+
                             <div class="prd__dtl--price">
-                                <span class="d-block @if ($product->stock == 2) call @endif"
+                                <span
+                                    class="d-block {{ 'price-' . $product->id }} @if ($product->stock == 2) call @endif"
                                     data-price="{{ $price }}">
                                     @if ($product->stock != 2)
                                         {{ crf($price) }}
@@ -178,54 +188,47 @@
                                 </span>
                             </div>
 
-                            @foreach ($product_ins as $group => $item)
-                                <div class="prd__dtl--insur">
-                                    <span
-                                        class="d-block">{{ App\Models\bundled_product::where('id', $group)->first()->name }}:
+
+                            <div class="prd__dtl--insur">
+                                @foreach ($arrIns as $key => $group)
+                                    @php
+                                        $g = App\Models\bundled_product::where('id', $key)->first();
+                                    @endphp
+                                    <span class="d-block">{{ $g->name }}:
                                         <strong>*</strong></span>
-                                    <ul class="insur">
-                                        @foreach ($item as $key => $ins)
-                                            <li class="insur__item @if ($key == 0) insur__item-active @endif"
-                                                data-price="{{ App\Models\Insurance::where('id', '=', $ins['ins_id'])->first()->price }}"
-                                                data-id="{{ $ins['ins_id'] }}">
-                                                <span>{{ App\Models\Insurance::where('id', '=', $ins['ins_id'])->first()->name }}
+                                    <ul class="insur" id="{{ 'insur-' . $key }}">
+                                        @foreach ($group as $key_2 => $ins)
+                                            @php
+                                                $active = $list_active[$key]['id'];
+                                            @endphp
+
+                                            <li class="insur__item @if ($ins['id'] == $active) insur__item-active @endif"
+                                                data-group="{{ $ins['group'] }}" data-id="{{ $ins['id'] }}">
+                                                <span>{{ $ins['name'] }}
                                                     (+
-                                                    {{ crf(App\Models\Insurance::where('id', '=', $ins['ins_id'])->first()->price) }})
+                                                    {{ crf($ins['price']) }})
                                                 </span>
                                             </li>
                                         @endforeach
                                     </ul>
-                                </div>
-                            @endforeach
+                                @endforeach
+
+                            </div>
+
                             <div class="prd__dtl--cart row mx-0">
-                                @if ($product->stock == 1 && $product->price != 0)
-                                    <div class="qty col-1 d-flex w-100 p-0">
-                                        <input type="text" name="qty[{{ $product->id }}]"
-                                            data-id="{{ $product->id }}" value="1" id="dtl__prd--qty" min="1"
-                                            max="1000" class="w-100 input-number">
-                                        <div class="btn__type d-flex flex-column">
-                                            <a class="btn-number py-0" data-type="plus"
-                                                data-field="qty[{{ $product->id }}]"><i class="fas fa-plus"></i></a>
-                                            <a class="btn-number py-0" data-type="minus"
-                                                data-field="qty[{{ $product->id }}]"><i class="fas fa-minus"></i></a>
-                                        </div>
-                                    </div>
-                                    <a class="btn-cart col-11 p-0" data-id="{{ $product->id }}" id="button-cart"
-                                        data-qty="1" data-price="{{ $price }}" data-op="0">
-                                        <i class="fas fa-shopping-bag"></i>
-                                        <span>Thêm Giỏ Hàng</span>
-                                    </a>
-                                @else
-                                    <a class="col-12 btn-preOrder" data-id="{{ $product->id }}" id="preOrder">
-                                        <i class="fas fa-shopping-bag"></i>
-                                        <span>Đặt Hàng Ngay</span>
-                                    </a>
-                                @endif
+                                @php
+                                    $options = implode(',', $data_op);
+                                @endphp
+                                <x-client.cart.add.btn :product="$product" :options="$options" />
+
                             </div>
 
                         </div>
                         {{-- khuyến mãi đặc biệt --}}
-                        <x-client.product.block.module :contents="$blocks" />
+                        @if (count($product->blocks) > 0)
+                            <x-client.product.block.module :contents="$product->blocks" />
+                        @endif
+
                         {{-- trả góp --}}
                         <div class="d-flex w-100 m-0 mb-3 overflow-hidden">
                             <div class="col-6 nblock__installment">
@@ -273,20 +276,17 @@
                             </div>
                         </div>
                         <div class="w-100 prd__dtl--policy">
-                            @if ($fullset != 0)
-                                @php
-                                    $fs = App\Models\Policy::where('id', '=', $fullset)->first();
-                                @endphp
+                            @if ($fullset != null)
                                 <div class="fullset d-flex align-items-center mb-1">
                                     <div class="fs__left">
-                                        {!! $fs->icon !!}
+                                        {!! $fullset->icon !!}
                                     </div>
                                     <div class="fs__right">
                                         <div class="name">
-                                            <span>{{ $fs->title }}</span>
+                                            <span>{{ $fullset->title }}</span>
                                         </div>
                                         <div class="content">
-                                            {!! $fs->content !!}
+                                            {!! $fullset->content !!}
                                         </div>
 
                                     </div>
@@ -362,156 +362,10 @@
                     <div class="tab-pane w-100" id="dtl__review" role="tabpanel">2</div>
                 </div>
             </div>
-            {{-- end detail content product --}}
-            <div class="w-100 dtl__bundled">
-                @if ($product->type != 'game')
-                    @if ($bundled_skin != null || count($bundled_accessory) > 0)
-                        <ul class="nav cat__tab" id="myTab__bundled" role="tablist">
 
-                            <li class="" role="presentation">
-                                <a class="active active-bundled" data-toggle="tab" href="#tab__aces" role="tab"
-                                    aria-controls="home" aria-selected="true">Phụ kiện đi kèm</a>
-                            </li>
-                            @if ($bundled_skin != null)
-                                <li class="nav-item" role="presentation">
-                                    <a class="active-bundled" data-toggle="tab" href="#tab__skin" role="tab"
-                                        aria-controls="profile" aria-selected="false">
-                                        Skin đi kèm
-                                        {{-- phân biệt second hand ps4 và phụ kiện nintendo --}}
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                        <div class="tab-content" id="myTabContent__bundled">
-                            <div class="tab-pane active" id="tab__aces" role="tabpanel">
-                                @if (count($bundled_accessory) > 0)
-                                    <div class="owl-carousel owl-theme owl-6">
-                                        @foreach ($bundled_accessory as $aces)
-                                            @php
-                                                $m = App\Models\Products::where('id', '=', $aces->products_id)->first();
-                                            @endphp
-                                            <div class="item">
-                                                <x-product.itemgrid type="2" class="prddetail" :message="$m" />
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                @endif
-                                {{-- endif san pham > 4 --}}
-
-                                {{-- end machine > 0 --}}
-                            </div>
-                            {{-- end tabs machine --}}
-                            @if ($bundled_skin != null)
-                                @php
-                                    $skin_cat_id = $bundled_skin->skin_cat_id;
-                                    $bundled_k = App\Models\Products::where(function ($q) use ($skin_cat_id) {
-                                        $q->where('sub_1_cat_id', $skin_cat_id)->orWhere('sub_2_cat_id', $skin_cat_id);
-                                    })->get();
-                                @endphp
-                                <div class="tab-pane" id="tab__skin" role="tabpanel">
-                                    @if (count($bundled_k) > 0)
-                                        {{-- @if (count($bundled_k) > 4) --}}
-                                        <div class="owl-carousel owl-theme owl-6">
-                                            @foreach ($access as $aces)
-                                                <div class="item">
-                                                    <x-product.itemgrid type="2" class="prddetail"
-                                                        :message="$aces" />
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @else
-                                        <strong>Chưa có skin nào thuộc danh mục này!</strong>
-                                    @endif
-
-                                    {{-- end tabs access --}}
-                                </div>
-                            @endif
-                            {{-- end tabs access --}}
-                        </div>
-                        {{-- end tabs content --}}
-                    @endif
-                    {{-- end if bundled isset --}}
-                @else
-                    {{-- end else type game --}}
-                    @php
-                        $sub_1_cat_id = $product->sub_1_cat_id;
-                        $games = App\Models\Products::where('sub_1_cat_id', '=', $sub_1_cat_id);
-                        $games = $games
-                            ->where('type', 'LIKE', 'game')
-                            ->orderBy('id', 'DESC')
-                            ->get();
-                    @endphp
-                    @if (count($games) > 0)
-                        <ul class="nav cat__tab" id="myTab__bundled" role="tablist">
-                            <li class="" role="presentation">
-                                <a class="active active-bundled" data-toggle="tab" href="#tab__games" role="tab"
-                                    aria-controls="home" aria-selected="true">Games Liên Quan</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="dtlTabsGamesContent">
-                            <div class="tab-pane active" id="tab__games" role="tabpanel">
-                                @if (count($games) > 0)
-                                    <div class="owl-carousel owl-theme owl-6">
-                                        @foreach ($games as $game)
-                                            @if ($game->id != $product->id)
-                                                <div class="item">
-                                                    <x-product.itemgrid type="2" class="prddetail"
-                                                        :message="$game" />
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                @else
-                                @endif
-                                {{-- endif san pham > 4 --}}
-
-                                {{-- end machine > 0 --}}
-                            </div>
-                        </div>
-                    @else
-                        <strong>Không có games nào liên quan</strong>
-                    @endif
-                @endif
-                @if (count($related_product) > 0)
-                    <ul class="nav cat__tab" id="myTab__relate" role="tablist">
-                        <li class="" role="presentation">
-                            <a class="active active-bundled" data-toggle="tab" href="#tab__relate" role="tab"
-                                aria-controls="home" aria-selected="true">Sản Phẩm Mua Kèm</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="dtlTabsRelateContent">
-                        <div class="tab-pane active" id="tab__relate" role="tabpanel">
-                            @if (count($related_product) > 0)
-                                <div class="owl-carousel owl-theme owl-6">
-                                    @foreach ($related_product as $rlp)
-                                        @php
-                                            $prd = App\Models\Products::where('id', '=', $rlp->products_id)->first();
-                                        @endphp
-                                        @if ($rlp->products_id != $product->id)
-                                            <div class="item">
-                                                <x-product.itemgrid type="2" class="prddetail" :message="$prd" />
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            @else
-                            @endif
-                            {{-- endif san pham > 4 --}}
-
-                            {{-- end machine > 0 --}}
-                        </div>
-                    </div>
-                @endif
-            </div>
-            {{-- end phu kien game + skin --}}
-            {{-- start bài viết liên quan --}}
-
-
-            {{-- end bài viết liên quan --}}
         </div>
         {{-- blog lien quan --}}
-        @if (count($related_cat_blog) > 0)
+        @if (count($product->related_blogs) > 0)
             <div id="home__blogs">
                 <div id="home__blogs--content" class="container">
                     <h2 class="related__blogs--title font-weight-bold text-uppercase mb-3" style="font-size: 17px">Bài
@@ -521,12 +375,9 @@
                             <div class="tab-content" id="myTabContent__blogs">
                                 <div class="tab-pane active" id="tab__blogs" role="tabpanel">
                                     <div class="owl-carousel owl-theme owl-6">
-                                        @foreach ($related_cat_blog as $blog_item)
-                                            @php
-                                                $blog = App\Models\Blogs::where('id', '=', $blog_item->posts)->first();
-                                            @endphp
+                                        @foreach ($product->related_blogs as $blog_item)
                                             <div class="item">
-                                                <x-blogsubitem :blog="$blog" />
+                                                <x-blogsubitem :blog="$blog_item" />
                                             </div>
                                         @endforeach
                                     </div>
@@ -537,7 +388,6 @@
             </div>
         @endif
     </div>
-
 
 
 @endsection

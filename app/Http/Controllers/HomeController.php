@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Blogs;
 use App\Models\Config;
 use App\Models\Slides;
 use App\Models\Banners;
@@ -11,6 +12,9 @@ use App\Models\Category;
 use App\Models\PreOrder;
 use App\Models\Products;
 use App\Models\showHome;
+use App\Models\Insurance;
+use App\Models\ProductIns;
+use App\Models\ProductPlc;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -18,18 +22,16 @@ use MatthiasMullie\Minify\JS;
 use Illuminate\Support\Carbon;
 use MatthiasMullie\Minify\CSS;
 use App\Models\bundled_skin_cat;
-use App\Models\Insurance;
 use App\Models\ProductCategories;
-use App\Models\ProductIns;
-use App\Models\ProductPlc;
-use App\Repositories\DavjCartInterface;
 use MatthiasMullie\Minify\Minify;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use App\View\Components\Modal\Product;
+use App\Repositories\DavjCartInterface;
 use Illuminate\Support\Facades\Session;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -37,13 +39,15 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $config = showHome::where('active', '=', 1)->get();
+        
+        $show_home = showHome::where('active', '=', 1)->with(['sections', 'sections.category'])->orderBy('position', 'asc')->get();
         $company = Config::all();
         $banners = Banners::where('index', '!=', 0)->get();
         $menu_fix = FixMenu::all();
         $banner = Banners::where('index', '=', 0)->first();
         $slides = Slides::where('status', '=', 1)->orderBy('index', 'ASC')->get();
-        return view('home', compact('config', 'company', 'banner',  'slides', 'banners'));
+        $blogs = Blogs::with(['author', 'category'])->where('active', '=', 1)->orderBy('id', 'DESC')->limit(8)->get();
+        return view('home', compact('show_home', 'company', 'banner',  'slides', 'banners', 'blogs'));
     }
     //////////////////////////////////////
     ////////////////////////////////////////

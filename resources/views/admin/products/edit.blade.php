@@ -11,7 +11,12 @@
         src="{{ $file->ver_img('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
     </script>
     <script src="{{ $file->ver_img('admin/plugin/tags/tagsinput.js') }}"></script>
-    <script src="{{ $file->ver_img('admin/app/js/related_all.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"
+        integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var producer = {{ Js::from($producer) }};
+    </script>
 @endsection
 @section('title')
     {{ $product->name }}
@@ -251,14 +256,13 @@
                                         <tr>
                                             <th scope="col">ID</th>
                                             <th scope="col">Img</th>
-                                            <th scope="col">Danh Mục</th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Index</th>
                                             <th scope="col">Xoá</th>
                                         </tr>
                                     </thead>
                                     <tbody class="op_700">
-                                        @foreach (App\Models\Products::find($product->id)->gll()->orderBy('index', 'ASC')->get() as $gl700)
+                                        @foreach ($gll700 as $gl700)
                                             @if ($gl700->size == 700)
                                                 <tr>
                                                     <th scope="row">{{ $gl700->id }}</th>
@@ -266,8 +270,7 @@
                                                         <img src="{{ $file->ver_img($gl700->link) }}" width="200"
                                                             class="va-radius-fb" alt="">
                                                     </td>
-                                                    <td>{{ App\Models\Products::where('id', '=', $gl700->products_id)->first()->cat_name }}
-                                                    </td>
+
                                                     <td>{{ $gl700->size }}</td>
                                                     <td>{{ $gl700->index }}</td>
                                                     <td>
@@ -304,14 +307,13 @@
                                         <tr>
                                             <th scope="col">ID</th>
                                             <th scope="col">Img</th>
-                                            <th scope="col">Danh Mục</th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Index</th>
                                             <th scope="col">Xoá</th>
                                         </tr>
                                     </thead>
                                     <tbody class="op_80">
-                                        @foreach (App\Models\Products::find($product->id)->gll()->orderBy('index', 'ASC')->get() as $gl80)
+                                        @foreach ($gll80 as $gl80)
                                             @if ($gl80->size == 80)
                                                 <tr>
                                                     <th scope="row">{{ $gl80->id }}</th>
@@ -319,8 +321,7 @@
                                                         <img src="{{ $file->ver_img($gl80->link) }}" class="va-radius-fb"
                                                             alt="">
                                                     </td>
-                                                    <td>{{ App\Models\Products::where('id', '=', $gl80->products_id)->first()->cat_name }}
-                                                    </td>
+
                                                     <td>{{ $gl80->size }}</td>
                                                     <td>{{ $gl80->index }}</td>
                                                     <td>
@@ -376,38 +377,8 @@
                         </div>
                         <div class="form-group mb-5">
                             <div class="row mx-0">
-                                <div class="accordion col-12 pl-0" id="accordionExample">
-                                    <div class="card">
-                                        <div class="card-header p-0" id="headingOne">
-                                            <h2 class="mb-0">
-                                                <button
-                                                    class="btn btn-link btn-block navi_btn d-flex justify-content-between align-items-center text-light text-left"
-                                                    type="button" data-toggle="collapse" data-target="#collapseOne"
-                                                    aria-expanded="true" aria-controls="collapseOne">
-                                                    Danh Mục Sản Phẩm
-                                                    <i class="fa-solid fa-angles-down"></i>
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div id="collapseOne"
-                                            class="collapse @if (count($array_pc) > 0) show @endif"
-                                            aria-labelledby="headingOne" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                @foreach (category_child(App\Models\Category::all(), 0) as $cate_other)
-                                                    <div class="va-checkbox d-flex align-items-center w-100"
-                                                        style="margin-left: calc({{ $cate_other->level }} * 25px);">
-                                                        <input type="checkbox" name="categories[]"
-                                                            value="{{ $cate_other->id }}"
-                                                            id="category__{{ $cate_other->id }}" class="check_ins"
-                                                            {{ in_array($cate_other->id, $array_pc) ? 'checked' : '' }}>
-                                                        <label for="category__{{ $cate_other->id }}">
-                                                            {{ $cate_other->name }}
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-12">
+                                    <x-admin.product.categories :show="true" :selected="$product_categories" />
                                 </div>
                                 {{-- end danh muc khac --}}
                             </div>
@@ -456,16 +427,12 @@
                             <div class="row mx-0">
                                 <div class="col-12 p-0">
                                     <label for="">Nhà Sản Xuất</label>
-                                    <select class="custom-select" name="producer" id="producer">
-                                        <option value="{{ $product->producer_id }}">
-                                            {{ App\Models\Producer::where('id', '=', $product->producer_id)->first()->name }}
-                                        </option>
-                                        @foreach ($producer as $pdc)
-                                            @if ($pdc->id != $product->producer_id)
-                                                <option value="{{ $pdc->id }}">{{ $pdc->name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
+                                    <div class="form-group row mx-0 mt-4">
+                                        <input type="text" id="producer" name="producer"
+                                            value="{{ $product->producer->name }}" class="form-control"
+                                            placeholder="Nhập Tên Nhà sản xuất">
+
+                                    </div>
                                     @error('producer')
                                         <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                             {{ $message }}
@@ -474,15 +441,7 @@
                                             </button>
                                         </div>
                                     @enderror
-                                    <div class="form-group row mx-0 mt-4">
-                                        <input type="text" id="search_pdc" class="form-control col-6"
-                                            placeholder="Nhập Tên Nhà sản xuất">
-                                        <div class="col-3 pr-0">
-                                            <button class="btn navi_btn w-100" id="reload__pdc"><i
-                                                    class="fas fa-sync-alt pr-2"></i> Làm
-                                                Mới</button>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -574,132 +533,37 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group mb-5">
-                            <div class="d-flex align-items-center mx-0 mb-4">
-                                <label for="" class="mb-0 p-0">Chinh sách bảo hành </label>
-                                <button class="btn navi_btn ml-3" id="reload__ins"><i
-                                        class="fas fa-sync-alt pr-2"></i>Làm
-                                    Mới</button>
-                            </div>
-                            <div class="row inner-cis mx-0">
-                                @foreach ($ins as $in)
-                                    <div class="col-3 cis_item mb-4">
-                                        <div class="va-checkbox d-flex align-items-center w-100">
-                                            <input type="checkbox" name="ins[]" value="{{ $in->id }}"
-                                                id="ci__{{ $in->id }}" class="check_ins"
-                                                @if (in_array($in->id, $product_ins)) checked @endif>
-                                            <label for="ci__{{ $in->id }}" data-toggle="tooltip"
-                                                data-placement="top" title="Giá Bảo Hành: {{ crf($in->price) }} ">
-                                                {{ $in->name }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endforeach
+                        {{-- area related --}}
+                        <div class="row">
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <x-admin.relation.rela rl="products-ins" :relaid="$product->id" :selected="$ins" />
                             </div>
 
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <x-admin.relation.rela rl="products-plc" :relaid="$product->id" :selected="$policies" />
+                            </div>
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <x-admin.relation.rela rl="product-products" :relaid="$product->id" :selected="$rela_products" />
+
+                            </div>
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <x-admin.relation.rela rl="products-blogs" :relaid="$product->id" :selected="$rela_blogs" />
+                            </div>
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-6 my-4 p-0">
+                                <x-admin.relation.rela rl="products-block" :relaid="$product->id" :selected="$blocks" />
+                            </div>
+                            {{-- --}}
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="d-flex align-items-center mx-0 mb-4">
-                                <label for="" class="mb-0 p-0">Chinh sách của shop</label>
-                                <button class="btn navi_btn ml-3" id="reload__plc"><i
-                                        class="fas fa-sync-alt pr-2"></i>Làm
-                                    Mới</button>
-                            </div>
-
-                            <div class="row inner-plc mx-0">
-                                @foreach ($policy as $plc)
-                                    <div class="col-3 plc_item mb-4">
-                                        <div class="va-checkbox d-flex align-items-center w-100">
-                                            <input type="checkbox" name="plc[]" value="{{ $plc->id }}"
-                                                id="plc__{{ $plc->id }}" class="check_plc"
-                                                @if (in_array($plc->id, $product_policies)) checked @endif>
-                                            <label for="plc__{{ $plc->id }}" data-toggle="tooltip" data-html="true"
-                                                data-placement="top" title="{{ $plc->content }}">
-                                                {{ $plc->title }} (Pos: {{ $plc->position }})
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        {{-- --}}
-
-                        <div class="col-12 mt-4 p-0">
-                            <div class="w-100">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        Chỉnh sửa Sản Phẩm Mua Kèm
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <button type="button" id="init__select--add"
-                                            class="btn btn-primary btn-lg init__select" data-model="prd"
-                                            relaName="product" relaId="{{ $product->id }}">
-                                            Xem và sửa liên kết
-                                        </button>
-                                        <button class="btn btn-primary select__btn--loading d-none" type="button"
-                                            disabled>
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                            Loading...
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- --}}
-                        {{-- --}}
-
-                        <div class="col-12 my-4 p-0">
-                            <div class="w-100">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        Bài viết liên quan
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="card-body text-center">
-                                            <button type="button" class="btn btn-primary btn-lg init__select"
-                                                data-model="blog" relaName="product" relaId="{{ $product->id }}">
-                                                Sửa liên kết bài viết
-                                            </button>
-                                        </div>
-                                        {{-- <div id="selected_blog" class="mb-4">
-                                            <h1 class="mb-3" style="font-size: 20px">Danh Sách Bài Viết Đã Chọn</h1>
-                                            @if (count($array_blogs) > 0)
-                                                @foreach ($array_blogs as $item_2)
-                                                    @php
-                                                        $blog = App\Models\Blogs::where('id', '=', $item_2)->first();
-                                                    @endphp
-                                                    <x-admin.blogs.checkbox :blog="$blog" class="select__blog"
-                                                        name="blogs" prefix="blog" :array="$array_blogs" />
-                                                @endforeach
-                                            @else
-                                                <span>Chưa có bài viết nào được chọn</span>
-                                            @endif
-                                        </div>
-                                        <div class="form-group mb-5">
-                                            <label for="">Tìm Bài Viết</label>
-                                            <input type="text" class="form-control" name=""
-                                                id="search__name--blog" placeholder="Nhập tên bài viết">
-                                            <div id="result_blog" class="mt-4"></div>
-                                            @error('blogs')
-                                                <div class="alert alert-danger alert-dismissible fade show mt-4"
-                                                    role="alert">
-                                                    {{ $message }}
-                                                    <button type="button" class="close" data-dismiss="alert"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                            @enderror
-                                        </div> --}}
 
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- --}}
                         <div class="form-group mb-5">
                             <input type="submit" value="Cập Nhật Sản Phẩm" class="btn navi_btn w-100">
                         </div>

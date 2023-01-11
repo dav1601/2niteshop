@@ -40,13 +40,13 @@ class Category extends Model
         }
     }
     // //////////////////////
-    static function OneCatTree($id)
-    {
-        $allCategories = Category::where('id', '!=', 145)->get();
-        $category = Category::where('id', '=', $id)->get();
-        self::formatOneTree($category, $allCategories);
-        return $category;
-    }
+    // static function OneCatTree($id)
+    // {
+    //     $allCategories = Category::where('id', '!=', 145)->get();
+    //     $category = Category::where('id', '=', $id)->get();
+    //     self::formatOneTree($category, $allCategories);
+    //     return $category;
+    // }
     private static function formatOneTree($categories, $allCategories)
     {
         foreach ($categories as $category) {
@@ -113,6 +113,6 @@ class Category extends Model
     }
     public function products()
     {
-        return $this->belongsToMany('App\Models\Products', 'product_categories', 'products_id', 'id');
+        return $this->hasMany('App\Models\ProductCategories', 'category_id');
     }
 }

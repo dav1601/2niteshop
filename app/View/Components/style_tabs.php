@@ -6,13 +6,12 @@ use Illuminate\View\Component;
 
 class styletabs extends Component
 {
-    public $type;
     /**
      * The alert message.
      *
      * @var string
      */
-    public $cf;
+    public $color;
 
     /**
      * Create the component instance.
@@ -21,10 +20,9 @@ class styletabs extends Component
      * @param  string  $message
      * @return void
      */
-    public function __construct($type , $cf)
+    public function __construct($color)
     {
-        $this->cf = $cf;
-        $this->type = $type;
+        $this->color = $color;
     }
 
     /**

@@ -21,13 +21,14 @@ class showHome extends Model
         'access_img',
         'fix_link',
         'fix_img',
-        'cat_2',
-        'cat',
         'cat_digital',
-        'option',
         'color',
         'access_tab',
         'position',
         'active'
     ];
+    public function sections()
+    {
+        return $this->hasMany('App\Models\SectionHome', 'show_id', 'id');
+    }
 }

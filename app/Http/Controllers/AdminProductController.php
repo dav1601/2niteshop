@@ -10,21 +10,15 @@ use App\Models\PreOrder;
 use App\Models\Producer;
 use App\Models\Products;
 use App\Models\Insurance;
-use App\Models\ProductIns;
-use App\Models\ProductPlc;
 use App\Models\gllProducts;
-use App\Models\PrdRelaBlog;
 use App\Models\typeProduct;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\BlockProduct;
-use App\Models\PrdRelaBlock;
-use App\Models\RelatedPosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\RelatedProducts;
 use App\Models\ProductCategories;
-use App\Repositories\AdminPrdRepo;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\FileInterface;
 use App\Repositories\ModelInterface;
@@ -39,6 +33,10 @@ use Spatie\ResponseCache\Facades\ResponseCache;
 
 class AdminProductController extends Controller
 {
+    public $handle_file;
+    public $data;
+    public $res;
+    public $repoPrd;
     public function __construct(FileInterface $handle_file, AdminPrdInterface $repo_prd)
     {
         $this->middleware(function ($request, $next) {
@@ -58,6 +56,12 @@ class AdminProductController extends Controller
     public function delete_product($id, Request $request)
     {
         $this->authorize('admin-action');
+        $product = Products::where('id', $id)->first();
+        if ($product->banner) {
+            $this->handle_file->deleteFile($product->banner);
+        }
+        $this->handle_file->deleteFile($product->main_img);
+        $this->handle_file->deleteFile($product->sub_img);
         if (Products::where('id', '=', $id)->delete()) {
             return redirect()->back()->with('delete-ok', 1);
         } else {
@@ -69,7 +73,7 @@ class AdminProductController extends Controller
     {
         $ins = Insurance::all();
         $policy = Policy::all();
-        $producer = Producer::all();
+        $producer = Producer::all()->pluck("name")->toArray();
         $cat_game = CatGame::all();
         $type = typeProduct::where('parent', '=', 0)->get();
 
@@ -82,42 +86,33 @@ class AdminProductController extends Controller
     // //////////////////////////////////////// end view add
     public function product_view_edit($id, Request $request)
     {
-        $array_products = array();
-        $array_blogs = array();
-        $product = Products::where('id', '=', $id)->firstOrFail();
-        if (Gate::allows('group-4')) {
-        } else {
+        $product = $this->repoPrd->product($id);
+        if (!Gate::allows('group-4')) {
             $this->authorize('edit-product', $product);
         }
-        $product_policies = array();
-        $product_ins = array();
-        $link_policies = Products::find($id)->policies;
-        $link_ins = Products::find($id)->ins;
-        foreach ($link_policies as $lp) {
-            array_push($product_policies, $lp->plc_id);
-        }
-        foreach ($link_ins as $li) {
-            array_push($product_ins, $li->ins_id);
-        }
-        $category = Category::where('parent_id', '=', 0)->get();
-        $ins = Insurance::all();
-        $policy = Policy::all();
-        $producer = Producer::all();
+        $producer = Producer::all()->pluck("name")->toArray();
         $cat_game = CatGame::all();
-        $cat_s2 = Category::where('parent_id', '=', $product->sub_1_cat_id);
         $type = typeProduct::where('parent', '=', 0)->get();
         $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
-        $product_categories = Products::find($id)->categories()->select('category_id')->get()->toArray();
-        $array_pc = array();
-        foreach ($product_categories as $pc) {
-            $array_pc[] = $pc['category_id'];
-        }
+        $product_categories = ProductCategories::where('products_id', $id)->get()->pluck('category_id')->toArray();
+        $rela_blogs = implode(",", $product->related_blogs->pluck("blogs_id")->toArray());
+        $rela_products =  implode(",", $product->related_products->pluck("products_id")->toArray());
+        $policies = implode(",", $product->policies->pluck("plc_id")->toArray());
+        $ins =  implode(",", $product->ins->pluck("ins_id")->toArray());
+        $blocks =  implode(",", $product->blocks->pluck("block_id")->toArray());
+        $gll700 = collect($product->gll)->filter(function ($value) {
+            return $value->size == 700;
+        });
+        $gll80 = collect($product->gll)->filter(function ($value) {
+            return $value->size == 80;
+        });
         $url = route('product_view_edit', ['id' => $id]);
-        return view('admin.products.edit', compact('id', 'category', 'ins', 'policy', 'producer', 'cat_game', 'type', 'cat_s2', 'product', 'sub_type',  'url', 'array_products', 'array_blogs', 'product_policies', 'product_ins', 'array_pc'));
+        return view('admin.products.edit', compact('id',   'producer', 'cat_game', 'type',  'product', 'sub_type',  'url', 'product_categories', 'rela_blogs', 'rela_products', 'policies', 'ins', 'blocks', 'gll700', 'gll80'));
     }
     public function validateProduct($request, $id = null)
     {
-        $ruleName = $id != null ? 'required|unique:products,name' : 'required|unique:products,name,' . $id;
+        $ruleName = $id === null ? 'required|unique:products,name' : 'required|unique:products,name,' . $id;
+        $img = "image|mimes:jpeg,png,jpg,tiff,svg|max:204800";
         $validator = Validator::make(
             $request->all(),
             [
@@ -128,13 +123,13 @@ class AdminProductController extends Controller
                 'type' => 'required',
                 'price' => 'required|required_with:historical_cost|numeric',
                 'historical_cost' => 'required|required_with:price|numeric|lte:price',
-                'main_img' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:204800',
-                'sub_img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:204800',
-                'bg' => 'image|mimes:jpeg,png,jpg,tiff,svg',
-                'gll700.*' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:204800',
-                'gll80.*' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:204800',
+                'main_img' => $id ? $img : 'required|' . $img,
+                'sub_img' => $img,
+                'bg' => $img,
+                'gll700.*' => $img,
+                'gll80.*' => $img,
                 'producer' => 'required',
-                'categories' => 'required'
+                'category' => 'required'
             ],
             [
                 'name.required' => "Bạn chưa nhập tên sản phẩm",
@@ -169,6 +164,8 @@ class AdminProductController extends Controller
         );
         return $validator;
     }
+    ////////////////////////////////////////
+
     // //////////////////////////////////////// end view edit
     public function product_handle_add(Request $request)
     {
@@ -190,8 +187,15 @@ class AdminProductController extends Controller
         if ($request->sub_type != 0) {
             $data_create['sub_type'] = typeProduct::where('id', '=', $request->sub_type)->first()->name;
         }
-        $data_create['producer_id'] = $request->producer;
-        $data_create['producer_slug'] = Producer::where('id', '=', $request->producer)->first()->slug;
+        $producer = Producer::where('name', $request->producer)->first();
+        if (!$producer) {
+            $producer = Producer::create([
+                'name' => $request->producer,
+                'slug' => Str::slug($request->producer)
+            ]);
+        }
+        $data_create['producer_id'] = $producer->id;
+        $data_create['producer_slug'] = $producer->slug;
         if ($request->cat_game != 0) {
             $data_create['cat_game_id'] = CatGame::where('id', '=', $request->cat_game)->first()->name;
         } else {
@@ -228,35 +232,10 @@ class AdminProductController extends Controller
         }
         // end backgroud
         $created = Products::create($data_create);
+        $request->request->add(['rela__category' => implode(',', $request->category)]);
         // createdd end
         if ($created) {
-            foreach ($request->categories as $cate_id) {
-                ProductCategories::create(['products_id' => $created->id, 'category_id' => $cate_id]);
-            }
-
-            if ($request->rela_plc != null) {
-                $request->rela_plc = explode(",", $request->rela_plc);
-                if (count($request->rela_plc) > 0) {
-                    foreach ($request->rela_plc as $plc_id) {
-                        ProductPlc::create([
-                            'products_id' => $created->id,
-                            'plc_id' => $plc_id
-                        ]);
-                    }
-                }
-            }
-            if ($request->rela_ins != null) {
-                $request->rela_ins = explode(",", $request->rela_ins);
-                if (count($request->rela_ins) > 0) {
-                    foreach ($request->rela_ins as $ins_id) {
-                        ProductIns::create([
-                            'products_id' => $created->id,
-                            'ins_id' => $ins_id,
-                            'group_id' => Insurance::select('group')->where('id', $ins_id)->first()->group
-                        ]);
-                    }
-                }
-            }
+            handle_rela($request, "products-category", $created->id, false);
             if ($request->has('gll700')) {
                 $index = 0;
                 foreach ($request->gll700 as $g7) {
@@ -289,43 +268,11 @@ class AdminProductController extends Controller
                 }
             }
             // end 80x80 img
-            //  start handle related produts
-            if ($request->rela__products != null) {
-                $request->rela__products = explode(",", $request->rela__products);
-                if (count($request->rela__products) > 0) {
-                    foreach ($request->rela__products as $products_id) {
-                        RelatedProducts::create([
-                            'products_id' => $products_id,
-                            'product_id' => $created->id,
-
-                        ]);
-                    }
-                }
-            }
-            if ($request->rela__block != null) {
-                $rb = explode(",", $request->rela__block);
-                if (count($rb) > 0) {
-                    foreach ($rb as $bid) {
-                        PrdRelaBlock::create([
-                            'products_id' => $created->id,
-                            'block_id' => $bid
-                        ]);
-                    }
-                }
-            }
-            // ///////////////
-            if ($request->rela__blogs != null) {
-                $request->rela__blogs = explode(",", $request->rela__blogs);
-                if (count($request->rela__blogs) > 0) {
-                    foreach ($request->rela__blogs as $post) {
-                        PrdRelaBlog::create([
-                            'blogs_id' => $post,
-                            'products_id' => $created->id,
-                        ]);
-                    }
-                }
-            }
-            // end handle related blogs
+            handle_rela($request, 'products-ins', $created->id, false);
+            handle_rela($request, 'products-plc', $created->id, false);
+            handle_rela($request, 'product-products', $created->id, false);
+            handle_rela($request, 'products-block', $created->id, false);
+            handle_rela($request, 'products-blogs', $created->id, false);
         }
         return redirect()->back()->with('ok', '1');
         // end else
@@ -352,19 +299,21 @@ class AdminProductController extends Controller
         $data_update['slug'] = Str::slug($request->name);
         $data_update['info'] = $request->info;
         $data_update['model'] = $request->model;
-        ProductCategories::where('products_id', $id)->whereNotIn('category_id', $request->categories)->delete();
-        foreach ($request->categories as $cate_id) {
-            if (!ProductCategories::where('products_id', $id)->where('category_id', $cate_id)->first()) {
-                ProductCategories::create(['products_id' => $id, 'category_id' => $cate_id]);
-            }
-        }
+        $request->request->add(['rela__category' => implode(',', $request->category)]);
         if ($request->sub_type != 0) {
             $data_update['sub_type'] = typeProduct::where('id', '=', $request->sub_type)->first()->name;
         } else {
             $data_update['sub_type'] = NULL;
         }
-        $data_update['producer_id'] = $request->producer;
-        $data_update['producer_slug'] = Producer::where('id', '=', $request->producer)->first()->slug;
+        $producer = Producer::where('name', $request->producer)->first();
+        if (!$producer) {
+            $producer = Producer::create([
+                'name' => $request->producer,
+                'slug' => Str::slug($request->producer)
+            ]);
+        }
+        $data_update['producer_id'] = $producer->id;
+        $data_update['producer_slug'] = $producer->slug;
         if ($request->cat_game != 0) {
             $data_update['cat_game_id'] = CatGame::where('id', '=', $request->cat_game)->first()->name;
         } else {
@@ -377,116 +326,46 @@ class AdminProductController extends Controller
         $data_update['author_id'] = Auth::id();
         $data_update['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
         $data_update['video'] = $request->video;
-        if ($request->has('ins')) {
-            ProductIns::where('products_id', $id)->whereNotIn('ins_id', $request->ins)->delete();
-            foreach ($request->ins as $ins) {
-                if (!ProductIns::where('products_id', $id)->where('ins_id', $ins)->first()) {
-                    ProductIns::create(['products_id' => $id, 'ins_id' => $ins, 'group_id' => Insurance::where('id', '=', $ins)->first()->group]);
-                }
-            }
-        } else {
-            ProductIns::where('products_id', $id)->delete();
-        }
-        if ($request->has('plc')) {
-            ProductPlc::where('products_id', $id)->whereNotIn('plc_id', $request->plc)->delete();
-            foreach ($request->plc as $plc) {
-                if (!ProductPlc::where('products_id', $id)->where('plc_id', $plc)->first()) {
-                    ProductPlc::create(['products_id' => $id, 'plc_id' => $plc]);
-                }
-            }
-        } else {
-            ProductPlc::where('products_id', $id)->delete();
-        }
-        //  start handle related produts
-        if ($request->rela__products != null) {
-            $rl_prd = explode(",", $request->rela__products);
-            RelatedProducts::whereNotIn('products_id', $rl_prd)->where('product_id', $id)->delete();
-            if (count($rl_prd) > 0) {
-                foreach ($rl_prd as $products_id) {
-                    if (!RelatedProducts::where('products_id', $products_id)->where("product_id", $id)->first()) {
-                        RelatedProducts::create([
-                            'products_id' => $products_id,
-                            'product_id' => $id,
-
-                        ]);
-                    }
-                }
-            }
-        } else {
-            RelatedProducts::where("product_id", $id)->delete();
-        }
-        if ($request->rela__block != null) {
-            $rb = explode(",", $request->rela__block);
-            PrdRelaBlock::whereNotIn('block_id', $rb)->where('products_id', $id)->delete();
-            if (count($rb) > 0) {
-                foreach ($rb as $bid) {
-                    if (!PrdRelaBlock::where('products_id', $id)->where("block_id", $bid)->first()) {
-                        PrdRelaBlock::create([
-                            'products_id' => $id,
-                            'block_id' => $bid
-                        ]);
-                    }
-                }
-            }
-        } else {
-            PrdRelaBlock::where("products_id", $id)->delete();
-        }
-        // ///////////////
-        if ($request->rela__blogs != null) {
-            $r_blog = explode(",", $request->rela__blogs);
-            PrdRelaBlog::whereNotIn('blogs_id', $r_blog)->where('products_id', $id)->delete();
-            if (count($r_blog) > 0) {
-                foreach ($r_blog as $post) {
-                    if (!PrdRelaBlog::where('blogs_id', $post)->where("products_id", $id)->first()) {
-                        PrdRelaBlog::create([
-                            'blogs_id' => $post,
-                            'products_id' => $id,
-                        ]);
-                    }
-                }
-            }
-        } else {
-            PrdRelaBlog::where('products_id', $id)->delete();
-        }
-        // end handle related blogs
         // /////////////////////////////////
         if ($request->has('banner')) {
-            if ($product->banner != NULL) {
-                $this->file->deleteFile($product->banner);
+            if ($product->banner) {
+                $this->handle_file->deleteFile($product->banner);
             }
-            $path_banner = $path . Str::slug($data_update['cat_name']) . "/"  . "banner/";
+            $path_banner = $path . Str::slug($data_update['slug']) . "/"  . "banner/";
             $data_update['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
             $data_update['banner_link'] = $request->banner_link;
         }
 
         // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
         if ($request->has('main_img')) {
-            if ($product->main_img != NULL) {
-                $this->file->deleteFile($product->main_img);
+            if ($product->main_img) {
+                $this->handle_file->deleteFile($product->main_img);
             }
-            $main_path = $path . Str::slug($data_update['cat_name']) . "/"  . "main/";
+            $main_path = $path . Str::slug($data_update['slug']) . "/"  . "main/";
             $data_update['main_img'] = $this->handle_file->storeFileImg($request->main_img, $main_path);
         }
 
         // //////////////// end main
         if ($request->has('sub_img')) {
-            if ($product->sub_img != NULL) {
-                $this->file->deleteFile($product->sub_img);
+            if ($product->sub_img) {
+                $this->handle_file->deleteFile($product->sub_img);
             }
-            $path_sub_img = $path .  Str::slug($data_update['cat_name']) . "/"  . "sub/";
+            $path_sub_img = $path .  Str::slug($data_update['slug']) . "/"  . "sub/";
             $data_update['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
         }
         // end subbbbbbbbbbbbbb
         // start backgroup img
         if ($request->has('bg')) {
-            if ($product->bg != NULL && $product->bg != '') {
-                $this->file->deleteFile($product->bg);
+            if ($product->bg) {
+                $this->handle_file->deleteFile($product->bg);
             }
-            $path_bg =  $path . Str::slug($data_update['cat_name']) . "/"  . "backgroud/";
+            $path_bg =  $path . Str::slug($data_update['slug']) . "/"  . "backgroud/";
             $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
         }
         // update product
         Products::where('id', $id)->update($data_update);
+        // handle rela categories
+        handle_rela($request, "products-category", $id, false, true);
         // ///////// update pre order product
         if ($request->stock == 1) {
             PreOrder::where('products_id', '=', $id)->update([
@@ -510,7 +389,7 @@ class AdminProductController extends Controller
                 while (gllProducts::where('products_id', '=', $id)->where('index', '=', $index)->where('size', '=', 700)->first()) {
                     $index++;
                 }
-                $path_g7 = $path . Str::slug($product->cat_name) . "/"  . "images_700x700/";
+                $path_g7 = $path . Str::slug($product->slug) . "/"  . "images_700x700/";
                 $save_7 =  $this->handle_file->storeFileImg($g7, $path_g7);
                 gllProducts::create([
                     'link' => $save_7,
@@ -528,7 +407,7 @@ class AdminProductController extends Controller
                 while (gllProducts::where('products_id', '=', $id)->where('index', '=', $index)->where('size', '=', 80)->first()) {
                     $index++;
                 }
-                $path_g8 = $path . Str::slug($product->cat_name) . "/"  . "images_80x80/";
+                $path_g8 = $path . Str::slug($product->slug) . "/"  . "images_80x80/";
                 $save_8 = $this->handle_file->storeFileImg($g8, $path_g8);
                 gllProducts::create([
                     'link' => $save_8,
@@ -539,6 +418,12 @@ class AdminProductController extends Controller
                 unset($g8);
             }
         }
+
+        handle_rela($request, 'products-ins', $id, false, true);
+        handle_rela($request, 'products-plc', $id, false, true);
+        handle_rela($request, 'product-products', $id, false, true);
+        handle_rela($request, 'products-block', $id, false, true);
+        handle_rela($request, 'products-blogs', $id, false, true);
         // end 80000000000000000000000000000000
         return redirect()->back()->with('ok', '1');
     }
@@ -548,7 +433,9 @@ class AdminProductController extends Controller
     public function show_product(Request $request, ModelInterface $repom)
     {
         $category = Category::where('parent_id', '=', 0)->get();
-        $products = $repom->pagination(new Products(), null, 1, null, null);
+        $products = new Products();
+        $products = $products->with(['producer']);
+        $products = $repom->pagination($products, null, 1, 12, null);
         return view('admin.products.show', compact('category',  'products'));
     }
 
@@ -596,27 +483,7 @@ class AdminProductController extends Controller
     }
 
     ////////////////////////////////////////
-    public function prd_add_handle_realted(Request $request)
-    {
-        if ($request->has('products')) {
-            if ($request->has('rFPrd') || $request->has('rFBlog')) {
-                $data['products'] = implode(",", $request->products);
-                if ($request->has('rFPrd')) {
-                    $data['product_id'] = $request->rFPrd;
-                } else {
-                    $data['blog_id'] = $request->rFBlog;
-                }
-                RelatedProducts::create($data);
-                return redirect()->route('prd_add_related_view')->with('ok', 1);
-            } else {
-                return redirect()->back()->with('er', 2);
-            }
-        } else {
-            return redirect()->back()->with('er', 1);
-        }
-    }
-
-
+   
     //    ///////////////////////////////////////
     public function block__prodcut__view(Request $request, ModelInterface $repom)
     {
@@ -641,7 +508,6 @@ class AdminProductController extends Controller
             array_push($array, $node->image()->getUri());
             return $array;
         });
-
         $images =  $crawler->filter('.product-image .swiper-slide img')->each(function ($node) {
             $array = [];
             array_push($array, $node->image()->getUri());
@@ -655,6 +521,7 @@ class AdminProductController extends Controller
             array_push($array_2, $node->image()->getUri());
             return $array_2;
         });
+        $res['producer'] = $crawler->filter('.product-manufacturer a')->text("");
         $res['price'] = preg_replace('/\D/', '', $crawler->filter('.product-price')->text(0));
         $res["price_new"] = preg_replace('/\D/', '', $crawler->filter('.product-price-new')->text(0));
         $res["price_old"] = preg_replace('/\D/', '', $crawler->filter('.product-price-old')->text(0));

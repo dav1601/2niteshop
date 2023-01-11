@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                      
+
                         <div class="col-3 mb-4 pl-0">
                             <div class="form-group">
                                 <label for="">Nhà sản xuất</label>
@@ -107,6 +107,9 @@
                                 <input type="text" class="form-control" name="" id="prd__filter--model"
                                     aria-describedby="helpId" placeholder="Nhập model">
                             </div>
+                        </div>
+                        <div class="col-12  pl-0">
+                            <x-admin.product.categories :show="true" />
                         </div>
                     </div>
                 </div>

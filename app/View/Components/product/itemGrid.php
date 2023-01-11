@@ -6,7 +6,7 @@ use Illuminate\View\Component;
 
 class itemgrid extends Component
 {
-   /**
+    /**
      * The alert message.
      *
      * @var string
@@ -22,7 +22,7 @@ class itemgrid extends Component
     public $message;
     public $class;
     public $type;
-    public function __construct($message , $class , $type)
+    public function __construct($message, $class = "", $type)
     {
         $this->message = $message;
         $this->class = $class;

@@ -157,6 +157,10 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
                 Route::post('handle_model', 'AdminAjaxProductController@handle_model_rela')->name('handle_model_rela');
                 Route::post('render_selected', 'AdminAjaxProductController@renderSelected')->name('render_selected');
             });
+            Route::prefix('dashboard/')->group(function () {
+                Route::post('home__section', 'AdminAjaxDashBoardController@home__section')->name('ajax.home__section');
+                Route::post('update__order', 'AdminAjaxDashBoardController@update__order')->name('ajax.show_home_order');
+            });
             Route::post('todos', 'AdminAjaxDashBoardController@todos')->name('todos');
             Route::post('price', 'AdminAjaxDashBoardController@price')->name('price');
             Route::prefix('product/')->group(function () {
@@ -214,16 +218,9 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::get('edit_product/{id}', 'AdminProductController@product_view_edit')->name('product_view_edit')->where('id', '^[0-9]+$');
             Route::post('edit_product/{id}', 'AdminProductController@product_handle_edit')->name('product_handle_edit')->where('id', '^[0-9]+$');
             Route::get('delete_product/{id}', 'AdminProductController@delete_product')->name('delete_product')->where('id', '^[0-9]+$');
-            Route::get('prd_add_related', 'AdminProductController@prd_add_related')->name('prd_add_related_view');
-            Route::get('prd_eidt_related/{id}{selected?}', 'AdminProductController@prd_edit_related')->name('prd_edit_related_view')->where('id', '^[0-9]+$');
-            Route::post('prd_add_handle_related', 'AdminProductController@prd_add_handle_realted')->name('prd_add_handle_related');
-            Route::post('prd_edit_handle_related/{id}', 'AdminProductController@prd_edit_handle_realted')->name('prd_edit_handle_related')->where('id', '^[0-9]+$');
-            Route::prefix('ajax/')->group(function () {
-                Route::post('prd_handle_related', 'AdminAjaxProductController@handle_related_product')->name('prd_handle_related');
-                Route::post('prd_handle_related_for', 'AdminAjaxProductController@handle_related_prd_for')->name('prd_handle_related_for');
-                Route::post('handle_related_all', 'AdminAjaxProductController@handle_related_all')->name('handle_related_all');
-                Route::post('handle_related_delete', 'AdminAjaxProductController@handle_related_delete')->name('handle_related_delete');
-            });
+
+
+
 
             // end prefix product
         });
@@ -248,8 +245,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         });
         Route::prefix('blog/')->group(function () {
             Route::get('add', 'AdminBlogController@add')->name('add_blog_view');
-            Route::get('add_related', 'AdminBlogController@add_related')->name('add_related_view');
-            Route::get('eidt_related/{id}{selected?}', 'AdminBlogController@edit_related')->name('edit_related_view')->where('id', '^[0-9]+$');
+
             Route::get('show', 'AdminBlogController@show')->name('show_blogs');
             Route::get('edit/{id}', 'AdminBlogController@edit')->name('edit_blog')->where('id', '^[0-9]+$');
             Route::post('handle_edit_blog/{id}', 'AdminBlogController@handle_edit_blog')->name('handle_edit_blog')->where('id', '^[0-9]+$');
@@ -257,12 +253,6 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::post('handle_add', 'AdminBlogController@handle_add')->name('add_blog_handle');
             Route::post('hanle_add_blog', 'AdminBlogController@handle_add_blog')->name('handle_add_blog');
             Route::get('cat/delete/{id}', 'AdminBlogController@category')->name('delete_cat_blog')->where('id', '^[0-9]+$');
-            Route::post('add_handle_related', 'AdminBlogController@add_handle_realted')->name('add_handle_related');
-            Route::post('edit_handle_related/{id}', 'AdminBlogController@edit_handle_realted')->name('edit_handle_related')->where('id', '^[0-9]+$');
-            Route::prefix('ajax/')->group(function () {
-                Route::post('handle_related', 'AdminAjaxBlogController@handle_related')->name('handle_related');
-                Route::post('handle_related_for', 'AdminAjaxBlogController@handle_related_for')->name('handle_related_for');
-            });
         });
         Route::prefix('page/')->group(function () {
             Route::get('manage_page', 'AdminPageController@manage')->name('manage_pages');

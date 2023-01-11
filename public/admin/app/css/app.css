@@ -248,6 +248,18 @@ body {
   margin-right: 10px;
 }
 
+.table-center td {
+  cursor: pointer;
+}
+.table-center th,
+.table-center td {
+  text-align: center !important;
+}
+.table-center th a,
+.table-center td a {
+  display: inline-block !important;
+}
+
 .swal2-container {
   z-index: 50000;
 }

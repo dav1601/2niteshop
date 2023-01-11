@@ -293,6 +293,80 @@
   padding-right: 0px !important;
 }
 
+.cart-handler input {
+  text-align: center;
+  border: 1px solid #696973;
+}
+.cart-handler a.btn-number {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eeeeee;
+  border-width: 0 0 0 1px;
+  border-color: inherit;
+  border-style: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  color: #696973;
+}
+.cart-handler a.btn-number:hover {
+  text-decoration: none;
+  background: #277b8c;
+  color: #ffffff;
+}
+.cart-handler a.btn-number:first-child {
+  border-top: 1px solid #696973;
+  border-right: 1px solid #696973;
+  border-bottom: 1px solid #696973;
+}
+.cart-handler a.btn-number:last-child {
+  border-right: 1px solid #696973;
+  border-bottom: 1px solid #696973;
+}
+.cart-handler .col-1 {
+  flex: 0 0 10%;
+  max-width: 10%;
+}
+@media (max-width: 812px) {
+  .cart-handler .col-1 {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+.cart-handler .col-11 {
+  flex: 1;
+  margin-left: 10px;
+}
+.cart-handler .btn-cart {
+  align-items: center;
+  background: #3a4754;
+  color: #ffffff !important;
+  display: flex;
+  font-family: Nunito Sans;
+  font-size: 14px;
+  justify-content: center;
+  line-height: 14px;
+  padding: 15px 20px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.cart-handler .btn-cart:hover {
+  text-decoration: none;
+  background: #277b8c;
+}
+.cart-handler .btn-cart i {
+  margin-right: 10px;
+  margin-bottom: 2px;
+}
+.cart-handler .btn-cart span {
+  display: block;
+}
+
 .product__item--list {
   overflow: hidden;
   transition: all 0.5s;
@@ -339,29 +413,6 @@
 .product__item--list .prd__dtl--cart input {
   text-align: center;
   border: 1px solid #696973;
-}
-.product__item--list .prd__dtl--cart #button-cart {
-  align-items: center;
-  background: #3a4754;
-  color: #ffffff;
-  display: flex;
-  font-family: Nunito Sans;
-  font-size: 14px;
-  justify-content: center;
-  line-height: 14px;
-  padding: 15px 20px;
-  text-align: center;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.25s;
-}
-.product__item--list .prd__dtl--cart #button-cart:hover {
-  text-decoration: none;
-  background: #277b8c;
-}
-.product__item--list .prd__dtl--cart #button-cart i {
-  margin-right: 10px;
-  margin-bottom: 2px;
 }
 .product__item--list .prd__dtl--cart a.btn-number {
   width: 19px;

@@ -8,6 +8,7 @@ use stdClass;
 
 class ModelRepo implements ModelInterface
 {
+    public $item_page;
     public function __construct()
     {
         $this->item_page = config('product.item_page');

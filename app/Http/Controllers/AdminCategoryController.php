@@ -23,12 +23,14 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminCategoryController extends Controller
 {
-    public function __construct()
+    public $file;
+    public function __construct(FileInterface $file)
     {
         $this->middleware(function ($request, $next) {
             session(['active' => 'category']);
             return $next($request);
         });
+        $this->file = $file;
     }
     public function index()
     {
@@ -151,62 +153,63 @@ class AdminCategoryController extends Controller
             }
             $created = Category::create($data);
             if ($created) {
-                if ($request->has('gll')) {
-                    $index = 0;
-                    foreach ($request->gll as $gl) {
-                        $index++;
-                        $gl_name = $gl->getClientOriginalName();
-                        $path_save_gl = "admin/images/category/banner/" .   $gl_name;
-                        $gl->move("public/admin/images/category/banner",   $gl_name);
-                        if ($index == 1) {
-                            $data2['link'] = "psn-card";
-                        }
-                        if ($index == 2) {
-                            $data2['link'] = "xbox-live-cards";
-                        }
-                        if ($index == 3) {
-                            $data2['link'] = "nintendo-eshop-cards";
-                        }
-                        $data2['index'] = $index;
-                        $data2['path'] = $path_save_gl;
-                        $data2['cate_id'] = $created->id;
-                        gllCat::create($data2);
-                        unset($gl);
-                    }
-                }
+                // if ($request->has('gll')) {
+                //     $index = 0;
+                //     foreach ($request->gll as $gl) {
+                //         $index++;
+                //         $gl_name = $gl->getClientOriginalName();
+                //         $path_save_gl = "admin/images/category/banner/" .   $gl_name;
+                //         $gl->move("public/admin/images/category/banner",   $gl_name);
+                //         if ($index == 1) {
+                //             $data2['link'] = "psn-card";
+                //         }
+                //         if ($index == 2) {
+                //             $data2['link'] = "xbox-live-cards";
+                //         }
+                //         if ($index == 3) {
+                //             $data2['link'] = "nintendo-eshop-cards";
+                //         }
+                //         $data2['index'] = $index;
+                //         $data2['path'] = $path_save_gl;
+                //         $data2['cate_id'] = $created->id;
+                //         gllCat::create($data2);
+                //         unset($gl);
+                //     }
+                // }
                 //  start handle related produts
-                if ($request->bundled_skin != null) {
-                    bundled_skin_cat::create([
-                        'skin_cat_id' => $request->bundled_skin,
-                        'cat_id' => $created->id,
-                    ]);
-                }
+                // if ($request->bundled_skin != null) {
+                //     bundled_skin_cat::create([
+                //         'skin_cat_id' => $request->bundled_skin,
+                //         'cat_id' => $created->id,
+                //     ]);
+                // }
                 // ///////////////
-                if ($request->has('products')) {
-                    if (count($request->products) > 0) {
-                        foreach ($request->products as $products_id) {
-                            bundled_accessory_cat::create([
-                                'products_id' => $products_id,
-                                'cat_id' => $created->id,
-                            ]);
-                        }
-                    }
-                }
-                // //////////////
-                if ($request->has('blogs')) {
-                    if (count($request->blogs) > 0) {
-                        foreach ($request->blogs as $posts) {
-                            RelatedPosts::create([
-                                'posts' => $posts,
-                                'cat_id' => $created->id,
-                                'for' => "category"
-                            ]);
-                        }
-                    }
-                }
+                // if ($request->has('products')) {
+                //     if (count($request->products) > 0) {
+                //         foreach ($request->products as $products_id) {
+                //             bundled_accessory_cat::create([
+                //                 'products_id' => $products_id,
+                //                 'cat_id' => $created->id,
+                //             ]);
+                //         }
+                //     }
+                // }
+                // // //////////////
+                // if ($request->has('blogs')) {
+                //     if (count($request->blogs) > 0) {
+                //         foreach ($request->blogs as $posts) {
+                //             RelatedPosts::create([
+                //                 'posts' => $posts,
+                //                 'cat_id' => $created->id,
+                //                 'for' => "category"
+                //             ]);
+                //         }
+                //     }
+                // }
                 // end handle related blogs
+                return redirect()->back()->with('ok', '1');
             }
-            return redirect()->back()->with('ok', '1');
+            return redirect()->back()->with('error', '1');
         }
     }
 
@@ -282,40 +285,40 @@ class AdminCategoryController extends Controller
                 }
             }
             Category::where('id', $request->id)->update($data);
-            if ($request->bundled_skin != null) {
-                if (bundled_skin_cat::where('cat_id',  $request->id)->first()) {
-                    bundled_skin_cat::where('cat_id',  $request->id)->update(['skin_cat_id' => $request->bundled_skin]);
-                } else {
-                    bundled_skin_cat::where('cat_id',  $request->id)->create(['skin_cat_id' => $request->bundled_skin, 'cat_id' => $request->id]);
-                }
-            } else {
-                bundled_skin_cat::where('cat_id', '=', $request->id)->delete();
-            }
-            if ($request->has('products')) {
-                if (count($request->products) > 0) {
-                    foreach ($request->products as $products_id) {
-                        if (!bundled_accessory_cat::where('products_id', $products_id)->where('cat_id', $request->id)->first()) {
-                            bundled_accessory_cat::create([
-                                'products_id' => $products_id,
-                                'cat_id' => $request->id,
-                            ]);
-                        }
-                    }
-                }
-            }
-            if ($request->has('blogs')) {
-                if (count($request->blogs) > 0) {
-                    foreach ($request->blogs as $posts) {
-                        if (!RelatedPosts::where('cat_id', $request->id)->where('posts', $posts)->where('for', 'LIKE', "category")->first()) {
-                            RelatedPosts::create([
-                                'posts' => $posts,
-                                'cat_id' => $request->id,
-                                'for' => "category"
-                            ]);
-                        }
-                    }
-                }
-            }
+            // if ($request->bundled_skin != null) {
+            //     if (bundled_skin_cat::where('cat_id',  $request->id)->first()) {
+            //         bundled_skin_cat::where('cat_id',  $request->id)->update(['skin_cat_id' => $request->bundled_skin]);
+            //     } else {
+            //         bundled_skin_cat::where('cat_id',  $request->id)->create(['skin_cat_id' => $request->bundled_skin, 'cat_id' => $request->id]);
+            //     }
+            // } else {
+            //     bundled_skin_cat::where('cat_id', '=', $request->id)->delete();
+            // }
+            // if ($request->has('products')) {
+            //     if (count($request->products) > 0) {
+            //         foreach ($request->products as $products_id) {
+            //             if (!bundled_accessory_cat::where('products_id', $products_id)->where('cat_id', $request->id)->first()) {
+            //                 bundled_accessory_cat::create([
+            //                     'products_id' => $products_id,
+            //                     'cat_id' => $request->id,
+            //                 ]);
+            //             }
+            //         }
+            //     }
+            // }
+            // if ($request->has('blogs')) {
+            //     if (count($request->blogs) > 0) {
+            //         foreach ($request->blogs as $posts) {
+            //             if (!RelatedPosts::where('cat_id', $request->id)->where('posts', $posts)->where('for', 'LIKE', "category")->first()) {
+            //                 RelatedPosts::create([
+            //                     'posts' => $posts,
+            //                     'cat_id' => $request->id,
+            //                     'for' => "category"
+            //                 ]);
+            //             }
+            //         }
+            //     }
+            // }
             return redirect()->back()->with('update', '1');
         }
     }

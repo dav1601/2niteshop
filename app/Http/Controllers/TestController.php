@@ -27,6 +27,7 @@ class TestController extends Controller
 {
     public function index(Request $request, ModelInterface $vam, FileInterface $file)
     {
+
         // Session::forget("crawler");
         // $products = Products::all();
         // foreach ($products as  $prd) {
@@ -61,8 +62,8 @@ class TestController extends Controller
         //     }
         // }
         // echo "ok";
+       
 
-        return view('test');
     }
     public function handle($path)
 

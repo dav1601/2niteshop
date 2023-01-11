@@ -22,4 +22,16 @@ class Blogs extends Model
         'author',
         'active',
     ];
+    public function author()
+    {
+        return $this->belongsTo("App\Models\User", 'users_id');
+    }
+    public function category()
+    {
+        return $this->belongsTo("App\Models\CatBlog", 'cat_id');
+    }
+    public function category_sub()
+    {
+        return $this->belongsTo("App\Models\CatBlog", 'cat_sub_id');
+    }
 }

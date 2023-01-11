@@ -16,19 +16,21 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class FileRepository implements FileInterface
 {
+    public $folder;
+    public $driver;
     public function __construct()
     {
-        $this->forder = config('2nitefile.forder');
+        $this->folder = config('2nitefile.forder');
         $this->driver = config('filesystems.va_driver');
     }
     public function import_css($file = "")
     {
-        $link = asset('client/' . $this->forder . '/' . 'css/' . $file) . '?ver=' . filemtime('public/client/' . $this->forder . '/' . 'css/' . $file);
+        $link = asset('client/' . $this->folder . '/' . 'css/' . $file) . '?ver=' . filemtime('public/client/' . $this->folder . '/' . 'css/' . $file);
         return $link;
     }
     public function import_js($file = "")
     {
-        $link = asset('client/' . $this->forder . '/' . 'js/' . $file) . '?ver=' . filemtime('public/client/' . $this->forder . '/' . 'js/' . $file);
+        $link = asset('client/' . $this->folder . '/' . 'js/' . $file) . '?ver=' . filemtime('public/client/' . $this->folder . '/' . 'js/' . $file);
         return $link;
     }
     public function ver($link = "")
@@ -112,7 +114,6 @@ class FileRepository implements FileInterface
                 return Cloudinary::destroy($data->id);
                 break;
             default:
-                return NULL;
                 break;
         }
         return;

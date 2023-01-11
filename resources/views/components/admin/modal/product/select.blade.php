@@ -19,8 +19,11 @@
                     </ul>
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Nhập id hoặc tên sản phẩm" class="form-control"
+                    <input type="text" placeholder="Nhập id hoặc tên" class="form-control"
                         id="modal__select--search">
+                </div>
+                <div class="form-group">
+                    {{ $slot }}
                 </div>
                 <div id="modal__select--body">
                     @if ($enable)
@@ -33,7 +36,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary rs__params--select"> Đóng
                 </button>
-                <button type="button" class="btn btn-primary select__btn--save" id="{{ $id_btn }}">Lưu</button>
+                <button type="button" class="btn btn-primary select__btn--save" type-save="{{ $type_save }}"
+                    id="modal__select--save">Lưu</button>
                 <button class="btn btn-primary select__btn--loading d-none" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Loading...

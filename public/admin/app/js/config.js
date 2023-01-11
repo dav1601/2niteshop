@@ -36,6 +36,15 @@ $(function () {
             showCancelButton: true,
         });
     };
+    jQuery.vaToas = function vaToas(content = "", type = "s") {
+        switch (type) {
+            case "s":
+                return toastr.success(content);
+            case "e":
+                return toastr.error(content);
+        }
+        return;
+    };
     const urlParams = new URLSearchParams(window.location.search);
     jQuery.addParamsUrl = function addParamsUrl(key, val) {
         return urlParams.set(key, val);

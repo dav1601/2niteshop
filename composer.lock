@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d27c41d456e97cdca5534cbfa4c61835",
+    "content-hash": "c401a12ecb93de7d24928c9e8b5e1153",
     "packages": [
         {
             "name": "aloha/twilio",

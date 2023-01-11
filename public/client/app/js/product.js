@@ -145,7 +145,6 @@ $(function () {
             },
         });
     }
-    console.log(category);
     function loading_data_product($page = 1) {
         var page = $page;
         var genre = get_checked("game_genre").toString();

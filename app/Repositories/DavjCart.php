@@ -10,24 +10,51 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DavjCart implements DavjCartInterface
 {
-    public function add__cart($id, $qty = 1, $ins = 0, $color = 0)
+    public function add__or_update($id = 0, $rowId = 0, $qty = 1, $op_actives = "", $options = [])
     {
-        $product = Products::where('id', '=', $id)->firstOrFail();
-        if ($ins != 0) {
-            $price_ins = Insurance::where('id',  $ins)->first()->price;
-        } else {
-            $price_ins = 0;
+        $product = Products::exclude(['content', 'info'])->where('id', '=', $id)->firstOrFail();
+        $op_actives = explode(',', $op_actives);
+        $price = (int) $product->price;
+        $price_op = 0;
+        $sub_total = 0;
+        if (count($op_actives) > 0) {
+            foreach ($op_actives as  $ins_id) {
+                $item = Insurance::where('id', $ins_id)->first();
+                if ($item) {
+                    $price_op += (int) Insurance::where('id', $ins_id)->first()->price;
+                }
+            }
         }
-        $sub_total = ($qty * $product->price) + $price_ins;
-        $check =  Cart::instance('shopping')->search(function ($cartItem, $rowId) use ($id) {
+        $check =  Cart::instance('shopping')->search(function ($cartItem) use ($id) {
             return $cartItem->id == $id;
         });
-        if (count($check) > 0) {
+        if (count($check) > 0 && $rowId) {
             foreach ($check as $item) {
-                $qty_update = ($item->qty + $qty);
-                $this->update__cart($id, $item->rowId,  $qty_update, $ins, 0);
+                $qty = ($item->qty + $qty);
+                $sub_total = (int) ($price_op + $price) * $qty;
+                Cart::instance('shopping')->update(
+                    $rowId,
+                    [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'qty' => $qty,
+                        'options' => [
+                            'ins' => implode(",", $op_actives),
+                            'model' => $product->model,
+                            'image' => $product->main_img,
+                            'sub_total' => $sub_total,
+                            'option' => $options
+                        ],
+                    ]
+                );
+                $after_update = Cart::instance('shopping')->search(function ($cartItem) use ($id) {
+                    return $cartItem->id == $id;
+                });
+                return $after_update;
             }
         } else {
+            $sub_total = (int) ($price_op + $price) * $qty;
             Cart::instance('shopping')->add(
                 [
                     'id' => $product->id,
@@ -35,16 +62,16 @@ class DavjCart implements DavjCartInterface
                     'price' => $product->price,
                     'qty' => $qty,
                     'options' => [
-                        'ins' => $ins,
-                        'color' => $color,
+                        'ins' => implode(",", $op_actives),
                         'model' => $product->model,
                         'image' => $product->main_img,
                         'sub_total' => $sub_total,
-                        'cost' => $product->historical_cost
+                        'other' => $options
                     ],
                 ]
             );
         }
+        return $product;
     }
     //
     public function update__cart($id, $rowId,  $qty = 1, $ins = 0, $color = 0)
@@ -76,7 +103,7 @@ class DavjCart implements DavjCartInterface
     {
         $total = 0;
         foreach (Cart::instance('shopping')->content() as $cart) {
-            $total += $cart->options->sub_total;
+            $total += (int) $cart->options->sub_total;
         }
         return $total;
     }

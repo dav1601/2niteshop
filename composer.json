@@ -11,7 +11,7 @@
         "php": "^7.3|^8.0",
         "aloha/twilio": "^5.0",
         "artesaos/seotools": "^0.22.0",
-        "barryvdh/laravel-debugbar": "^3.6",
+        "barryvdh/laravel-debugbar": "^3.7",
         "barryvdh/laravel-dompdf": "^1.0",
         "cloudinary-labs/cloudinary-laravel": "^2.0",
         "doctrine/dbal": "^3.5",

@@ -12,5 +12,7 @@
 <link rel="stylesheet" href="{{ $file->ver('client/owl/dist/assets/owl.carousel.min.css') }}">
 <link rel="stylesheet" href="{{ $file->ver('client/owl/dist/assets/owl.theme.default.css') }}">
 <link rel="stylesheet" href="{{ $file->ver('client/ls/dist/css/lightslider.min.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 <link rel="stylesheet" href="{{ $file->import_css('app.css') }}">
+
 @yield('import_css')

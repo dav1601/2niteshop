@@ -34,28 +34,14 @@
         </div>
         <div class="price">
             @if ($message->price != 0)
-                <span id="price__{{ $message->id }}">{{ crf($message->price) }}</span>
+                <span id="price__{{ $message->id }}"
+                    class="{{ 'price-' . $product->id }}">{{ crf($message->price) }}</span>
             @else
                 <span id="price__{{ $message->id }}">CALL-{{ getVal('switchboard')->value }}</span>
             @endif
         </div>
-        <div class="prd__dtl--cart row mx-0">
-            <div class="qty col-1 d-flex w-100 p-0">
-                <input type="text" name="qty[{{ $message->id }}]" data-id="{{ $message->id }}" value="1"
-                    id="dtl__prd--qty" min="1" max="1000" class="w-100 input-number"
-                    data-prd="{{ $message->price }}">
-                <div class="btn__type d-flex flex-column">
-                    <a class="btn-number py-0" data-type="plus" data-field="qty[{{ $message->id }}]"><i
-                            class="fas fa-plus"></i></a>
-                    <a class="btn-number py-0" data-type="minus" data-field="qty[{{ $message->id }}]"><i
-                            class="fas fa-minus"></i></a>
-                </div>
-            </div>
-            <a class="btn-cart btn-cart-{{ $message->id }} col-11 p-0" data-id="{{ $message->id }}" id="button-cart"
-                data-qty="1" data-price="{{ $message->price }}" data-op="0">
-                <i class="fas fa-shopping-bag"></i>
-                <span>Thêm Giỏ Hàng</span>
-            </a>
+        <div class="d-inline-block ml-1">
+            <x-client.cart.add.btn :product="$message" />
         </div>
     </div>
 </div>

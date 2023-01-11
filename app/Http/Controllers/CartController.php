@@ -26,7 +26,7 @@ use function Opis\Closure\unserialize;
 class CartController extends Controller
 {
     public $mailer;
-
+    public $handle_cart;
 
     function __construct(MailOrderInterface $mailer, DavjCartInterface $handle_cart)
     {
@@ -60,33 +60,24 @@ class CartController extends Controller
         $output_items = '';
         $error = array();
         $login = 0;
+        $id = $request->has('id') && $request->get('id') ? (int) $request->get('id') : 0;
+        $qty = $request->has('qty') && $request->get('qty') ? (int) $request->get('qty') : 1;
+        $op_actives = $request->has('op') && $request->get('op') ? $request->get('op') : "";
+        $rowId = $request->has('rowId') && $request->get('rowId') ? $request->get('rowId') : 0;
         if ($request->type == "load") {
             if (Auth::check()) {
                 Cart::instance('shopping')->destroy();
                 Cart::instance('shopping')->restore(Auth::id());
             }
         }
+
         if ($request->type == "add") {
-            $qty = $request->qty;
-            $ins = $request->op;
-            $sub_total = $request->sub_total;
-            $id = $request->id;
-            $this->handle_cart->add__cart($id,  $qty, $ins, 0);
-            $item = Products::select('name', 'slug', 'main_img')->where('id', '=', $id)->first();
+            $item = $this->handle_cart->add__or_update($id, $rowId, $qty, $op_actives, []);
             $add_ok .= view('components.addcart', compact('item'));
             $data['add_ok'] = $add_ok;
         }
         if ($request->type ==  "update") {
-            $rowId = $request->rowId;
-            $price = Products::where('id', '=', $request->id)->first()->price;
-            $qty = $request->qty;
-            $op = $request->op;
-            $sub_total = ($qty * $price) + $op;
-            $ins = $request->op_id;
-            $update_cart = $this->handle_cart->update__cart($request->id, $rowId, $qty, $ins, 0);
-            $data['update'] = $update_cart;
-            $data['sub_total'] = crf($update_cart->options->sub_total);
-            $data['new_rowId'] = $this->handle_cart->get_rowID_by_id_product($request->id);
+            $data['update'] = $this->handle_cart->add__or_update($id, $rowId, $qty, $op_actives, []);;
         }
         if ($request->type == "delete") {
             $rowId = $request->rowId;
@@ -94,68 +85,16 @@ class CartController extends Controller
         }
         $this->handle_cart->store_cart();
         $total = $this->handle_cart->total();
-        $items = Cart::instance('shopping')->count();
-        if ($items > 0) {
-            foreach (Cart::instance('shopping')->content()->sortBy('id') as $cart) {
-                $output .= view('components.cart', compact('cart'));
-            }
-        } else {
-            $output .= '
-            <div id="cart__empty" class="d-flex flex-column align-items-center">
-            <img src="' . asset('client/images/empty-cart.png') . '" alt="">
-            <span class="d-block my-2 text-uppercase mr-4" style="font-size: 20px; font-weight:600;">Giỏ hàng bạn đang trống</span>
-       </div>
-            ';
-        }
+        $cart = Cart::instance('shopping')->content()->sortBy('id');
+        $output .= view('components.client.cart.show', ['cart' => $cart]);
         $output_items = '
         ' . Cart::instance('shopping')->count() . ' Sản Phẩm -- Gọi -- ' . getVal('switchboard')->value . '
         ';
-        $output_2 .= '
-        <ul id="cart__drop--menu">
-        <div class="arrow-up"></div>
-        <div id="content_sub_cart">
-        ';
-        if (empty_cart()) {
-            $output_2 .= '<span class="empty__cart">Giỏ hàng đang trống</span>';
-        } else {
-            foreach (Cart::instance('shopping')->content() as $cartsub) {
-                $output_2 .= '<li>';
-                $output_2 .= view('components.cartsub', compact('cartsub'));;
-                $output_2 .= '</li>';
-            }
-        }
-        $output_2 .= '</div>';
-        if (!empty_cart()) {
-            $output_2 .= '<div id="total">
-            <span class="d-block">
-                Tổng Tiền: <strong> ' . crf($this->handle_cart->total()) . '</strong>
-            </span>
-        </div>';
-        }
-        $output_2 .= '</ul>';
-        if (!empty_cart()) {
-            $output_2 .= '<div id="ckOrCart">
-                                <div id="ckOrCart__cont">
-                                    <a href="  ' . route('show_cart') . ' " class="d-block" class="davi_btn"
-                                        id="ckOrCart__cont--cart">
-                                        <i class="fas fa-shopping-cart pr-2"></i>
-                                        Giỏ Hàng
-                                    </a>
-                                    <a href="' . route('checkout') . '" class="d-block" class="davi_btn"
-                                        id="ckOrCart__cont--ck">
-                                        Thanh Toán
-                                        <i class="fas fa-long-arrow-alt-right pl-2"></i>
-                                    </a>
-                                </div>
-                            </div>';
-        }
-
+        $output_2 .= view('components.client.cart.drop', ['cart' => $cart]);
         $data['cart'] = $output;
-        $data['sub_cart'] = $output_2;
+        $data['cart_drop'] = $output_2;
         $data['total'] = $total;
-        $data['items'] = $items;
         $data['html_items'] = $output_items;
-        $data['count'] = Cart::instance('shopping')->count();
         $data['total_format'] = crf($total);
         return response()->json($data);
     }

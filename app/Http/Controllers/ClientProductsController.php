@@ -18,6 +18,7 @@ use App\Models\bundled_skin_cat;
 use App\Models\CatGame;
 use App\Models\PrdRelaBlog;
 use App\Models\ProductCategories;
+use App\Repositories\AdminPrdInterface;
 use App\Repositories\ModelInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -40,9 +41,7 @@ class ClientProductsController extends Controller
         $list_banner = gllCat::where('cate_id', '=', $category->id)->get();
         $id = $category->id;
         // FIX CÁC RELATIONSHIP MANY-MANY
-        $products = Products::with(['categories' => function ($q) use ($category) {
-            $q->where('slug', 'LIKE', $category->slug);
-        }])->whereHas(
+        $products = Products::whereHas(
             'categories',
             function ($q) use ($category) {
                 $q->where('slug', 'LIKE', $category->slug);
@@ -115,48 +114,24 @@ class ClientProductsController extends Controller
 
 
     ////////////////////////////////////////
-    public function detail_product(Request $request)
+    public function detail_product(AdminPrdInterface $rprd, Request $request)
     {
         $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('products/'), '', url()->current())));
         $slug = collect($bc)->last();
-        $product = Products::where('slug',  $slug)->firstOrFail();
-        $fullset = 0;
-        $policies = array();
-        $banner = gllProducts::where('products_id', '=', $product->id)->where('index', '=', 1)->where('size', '=', 700)->first();
-        $policy = Products::find($product->id)->policies;
-        foreach ($policy as $item) {
-            if (Policy::where('id', '=', $item->plc_id)->first()->fullset == 1) {
-                $fullset = $item->plc_id;
-            } else {
-                $policies[] = Policy::where('id', '=', $item->plc_id)->first();
-            }
-        }
-        $policies = collect($policies);
-        $policies = $policies->sortBy('position');
-        $related_blog = PrdRelaBlog::with('infoBlog')->where('products_id', $product->id)->get();
-        $related_cat = RelatedPosts::with('infoBlog')->where('cat_id',  $product->sub_1_cat_id)->get();
-        $related_cat_blog  = $related_blog->merge($related_cat);
-        $related_product = Products::find($product->id)->related_products()->get();
-        $bundled_skin = bundled_skin_cat::where('cat_id', '=', $product->sub_1_cat_id)->first();
-        $bundled_accessory = Category::find($product->sub_1_cat_id)->bundled_accessory()->get();
-        $product_ins = collect(Products::find($product->id)->ins()->get()->toArray())->groupBy('group_id');
-        $blocks = Products::with(['blocks', 'blocks.info'])->find($product->id)->blocks;
-        return view('client.product.detail', compact('product', 'policies', 'fullset', 'banner',  'related_blog', 'related_product', 'related_cat_blog', 'bundled_skin', 'bundled_accessory', 'product_ins', 'bc', 'blocks'));
+        $product = $rprd->product($slug);
+        // dd($product);
+        return view('client.product.detail', compact('product'));
     }
 
     ////////////////////////////////////////
     //////////////////////////////////////
 
-    public function loadDataQuickView(Request $request)
+    public function loadDataQuickView(Request $request, AdminPrdInterface $rprd)
     {
         $data = array();
-        $pagination = '';
         $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
         $id = $request->id;
-        $product = Products::where('id', '=', $id)->first();
+        $product = $rprd->product($id);
         $output .= view('components.modal.detail', compact('product'));
         $data['html'] = $output;
         return response()->json($data);
