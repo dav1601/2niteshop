@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 interface DavjCartInterface
 {
-    public function add__or_update($id, $rowId, $qty, $op_actives, $options);
+    public function add__or_update($id, $qty, $op_actives, $options);
     public function update__cart($id, $rowId,  $qty = 1, $ins = 0, $color = 0);
     public function total();
     public function store_cart();

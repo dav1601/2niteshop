@@ -13,10 +13,14 @@ class btn extends Component
      */
     public $product;
     public $options;
-    public function __construct($product, $options = "")
+    public $ajax;
+    public $custom;
+    public function __construct($product, $options = "", $ajax = 0, $custom = ["qty" => 1])
     {
         $this->product = $product;
         $this->options = $options;
+        $this->ajax = $ajax;
+        $this->custom = $custom;
     }
 
     /**

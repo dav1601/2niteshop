@@ -39,7 +39,6 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        
         $show_home = showHome::where('active', '=', 1)->with(['sections', 'sections.category'])->orderBy('position', 'asc')->get();
         $company = Config::all();
         $banners = Banners::where('index', '!=', 0)->get();

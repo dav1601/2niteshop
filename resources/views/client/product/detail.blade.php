@@ -179,7 +179,7 @@
                             <div class="prd__dtl--price">
                                 <span
                                     class="d-block {{ 'price-' . $product->id }} @if ($product->stock == 2) call @endif"
-                                    data-price="{{ $price }}">
+                                    data-price="{{ $price }}" prd-price="{{ $product->price }}">
                                     @if ($product->stock != 2)
                                         {{ crf($price) }}
                                     @else
@@ -203,7 +203,8 @@
                                             @endphp
 
                                             <li class="insur__item @if ($ins['id'] == $active) insur__item-active @endif"
-                                                data-group="{{ $ins['group'] }}" data-id="{{ $ins['id'] }}">
+                                                data-group="{{ $ins['group'] }}" data-price="{{ (int) $ins['price'] }}"
+                                                data-id="{{ $ins['id'] }}">
                                                 <span>{{ $ins['name'] }}
                                                     (+
                                                     {{ crf($ins['price']) }})

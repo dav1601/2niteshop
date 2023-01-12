@@ -33,39 +33,13 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('import_css')
-    @if (Auth::check())
-        @if (!env('DEBUG_JS'))
-            {
-            <script>
-                var logger = function() {
-                    var oldConsoleLog = null;
-                    var pub = {};
-
-                    pub.enableLogger = function enableLogger() {
-                        if (oldConsoleLog == null)
-                            return;
-
-                        window['console']['log'] = oldConsoleLog;
-                    };
-
-                    pub.disableLogger = function disableLogger() {
-                        oldConsoleLog = console.log;
-                        window['console']['log'] = function() {};
-                    };
-
-                    return pub;
-                }();
-                logger.disableLogger();
-            </script>
-            }
-        @endif
-        <script type="text/javascript">
-            const user = {!! json_encode(Auth::user()) !!};
-        </script>
-        <script type="text/javascript">
-            const path_ab = {!! json_encode(env('PATH_TINYMCE')) !!};
-        </script>
-    @endif
+    <x-app.plugin.debug />
+    <script type="text/javascript">
+        const user = {!! json_encode(Auth::user()) !!};
+    </script>
+    <script type="text/javascript">
+        const path_ab = {!! json_encode(env('PATH_TINYMCE')) !!};
+    </script>
     @routes
     <script src="{{ asset('plugin/bootstrap/js/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('plugin/bootstrap/js/popper.min.js') }}"></script>

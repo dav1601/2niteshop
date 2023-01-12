@@ -4,11 +4,16 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-
+    var url_cart = route("add_cart");
+    function loadCart() {
+        const data = { type: "load" };
+        ajaxCart(data);
+    }
+    loadCart();
     //////////////////////
     $(window).scroll(function (event) {
-        var scroll = $(window).scrollTop();
-        var element = $("#wrapper__header--top");
+        let scroll = $(window).scrollTop();
+        let element = $("#wrapper__header--top");
         if ($(window).width() <= 1024) {
             if (scroll >= 250) {
                 element.addClass(
@@ -21,42 +26,135 @@ $(function () {
             }
         }
     });
-
+    function loadingCart(id = null, loading = false) {
+        console.log(id);
+        if (!id) {
+            return;
+        }
+        let btn = $("#btn-add-cart-" + id);
+        let child = btn.children(".btn-cart-add");
+        let cartLoading = btn.children(".btn-cart-loading");
+        if (loading) {
+            child.addClass("d-none");
+            cartLoading.removeClass("d-none");
+        } else {
+            child.removeClass("d-none");
+            cartLoading.addClass("d-none");
+        }
+    }
+    $(document).on("click", ".delete__cart", function () {
+        const rowId = $(this).attr("data-rowid");
+        const data = {
+            type: "delete",
+            rowId: rowId,
+        };
+        ajaxCart(data);
+    });
+    $(document).on("click", ".btn-cart", function () {
+        const id = Number($(this).attr("data-id"));
+        let qty = Number($("#qty-product-" + id).val());
+        let ops = $("#cart__options-" + id).val();
+        let isLoading = !$(this)
+            .children(".btn-cart-loading")
+            .hasClass("d-none");
+        if (isLoading) {
+            return alert("handing");
+        }
+        const data = {
+            type: "add",
+            qty: qty,
+            id: id,
+            ops: ops,
+        };
+        loadingCart(id, true);
+        ajaxCart(data, loadingCart(id, false));
+    });
+    $(document).on("change", ".input-number", function () {
+        let max = Number($(this).attr("max"));
+        let min = Number($(this).attr("min"));
+        let id = Number($(this).attr("data-id"));
+        let elPrice = $(".price-" + id);
+        let opsPrice = 0;
+        let currentVal = Number($(this).val());
+        let ops = $("#cart__options-" + id).val();
+        if (currentVal > 1) {
+            $(
+                ".cart-handler-" + id + " .btn-number[data-type=minus]"
+            ).removeClass("disabled");
+        } else {
+            $(".cart-handler-" + id + " .btn-number[data-type=minus]").addClass(
+                "disabled"
+            );
+        }
+        if (currentVal < 100) {
+            $(
+                ".cart-handler-" + id + " .btn-number[data-type=plus]"
+            ).removeClass("disabled");
+        } else {
+            $(".cart-handler-" + id + " .btn-number[data-type=plus]").addClass(
+                "disabled"
+            );
+        }
+        if (currentVal < min || currentVal > max) {
+            $(this).val(1);
+            return alert(
+                "Bạn đã nhập quá số lượng tối thiểu hoặc tối đa có thể đặt hàng của sản phẩm!"
+            );
+        }
+        $(".insur__item-active").each(function (idx) {
+            opsPrice += Number($(this).attr("data-price"));
+        });
+        let price = (Number(elPrice.attr("prd-price")) + opsPrice) * currentVal;
+        elPrice.attr("data-price", price);
+        elPrice.text($.crf(price));
+    });
+    $(document).on("click", ".btn-number", function () {
+        let type = $(this).attr("data-type");
+        let id = Number($(this).attr("data-id"));
+        let elInput = $("#qty-product-" + id);
+        let elBtn = $("#btn-add-cart-" + id);
+        let max = Number(elInput.attr("max"));
+        let min = Number(elInput.attr("min"));
+        let disabled = $(this).hasClass("disabled");
+        let ajax = Boolean($(this).attr("data-ajax"));
+        let currentVal = Number(elInput.val());
+        if (disabled) {
+            return;
+        }
+        if (type == "plus") {
+            currentVal++;
+        } else {
+            currentVal--;
+        }
+        if (currentVal >= min && currentVal <= max) {
+            elInput.val(currentVal);
+            $(".input-number").trigger("change");
+        }
+    });
     //////////////////////
     $('[data-toggle="tooltip"]').tooltip();
 
     $(".tawk-button").css("width", "30px !important");
     //  chỉnh chiều cao cho ảnh phải banner
     function setHeight() {
-        var heightHome = parseInt($(".home__left").height());
+        let heightHome = Number($(".home__left").height());
+        let heightImg = Number($("#homeSlide img").height());
+        let slideImg = $(
+            "#biad__content--home .home__right--slide #homeSlide img"
+        );
         if ($(".home__left").css("display") != "none") {
-            $(".home__right").css("height", heightHome);
-            $("#biad__content--home .home__right--slide #homeSlide img").css(
-                "height",
-                heightHome
-            );
-            var heightSlide = $(
-                "#biad__content--home .home__right--slide #homeSlide img"
-            ).height();
+            $(".home__right").css("height", heightImg);
+            // slideImg.css("height", heightHome);
             $(".home__right--banner img").css(
                 "height",
-                parseInt(heightSlide / 4 - 8)
+                Number(heightImg / 4 - 6)
             );
         } else {
-            var heightSlide = $(
-                "#biad__content--home .home__right--slide #homeSlide"
-            ).height();
             $(".home__right").css("height", "auto");
-            $("#biad__content--home .home__right--slide #homeSlide img").css(
-                "height",
-                "auto"
-            );
-            var heightSlide = $(
-                "#biad__content--home .home__right--slide #homeSlide img"
-            ).height();
+            slideImg.css("height", "auto");
             $(".home__right--banner img").css(
                 "height",
-                parseInt(heightSlide / 4 - 5)
+                Number(heightImg / 4 - 5)
             );
         }
     }
@@ -71,57 +169,33 @@ $(function () {
     //     }
     //     console.log()
     // }
-
     setHeight();
-    // $(document).on("click", ".btn-number", function (e) {
-    //     e.preventDefault();
-    //     var fieldName = $(this).attr("data-field");
-    //     var type = $(this).attr("data-type");
-    //     if ($("#quickModal").hasClass("show")) {
-    //         var input = $("#outputDetail input[name='" + fieldName + "']");
-    //     } else {
-    //         var input = $("input[name='" + fieldName + "']");
-    //     }
-    //     var currentVal = parseInt(input.val());
-    //     if (!isNaN(currentVal)) {
-    //         if (type == "minus") {
-    //             if (currentVal > input.attr("min")) {
-    //                 input.val(currentVal - 1).change();
-    //             }
-    //             if (parseInt(input.val()) == input.attr("min")) {
-    //                 $(this).attr("disabled", true);
-    //             }
-    //         } else if (type == "plus") {
-    //             if (currentVal < input.attr("max")) {
-    //                 input.val(currentVal + 1).change();
-    //             }
-    //             if (parseInt(input.val()) == input.attr("max")) {
-    //                 $(this).attr("disabled", true);
-    //             }
-    //         }
-    //     } else {
-    //         input.val(0);
-    //     }
-    // });
-    // $(document).on("focusin", ".input-number", function () {
-    //     $(this).data("oldValue", $(this).val());
-    // });
-    var url_cart = route("add_cart");
-    function load_rememer_cart() {
+    function ajaxCart(data = {}, callback) {
         $.ajax({
             type: "post",
             url: url_cart,
-            data: { type: "load" },
+            data: data,
             dataType: "json",
             success: function (data) {
+                callback;
                 $.end_loading();
+                $("#items").html(data.html_items);
                 $("#cart__drop").html(data.cart_drop);
                 $("#cart__show").html(data.cart);
-                $("#items").html(data.html_items);
+                if (data.new) {
+                    Swal.fire({
+                        position: "top-end",
+                        html: data.add_ok,
+                        showConfirmButton: false,
+                        timer: 10000,
+                    });
+                } else if (!data.new && type != "load") {
+                    $.vaToast(data.message);
+                }
             },
         });
     }
-    load_rememer_cart();
+
     function renderAlert($icon = "success", $title = "Tiêu Đề") {
         const Toast = Swal.mixin({
             toast: true,
@@ -363,51 +437,7 @@ $(function () {
             );
         });
     // ///////////////
-    // $(document).on("click", ".btn-cart", function () {
-    //     var id = $(this).attr("data-id");
-    //     var op = $(this).attr("data-op");
-    //     var sub_total = $(this).attr("data-price");
-    //     var qty = $(this).attr("data-qty");
-    //     $.ajax({
-    //         type: "post",
-    //         url: url_cart,
-    //         data: {
-    //             id: id,
-    //             qty: qty,
-    //             sub_total: sub_total,
-    //             op: op,
-    //             type: "add",
-    //         },
-    //         dataType: "json",
-    //         beforeSend: function () {
-    //             $.loading();
-    //         },
-    //         success: function (data) {
-    //             if (data.items != 0) {
-    //                 $(".cartShow--left").html(data.cart);
-    //             } else {
-    //                 $("#empty_output").html(data.cart);
-    //             }
-    //             $("#checkout_cart").html(data.cart);
-    //             $("bt-qty strong").text(data.count);
-    //             $("#count_mobile").text(data.count);
-    //             $("bt-price strong").text(data.total_format);
-    //             $("#ck_total").text(data.total_format);
-    //             $("#cart__drop").html(data.sub_cart);
-    //             $("#items").html(data.html_items);
-    //             $(".cart__drop").html(data.sub_cart);
-    //             $(".items").html(data.html_items);
-    //             Swal.fire({
-    //                 position: "top-end",
-    //                 html: data.add_ok,
-    //                 showConfirmButton: false,
-    //                 timer: 5000,
-    //             });
-    //             console.log(data);
-    //             $.end_loading();
-    //         },
-    //     });
-    // });
+
     $(document).on("click", ".success__add--close i ", function () {
         Swal.close();
     });

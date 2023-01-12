@@ -34,8 +34,9 @@
         </div>
         <div class="price">
             @if ($message->price != 0)
-                <span id="price__{{ $message->id }}"
-                    class="{{ 'price-' . $product->id }}">{{ crf($message->price) }}</span>
+                <span id="price__{{ $message->id }}" class="{{ 'price-' . $message->id }}"
+                    prd-price="{{ $message->price }}"
+                    data-price="{{ $message->price }}">{{ crf($message->price) }}</span>
             @else
                 <span id="price__{{ $message->id }}">CALL-{{ getVal('switchboard')->value }}</span>
             @endif

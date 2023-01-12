@@ -62,26 +62,34 @@ class CartController extends Controller
         $login = 0;
         $id = $request->has('id') && $request->get('id') ? (int) $request->get('id') : 0;
         $qty = $request->has('qty') && $request->get('qty') ? (int) $request->get('qty') : 1;
-        $op_actives = $request->has('op') && $request->get('op') ? $request->get('op') : "";
+        $op_actives = $request->has('ops') && $request->get('ops') ? $request->get('ops') : "";
         $rowId = $request->has('rowId') && $request->get('rowId') ? $request->get('rowId') : 0;
+        $data['message'] = null;
+        $data['new'] = false;
+        $arrayOps = explode(',', $op_actives);
+        // return response()->json(['q' => $qty, 'id' => $id, 'ops' => $op_actives, 'rowId' => $rowId]);
         if ($request->type == "load") {
             if (Auth::check()) {
                 Cart::instance('shopping')->destroy();
                 Cart::instance('shopping')->restore(Auth::id());
             }
         }
+        if ($id != 0) {
+            $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, []);
+            if ($res['act'] == "add") {
+                $item = $res['product'];
+                $add_ok .= view('components.addcart', compact('item'));
+                $data['add_ok'] = $add_ok;
+                $data['new'] = true;
+            } {
+                $data['message'] = "Giỏ hàng đã được cập nhật";
+            }
+        }
 
-        if ($request->type == "add") {
-            $item = $this->handle_cart->add__or_update($id, $rowId, $qty, $op_actives, []);
-            $add_ok .= view('components.addcart', compact('item'));
-            $data['add_ok'] = $add_ok;
-        }
-        if ($request->type ==  "update") {
-            $data['update'] = $this->handle_cart->add__or_update($id, $rowId, $qty, $op_actives, []);;
-        }
         if ($request->type == "delete") {
             $rowId = $request->rowId;
             Cart::instance('shopping')->remove($rowId);
+            $data['message'] = "Giỏ hàng đã được cập nhật";
         }
         $this->handle_cart->store_cart();
         $total = $this->handle_cart->total();
@@ -92,6 +100,7 @@ class CartController extends Controller
         ';
         $output_2 .= view('components.client.cart.drop', ['cart' => $cart]);
         $data['cart'] = $output;
+        $data['test'] = $cart;
         $data['cart_drop'] = $output_2;
         $data['total'] = $total;
         $data['html_items'] = $output_items;

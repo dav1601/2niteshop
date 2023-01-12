@@ -9,7 +9,9 @@
 #cancel__target:hover {
     background: #ee5253;
 }
-
+.toast-success {
+    background-color: #4bb543 !important;
+}
 .owl-nav {
     button.disabled {
         background: #8b9198 !important;
@@ -380,7 +382,7 @@ body::-webkit-scrollbar-thumb,
             .col-1 {
                 flex: 0 0 10%;
                 max-width: 10%;
-                 @include responsive_h(iphoneX, down) {
+                @include responsive_h(iphoneX, down) {
                     flex: 0 0 10%;
                     max-width: 10%;
                 }

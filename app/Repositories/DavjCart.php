@@ -10,13 +10,16 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DavjCart implements DavjCartInterface
 {
-    public function add__or_update($id = 0, $rowId = 0, $qty = 1, $op_actives = "", $options = [])
+    public function add__or_update($id = 0, $qty = 1, $op_actives = "", $options = [])
     {
-        $product = Products::exclude(['content', 'info'])->where('id', '=', $id)->firstOrFail();
+        $product = Products::select(['slug', 'id', 'main_img', 'model', 'name', 'price'])->where('id', $id)->firstOrFail();
         $op_actives = explode(',', $op_actives);
         $price = (int) $product->price;
         $price_op = 0;
         $sub_total = 0;
+        $res['act'] = "";
+        $res['product'] = "";
+        $res['item'] = "";
         if (count($op_actives) > 0) {
             foreach ($op_actives as  $ins_id) {
                 $item = Insurance::where('id', $ins_id)->first();
@@ -28,12 +31,12 @@ class DavjCart implements DavjCartInterface
         $check =  Cart::instance('shopping')->search(function ($cartItem) use ($id) {
             return $cartItem->id == $id;
         });
-        if (count($check) > 0 && $rowId) {
+        if (count($check) > 0) {
             foreach ($check as $item) {
-                $qty = ($item->qty + $qty);
+                $qty = (int) ($item->qty + $qty);
                 $sub_total = (int) ($price_op + $price) * $qty;
                 Cart::instance('shopping')->update(
-                    $rowId,
+                    $item->rowId,
                     [
                         'id' => $product->id,
                         'name' => $product->name,
@@ -48,12 +51,11 @@ class DavjCart implements DavjCartInterface
                         ],
                     ]
                 );
-                $after_update = Cart::instance('shopping')->search(function ($cartItem) use ($id) {
-                    return $cartItem->id == $id;
-                });
-                return $after_update;
             }
+            $res['item'] = $check;
+            $res['act'] = "update";
         } else {
+            $res['act'] = "add";
             $sub_total = (int) ($price_op + $price) * $qty;
             Cart::instance('shopping')->add(
                 [
@@ -71,7 +73,8 @@ class DavjCart implements DavjCartInterface
                 ]
             );
         }
-        return $product;
+        $res['product'] = $product;
+        return $res;
     }
     //
     public function update__cart($id, $rowId,  $qty = 1, $ins = 0, $color = 0)

@@ -30,76 +30,12 @@ $(function () {
         });
     }
     // detail product
-    $(document).on("change", ".input-number", function () {
-        var minValue = parseInt($(this).attr("min"));
-        var maxValue = parseInt($(this).attr("max"));
-        var valueCurrent = parseInt($(this).val());
-        var insurPrice = parseInt($(".insur__item-active").attr("data-price"));
-        if (isNaN(insurPrice)) {
-            var insurPrice = 0;
-        }
-        var price_prd = parseInt($("#price_prd").val());
-        if (isNaN(price_prd)) {
-            var price_prd = $(this).attr("data-prd");
-        }
-        var sub_total = parseInt(valueCurrent * price_prd);
-        var total = parseInt(sub_total + insurPrice);
-        var id = $(this).attr("data-id");
-        var name = $(this).attr("name");
-        if (valueCurrent >= minValue) {
-            $(
-                ".btn-number[data-type='minus'][data-field='" + name + "']"
-            ).removeAttr("disabled");
-        } else {
-            alert("Sorry, the minimum value was reached");
-            $(this).val($(this).data("oldValue"));
-        }
-        if (valueCurrent <= maxValue) {
-            $(
-                ".btn-number[data-type='plus'][data-field='" + name + "']"
-            ).removeAttr("disabled");
-        } else {
-            alert("Sorry, the maximum value was reached");
-            $(this).val($(this).data("oldValue"));
-        }
-        $(".prd__dtl--price span").attr("data-price", total);
-        if ($("#quickModal").hasClass("show")) {
-            $("#outputDetail #button-cart").attr("data-qty", valueCurrent);
-            $("#outputDetail #button-cart").attr("data-price", total);
-        } else {
-            $("#button-cart").attr("data-price", total);
-            $("#button-cart").attr("data-qty", valueCurrent);
-        }
-        $(".btn-cart-" + id).attr("data-price", total);
-        $(".btn-cart-" + id).attr("data-qty", valueCurrent);
-        if (total != 0) {
-            fomat(total, "prd__dtl--price span");
-        } else {
-            $(".prd__dtl--price span").text("CALL-1900 0116");
-        }
-    });
+
     // end input number
     // end active insur
-    $(document).on("click", ".insur__item", function () {
-        var price = parseInt($(this).attr("data-price"));
-        var price_prd = parseInt($("#price_prd").val());
-        var qty = parseInt($(".input-number").val());
-        var sub_total = parseInt(price_prd * qty);
-        var total = parseInt(sub_total + price);
-        $(".insur__item").removeClass("insur__item-active");
-        $(this).addClass("insur__item-active");
-        $(".prd__dtl--price span").attr("data-price", total);
-        $("#button-cart").attr("data-price", total);
-        $("#button-cart").attr("data-op", parseInt($(this).attr("data-id")));
-        fomat(total, "prd__dtl--price span");
-    });
+
     // end detail
-    if (!isNaN(parseInt($(".insur__item-active").attr("data-id")))) {
-        $("#button-cart").attr(
-            "data-op",
-            parseInt($(".insur__item-active").attr("data-id"))
-        );
-    }
+
     // ///////////
     $(document).on("click", ".see__detail--btn", function () {
         $(".prd__dtl--info").css("max-height", "100%");
@@ -133,18 +69,7 @@ $(function () {
     $("#nav-dtlContent").html(function (i, h) {
         return h.replace(/&nbsp;/g, "");
     });
-    function loadingSkeletonProduct() {
-        $.ajax({
-            type: "post",
-            url: route("render_skeleton_product"),
-            dataType: "json",
-            success: function (data) {
-                console.log(data);
-                $("#outputGrid").html(data.html);
-                $("#outputList").html(data.html_2);
-            },
-        });
-    }
+
     function loading_data_product($page = 1) {
         var page = $page;
         var genre = get_checked("game_genre").toString();
@@ -207,7 +132,5 @@ $(function () {
         loading_data_product($(this).attr("data-page"));
     });
     // ////////////////////
-    var selectedProduct = [];
-
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

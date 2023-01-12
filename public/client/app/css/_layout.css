@@ -175,6 +175,10 @@
   background: #ee5253;
 }
 
+.toast-success {
+  background-color: #4bb543 !important;
+}
+
 .owl-nav button.disabled {
   background: #8b9198 !important;
 }
