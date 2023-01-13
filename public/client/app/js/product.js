@@ -38,6 +38,7 @@ $(function () {
 
     // ///////////
     $(document).on("click", ".see__detail--btn", function () {
+        alert("Ok");
         $(".prd__dtl--info").css("max-height", "100%");
         $(this).addClass("close");
         $(".see__detail--btn span").text("Thu gọn");

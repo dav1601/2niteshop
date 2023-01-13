@@ -60,13 +60,17 @@ class CartController extends Controller
         $output_items = '';
         $error = array();
         $login = 0;
-        $id = $request->has('id') && $request->get('id') ? (int) $request->get('id') : 0;
-        $qty = $request->has('qty') && $request->get('qty') ? (int) $request->get('qty') : 1;
-        $op_actives = $request->has('ops') && $request->get('ops') ? $request->get('ops') : "";
-        $rowId = $request->has('rowId') && $request->get('rowId') ? $request->get('rowId') : 0;
-        $data['message'] = null;
+        $id = $request->has('id')  ? (int) $request->get('id') : 0;
+        $qty = $request->has('qty')  ? (int) $request->get('qty') : 1;
+        $op_actives = $request->has('ops') && $request->get('ops')  ? $request->get('ops') : null;
+        $rowId = $request->has('rowId') ? $request->get('rowId') : 0;
+        $realTimeUpdate = $request->has('rtupdate');
+        $data['message'] = "Giỏ hàng đã được cập nhật";
         $data['new'] = false;
         $arrayOps = explode(',', $op_actives);
+        if ($realTimeUpdate) {
+            $qty = 0;
+        }
         // return response()->json(['q' => $qty, 'id' => $id, 'ops' => $op_actives, 'rowId' => $rowId]);
         if ($request->type == "load") {
             if (Auth::check()) {
@@ -75,25 +79,25 @@ class CartController extends Controller
             }
         }
         if ($id != 0) {
-            $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, []);
+            $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, [], $realTimeUpdate);
             if ($res['act'] == "add") {
                 $item = $res['product'];
                 $add_ok .= view('components.addcart', compact('item'));
                 $data['add_ok'] = $add_ok;
                 $data['new'] = true;
-            } {
-                $data['message'] = "Giỏ hàng đã được cập nhật";
             }
         }
 
         if ($request->type == "delete") {
             $rowId = $request->rowId;
             Cart::instance('shopping')->remove($rowId);
-            $data['message'] = "Giỏ hàng đã được cập nhật";
+        }
+        $cart = Cart::instance('shopping')->content()->sortBy('id');
+        foreach ($cart as  $item) {
+            $this->handle_cart->add__or_update($item->id, $qty, $op_actives, [], true);
         }
         $this->handle_cart->store_cart();
         $total = $this->handle_cart->total();
-        $cart = Cart::instance('shopping')->content()->sortBy('id');
         $output .= view('components.client.cart.show', ['cart' => $cart]);
         $output_items = '
         ' . Cart::instance('shopping')->count() . ' Sản Phẩm -- Gọi -- ' . getVal('switchboard')->value . '

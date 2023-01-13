@@ -16,6 +16,7 @@ class Products extends Model
         'des',
         'keywords',
         'price',
+        'discount',
         'historical_cost',
         'content',
         'info',

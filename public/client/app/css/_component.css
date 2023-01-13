@@ -186,6 +186,17 @@
   border-top-color: #277b8c;
 }
 
+.prd__dtl--cart .col-1 {
+  flex: 0 0 10% !important;
+  max-width: 10% !important;
+}
+@media (max-width: 812px) {
+  .prd__dtl--cart .col-1 {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+
 .product__item {
   position: relative;
   overflow: hidden;

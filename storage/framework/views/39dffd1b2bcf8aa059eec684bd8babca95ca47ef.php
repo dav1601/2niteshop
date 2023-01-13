@@ -26,11 +26,16 @@
             ->toArray();
         $list_active = [];
         $data_op = [];
+        $ops = [];
         if (count($arrIns) > 0) {
             foreach ($arrIns as $group => $item_ins) {
                 $list_active[$group] = $item_ins[0];
             }
         }
+        foreach ($list_active as $key => $item_g) {
+            $ops[] = $item_g['id'];
+        }
+        $ops = implode(',', $ops);
         $policies = collect($product->policies)->filter(function ($plc) {
             return $plc->fullset == 0;
         });
@@ -39,21 +44,22 @@
                 return $plc->fullset != 0;
             })
             ->first();
-        $price = 0;
-        if (count($arrIns) > 0) {
-            if (count($list_active) > 0) {
-                foreach ($list_active as $group => $value) {
-                    $price += (int) $product->price + (int) $value['price'];
-                    $data_op[] = $value['id'];
-                }
-            }
-        } else {
-            if ($product->stock != 2) {
-                $price = (int) $product->price;
-            }
-        }
+        $price = price_product($product, $ops);
+        // if (count($arrIns) > 0) {
+        //     if (count($list_active) > 0) {
+        //         foreach ($list_active as $group => $value) {
+        //             $price += (int) $product->price + (int) $value['price'];
+        //             $data_op[] = $value['id'];
+        //         }
+        //     }
+        // }
+        // else {
+        //     if ($product->stock != 2) {
+        //         $price = (int) $product->price;
+        //     }
+        // }
     ?>
-
+    
     <?php if($product->bg != null): ?>
         <?php
             $bg = asset($product->bg);
@@ -215,11 +221,9 @@
                             </div>
 
                             <div class="prd__dtl--cart row mx-0">
-                                <?php
-                                    $options = implode(',', $data_op);
-                                ?>
+                                
                                 <?php if (isset($component)) { $__componentOriginal4298ddbdc8bd28edbcb68906c214424a0d37eab8 = $component; } ?>
-<?php $component = App\View\Components\Client\Cart\Add\Btn::resolve(['product' => $product,'options' => $options] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = App\View\Components\Client\Cart\Add\Btn::resolve(['product' => $product,'options' => $ops] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('client.cart.add.btn'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>

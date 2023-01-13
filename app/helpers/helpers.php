@@ -8,7 +8,22 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
+function price_product($product,  $ops = "", $options = ['qty' => 1])
+{
+    $qty = (int) $options['qty'];
+    $price = (int) ($product->price - $product->discount);
+    $arrIns = explode(",", $ops);
 
+    if (count($arrIns) > 0) {
+        foreach ($arrIns as  $ins_id) {
+            $item = Insurance::where('id', $ins_id)->first();
+            if ($item) {
+                $price += (int) $item->price;
+            }
+        }
+    }
+    return (int)$price * $qty;
+}
 function get_crawler($crawler = [], $key = null)
 {
     if (count($crawler) <= 0) {

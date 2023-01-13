@@ -27,11 +27,16 @@
             ->toArray();
         $list_active = [];
         $data_op = [];
+        $ops = [];
         if (count($arrIns) > 0) {
             foreach ($arrIns as $group => $item_ins) {
                 $list_active[$group] = $item_ins[0];
             }
         }
+        foreach ($list_active as $key => $item_g) {
+            $ops[] = $item_g['id'];
+        }
+        $ops = implode(',', $ops);
         $policies = collect($product->policies)->filter(function ($plc) {
             return $plc->fullset == 0;
         });
@@ -40,21 +45,22 @@
                 return $plc->fullset != 0;
             })
             ->first();
-        $price = 0;
-        if (count($arrIns) > 0) {
-            if (count($list_active) > 0) {
-                foreach ($list_active as $group => $value) {
-                    $price += (int) $product->price + (int) $value['price'];
-                    $data_op[] = $value['id'];
-                }
-            }
-        } else {
-            if ($product->stock != 2) {
-                $price = (int) $product->price;
-            }
-        }
+        $price = price_product($product, $ops);
+        // if (count($arrIns) > 0) {
+        //     if (count($list_active) > 0) {
+        //         foreach ($list_active as $group => $value) {
+        //             $price += (int) $product->price + (int) $value['price'];
+        //             $data_op[] = $value['id'];
+        //         }
+        //     }
+        // }
+        // else {
+        //     if ($product->stock != 2) {
+        //         $price = (int) $product->price;
+        //     }
+        // }
     @endphp
-
+    {{-- @dd($price) --}}
     @if ($product->bg != null)
         @php
             $bg = asset($product->bg);
@@ -217,10 +223,10 @@
                             </div>
 
                             <div class="prd__dtl--cart row mx-0">
-                                @php
+                                {{-- @php
                                     $options = implode(',', $data_op);
-                                @endphp
-                                <x-client.cart.add.btn :product="$product" :options="$options" />
+                                @endphp --}}
+                                <x-client.cart.add.btn :product="$product" :options="$ops" />
 
                             </div>
 

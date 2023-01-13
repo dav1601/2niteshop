@@ -95,11 +95,11 @@ class AdminProductController extends Controller
         $type = typeProduct::where('parent', '=', 0)->get();
         $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
         $product_categories = ProductCategories::where('products_id', $id)->get()->pluck('category_id')->toArray();
-        $rela_blogs = implode(",", $product->related_blogs->pluck("blogs_id")->toArray());
-        $rela_products =  implode(",", $product->related_products->pluck("products_id")->toArray());
-        $policies = implode(",", $product->policies->pluck("plc_id")->toArray());
-        $ins =  implode(",", $product->ins->pluck("ins_id")->toArray());
-        $blocks =  implode(",", $product->blocks->pluck("block_id")->toArray());
+        $rela_blogs = implode(",", $product->related_blogs->pluck("id")->toArray());
+        $rela_products =  implode(",", $product->related_products->pluck("id")->toArray());
+        $policies = implode(",", $product->policies->pluck("id")->toArray());
+        $ins =  implode(",", $product->ins->pluck("id")->toArray());
+        $blocks =  implode(",", $product->blocks->pluck("id")->toArray());
         $gll700 = collect($product->gll)->filter(function ($value) {
             return $value->size == 700;
         });
@@ -123,6 +123,7 @@ class AdminProductController extends Controller
                 'type' => 'required',
                 'price' => 'required|required_with:historical_cost|numeric',
                 'historical_cost' => 'required|required_with:price|numeric|lte:price',
+                'discount' => 'numeric|lte:price',
                 'main_img' => $id ? $img : 'required|' . $img,
                 'sub_img' => $img,
                 'bg' => $img,
@@ -287,7 +288,6 @@ class AdminProductController extends Controller
         $path = "admin/images/products/";
         $validator = $this->validateProduct($request, $id);
         if ($validator->fails()) {
-            dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $data_update['name'] = $request->name;
@@ -483,7 +483,7 @@ class AdminProductController extends Controller
     }
 
     ////////////////////////////////////////
-   
+
     //    ///////////////////////////////////////
     public function block__prodcut__view(Request $request, ModelInterface $repom)
     {

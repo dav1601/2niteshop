@@ -849,6 +849,7 @@ body {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                z-index: 200;
                 background: -webkit-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
                 background: -moz-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
                 background: -o-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
@@ -864,6 +865,7 @@ body {
                     min-height: 20px;
                     color: $white;
                     opacity: 1 !important;
+                    z-index: 200;
                     cursor: pointer;
                     &:hover {
                         text-decoration: none;
@@ -1013,6 +1015,7 @@ body {
                             background: -moz-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
                             background: -o-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
                             background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
+                            z-index: 200;
                             &--btn {
                                 font-size: 14px;
                                 font-weight: 400 !important;
@@ -1240,9 +1243,8 @@ body {
                         }
                     }
                     &--insur {
-                        padding-top: 5px;
-                        padding-bottom: 20px;
-                        margin-bottom: 15px;
+                        padding-top: 10px;
+                        margin-bottom: 10px;
                         border-top: 1px solid rgba(221, 221, 221, 1);
                         border-bottom: 1px solid rgba(221, 221, 221, 1);
                         span {

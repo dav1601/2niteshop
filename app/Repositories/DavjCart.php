@@ -10,53 +10,74 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DavjCart implements DavjCartInterface
 {
-    public function add__or_update($id = 0, $qty = 1, $op_actives = "", $options = [])
+    public $file;
+    public function __construct(FileInterface $handle_file)
     {
+
+        $this->file = $handle_file;
+    }
+    public function add__or_update($id = 0, $qty = 1, $op_actives = "", $options = [], $realTimeUpdateProduct = false)
+    {
+        $op_actives = !$op_actives ? '' : $op_actives;
         $product = Products::select(['slug', 'id', 'main_img', 'model', 'name', 'price'])->where('id', $id)->firstOrFail();
-        $op_actives = explode(',', $op_actives);
-        $price = (int) $product->price;
-        $price_op = 0;
         $sub_total = 0;
         $res['act'] = "";
         $res['product'] = "";
         $res['item'] = "";
-        if (count($op_actives) > 0) {
-            foreach ($op_actives as  $ins_id) {
-                $item = Insurance::where('id', $ins_id)->first();
-                if ($item) {
-                    $price_op += (int) Insurance::where('id', $ins_id)->first()->price;
-                }
-            }
-        }
         $check =  Cart::instance('shopping')->search(function ($cartItem) use ($id) {
             return $cartItem->id == $id;
         });
+        if ($realTimeUpdateProduct) {
+            foreach ($check as  $rtitem) {
+                $op_actives = $rtitem->options->ins;
+            }
+            $qty = 0;
+        }
         if (count($check) > 0) {
             foreach ($check as $item) {
                 $qty = (int) ($item->qty + $qty);
-                $sub_total = (int) ($price_op + $price) * $qty;
-                Cart::instance('shopping')->update(
-                    $item->rowId,
-                    [
-                        'id' => $product->id,
-                        'name' => $product->name,
-                        'price' => $product->price,
-                        'qty' => $qty,
-                        'options' => [
-                            'ins' => implode(",", $op_actives),
-                            'model' => $product->model,
-                            'image' => $product->main_img,
-                            'sub_total' => $sub_total,
-                            'option' => $options
-                        ],
-                    ]
-                );
+                $sub_total = price_product($product, $op_actives, ['qty' => $qty]);
+                if ($realTimeUpdateProduct) {
+                    Cart::instance('shopping')->update(
+                        $item->rowId,
+                        [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'options' => [
+                                'ins' => $op_actives,
+                                'model' => $product->model,
+                                'image' => $product->main_img,
+                                'sub_total' => $sub_total,
+                                'slug' => $product->slug
+                            ],
+                        ]
+                    );
+                } else {
+                    Cart::instance('shopping')->update(
+                        $item->rowId,
+                        [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'qty' => $qty,
+                            'options' => [
+                                'ins' => $op_actives,
+                                'model' => $product->model,
+                                'image' => $product->main_img,
+                                'sub_total' => $sub_total,
+                                'option' => $options,
+                                'slug' => $product->slug
+                            ],
+                        ]
+                    );
+                }
             }
             $res['item'] = $check;
             $res['act'] = "update";
         } else {
             $res['act'] = "add";
-            $sub_total = (int) ($price_op + $price) * $qty;
+            $sub_total = price_product($product, $op_actives, ['qty' => $qty]);
             Cart::instance('shopping')->add(
                 [
                     'id' => $product->id,
@@ -64,7 +85,7 @@ class DavjCart implements DavjCartInterface
                     'price' => $product->price,
                     'qty' => $qty,
                     'options' => [
-                        'ins' => implode(",", $op_actives),
+                        'ins' => $op_actives,
                         'model' => $product->model,
                         'image' => $product->main_img,
                         'sub_total' => $sub_total,
@@ -102,6 +123,7 @@ class DavjCart implements DavjCartInterface
         ]);
     }
     //
+
     public function total()
     {
         $total = 0;

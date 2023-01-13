@@ -119,6 +119,24 @@
                                 </div>
                             @enderror
                         </div>
+                        {{--  --}}
+                        <div class="form-group mb-5">
+                            <label for="">Discount</label>
+                            <input type="text" class="form-control" name="discount" value="{{ $product->discount }}"
+                                id="discount" placeholder="">
+                            <div class="box_output mt-3">
+                                <span>Bạn Đang Nhập:<strong class="pl-2">0đ</strong></span>
+                            </div>
+                            @error('discount')
+                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                                    {{ $message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @enderror
+                        </div>
+                        {{--  --}}
                         <div class="form-group mb-5">
                             <label for="">Model</label>
                             <input type="text" class="form-control" name="model" value="{{ $product->model }}"

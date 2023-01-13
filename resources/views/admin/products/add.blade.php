@@ -96,8 +96,8 @@
                         </div>
                         <div class="form-group mb-5">
                             @php
-                                $price = '';
-                                $price_cost = '';
+                                $price = 0;
+                                $price_cost = 0;
                                 if (count($crawler) > 0) {
                                     $price = (int) get_crawler($crawler, 'price') != 0 ? (int) get_crawler($crawler, 'price') : (int) get_crawler($crawler, 'price_new');
                                     $price_cost = $price - ($price * 20) / 100;
@@ -128,6 +128,22 @@
                                 <span>Bạn Đang Nhập:<strong class="output_price--cost pl-2">0đ</strong></span>
                             </div>
                             @error('historical_cost')
+                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                                    {{ $message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-5">
+                            <label for="">Discount</label>
+                            <input type="text" class="form-control" name="discount" value="{{ old('discount') }}"
+                                id="discount" placeholder="">
+                            <div class="box_output mt-3">
+                                <span>Bạn Đang Nhập:<strong class="pl-2">0đ</strong></span>
+                            </div>
+                            @error('discount')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

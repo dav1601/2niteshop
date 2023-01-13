@@ -5,12 +5,10 @@ $(function () {
         },
     });
     jQuery.loading = function loading() {
-        $("#bg-loading").css("display", "block");
-        $("#loading").css("display", "flex");
+        $("#page__loading").removeClass("d-none");
     };
     jQuery.end_loading = function end_loading() {
-        $("#bg-loading").css("display", "none");
-        $("#loading").css("display", "none");
+        $("#page__loading").addClass("d-none");
     };
     jQuery.crf = function crf(number = 0) {
         return new Intl.NumberFormat("en-US").format(number) + "đ";

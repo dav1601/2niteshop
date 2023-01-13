@@ -33,7 +33,8 @@
 
 <body>
     
-    <div id="bg-menu" class="d-none"></div>
+    
+    
     <?php if (isset($component)) { $__componentOriginal3f5a3a73d718448c7da3c3cd79ebdd9b2a177a13 = $component; } ?>
 <?php $component = App\View\Components\Mobile\Menu::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('mobile.menu'); ?>

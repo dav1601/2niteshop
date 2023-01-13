@@ -1,20 +1,13 @@
-<?php
-$prd = App\Models\Products::where('id', '=' , $cart->id)->first();
-if ($cart->options->ins != 0) {
-$group = App\Models\Insurance::where('id' , $cart->options->ins)->first()->group;
-} else {
-$group = 0;
-}
-?>
+
 <div class="cart__item flex-wrap">
     <div class="cart__item--image">
-        <a href="<?php echo e(route('detail_product', ['slug'=>$prd->slug])); ?>" class="d-block">
+        <a href="<?php echo e(route('detail_product', ['slug' => $cart->options->slug])); ?>" class="d-block">
             <img src="<?php echo e($file->ver_img($cart->options->image)); ?>" width="100" alt="<?php echo e($cart->name); ?>"
                 class="img-fluid">
         </a>
     </div>
     <div class="cart__item--caption">
-        <a href="<?php echo e(route('detail_product', ['slug'=>$prd->slug])); ?>" class="d-block name">
+        <a href="<?php echo e(route('detail_product', ['slug' => $cart->options->slug])); ?>" class="d-block name">
             <?php echo e($cart->name); ?>
 
         </a>
@@ -26,31 +19,30 @@ $group = 0;
             Giá sản phẩm: <?php echo e(crf($cart->price)); ?>
 
         </span>
+
         <?php if($cart->options->ins != 0): ?>
-        <div class="ins">
-            <span><?php echo e($group == 1 ? "Thời gian bảo hành":"Phụ kiện mua kèm"); ?>: <strong><?php echo e(App\Models\Insurance::where('id', '=' , $cart->options->ins
-                    )->first()->name); ?></strong></span>
-        </div>
+            <div class="ins">
+                <?php $__currentLoopData = explode(',', $cart->options->ins); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
+                        $ins = App\Models\Insurance::where('id', $value)->first();
+                    ?>
+                    <?php if($ins): ?>
+                        <strong><?php echo e($ins->name); ?></strong>
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
         <?php endif; ?>
         <div class="qty">
-            <?php
-            if ($cart->options->ins != 0) {
-            $op = App\Models\Insurance::where('id', '=' , $cart->options->ins
-            )->first()->price;
-            } else {
-            $op = 0;
-            }
-            ?>
             <div class="btn__type">
-                <a class="btn-number py-0" data-type="minus" data-field="qty[<?php echo e($cart->id); ?>]"><i
-                        class="fas fa-minus"></i></a>
+                <a class="btn-number py-0" <?php if($cart->qty == 1): ?> disabled <?php endif; ?> py-0" data-type="minus"
+                    data-id="<?php echo e($cart->id); ?>" data-field="qty[<?php echo e($cart->id); ?>]"><i class="fas fa-minus"></i></a>
             </div>
-            <input type="text" name="qty[<?php echo e($cart->id); ?>]" data-id="<?php echo e($cart->id); ?>"
-                data-sub="<?php echo e($cart->options->sub_total); ?>" data-rowId="<?php echo e($cart->rowId); ?>" data-op="<?php echo e($op); ?>"
-                value="<?php echo e($cart->qty); ?>" id="dtl__prd--qty" min="1" max="1000" class="input-number"
-                data-opId="<?php echo e($cart->options->ins); ?>">
+            <input type="text" name="qty[<?php echo e($cart->id); ?>]" min="1" max="1000" class="input-number"
+                data-id="<?php echo e($cart->id); ?>" data-ajax="<?php echo e(true); ?>" value="<?php echo e($cart->qty); ?>"
+                id="<?php echo e('qty-product-' . $cart->id); ?>">
             <div class="btn__type">
-                <a class="btn-number py-0" data-type="plus" data-field="qty[<?php echo e($cart->id); ?>]"><i
+                <a class="btn-number py-0" <?php if($cart->qty == 100): ?> disabled <?php endif; ?> data-type="plus"
+                    data-id="<?php echo e($cart->id); ?>" data-field="qty[<?php echo e($cart->id); ?>]"><i
                         class="fas fa-plus"></i></a>
             </div>
         </div>

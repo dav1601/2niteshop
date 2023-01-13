@@ -21,7 +21,16 @@
 .bs-tooltip-top .arrow::before {
     border-top-color: #277b8c;
 }
-
+.prd__dtl--cart {
+    .col-1 {
+        flex: 0 0 10% !important;
+        max-width: 10% !important;
+        @include responsive_h(iphoneX, down) {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+    }
+}
 .product__item {
     position: relative;
     overflow: hidden;

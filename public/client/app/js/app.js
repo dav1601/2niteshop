@@ -171,6 +171,7 @@ $(function () {
     // }
     setHeight();
     function ajaxCart(data = {}, callback) {
+        const type = data.type;
         $.ajax({
             type: "post",
             url: url_cart,
@@ -178,20 +179,22 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 callback;
-                $.end_loading();
-                $("#items").html(data.html_items);
-                $("#cart__drop").html(data.cart_drop);
+                $(".items").text(data.html_items);
+                $(".cart__drop").html(data.cart_drop);
                 $("#cart__show").html(data.cart);
-                if (data.new) {
+                console.log(data.cart_drop);
+                if (data.new && type == "add") {
                     Swal.fire({
                         position: "top-end",
                         html: data.add_ok,
                         showConfirmButton: false,
                         timer: 10000,
                     });
-                } else if (!data.new && type != "load") {
+                } else if (!data.new) {
                     $.vaToast(data.message);
                 }
+
+                $.end_loading();
             },
         });
     }

@@ -4,6 +4,12 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+    jQuery.loading = function loading() {
+        $("#page__loading").removeClass("d-none");
+    };
+    jQuery.end_loading = function end_loading() {
+        $("#page__loading").addClass("d-none");
+    };
     var url = location.protocol + "//" + location.host + location.pathname;
     jQuery.get_checked = function get_checked(class_name) {
         var selected = [];

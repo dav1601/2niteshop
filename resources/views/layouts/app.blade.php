@@ -23,7 +23,8 @@
 <body>
     {{-- <div id="popup">
     </div> --}}
-    <div id="bg-menu" class="d-none"></div>
+    {{-- <x-layout.pageloading /> --}}
+    {{-- <div id="bg-menu" class="d-none"></div> --}}
     <x-mobile.menu />
     <x-mobile.cart.wp />
     @if (Gate::allows('group-admin'))
