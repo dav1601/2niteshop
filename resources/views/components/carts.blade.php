@@ -21,7 +21,7 @@
             <div class="ins">
                 @foreach ($options as $key => $cs_op)
                     @php
-                        $cs_ins = App\Models\Insurance::where('id', '=', $cartsub->options->ins)->first();
+                        $cs_ins = App\Models\Insurance::where('id', '=', $cart->options->ins)->first();
                     @endphp
                     @if ($cs_ins)
                         <strong>{{ $cs_ins->name }}</strong>

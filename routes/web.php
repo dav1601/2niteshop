@@ -1,11 +1,14 @@
 <?php
 
+use App\Events\common;
+use App\Events\TestEvent;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use Nette\Utils\Arrays;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +23,10 @@ use Nette\Utils\Arrays;
 
 Auth::routes();
 
+Route::get('test/realtime', function () {
 
+    return event(new TestEvent("1"));
+});
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('contact', 'HomeController@contact')->name('contact');
 Route::get('update_api', 'HomeController@api');
@@ -30,7 +36,7 @@ Route::post('navi_login', 'ClientLoginController@login')->name('navi_login');
 Route::get('products/{slug}', 'ClientProductsController@detail_product')->name('detail_product');
 Route::get('products/{parent_1?}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_2');
 Route::get('products/{parent_1?}/{parent_2}/{slug}', 'ClientProductsController@detail_product')->name('detail_product_3');
-
+Route::post("product/get_component", 'ClientProductsController@getComponent')->name('prd.component');
 Route::get('pages/{slug}', 'ClientPageController@index')->name('detail_page');
 Route::get('producer/{slug}', 'ClientProductsController@producer')->name('producer');
 
@@ -45,6 +51,8 @@ Route::post('search_main', 'HomeController@search_main_ajax')->name('search_main
 Route::post('pre-order', 'HomeController@pre_order')->name('pre_order');
 Route::prefix('ajax/')->group(function () {
     Route::post('load__chart', 'AdminAjaxDashBoardController@load__chart')->name('load__chart');
+    Route::post('auth/load/template', 'ClientLoginController@load_auth_template')->name('auth.template');
+    Route::post('auth/register', [RegisterController::class, 'ajaxRegister'])->name('ajax.auth.register');
 });
 Route::post('crawler', 'AdminProductController@crawler')->name('crawler');
 Route::get('minify', 'HomeController@minify')->name('minify');
@@ -180,6 +188,9 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::prefix('slide/')->group(function () {
                 Route::post('handle_update', 'AdminBannerController@handle_update')->name('handle_update_slide');
             });
+            Route::prefix('category/product/')->group(function () {
+                Route::post('handle', 'AdminCategoryController@handle_category')->name('handle_category');
+            });
         });
         // /////////////////////////////////////////
         Route::prefix('product/')->group(function () {
@@ -242,6 +253,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::get('browser', 'AdminBannerController@slide_view_add')->name('slide_view_add');
             Route::post('browser', 'AdminBannerController@slide_handle_add')->name('slide_handle_add');
             Route::get('delete/{id}', 'AdminBannerController@slide_delete')->name('slide_delete')->where('id', '^[0-9]+$');
+            Route::post('handle', 'AdminBannerController@slide_handle')->name('slide.handle');
+            Route::post('modal/content', 'AdminBannerController@slide_modal_content')->name('slide.modal.content');
         });
         Route::prefix('blog/')->group(function () {
             Route::get('add', 'AdminBlogController@add')->name('add_blog_view');

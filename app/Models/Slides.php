@@ -15,6 +15,11 @@ class Slides extends Model
         'link',
         'index',
         'status',
+        'users_id',
         'author_post',
     ];
+    public function author()
+    {
+        return $this->belongsTo("App\Models\User", 'users_id');
+    }
 }

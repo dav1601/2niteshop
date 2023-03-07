@@ -11,7 +11,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ $file->ver('admin/app/js/dashboard.js') }}"></script>
     <script src="{{ $file->ver('admin/app/plugin/chart/canvasjs.min.js') }}"></script>
-    <script src="{{ asset('admin/app/js/chart.js') }}?ver=@php echo filemtime('public/admin/app/js/chart.js') @endphp">
+    <script src="{{ asset('admin/app/js/chart.js') }}?ver=@php echo filemtime('admin/app/js/chart.js') @endphp">
     </script>
 @endsection
 @section('name')

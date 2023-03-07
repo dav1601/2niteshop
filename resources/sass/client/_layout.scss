@@ -3,6 +3,18 @@
     background: #277b8c !important;
     color: #ffffff;
 }
+.swal2-container {
+    z-index: 5001 !important;
+}
+.lg-thumb-item.active {
+    border: 2px solid #e74c3c !important;
+}
+.lg-thumb-item {
+    border-radius: 8px !important;
+    img {
+        border-radius: inherit;
+    }
+}
 .carousel-indicators {
     display: none;
 }
@@ -12,7 +24,34 @@
 .toast-success {
     background-color: #4bb543 !important;
 }
-
+#authContent {
+    border-radius: 8px;
+}
+.form-group {
+    position: relative;
+    .eyes-pass {
+        position: absolute;
+        top: 47%;
+        right: 12px;
+        font-size: 20px;
+        cursor: pointer;
+        &:hover {
+            color: #277b8c;
+        }
+    }
+}
+.fix-auth-card {
+    margin: 0 !important;
+    width: 100% !important;
+    padding: 10px !important;
+    margin-top: 0px !important;
+    .btn__login:hover {
+        text-decoration: none !important;
+    }
+    .wp-remember {
+        margin-left: 25px !important;
+    }
+}
 #page__loading {
     position: fixed;
     left: 0;

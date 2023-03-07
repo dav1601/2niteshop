@@ -6,11 +6,11 @@
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
+<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
 </script>
 <script src="{{ asset('client/Date-Time-Picker-Bootstrap-4/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-<script src="{{ asset('admin/app/js/blogs.js')}}?ver=@php echo filemtime('public/admin/app/js/blogs.js') @endphp">
+<script src="{{ asset('admin/app/js/blogs.js')}}?ver=@php echo filemtime('admin/app/js/blogs.js') @endphp">
 </script>
 
 @endsection

@@ -4,10 +4,9 @@
 @endsection
 @section('import_js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script
-        src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('public/admin/app/js/products.js') @endphp">
+    <script src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/products.js') @endphp">
     </script>
-    <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
+    <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
     </script>
     <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}"></script>
     <script>
@@ -203,7 +202,15 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mb-5">
+                        <x-admin.form.file name='main_img' id="imgProductMain" :custom="[
+                            'plh' => 'Hình Ảnh Chính
+                                                                                    305x305',
+                        ]" />
+                        <x-admin.form.file name='sub_img' id="imgProductSub" :custom="[
+                            'plh' => 'Hình Ảnh Phụ
+                                                            305x305',
+                        ]" />
+                        {{-- <div class="form-group mb-5">
                             <div class="custom-file">
                                 <input type="file" name="main_img" class="custom-file-input" id="main_img">
                                 <label class="custom-file-label" for="main_img" id="forMain">Hình Ảnh Chính
@@ -217,8 +224,8 @@
                                     </button>
                                 </div>
                             @enderror
-                        </div>
-                        <div class="form-group mb-5">
+                        </div> --}}
+                        {{-- <div class="form-group mb-5">
                             <div class="custom-file">
                                 <input type="file" name="sub_img" class="custom-file-input" id="sub_img">
                                 <label class="custom-file-label" for="sub_img" id="forSub">Hình Ảnh Phụ
@@ -232,8 +239,13 @@
                                     </button>
                                 </div>
                             @enderror
-                        </div>
-                        <div class="form-group mb-5">
+                        </div> --}}
+                        <x-admin.form.file name='bg' id="imgProductBg" :custom="[
+                            'plh' => 'Hình Ảnh Backgroud
+                                                                                                                                                                                                                            (Không có bỏ
+                                                                                                                                                                                                                            qua)',
+                        ]" />
+                        {{-- <div class="form-group mb-5">
                             <div class="custom-file">
                                 <input type="file" name="bg" class="custom-file-input" id="bg_product">
                                 <label class="custom-file-label" for="bg_product" id="forBg">Hình Ảnh Backgroud
@@ -248,39 +260,24 @@
                                     </button>
                                 </div>
                             @enderror
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="gll700[]" class="custom-file-input" id="gll700" multiple>
-                                <label class="custom-file-label" for="gll700" id="for700">Hình Ảnh Chi Tiết
-                                    700x700</label>
-                            </div>
-                            @error('gll700.*')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="gll80[]" class="custom-file-input" id="gll80" multiple>
-                                <label class="custom-file-label" for="gll80" id="for80">Hình Ảnh Chi Tiết
-                                    80x80</label>
-                            </div>
-                            @error('gll80.*')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
+                        </div> --}}
+                        <x-admin.form.file name='gll700' id="imgProduct700" :multiple="true" :custom="[
+                            'plh' => 'Hình Ảnh Chi Tiết
+                                                                                                                                                                                                            700x700',
+                        ]" />
+
+                        <x-admin.form.file name='gll80' id="imgProduct80" :multiple="true" :custom="[
+                            'plh' => 'Hình Ảnh Chi Tiết
+                                                                                                                                                                                                            80x80',
+                        ]" />
+
                         <div class="row mx-0">
-                            <div class="form-group col-6 mb-5 pl-0">
+                            <x-admin.form.file class="col-6 pl-0" name='banner' id="bannerProduct" :custom="[
+                                'plh' => 'Option 2: Banner
+                                                                                                                                                        Đi
+                                                                                                                                                        kèm',
+                            ]" />
+                            {{-- <div class="form-group col-6 mb-5 pl-0">
                                 <div class="custom-file">
                                     <input type="file" name="banner" class="custom-file-input" id="banner_prd">
                                     <label class="custom-file-label" for="banner_prd" id="forBannerPrd">Option 2: Banner
@@ -295,7 +292,7 @@
                                         </button>
                                     </div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-group col-6 mb-5 pr-0">
                                 <input type="text" class="form-control" name="banner_link" id=""
                                     placeholder="Option 2: Link Banner">

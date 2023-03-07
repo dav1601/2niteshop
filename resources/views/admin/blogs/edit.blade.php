@@ -4,9 +4,9 @@
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
+<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
 </script>
-<script src="{{ asset('admin/app/js/blogs.js')}}?ver=@php echo filemtime('public/admin/app/js/blogs.js') @endphp">
+<script src="{{ asset('admin/app/js/blogs.js')}}?ver=@php echo filemtime('admin/app/js/blogs.js') @endphp">
 </script>
 @endsection
 
@@ -79,9 +79,9 @@ Danh Mục Bài Viết
                             @foreach ($category_blog as $cb )
                             @if ($cb ->id != $blog->cat_id)
                             <option value="{{ $cb->id }}">{{ $cb->name }}</option>
-                            @endif 
+                            @endif
                             @endforeach
-                           
+
                         </select>
                         @error('cat')
                         <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
@@ -100,7 +100,7 @@ Danh Mục Bài Viết
                             @foreach ($category_blog as $cb )
                             @if ($cb ->id != $blog->cat_sub_id)
                             <option value="{{ $cb->id }}">{{ $cb->name }}</option>
-                            @endif 
+                            @endif
                             @endforeach
                             @else
                             <option value="">Chọn  danh mục 2</option>
@@ -108,8 +108,8 @@ Danh Mục Bài Viết
                             <option value="{{ $cb->id }}">{{ $cb->name }}</option>
                             @endforeach
                             @endif
-                          
-                           
+
+
                         </select>
                         @error('cat_2')
                         <div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert">
@@ -120,7 +120,7 @@ Danh Mục Bài Viết
                         </div>
                         @enderror
                     </div>
-    
+
                     <div class="form-group mb-5">
                         <label for="">Content</label>
                         <textarea name="content" id="content__blog"

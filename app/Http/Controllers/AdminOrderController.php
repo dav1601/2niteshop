@@ -2,26 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
 use App\Models\Ward;
 use App\Events\Order;
 use App\Models\Orders;
 use App\Models\District;
 use App\Models\PreOrder;
 use App\Models\Products;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\Customers;
+use App\Events\UpdateOrder;
 use Illuminate\Http\Request;
 use Laravel\Ui\Presets\React;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\OrderInterface;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Repositories\CustomerInterface;
 use App\Repositories\MailOrderInterface;
-use Dompdf\Dompdf;
+use App\Repositories\VaEventInterface;
+use App\Repositories\VaEventRepo;
 use Illuminate\Support\Facades\Validator;
 
 class AdminOrderController extends Controller
 {
+    public $customer;
+    public $mailer;
     public function __construct(CustomerInterface $customer, MailOrderInterface $mailer)
     {
         $this->middleware(function ($request, $next) {
@@ -62,7 +67,7 @@ class AdminOrderController extends Controller
     }
     // //////////////////////////////////////////
 
-    public function handle_ajax(Request $request)
+    public function handle_ajax(Request $request, VaEventInterface $vaev)
     {
         $data = array();
         $pagination = '';
@@ -71,15 +76,20 @@ class AdminOrderController extends Controller
         $data_update = array();
         $error = array();
         $id = $request->id;
-        $sort = $request->sort;
+        $sort = $request->has('sort') ? $request->sort : "desc";
         $page = $request->page;
+        $html_detail_order = '';
         $orders = new Orders();
+        if ($request->act == "update") {
+            $ordered = Orders::where('id', '=', $id)->firstOrFail();
+            $html_detail_order .= view('components.admin.order.select', compact('ordered'));
+        }
         if ($request->act == "update_stt") {
             $ordered = Orders::where('id', '=', $id)->firstOrFail();
             if ($request->val == 3) {
                 $total_cost = 0;
                 foreach (unserialize($ordered->cart) as $cart_cost) {
-                    $total_cost += $cart_cost->options->cost * $cart_cost->qty;
+                    $total_cost += price_product_cost($cart_cost);
                 }
                 Orders::where('id', '=', $id)->update(
                     [
@@ -88,7 +98,7 @@ class AdminOrderController extends Controller
                         'date_s' => Carbon::now('Asia/Ho_Chi_Minh'),
                     ]
                 );
-                $this->customer->UpdateOrCreateCustomer($id);
+                $this->customer->UpdateOrCreateCustomer($ordered);
                 $this->customer->stats($ordered->total, $total_cost);
             } else {
                 Orders::where('id', '=', $id)->update(['status' => $request->val]);
@@ -113,19 +123,32 @@ class AdminOrderController extends Controller
             $to = $ordered->email;
             $template = 'client.mail.order';
             event(new Order($to, $subject, $template, $data_mail));
+            if ($ordered->users_id) {
+                event(new UpdateOrder($ordered->users_id));
+                $vaev->admin_update_order($ordered->id);
+            }
+            $ordered = Orders::where('id', '=', $id)->first();
+            $html_detail_order .= view('components.admin.order.select', compact('ordered'));
         }
+
         if ($request->act == "update_paid") {
-            if ($request->val == 2) {
-                $ordered = Orders::where('id', '=', $id)->first();
-                $total_cost = 0;
-                foreach (unserialize($ordered->cart) as $cart_cost) {
-                    $total_cost += $cart_cost->options->cost * $cart_cost->qty;
+            $ordered = Orders::where('id', '=', $id)->first();
+            if (!$ordered->paid == 2) {
+                if ($request->val == 2) {
+                    $total_cost = 0;
+                    foreach (unserialize($ordered->cart) as $cart_cost) {
+                        $total_cost += price_product_cost($cart_cost);
+                    }
+                    Orders::where('id', '=', $id)->update(['paid' => 2]);
+                    $this->customer->UpdateOrCreateCustomer($ordered);
+                    $this->customer->stats($ordered->total, $total_cost);
                 }
-                Orders::where('id', '=', $id)->update(['paid' => 2]);
-                $this->customer->UpdateOrCreateCustomer($id);
-                $this->customer->stats($ordered->total, $total_cost);
-            } else {
-                Orders::where('id', '=', $id)->update(['paid' => 1]);
+                if ($ordered->users_id) {
+                    event(new UpdateOrder($ordered->users_id));
+                    $vaev->admin_update_order($ordered->id);
+                }
+                $ordered = Orders::where('id', '=', $id)->first();
+                $html_detail_order .= view('components.admin.order.select', compact('ordered'));
             }
         }
         if ($request->stt != 0) {
@@ -170,6 +193,7 @@ class AdminOrderController extends Controller
 
         $data['html'] = $output;
         $data['type'] = $request->type;
+        $data['html_detail'] = $html_detail_order;
         return response()->json($data);
     }
     // ///////////////////////////////
@@ -351,7 +375,7 @@ class AdminOrderController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         } else {
-            $data_update = $request->except(['_token' , 'name']);
+            $data_update = $request->except(['_token', 'name']);
             $data_update['name_cus'] = $request->name;
             $update = PreOrder::where('id', '=', $id)->update($data_update);
             if ($update) {
@@ -363,12 +387,13 @@ class AdminOrderController extends Controller
     }
 
     ////////////////////////////////////////
-    public function export_invoice($id , Request $request)
+    public function export_invoice($id, Request $request)
     {
         $ordered = Orders::where('id', $id)->firstOrFail();
         $cart = unserialize($ordered->cart);
         $nameFilePdf = 'hoá đơn đơn hàng số ' . $id . ' của ' . $ordered->name . '.pdf';
-        return PDF::loadView('admin.orders.invoice', compact('ordered', 'cart'))->download($nameFilePdf);
+        $pdf = PDF::loadView('admin.orders.invoice', compact('ordered', 'cart'));
+        return $pdf->download($nameFilePdf);
     }
 
 

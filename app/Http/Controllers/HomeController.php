@@ -39,6 +39,9 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        // Cart::instance('shopping')->destroy();
+        // Cart::instance('shopping')->store(Auth::id());
+        // dd(Cart::instance('shopping')->content());
         $show_home = showHome::where('active', '=', 1)->with(['sections', 'sections.category'])->orderBy('position', 'asc')->get();
         $company = Config::all();
         $banners = Banners::where('index', '!=', 0)->get();

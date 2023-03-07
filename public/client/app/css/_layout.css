@@ -167,6 +167,21 @@
   color: #ffffff;
 }
 
+.swal2-container {
+  z-index: 5001 !important;
+}
+
+.lg-thumb-item.active {
+  border: 2px solid #e74c3c !important;
+}
+
+.lg-thumb-item {
+  border-radius: 8px !important;
+}
+.lg-thumb-item img {
+  border-radius: inherit;
+}
+
 .carousel-indicators {
   display: none;
 }
@@ -177,6 +192,37 @@
 
 .toast-success {
   background-color: #4bb543 !important;
+}
+
+#authContent {
+  border-radius: 8px;
+}
+
+.form-group {
+  position: relative;
+}
+.form-group .eyes-pass {
+  position: absolute;
+  top: 47%;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.form-group .eyes-pass:hover {
+  color: #277b8c;
+}
+
+.fix-auth-card {
+  margin: 0 !important;
+  width: 100% !important;
+  padding: 10px !important;
+  margin-top: 0px !important;
+}
+.fix-auth-card .btn__login:hover {
+  text-decoration: none !important;
+}
+.fix-auth-card .wp-remember {
+  margin-left: 25px !important;
 }
 
 #page__loading {

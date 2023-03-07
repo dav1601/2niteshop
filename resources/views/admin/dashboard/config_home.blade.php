@@ -3,7 +3,7 @@
 @endsection
 @section('import_js')
     <script
-        src="{{ asset('admin/app/js/dashboard.js') }}?ver=@php echo filemtime('public/admin/app/js/dashboard.js') @endphp">
+        src="{{ asset('admin/app/js/dashboard.js') }}?ver=@php echo filemtime('admin/app/js/dashboard.js') @endphp">
     </script>
     <script src="{{ $file->ver('admin/app/js/show_home.js') }}"></script>
     <script>

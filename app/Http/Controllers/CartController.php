@@ -21,7 +21,7 @@ use App\Repositories\MailOrderInterface;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Validator;
 
-use function Opis\Closure\unserialize;
+
 
 class CartController extends Controller
 {
@@ -58,12 +58,14 @@ class CartController extends Controller
         $output_2 = '';
         $add_ok = '';
         $output_items = '';
+        $checkout = '';
         $error = array();
         $login = 0;
         $id = $request->has('id')  ? (int) $request->get('id') : 0;
         $qty = $request->has('qty')  ? (int) $request->get('qty') : 1;
         $op_actives = $request->has('ops') && $request->get('ops')  ? $request->get('ops') : null;
         $rowId = $request->has('rowId') ? $request->get('rowId') : 0;
+        $type = $request->has('type') ? $request->get('type') : "load";
         $realTimeUpdate = $request->has('rtupdate');
         $data['message'] = "Giỏ hàng đã được cập nhật";
         $data['new'] = false;
@@ -79,13 +81,12 @@ class CartController extends Controller
             }
         }
         if ($id != 0) {
-            $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, [], $realTimeUpdate);
-            if ($res['act'] == "add") {
+            $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, ['type' => $type], $realTimeUpdate);
                 $item = $res['product'];
                 $add_ok .= view('components.addcart', compact('item'));
                 $data['add_ok'] = $add_ok;
                 $data['new'] = true;
-            }
+
         }
 
         if ($request->type == "delete") {
@@ -93,8 +94,12 @@ class CartController extends Controller
             Cart::instance('shopping')->remove($rowId);
         }
         $cart = Cart::instance('shopping')->content()->sortBy('id');
-        foreach ($cart as  $item) {
-            $this->handle_cart->add__or_update($item->id, $qty, $op_actives, [], true);
+        // foreach ($cart as $item) {
+        //     $this->handle_cart->add__or_update($item->id, $qty, $op_actives, [], true);
+        // }
+        if ($realTimeUpdate) {
+            $this->handle_cart->add__or_update($id, 0, $op_actives, ['type' => $type], true);
+            $data['new'] = true;
         }
         $this->handle_cart->store_cart();
         $total = $this->handle_cart->total();
@@ -103,12 +108,14 @@ class CartController extends Controller
         ' . Cart::instance('shopping')->count() . ' Sản Phẩm -- Gọi -- ' . getVal('switchboard')->value . '
         ';
         $output_2 .= view('components.client.cart.drop', ['cart' => $cart]);
+        $checkout .= view('components.client.cart.checkout', ['cart' => $cart]);
         $data['cart'] = $output;
         $data['test'] = $cart;
         $data['cart_drop'] = $output_2;
         $data['total'] = $total;
         $data['html_items'] = $output_items;
         $data['total_format'] = crf($total);
+        $data['checkout'] = $checkout;
         return response()->json($data);
     }
 
@@ -176,7 +183,7 @@ class CartController extends Controller
             if (Auth::check()) {
                 $data['users_id'] = Auth::id();
             }
-            $data['total'] = $this->handle_cart->total();
+            $data['total'] = total();
             $data['email'] = $request->email;
             $data['address'] = $request->address;
             $data['prov'] = Province::where('id', '=', $request->prov)->first()->_name;
@@ -216,9 +223,13 @@ class CartController extends Controller
 
     public function checkout_s(Request $request)
     {
+        if (!session()->has('last_orderd')) {
+            return redirect()->route('purchase');
+        }
         $id = session()->get('last_orderd');
         $ordered = Orders::where('id', '=', $id)->first();
         $cart = unserialize($ordered->cart);
+        session()->forget('last_orderd');
         return view('client.cart.checkout-success', compact('ordered', 'cart'));
     }
 

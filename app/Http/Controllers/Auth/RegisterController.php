@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -55,7 +56,7 @@ class RegisterController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'phone' => ['required', 'string', 'numeric' , 'min:6', 'unique:users'],
+                'phone' => ['required', 'string', 'numeric', 'min:6', 'unique:users'],
 
             ],
             [
@@ -90,5 +91,27 @@ class RegisterController extends Controller
             'role_id' => 5,
             'phone' => $data['phone'],
         ]);
+    }
+    public function ajaxRegister(Request $request)
+    {
+        $vadlidator = $this->validator($request->all());
+        $data['errors'] = [];
+        $data['s'] = false;
+        if ($vadlidator->fails()) {
+            $data['errors'] = $vadlidator->errors();
+        } else {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => 5,
+                'phone' => $request->phone,
+            ]);
+            if ($user) {
+                $data['s'] = true;
+                $this->guard()->login($user);
+            }
+        }
+        return response()->json($data);
     }
 }

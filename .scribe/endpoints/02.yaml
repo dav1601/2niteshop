@@ -12,14 +12,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Product category properties.'
       description: 'Các thuộc tính của danh mục sản phẩm.'
       authenticated: false
       custom: []
     headers:
       Content-Type: multipart/form-data
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -29,42 +30,42 @@ endpoints:
         name: name
         description: 'Tên danh mục'
         required: false
-        example: ratione
+        example: vero
         type: varchar(255)
         custom: []
       title:
         name: title
         description: 'Tiêu đề danh mục'
         required: false
-        example: ut
+        example: ab
         type: mediumtext
         custom: []
       desc:
         name: desc
         description: 'Mô tả ngắn danh mục'
         required: false
-        example: optio
+        example: modi
         type: longtext
         custom: []
       keywords:
         name: keywords
         description: 'Keywords SEO or Tag danh mục'
         required: false
-        example: illo
+        example: id
         type: longtext
         custom: []
       parent_id:
         name: parent_id
         description: 'id danh mục cha (0: là danh mục gốc)'
         required: false
-        example: 18
+        example: 12
         type: integer
         custom: []
       slug:
         name: slug
         description: 'Slug danh mục'
         required: false
-        example: numquam
+        example: et
         type: varchar
         custom: []
       img:
@@ -78,33 +79,33 @@ endpoints:
         name: icon
         description: 'Icon danh mục'
         required: false
-        example: et
+        example: sapiente
         type: varchar
         custom: []
       level:
         name: level
         description: 'Level danh mục (danh mục gốc level = 0)'
         required: false
-        example: 6
+        example: 20
         type: integer
         custom: []
       is_game:
         name: is_game
         description: '(2: không là danh mục game , 1: là danh mục game)'
         required: false
-        example: 12
+        example: 8
         type: integer
         custom: []
     cleanBodyParameters:
-      name: ratione
-      title: ut
-      desc: optio
-      keywords: illo
-      parent_id: 18
-      slug: numquam
-      icon: et
-      level: 6
-      is_game: 12
+      name: vero
+      title: ab
+      desc: modi
+      keywords: id
+      parent_id: 12
+      slug: et
+      icon: sapiente
+      level: 20
+      is_game: 8
     fileParameters:
       img: null
     responses:
@@ -112,7 +113,7 @@ endpoints:
         status: 200
         content: '{"Đây là tất cả thuộc tính của bảng danh mục sản phẩm"}'
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -129,13 +130,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'List all product categories.'
       description: 'Cây Danh Mục sản phẩm.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -306,7 +309,7 @@ endpoints:
             }
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -323,13 +326,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'List all Game Genre.'
       description: 'Lấy danh sách danh mục game của sản phẩm.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -366,7 +371,7 @@ endpoints:
               ]
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -383,13 +388,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'List all Producer.'
       description: 'Lấy danh sách nhà sản xuất.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -428,7 +435,7 @@ endpoints:
               ]
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []

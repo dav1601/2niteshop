@@ -4,10 +4,145 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+
+    $(document).on("click", ".eyes-pass", function () {
+        if ($(this).hasClass("fa-eye")) {
+            $(this).prev("input").attr("type", "text");
+            $(this).removeClass("fa-eye");
+            $(this).addClass("fa-eye-slash");
+        } else {
+            $(this).prev("input").attr("type", "password");
+            $(this).removeClass("fa-eye-slash");
+            $(this).addClass("fa-eye");
+        }
+        // làm load form ajax cho modal auth
+    });
+
+    $(document).on("click", ".loadModalReg", function () {
+        renderForm("reg", true);
+    });
+    $(document).on("click", ".loadTempReg", function () {
+        renderForm("reg", false);
+    });
+    $(document).on("click", ".loadModalLogin", function () {
+        renderForm("login", true);
+    });
+    $(document).on("click", ".loadTempLogin", function () {
+        renderForm("login", false);
+    });
+
+    function renderForm(type = "login", modal = true) {
+        let authModal = $("#authModal");
+        let title = "Đăng nhập";
+        let data = { type: type };
+        switch (type) {
+            case "reg":
+                title = "Đăng ký";
+                break;
+            case "restore":
+                title = "Khôi phục";
+                break;
+            default:
+                break;
+        }
+        $.ajax({
+            type: "post",
+            url: route("auth.template"),
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                $("#authModalTitle").html(
+                    `<h2 class="title text-center">${title}</h2>`
+                );
+                $("#authContent").html(data.html);
+                if (modal) {
+                    authModal.modal("show");
+                }
+            },
+        });
+    }
+    //
+    $(document).on("submit", "#formRegModal", function (e) {
+        e.preventDefault();
+        let data = $(this).serialize();
+        const form = $(this)[0];
+        $.errForm(true, form);
+        $.btn_loading(form, true, true);
+        $.ajax({
+            type: "post",
+            url: route("ajax.auth.register"),
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                $.btn_loading(form, false, true);
+                $.errForm(false, form, data.errors);
+                if (data.s) {
+                    window.location.href = route("home");
+                }
+            },
+        });
+    });
+    //
+    $(document).on("submit", "#formLoginModal", function (e) {
+        e.preventDefault();
+        let data = $(this).serialize();
+        const form = $(this)[0];
+        $.errForm(true, form);
+        $.btn_loading(form, true, true);
+        $.ajax({
+            type: "post",
+            url: route("navi_login"),
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                $.btn_loading(form, false, true);
+                $.errForm(false, form, data.errors.input);
+                if (data.errors.login) {
+                    $.vaToast(data.errors.login, "e", 15000);
+                    loginPass.val("");
+                }
+                if (data.s) {
+                    if (data.role <= 3) {
+                        window.location.href = route("dashboard");
+                    } else {
+                        window.location.href = route("home");
+                    }
+                }
+            },
+        });
+    });
+
+    jQuery.ajaxCart = function ajaxCart(data = {}, callback) {
+        const type = data.type;
+        $.ajax({
+            type: "post",
+            url: url_cart,
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                $.end_loading();
+                callback;
+                $(".items").text(data.html_items);
+                $(".cart__drop").html(data.cart_drop);
+                $("#cart__show").html(data.cart);
+                $("#cart__checkout").html(data.checkout);
+                if (type == "add") {
+                    Swal.fire({
+                        position: "top-end",
+                        html: data.add_ok,
+                        showConfirmButton: false,
+                        timer: 6500,
+                    });
+                } else {
+                    $.vaToast(data.message);
+                }
+            },
+        });
+    };
     var url_cart = route("add_cart");
     function loadCart() {
         const data = { type: "load" };
-        ajaxCart(data);
+        $.ajaxCart(data);
     }
     loadCart();
     //////////////////////
@@ -27,19 +162,21 @@ $(function () {
         }
     });
     function loadingCart(id = null, loading = false) {
-        console.log(id);
         if (!id) {
             return;
         }
         let btn = $("#btn-add-cart-" + id);
-        let child = btn.children(".btn-cart-add");
-        let cartLoading = btn.children(".btn-cart-loading");
+
+        // let child = btn.children(".btn-cart-add");
+        // let cartLoading = btn.children(".btn-cart-loading");
         if (loading) {
-            child.addClass("d-none");
-            cartLoading.removeClass("d-none");
+            $.btn_loading(btn, true, false, "mr-2 text-white");
+            // child.addClass("d-none");
+            // cartLoading.removeClass("d-none");
         } else {
-            child.removeClass("d-none");
-            cartLoading.addClass("d-none");
+            $.btn_loading(btn, false, false);
+            // child.removeClass("d-none");
+            // cartLoading.addClass("d-none");
         }
     }
     $(document).on("click", ".delete__cart", function () {
@@ -48,7 +185,7 @@ $(function () {
             type: "delete",
             rowId: rowId,
         };
-        ajaxCart(data);
+        $.ajaxCart(data);
     });
     $(document).on("click", ".btn-cart", function () {
         const id = Number($(this).attr("data-id"));
@@ -67,11 +204,12 @@ $(function () {
             ops: ops,
         };
         loadingCart(id, true);
-        ajaxCart(data, loadingCart(id, false));
+        $.ajaxCart(data, loadingCart(id, false));
     });
     $(document).on("change", ".input-number", function () {
         let max = Number($(this).attr("max"));
         let min = Number($(this).attr("min"));
+        let isAjax = $(this).attr("data-ajax");
         let id = Number($(this).attr("data-id"));
         let elPrice = $(".price-" + id);
         let opsPrice = 0;
@@ -107,6 +245,16 @@ $(function () {
         let price = (Number(elPrice.attr("prd-price")) + opsPrice) * currentVal;
         elPrice.attr("data-price", price);
         elPrice.text($.crf(price));
+        if (isAjax) {
+            const data = {
+                type: "update",
+                qty: currentVal,
+                id: id,
+                ops: ops,
+            };
+            loadingCart(id, true);
+            $.ajaxCart(data, loadingCart(id, false));
+        }
     });
     $(document).on("click", ".btn-number", function () {
         let type = $(this).attr("data-type");
@@ -170,34 +318,6 @@ $(function () {
     //     console.log()
     // }
     setHeight();
-    function ajaxCart(data = {}, callback) {
-        const type = data.type;
-        $.ajax({
-            type: "post",
-            url: url_cart,
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                callback;
-                $(".items").text(data.html_items);
-                $(".cart__drop").html(data.cart_drop);
-                $("#cart__show").html(data.cart);
-                console.log(data.cart_drop);
-                if (data.new && type == "add") {
-                    Swal.fire({
-                        position: "top-end",
-                        html: data.add_ok,
-                        showConfirmButton: false,
-                        timer: 10000,
-                    });
-                } else if (!data.new) {
-                    $.vaToast(data.message);
-                }
-
-                $.end_loading();
-            },
-        });
-    }
 
     function renderAlert($icon = "success", $title = "Tiêu Đề") {
         const Toast = Swal.mixin({
@@ -530,6 +650,7 @@ $(function () {
         $("#bg-menu").addClass("d-none");
         $("body").css("overflow-y", "auto");
     });
+
     // đóng menu
     // mở menu
     $(document).on("click", ".menu-trigger", function () {
@@ -577,9 +698,6 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 if (data.ok == 0) {
-                    $.each(data.errors, function (key, value) {
-                        alert(value);
-                    });
                 }
                 if (data.created == 1) {
                     renderAlert(

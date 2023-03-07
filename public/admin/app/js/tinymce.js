@@ -7,7 +7,7 @@ $(function () {
             height: height,
             apiKey: "K62VDFLT",
             external_plugins: {
-                N1ED: "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/public/plugin/tinymce/FontAwesome/plugin.js",
+                N1ED: "../../../plugin/tinymce/FontAwesome/plugin.min.js",
             },
 
             plugins:

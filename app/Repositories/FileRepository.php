@@ -25,17 +25,17 @@ class FileRepository implements FileInterface
     }
     public function import_css($file = "")
     {
-        $link = asset('client/' . $this->folder . '/' . 'css/' . $file) . '?ver=' . filemtime('public/client/' . $this->folder . '/' . 'css/' . $file);
+        $link = asset('client/' . $this->folder . '/' . 'css/' . $file) . '?ver=' . filemtime('client/' . $this->folder . '/' . 'css/' . $file);
         return $link;
     }
     public function import_js($file = "")
     {
-        $link = asset('client/' . $this->folder . '/' . 'js/' . $file) . '?ver=' . filemtime('public/client/' . $this->folder . '/' . 'js/' . $file);
+        $link = asset('client/' . $this->folder . '/' . 'js/' . $file) . '?ver=' . filemtime('client/' . $this->folder . '/' . 'js/' . $file);
         return $link;
     }
     public function ver($link = "")
     {
-        $link = asset($link) . '?ver=' . filemtime('public/' . $link);
+        $link = asset($link) . '?ver=' . filemtime('' . $link);
         return $link;
     }
     public function ver_img($link = "")
@@ -49,7 +49,11 @@ class FileRepository implements FileInterface
                 break;
             case 'cloudinary':
                 $data = json_decode($link);
-                return $data ? $data->path : "";
+                $path = "";
+                if ($data) {
+                    $path = $data->path ? $data->path . "?now=" . Carbon::now('Asia/Ho_Chi_Minh')->timestamp : "";
+                }
+                return $path;
             default:
                 return "";
                 break;
@@ -68,7 +72,7 @@ class FileRepository implements FileInterface
     {
         switch ($this->driver) {
             case 'local':
-                $path_public = "public/" . $path;
+                $path_public = "" . $path;
                 $name = $file->getClientOriginalName();
                 if (file_exists($path_public .  $name)) {
                     $file_name = pathinfo($name, PATHINFO_FILENAME);

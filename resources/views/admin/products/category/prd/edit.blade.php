@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ asset('admin/plugin/tags/tagsinput.css') }}">
 @endsection
 @section('import_js')
-<script src="{{ asset('admin/app/js/category.js')}}?ver=@php echo filemtime('public/admin/app/js/category.js') @endphp">
+<script src="{{ asset('admin/app/js/category.js')}}?ver=@php echo filemtime('admin/app/js/category.js') @endphp">
 </script>
 <script src="{{ asset('admin/app/js/related_all.js') }}"></script>
 <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}">

@@ -139,6 +139,28 @@ class ClientProductsController extends Controller
 
     ////////////////////////////////////////
     //////////////////////////////////////
+    function getComponent(Request $request)
+    {
+        $type = $request->type;
+        $id = $request->prdId;
+        $product = Products::where('id', $id)->first();
+        $output = '';
+        if ($product) {
+            if ($type == "grid") {
+                $output .= view('components.product.itemgrid', ['message' => $product, 'type' => 1, 'class' => '']);
+            } else {
+                $output .= view('components.listitem', ['message' => $product]);
+            }
+        } else {
+            $product = false;
+        }
+        $data['html'] = $output;
+        $data['prd'] = $product;
+        return response()->json($data);
+    }
+
+    ////////////////////////////////////////
+    //////////////////////////////////////
 
     public function format(Request $request)
     {

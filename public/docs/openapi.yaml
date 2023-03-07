@@ -1,0 +1,4104 @@
+openapi: 3.0.3
+info:
+  title: '2NITE SHOP API DOCS'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://127.0.0.1:8000'
+paths:
+  /api/auth/login:
+    post:
+      summary: Login.
+      operationId: login
+      description: 'Api cho phép bạn đăng nhập vào hệ thống.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  is_login: true
+                  status: success
+                  access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.*eyJhdWQiOiI1IiwianRpIjoiNzEzY2YzMjI4YzgyNWNhMjM1MGQzYTVkOThhZDI0ZmExODVlNjFjYWQzOGM5YmI0NjU0ZTcyYTQzNmNiNzYxZGUyZjYzMDU4NmY2YTdhMzUiLCJpYXQiOjE2NDczNDA3ODYuMzE0NzM1LC*JuYmYiOjE2NDczNDA3ODYuMzE0NzM5LCJleHAiOjE5NjI5NTk5ODYuMjYzNjA5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.*FlqtOsjiMBBn_UzoLT_HN-FiYsd9QyoCRNsaTZ4y4BvT4hCq2R9Qx4HmKzXtuaDFBdisQ36gEVElyV7l3WDjgm4H-1wtl0PwuMp_j7uWQzJGMQwebV3YlnUJM-BqAYPaaWymnixVp26WUnabDZEx4B4dong3AWUMboIXRg*xNZCvOc7GyjIGAvepDFVrpa8qBWEuX5fR1U6A8NkYf-PUAWQbY5H3D57WIWHUTlScNO2aaKXL1xYyQVcd2V2D1dS0RQtsZ-Oc4OuDvbCoPkBNeU_15tK7oagB_q2i5p44O97d1vmUjjiJOyacjIsIVBJAUhcOgbLARqXJK*QndEV6wWmbojNzmKKk-rtLWu5_pK3ODOqjhNIfWezVXy3MO4an6GEpoLpedq4jzu--pLWWJ3fb_MYc4MP6bKQtHDVuLZtyB1KnHyjQ181UZYTMwJKVX7DM5aKi-TbC4xCut2c8JhjymWat3H2g3soHUKffGTiyn7_eKhAs*f7oSvDUKDxPPinAydWWWX6w7fa_slLMLRUjzl1tYGHI-BsJ_p1Tk9QbQnWX89kQ0oBDYApITWxmP9fVGIqVQksom7oP18JO-rP3JMPygxvoQfYoI7mCBe-T9q-SMyzXq4a7QmfsOMi3g6rK3kZnyxURQ6FLG-XN8GCAc8'
+                  token_type: Bearer
+                  expires_at: '2032-03-15 17:39:46'
+                  cart:
+                    751a67de0e70aba0bc788781dc89923e:
+                      rowId: 751a67de0e70aba0bc788781dc89923e
+                      id: 54
+                      name: 'Nintendo Switch OLED model with Neon Red Blue Joy‑Con'
+                      qty: '1'
+                      price: 9400000
+                      options:
+                        ins: '7'
+                        color: 0
+                        model: '15923'
+                        image: admin/images/products/nintendo-switch/main/nintendo-switch-oled-red-blue-joy-con-00-305x305.jpg
+                        sub_total: '10400000'
+                        cost: 8100000
+                      tax: '0.00'
+                      isSaved: false
+                      subtotal: '9400000.00'
+                    802275dbe2134cdf804a737b253425b3:
+                      rowId: 802275dbe2134cdf804a737b253425b3
+                      id: 67
+                      name: 'Nintendo Switch Lite - Blue'
+                      qty: '1'
+                      price: 4980000
+                      options:
+                        ins: '8'
+                        color: 0
+                        model: '15432'
+                        image: admin/images/products/nintendo-switch-lite/main/nintendo-switch-lite-blue-00-305x305.jpg
+                        sub_total: '4980000'
+                        cost: 4000000
+                      tax: '0.00'
+                      isSaved: false
+                      subtotal: '4980000.00'
+                  user:
+                    id: 1
+                    role_id: 1
+                    name: '2NITEE API'
+                    email: api2nite@gmail.com
+                    phone: '0967898460'
+                    email_verified_at: null
+                    avatar: admin/images/avatar/273897681_461480892292312_8005546585052258809_n(1).jpg
+                    created_at: '2022-02-19T08:06:28.000000Z'
+                    updated_at: '2022-03-15T09:31:49.000000Z'
+                    provider_id: null
+                    provider: null
+                    ban: 0
+                  remember: false
+                properties:
+                  is_login:
+                    type: boolean
+                    example: true
+                  status:
+                    type: string
+                    example: success
+                  access_token:
+                    type: string
+                    example: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.*eyJhdWQiOiI1IiwianRpIjoiNzEzY2YzMjI4YzgyNWNhMjM1MGQzYTVkOThhZDI0ZmExODVlNjFjYWQzOGM5YmI0NjU0ZTcyYTQzNmNiNzYxZGUyZjYzMDU4NmY2YTdhMzUiLCJpYXQiOjE2NDczNDA3ODYuMzE0NzM1LC*JuYmYiOjE2NDczNDA3ODYuMzE0NzM5LCJleHAiOjE5NjI5NTk5ODYuMjYzNjA5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.*FlqtOsjiMBBn_UzoLT_HN-FiYsd9QyoCRNsaTZ4y4BvT4hCq2R9Qx4HmKzXtuaDFBdisQ36gEVElyV7l3WDjgm4H-1wtl0PwuMp_j7uWQzJGMQwebV3YlnUJM-BqAYPaaWymnixVp26WUnabDZEx4B4dong3AWUMboIXRg*xNZCvOc7GyjIGAvepDFVrpa8qBWEuX5fR1U6A8NkYf-PUAWQbY5H3D57WIWHUTlScNO2aaKXL1xYyQVcd2V2D1dS0RQtsZ-Oc4OuDvbCoPkBNeU_15tK7oagB_q2i5p44O97d1vmUjjiJOyacjIsIVBJAUhcOgbLARqXJK*QndEV6wWmbojNzmKKk-rtLWu5_pK3ODOqjhNIfWezVXy3MO4an6GEpoLpedq4jzu--pLWWJ3fb_MYc4MP6bKQtHDVuLZtyB1KnHyjQ181UZYTMwJKVX7DM5aKi-TbC4xCut2c8JhjymWat3H2g3soHUKffGTiyn7_eKhAs*f7oSvDUKDxPPinAydWWWX6w7fa_slLMLRUjzl1tYGHI-BsJ_p1Tk9QbQnWX89kQ0oBDYApITWxmP9fVGIqVQksom7oP18JO-rP3JMPygxvoQfYoI7mCBe-T9q-SMyzXq4a7QmfsOMi3g6rK3kZnyxURQ6FLG-XN8GCAc8'
+                  token_type:
+                    type: string
+                    example: Bearer
+                  expires_at:
+                    type: string
+                    example: '2032-03-15 17:39:46'
+                  cart:
+                    type: object
+                    properties:
+                      751a67de0e70aba0bc788781dc89923e:
+                        type: object
+                        properties:
+                          rowId:
+                            type: string
+                            example: 751a67de0e70aba0bc788781dc89923e
+                          id:
+                            type: integer
+                            example: 54
+                          name:
+                            type: string
+                            example: 'Nintendo Switch OLED model with Neon Red Blue Joy‑Con'
+                          qty:
+                            type: string
+                            example: '1'
+                          price:
+                            type: integer
+                            example: 9400000
+                          options:
+                            type: object
+                            properties:
+                              ins:
+                                type: string
+                                example: '7'
+                              color:
+                                type: integer
+                                example: 0
+                              model:
+                                type: string
+                                example: '15923'
+                              image:
+                                type: string
+                                example: admin/images/products/nintendo-switch/main/nintendo-switch-oled-red-blue-joy-con-00-305x305.jpg
+                              sub_total:
+                                type: string
+                                example: '10400000'
+                              cost:
+                                type: integer
+                                example: 8100000
+                          tax:
+                            type: string
+                            example: '0.00'
+                          isSaved:
+                            type: boolean
+                            example: false
+                          subtotal:
+                            type: string
+                            example: '9400000.00'
+                      802275dbe2134cdf804a737b253425b3:
+                        type: object
+                        properties:
+                          rowId:
+                            type: string
+                            example: 802275dbe2134cdf804a737b253425b3
+                          id:
+                            type: integer
+                            example: 67
+                          name:
+                            type: string
+                            example: 'Nintendo Switch Lite - Blue'
+                          qty:
+                            type: string
+                            example: '1'
+                          price:
+                            type: integer
+                            example: 4980000
+                          options:
+                            type: object
+                            properties:
+                              ins:
+                                type: string
+                                example: '8'
+                              color:
+                                type: integer
+                                example: 0
+                              model:
+                                type: string
+                                example: '15432'
+                              image:
+                                type: string
+                                example: admin/images/products/nintendo-switch-lite/main/nintendo-switch-lite-blue-00-305x305.jpg
+                              sub_total:
+                                type: string
+                                example: '4980000'
+                              cost:
+                                type: integer
+                                example: 4000000
+                          tax:
+                            type: string
+                            example: '0.00'
+                          isSaved:
+                            type: boolean
+                            example: false
+                          subtotal:
+                            type: string
+                            example: '4980000.00'
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      role_id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: '2NITEE API'
+                      email:
+                        type: string
+                        example: api2nite@gmail.com
+                      phone:
+                        type: string
+                        example: '0967898460'
+                      email_verified_at:
+                        type: string
+                        example: null
+                      avatar:
+                        type: string
+                        example: admin/images/avatar/273897681_461480892292312_8005546585052258809_n(1).jpg
+                      created_at:
+                        type: string
+                        example: '2022-02-19T08:06:28.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2022-03-15T09:31:49.000000Z'
+                      provider_id:
+                        type: string
+                        example: null
+                      provider:
+                        type: string
+                        example: null
+                      ban:
+                        type: integer
+                        example: 0
+                  remember:
+                    type: boolean
+                    example: false
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'max 255'
+                  example: 2niteshop@gmail.com
+                password:
+                  type: string
+                  description: 'min:6'
+                  example: Anh$1234
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/signup:
+    post:
+      summary: Singup.
+      operationId: singup
+      description: 'Api này cho phép bạn đăng ký tài khoản user trong hệ thống.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Đăng ký thành công'
+                  success: true
+                properties:
+                  message:
+                    type: string
+                    example: 'Đăng ký thành công'
+                  success:
+                    type: boolean
+                    example: true
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'max 255'
+                  example: 'Vuong Anh'
+                email:
+                  type: string
+                  description: 'max 255'
+                  example: 2niteshop@gmail.com
+                password:
+                  type: string
+                  description: 'min:6'
+                  example: Anh$1234
+                phone:
+                  type: string
+                  description: 'min:6'
+                  example: '0987687679'
+                password_confirmation:
+                  type: string
+                  description: 'min:6'
+                  example: Anh$1234
+              required:
+                - name
+                - email
+                - password
+                - phone
+                - password_confirmation
+      security: []
+  /api/auth/logout:
+    post:
+      summary: Logout.
+      operationId: logout
+      description: 'Api cho phép bạn logout và xoá token user trong hệ thống.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {token}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\nis_logout => true\n}"
+      tags:
+        - 'Auth Api'
+  '/api/auth/me/{id}':
+    get:
+      summary: 'GET USER LOGGED.'
+      operationId: gETUSERLOGGED
+      description: 'Api này cho phép lấy user đã đăng nhập.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {token}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  user:
+                    id: 337
+                    role_id: 5
+                    name: 'Garrison Farrell'
+                    email: tkub@example.org
+                    phone: '0944373354'
+                    email_verified_at: null
+                    avatar: null
+                    provider_id: null
+                    provider: null
+                    ban: 0
+                    created_at: '2022-02-19T08:40:34.000000Z'
+                    updated_at: '2022-02-19T08:40:34.000000Z'
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 337
+                      role_id:
+                        type: integer
+                        example: 5
+                      name:
+                        type: string
+                        example: 'Garrison Farrell'
+                      email:
+                        type: string
+                        example: tkub@example.org
+                      phone:
+                        type: string
+                        example: '0944373354'
+                      email_verified_at:
+                        type: string
+                        example: null
+                      avatar:
+                        type: string
+                        example: null
+                      provider_id:
+                        type: string
+                        example: null
+                      provider:
+                        type: string
+                        example: null
+                      ban:
+                        type: integer
+                        example: 0
+                      created_at:
+                        type: string
+                        example: '2022-02-19T08:40:34.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2022-02-19T08:40:34.000000Z'
+      tags:
+        - 'Auth Api'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the me.'
+        example: fugit
+        required: true
+        schema:
+          type: string
+  '/api/auth/me/orders/{id}':
+    get:
+      summary: 'GET ORDERS USER LOGGED.'
+      operationId: gETORDERSUSERLOGGED
+      description: 'Api này cho phép lấy danh sách đơn hàng user đã đăng nhập.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {token}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ''
+      tags:
+        - 'Auth Api'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the order.'
+        example: sint
+        required: true
+        schema:
+          type: string
+  '/api/auth/update/{id}':
+    post:
+      summary: 'POST UPDATE INFO USER.'
+      operationId: pOSTUPDATEINFOUSER
+      description: 'Api này cho phép cập nhật thông tin của user.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: multipart/form-data
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {token}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: 1
+                  updated_fail: false
+                  user:
+                    id: 1
+                    role_id: 1
+                    name: 2NITEAPI
+                    email: 2nitetestapi@gmail.com
+                    phone: '0811122260'
+                    email_verified_at: null
+                    avatar: admin/images/avatar/245119900_260411806011768_6267318235776841110_n.jpg
+                    provider_id: null
+                    provider: null
+                    ban: 0
+                    created_at: '2022-02-19T08:06:28.000000Z'
+                    updated_at: '2022-03-22T11:39:20.000000Z'
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  updated_fail:
+                    type: boolean
+                    example: false
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      role_id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 2NITEAPI
+                      email:
+                        type: string
+                        example: 2nitetestapi@gmail.com
+                      phone:
+                        type: string
+                        example: '0811122260'
+                      email_verified_at:
+                        type: string
+                        example: null
+                      avatar:
+                        type: string
+                        example: admin/images/avatar/245119900_260411806011768_6267318235776841110_n.jpg
+                      provider_id:
+                        type: string
+                        example: null
+                      provider:
+                        type: string
+                        example: null
+                      ban:
+                        type: integer
+                        example: 0
+                      created_at:
+                        type: string
+                        example: '2022-02-19T08:06:28.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2022-03-22T11:39:20.000000Z'
+      tags:
+        - 'Auth Api'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'max 255'
+                  example: 'VUong Anh'
+                phone:
+                  type: string
+                  description: 'min:6'
+                  example: '0987687678'
+                avatar:
+                  type: string
+                  format: binary
+                  description: ''
+              required:
+                - name
+                - phone
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the update.'
+        example: repudiandae
+        required: true
+        schema:
+          type: string
+  /api/blogs/list:
+    get:
+      summary: 'List all blog.'
+      operationId: listAllBlog
+      description: 'Lấy danh sách bài viết.'
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: query
+          name: category
+          description: 'Slug Danh Mục'
+          example: tin-moi
+          required: false
+          schema:
+            type: string
+            description: 'Slug Danh Mục'
+            example: tin-moi
+        -
+          in: query
+          name: sort
+          description: 'ASC/DESC Default: DESC'
+          example: DESC
+          required: false
+          schema:
+            type: string
+            description: 'ASC/DESC Default: DESC'
+            example: DESC
+        -
+          in: query
+          name: key_sort
+          description: 'Default: id'
+          example: id
+          required: false
+          schema:
+            type: string
+            description: 'Default: id'
+            example: id
+        -
+          in: query
+          name: per_page
+          description: 'Default: 10'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Default: 10'
+            example: 10
+        -
+          in: query
+          name: page
+          description: 'Default: all'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Default: all'
+            example: 1
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  category: tin-moi
+                  number_page: 3
+                  count: 21
+                  sort: DESC
+                  key_sort: id
+                  per_page: '10'
+                  page: '1'
+                  blogs:
+                    -
+                      id: 23
+                      title: 'Những tựa game đáng mong đợi tháng 2/2022 - Tháng này chơi gì'
+                      slug: nhung-tua-game-dang-mong-doi-thang-22022-thang-nay-choi-gi
+                      content: "<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\"><em style=\"box-sizing: border-box;\">K&iacute;nh ch&agrave;o năm mới! HaLo v&agrave; Say Game xin gửi những lời ch&uacute;c b&igrave;nh an đến với mọi kh&aacute;n giả đ&atilde; đồng h&agrave;nh c&ugrave;ng HaLo suốt thời gian qua v&agrave; sẽ c&ograve;n ủng hộ trong tương lai về sau.</em></span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Những ng&agrave;y nghỉ Tết tuy ngắn nhưng lại l&agrave; cơ hội tốt cho một số bạn c&oacute; thể tăng thu nhập đột biến nhưng cũng sẽ khiến c&aacute;c anh em kh&aacute;c hao hụt kha kh&aacute; số dư. D&ugrave; vậy c&aacute;c bạn cũng đừng qu&ecirc;n c&aacute;c tựa game cực phẩm sẽ l&ecirc;n kệ trong th&aacute;ng 2 n&agrave;y v&agrave; nhanh ch&oacute;ng bổ sung v&agrave;o bộ sưu tập của m&igrave;nh nh&eacute;. V&agrave; đ&acirc;y l&agrave; video Những tựa game Hay th&aacute;ng 2/2022 của&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;\""
+                      desc: 'Kính chào năm mới! HaLo và Say Game xin gửi những lời chúc bình an đến với mọi khán giả đã đồng hành cùng HaLo suốt thời gian qua và sẽ còn ủng hộ trong tương lai về sau. Những ngày nghỉ Tết tuy ngắn nhưng lại là cơ hội tốt cho một số bạn có thể tăng..'
+                      img: admin/images/blogs/tin-moi/main/nhung-tua-game-dang-choi-thang-2-2022-0-356x200w.jpeg
+                      cat_id: 2
+                      cat_sub_id: null
+                      users_id: 1
+                      views: 0
+                      author: 2NITE
+                      active: 1
+                      created_at: '2022-02-09T17:27:09.000000Z'
+                      updated_at: '2022-03-22T18:27:56.000000Z'
+                    -
+                      id: 20
+                      title: 'Các tựa game độc quyền PlayStation đáng chơi nhất trên PS5/PS4 trong năm 2022'
+                      slug: cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5ps4-trong-nam-2022
+                      content: "<p><em style=\"box-sizing: border-box; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\"><span style=\"box-sizing: border-box; font-weight: bold;\">Cuối c&ugrave;ng th&igrave; ch&uacute;ng ta cũng đ&atilde; bước sang năm 2022, ng&agrave;y ra mắt của những tựa game m&agrave; ai ai cũng đang mong chờ lại gần hơn bao giờ hết, đặc biệt l&agrave; đối với những bạn n&agrave;o đang sở hữu chiếc m&aacute;y game PS4/ PS5. Như ti&ecirc;u đề ng&agrave;y h&ocirc;m nay, ch&uacute;ng m&igrave;nh sẽ tổng hợp lại danh s&aacute;ch c&aacute;c tựa game độc quyền PlayStation sẽ ra mắt trong năm 2022 n&agrave;y nh&eacute;.</span></em></p>\r\n<div class=\"related-post\" style=\"box-sizing: border-box; padding-left: 20px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\">\r\n<ul style=\"box-sizing: border-box; margin: 5px; padding-left: 30px;\">\r\n<li style=\"box-sizing: border-box; margin: 10px 0px 0px; padding: 0px; text-indent: 15px; line-height: 25px !important; text-align: justify;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/psn-va-rui-ro-khi-mua-tai-khoan-lau\""
+                      desc: 'Cuối cùng thì chúng ta cũng đã bước sang năm 2022, ngày ra mắt của những tựa game mà ai ai cũng đang mong chờ lại gần hơn bao giờ hết, đặc biệt là đối với những bạn nào đang sở hữu chiếc máy game PS4/ PS5. Như tiêu đề ngày hôm nay, chúng mình sẽ tổng..'
+                      img: admin/images/blogs/tin-moi/main/cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5-ps4-trong-nam-2022-0-356x200w.jpg
+                      cat_id: 2
+                      cat_sub_id: 6
+                      users_id: 1
+                      views: 0
+                      author: 2NITE
+                      active: 1
+                      created_at: '2022-01-11T16:01:13.000000Z'
+                      updated_at: '2022-03-22T18:27:56.000000Z'
+                properties:
+                  category:
+                    type: string
+                    example: tin-moi
+                  number_page:
+                    type: integer
+                    example: 3
+                  count:
+                    type: integer
+                    example: 21
+                  sort:
+                    type: string
+                    example: DESC
+                  key_sort:
+                    type: string
+                    example: id
+                  per_page:
+                    type: string
+                    example: '10'
+                  page:
+                    type: string
+                    example: '1'
+                  blogs:
+                    type: array
+                    example:
+                      -
+                        id: 23
+                        title: 'Những tựa game đáng mong đợi tháng 2/2022 - Tháng này chơi gì'
+                        slug: nhung-tua-game-dang-mong-doi-thang-22022-thang-nay-choi-gi
+                        content: "<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\"><em style=\"box-sizing: border-box;\">K&iacute;nh ch&agrave;o năm mới! HaLo v&agrave; Say Game xin gửi những lời ch&uacute;c b&igrave;nh an đến với mọi kh&aacute;n giả đ&atilde; đồng h&agrave;nh c&ugrave;ng HaLo suốt thời gian qua v&agrave; sẽ c&ograve;n ủng hộ trong tương lai về sau.</em></span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Những ng&agrave;y nghỉ Tết tuy ngắn nhưng lại l&agrave; cơ hội tốt cho một số bạn c&oacute; thể tăng thu nhập đột biến nhưng cũng sẽ khiến c&aacute;c anh em kh&aacute;c hao hụt kha kh&aacute; số dư. D&ugrave; vậy c&aacute;c bạn cũng đừng qu&ecirc;n c&aacute;c tựa game cực phẩm sẽ l&ecirc;n kệ trong th&aacute;ng 2 n&agrave;y v&agrave; nhanh ch&oacute;ng bổ sung v&agrave;o bộ sưu tập của m&igrave;nh nh&eacute;. V&agrave; đ&acirc;y l&agrave; video Những tựa game Hay th&aacute;ng 2/2022 của&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;\""
+                        desc: 'Kính chào năm mới! HaLo và Say Game xin gửi những lời chúc bình an đến với mọi khán giả đã đồng hành cùng HaLo suốt thời gian qua và sẽ còn ủng hộ trong tương lai về sau. Những ngày nghỉ Tết tuy ngắn nhưng lại là cơ hội tốt cho một số bạn có thể tăng..'
+                        img: admin/images/blogs/tin-moi/main/nhung-tua-game-dang-choi-thang-2-2022-0-356x200w.jpeg
+                        cat_id: 2
+                        cat_sub_id: null
+                        users_id: 1
+                        views: 0
+                        author: 2NITE
+                        active: 1
+                        created_at: '2022-02-09T17:27:09.000000Z'
+                        updated_at: '2022-03-22T18:27:56.000000Z'
+                      -
+                        id: 20
+                        title: 'Các tựa game độc quyền PlayStation đáng chơi nhất trên PS5/PS4 trong năm 2022'
+                        slug: cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5ps4-trong-nam-2022
+                        content: "<p><em style=\"box-sizing: border-box; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\"><span style=\"box-sizing: border-box; font-weight: bold;\">Cuối c&ugrave;ng th&igrave; ch&uacute;ng ta cũng đ&atilde; bước sang năm 2022, ng&agrave;y ra mắt của những tựa game m&agrave; ai ai cũng đang mong chờ lại gần hơn bao giờ hết, đặc biệt l&agrave; đối với những bạn n&agrave;o đang sở hữu chiếc m&aacute;y game PS4/ PS5. Như ti&ecirc;u đề ng&agrave;y h&ocirc;m nay, ch&uacute;ng m&igrave;nh sẽ tổng hợp lại danh s&aacute;ch c&aacute;c tựa game độc quyền PlayStation sẽ ra mắt trong năm 2022 n&agrave;y nh&eacute;.</span></em></p>\r\n<div class=\"related-post\" style=\"box-sizing: border-box; padding-left: 20px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\">\r\n<ul style=\"box-sizing: border-box; margin: 5px; padding-left: 30px;\">\r\n<li style=\"box-sizing: border-box; margin: 10px 0px 0px; padding: 0px; text-indent: 15px; line-height: 25px !important; text-align: justify;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/psn-va-rui-ro-khi-mua-tai-khoan-lau\""
+                        desc: 'Cuối cùng thì chúng ta cũng đã bước sang năm 2022, ngày ra mắt của những tựa game mà ai ai cũng đang mong chờ lại gần hơn bao giờ hết, đặc biệt là đối với những bạn nào đang sở hữu chiếc máy game PS4/ PS5. Như tiêu đề ngày hôm nay, chúng mình sẽ tổng..'
+                        img: admin/images/blogs/tin-moi/main/cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5-ps4-trong-nam-2022-0-356x200w.jpg
+                        cat_id: 2
+                        cat_sub_id: 6
+                        users_id: 1
+                        views: 0
+                        author: 2NITE
+                        active: 1
+                        created_at: '2022-01-11T16:01:13.000000Z'
+                        updated_at: '2022-03-22T18:27:56.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 23
+                        title:
+                          type: string
+                          example: 'Những tựa game đáng mong đợi tháng 2/2022 - Tháng này chơi gì'
+                        slug:
+                          type: string
+                          example: nhung-tua-game-dang-mong-doi-thang-22022-thang-nay-choi-gi
+                        content:
+                          type: string
+                          example: "<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\"><em style=\"box-sizing: border-box;\">K&iacute;nh ch&agrave;o năm mới! HaLo v&agrave; Say Game xin gửi những lời ch&uacute;c b&igrave;nh an đến với mọi kh&aacute;n giả đ&atilde; đồng h&agrave;nh c&ugrave;ng HaLo suốt thời gian qua v&agrave; sẽ c&ograve;n ủng hộ trong tương lai về sau.</em></span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Những ng&agrave;y nghỉ Tết tuy ngắn nhưng lại l&agrave; cơ hội tốt cho một số bạn c&oacute; thể tăng thu nhập đột biến nhưng cũng sẽ khiến c&aacute;c anh em kh&aacute;c hao hụt kha kh&aacute; số dư. D&ugrave; vậy c&aacute;c bạn cũng đừng qu&ecirc;n c&aacute;c tựa game cực phẩm sẽ l&ecirc;n kệ trong th&aacute;ng 2 n&agrave;y v&agrave; nhanh ch&oacute;ng bổ sung v&agrave;o bộ sưu tập của m&igrave;nh nh&eacute;. V&agrave; đ&acirc;y l&agrave; video Những tựa game Hay th&aacute;ng 2/2022 của&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;\""
+                        desc:
+                          type: string
+                          example: 'Kính chào năm mới! HaLo và Say Game xin gửi những lời chúc bình an đến với mọi khán giả đã đồng hành cùng HaLo suốt thời gian qua và sẽ còn ủng hộ trong tương lai về sau. Những ngày nghỉ Tết tuy ngắn nhưng lại là cơ hội tốt cho một số bạn có thể tăng..'
+                        img:
+                          type: string
+                          example: admin/images/blogs/tin-moi/main/nhung-tua-game-dang-choi-thang-2-2022-0-356x200w.jpeg
+                        cat_id:
+                          type: integer
+                          example: 2
+                        cat_sub_id:
+                          type: string
+                          example: null
+                        users_id:
+                          type: integer
+                          example: 1
+                        views:
+                          type: integer
+                          example: 0
+                        author:
+                          type: string
+                          example: 2NITE
+                        active:
+                          type: integer
+                          example: 1
+                        created_at:
+                          type: string
+                          example: '2022-02-09T17:27:09.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-22T18:27:56.000000Z'
+      tags:
+        - Blog
+      security: []
+  '/api/blogs/blog/{slug}':
+    get:
+      summary: 'Retrieve a blog.'
+      operationId: retrieveABlog
+      description: 'API này cho phép bạn truy xuất và xem một bài viết cụ thể bằng ID'
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  blog:
+                    id: 1
+                    title: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+                    slug: sony-cong-bo-playstation-vr-2-4k-hdr-va-game-horizon-call-of-the-mountain-moi
+                    content: "<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/psvr-2/psvr-2-cung-cac-cong-nghe-moi-1.jpg\" alt=\"Sony c&ocirc;ng bố PlayStation VR 2 v&agrave; game Horizon Call of the Mountain mới\" /></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">C&Ocirc;NG NGHỆ MỚI NHẤT</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Sony cũng giới thiệu về những c&ocirc;ng nghệ mới nhất được trang bị tr&ecirc;n cặp k&iacute;nh PS VR 2 mới nhất n&agrave;y.</p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\">H&igrave;nh ảnh ch&acirc;n thực:</span>&nbsp;Để c&oacute; trải nghiệm tốt nhất PSVR 2 cung cấp 4K HDR, phạm vi quan s&aacute;t (Field of View) khoảng 110 độ."
+                    img: admin/images/blogs/tin-moi/main/psvr-2-cung-cac-cong-nghe-moi-0-356x200w.jpg
+                    cat_id: 2
+                    cat_sub_id: 6
+                    users_id: 1
+                    views: 0
+                    author: 2NITE
+                    active: 1
+                    created_at: '2022-01-05T07:25:03.000000Z'
+                    updated_at: '2022-03-22T18:27:56.000000Z'
+                  involve:
+                    -
+                      id: 2
+                      title: 'Top game miễn phí trên PlayStation trong tháng 1/2022'
+                      slug: top-game-mien-phi-tren-playstation-trong-thang-12022
+                      content: "<h3 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.5; color: #333333; margin: 15px 0px; font-size: 28px; text-align: center; text-transform: uppercase; background-color: #ffffff;\">GAME MIỄN PH&Iacute; PLAYSTATION PLUS TH&Aacute;NG 1/2022</h3>\r\n<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/game-mien-phi-thang-nay/2022/game-playstation-mien-phi-thang-1-2022-1.jpg\" alt=\"Game Miễn Ph&iacute; Th&aacute;ng 11\" /></p>\r\n<div class=\"image-caption\" style=\"box-sizing: border-box; text-align: center; padding: 5px 10px; width: 686px; background-color: #f5f5f5; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; margin: 0px auto 20px !important;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" ."
+                      img: admin/images/blogs/tin-moi/main/game-playstation-mien-phi-thang-1-2022-0-356x200w.jpg
+                      cat_id: 2
+                      cat_sub_id: null
+                      users_id: 1
+                      views: 0
+                      author: 2NITE
+                      active: 1
+                      created_at: '2022-01-05T07:30:23.000000Z'
+                      updated_at: '2022-03-22T18:27:56.000000Z'
+                    -
+                      id: 3
+                      title: 'Những tựa game đáng mong đợi tháng 1/2022 - Tháng này chơi gì'
+                      slug: nhung-tua-game-dang-mong-doi-thang-12022-thang-nay-choi-gi
+                      content: '<p style="box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: ''Nunito Sans''; font-size: 15px; background-color: #ffffff; line-height: 25px !important;">Happy New Year! Bước sang năm mới nhưng m&ugrave;a sale cho kỳ nghỉ lễ vẫn c&ograve;n đang tiếp diễn. V&agrave; đặc biệt trong th&aacute;ng 1 năm 2022 n&agrave;y sẽ c&oacute; rất nhiều tựa game mới v&ocirc; c&ugrave;ng hấp dẫn tr&igrave;nh l&agrave;ng, rất đ&aacute;ng để bạn chốt đơn đấy. Đến hẹn lại l&ecirc;n, chuy&ecirc;n mục giới thiệu những tựa game đ&aacute;ng mua trong th&aacute;ng đầu ti&ecirc;n năm mới của&nbsp;<a style="box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;" href="https://www.youtube.com/c/saygame?sub_confirmation=1"'
+                      desc: 'Happy New Year! Bước sang năm mới nhưng mùa sale cho kỳ nghỉ lễ vẫn còn đang tiếp diễn. Và đặc biệt trong tháng 1 năm 2022 này sẽ có rất nhiều tựa game mới vô cùng hấp dẫn trình làng, rất đáng để bạn chốt đơn đấy. Đến hẹn lại lên, chuyên mục giới thi..'
+                      img: admin/images/blogs/tin-moi/main/nhung-tua-game-dang-choi-thang-1-2022-0-356x200w.jpg
+                      cat_id: 2
+                      cat_sub_id: null
+                      users_id: 1
+                      views: 0
+                      author: 2NITE
+                      active: 1
+                      created_at: '2022-01-05T07:34:18.000000Z'
+                      updated_at: '2022-03-22T18:27:56.000000Z'
+                properties:
+                  blog:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      title:
+                        type: string
+                        example: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+                      slug:
+                        type: string
+                        example: sony-cong-bo-playstation-vr-2-4k-hdr-va-game-horizon-call-of-the-mountain-moi
+                      content:
+                        type: string
+                        example: "<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/psvr-2/psvr-2-cung-cac-cong-nghe-moi-1.jpg\" alt=\"Sony c&ocirc;ng bố PlayStation VR 2 v&agrave; game Horizon Call of the Mountain mới\" /></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">C&Ocirc;NG NGHỆ MỚI NHẤT</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Sony cũng giới thiệu về những c&ocirc;ng nghệ mới nhất được trang bị tr&ecirc;n cặp k&iacute;nh PS VR 2 mới nhất n&agrave;y.</p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\">H&igrave;nh ảnh ch&acirc;n thực:</span>&nbsp;Để c&oacute; trải nghiệm tốt nhất PSVR 2 cung cấp 4K HDR, phạm vi quan s&aacute;t (Field of View) khoảng 110 độ."
+                      img:
+                        type: string
+                        example: admin/images/blogs/tin-moi/main/psvr-2-cung-cac-cong-nghe-moi-0-356x200w.jpg
+                      cat_id:
+                        type: integer
+                        example: 2
+                      cat_sub_id:
+                        type: integer
+                        example: 6
+                      users_id:
+                        type: integer
+                        example: 1
+                      views:
+                        type: integer
+                        example: 0
+                      author:
+                        type: string
+                        example: 2NITE
+                      active:
+                        type: integer
+                        example: 1
+                      created_at:
+                        type: string
+                        example: '2022-01-05T07:25:03.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2022-03-22T18:27:56.000000Z'
+                  involve:
+                    type: array
+                    example:
+                      -
+                        id: 2
+                        title: 'Top game miễn phí trên PlayStation trong tháng 1/2022'
+                        slug: top-game-mien-phi-tren-playstation-trong-thang-12022
+                        content: "<h3 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.5; color: #333333; margin: 15px 0px; font-size: 28px; text-align: center; text-transform: uppercase; background-color: #ffffff;\">GAME MIỄN PH&Iacute; PLAYSTATION PLUS TH&Aacute;NG 1/2022</h3>\r\n<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/game-mien-phi-thang-nay/2022/game-playstation-mien-phi-thang-1-2022-1.jpg\" alt=\"Game Miễn Ph&iacute; Th&aacute;ng 11\" /></p>\r\n<div class=\"image-caption\" style=\"box-sizing: border-box; text-align: center; padding: 5px 10px; width: 686px; background-color: #f5f5f5; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; margin: 0px auto 20px !important;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" ."
+                        img: admin/images/blogs/tin-moi/main/game-playstation-mien-phi-thang-1-2022-0-356x200w.jpg
+                        cat_id: 2
+                        cat_sub_id: null
+                        users_id: 1
+                        views: 0
+                        author: 2NITE
+                        active: 1
+                        created_at: '2022-01-05T07:30:23.000000Z'
+                        updated_at: '2022-03-22T18:27:56.000000Z'
+                      -
+                        id: 3
+                        title: 'Những tựa game đáng mong đợi tháng 1/2022 - Tháng này chơi gì'
+                        slug: nhung-tua-game-dang-mong-doi-thang-12022-thang-nay-choi-gi
+                        content: '<p style="box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: ''Nunito Sans''; font-size: 15px; background-color: #ffffff; line-height: 25px !important;">Happy New Year! Bước sang năm mới nhưng m&ugrave;a sale cho kỳ nghỉ lễ vẫn c&ograve;n đang tiếp diễn. V&agrave; đặc biệt trong th&aacute;ng 1 năm 2022 n&agrave;y sẽ c&oacute; rất nhiều tựa game mới v&ocirc; c&ugrave;ng hấp dẫn tr&igrave;nh l&agrave;ng, rất đ&aacute;ng để bạn chốt đơn đấy. Đến hẹn lại l&ecirc;n, chuy&ecirc;n mục giới thiệu những tựa game đ&aacute;ng mua trong th&aacute;ng đầu ti&ecirc;n năm mới của&nbsp;<a style="box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;" href="https://www.youtube.com/c/saygame?sub_confirmation=1"'
+                        desc: 'Happy New Year! Bước sang năm mới nhưng mùa sale cho kỳ nghỉ lễ vẫn còn đang tiếp diễn. Và đặc biệt trong tháng 1 năm 2022 này sẽ có rất nhiều tựa game mới vô cùng hấp dẫn trình làng, rất đáng để bạn chốt đơn đấy. Đến hẹn lại lên, chuyên mục giới thi..'
+                        img: admin/images/blogs/tin-moi/main/nhung-tua-game-dang-choi-thang-1-2022-0-356x200w.jpg
+                        cat_id: 2
+                        cat_sub_id: null
+                        users_id: 1
+                        views: 0
+                        author: 2NITE
+                        active: 1
+                        created_at: '2022-01-05T07:34:18.000000Z'
+                        updated_at: '2022-03-22T18:27:56.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 2
+                        title:
+                          type: string
+                          example: 'Top game miễn phí trên PlayStation trong tháng 1/2022'
+                        slug:
+                          type: string
+                          example: top-game-mien-phi-tren-playstation-trong-thang-12022
+                        content:
+                          type: string
+                          example: "<h3 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.5; color: #333333; margin: 15px 0px; font-size: 28px; text-align: center; text-transform: uppercase; background-color: #ffffff;\">GAME MIỄN PH&Iacute; PLAYSTATION PLUS TH&Aacute;NG 1/2022</h3>\r\n<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/game-mien-phi-thang-nay/2022/game-playstation-mien-phi-thang-1-2022-1.jpg\" alt=\"Game Miễn Ph&iacute; Th&aacute;ng 11\" /></p>\r\n<div class=\"image-caption\" style=\"box-sizing: border-box; text-align: center; padding: 5px 10px; width: 686px; background-color: #f5f5f5; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; margin: 0px auto 20px !important;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" ."
+                        img:
+                          type: string
+                          example: admin/images/blogs/tin-moi/main/game-playstation-mien-phi-thang-1-2022-0-356x200w.jpg
+                        cat_id:
+                          type: integer
+                          example: 2
+                        cat_sub_id:
+                          type: string
+                          example: null
+                        users_id:
+                          type: integer
+                          example: 1
+                        views:
+                          type: integer
+                          example: 0
+                        author:
+                          type: string
+                          example: 2NITE
+                        active:
+                          type: integer
+                          example: 1
+                        created_at:
+                          type: string
+                          example: '2022-01-05T07:30:23.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-22T18:27:56.000000Z'
+      tags:
+        - Blog
+      security: []
+    parameters:
+      -
+        in: path
+        name: slug
+        description: 'The slug of the blog.'
+        example: placeat
+        required: true
+        schema:
+          type: string
+  /api/blogs/search_blog:
+    get:
+      summary: 'Search Blogs.'
+      operationId: searchBlogs
+      description: 'API này cho phép bạn tìm kiếm bài viết theo từ khoá.'
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: query
+          name: kw
+          description: ''
+          example: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+        -
+          in: query
+          name: per_page
+          description: 'Default: 10'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Default: 10'
+            example: 10
+        -
+          in: query
+          name: page
+          description: 'Default: all'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Default: all'
+            example: 1
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  blogs:
+                    -
+                      id: 1
+                      title: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+                      slug: sony-cong-bo-playstation-vr-2-4k-hdr-va-game-horizon-call-of-the-mountain-moi
+                      content: "<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/psvr-2/psvr-2-cung-cac-cong-nghe-moi-1.jpg\" alt=\"Sony c&ocirc;ng bố PlayStation VR 2 v&agrave; game Horizon Call of the Mountain mới\" /></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">C&Ocirc;NG NGHỆ MỚI NHẤT</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Sony cũng giới thiệu về những c&ocirc;ng nghệ mới nhất được trang bị tr&ecirc;n cặp k&iacute;nh PS VR 2 mới nhất n&agrave;y.</p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\">H&igrave;nh ảnh ch&acirc;n thực:</span>&nbsp;Để c&oacute; trải nghiệm tốt nhất PSVR 2 cung cấp 4K HDR, phạm vi quan s&aacute;t (Field of View) khoảng 110 độ. Với m&agrave;n h&igrave;nh OLED từ Samsung độ ph&acirc;n giải 2000 x 2040 pixels cho mỗi bảng mắt v&agrave; tần số qu&eacute;t 90 / 120Hz.</p>\r\n<p style=\"box-sizing: border-box;"
+                      img: admin/images/blogs/tin-moi/main/psvr-2-cung-cac-cong-nghe-moi-0-356x200w.jpg
+                      cat_id: 2
+                      cat_sub_id: 6
+                      users_id: 1
+                      views: 0
+                      author: 2NITE
+                      active: 1
+                      created_at: '2022-01-05T07:25:03.000000Z'
+                      updated_at: '2022-03-22T18:27:56.000000Z'
+                  number_page: 1
+                  count: 1
+                  per_page: '10'
+                  page: '1'
+                  keyword: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+                properties:
+                  blogs:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        title: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+                        slug: sony-cong-bo-playstation-vr-2-4k-hdr-va-game-horizon-call-of-the-mountain-moi
+                        content: "<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/psvr-2/psvr-2-cung-cac-cong-nghe-moi-1.jpg\" alt=\"Sony c&ocirc;ng bố PlayStation VR 2 v&agrave; game Horizon Call of the Mountain mới\" /></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">C&Ocirc;NG NGHỆ MỚI NHẤT</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Sony cũng giới thiệu về những c&ocirc;ng nghệ mới nhất được trang bị tr&ecirc;n cặp k&iacute;nh PS VR 2 mới nhất n&agrave;y.</p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\">H&igrave;nh ảnh ch&acirc;n thực:</span>&nbsp;Để c&oacute; trải nghiệm tốt nhất PSVR 2 cung cấp 4K HDR, phạm vi quan s&aacute;t (Field of View) khoảng 110 độ. Với m&agrave;n h&igrave;nh OLED từ Samsung độ ph&acirc;n giải 2000 x 2040 pixels cho mỗi bảng mắt v&agrave; tần số qu&eacute;t 90 / 120Hz.</p>\r\n<p style=\"box-sizing: border-box;"
+                        img: admin/images/blogs/tin-moi/main/psvr-2-cung-cac-cong-nghe-moi-0-356x200w.jpg
+                        cat_id: 2
+                        cat_sub_id: 6
+                        users_id: 1
+                        views: 0
+                        author: 2NITE
+                        active: 1
+                        created_at: '2022-01-05T07:25:03.000000Z'
+                        updated_at: '2022-03-22T18:27:56.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+                        slug:
+                          type: string
+                          example: sony-cong-bo-playstation-vr-2-4k-hdr-va-game-horizon-call-of-the-mountain-moi
+                        content:
+                          type: string
+                          example: "<p><img style=\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://game.haloshop.vn/image/catalog/blogs/psvr-2/psvr-2-cung-cac-cong-nghe-moi-1.jpg\" alt=\"Sony c&ocirc;ng bố PlayStation VR 2 v&agrave; game Horizon Call of the Mountain mới\" /></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">C&Ocirc;NG NGHỆ MỚI NHẤT</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\">Sony cũng giới thiệu về những c&ocirc;ng nghệ mới nhất được trang bị tr&ecirc;n cặp k&iacute;nh PS VR 2 mới nhất n&agrave;y.</p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\"><span style=\"box-sizing: border-box; font-weight: bold;\">H&igrave;nh ảnh ch&acirc;n thực:</span>&nbsp;Để c&oacute; trải nghiệm tốt nhất PSVR 2 cung cấp 4K HDR, phạm vi quan s&aacute;t (Field of View) khoảng 110 độ. Với m&agrave;n h&igrave;nh OLED từ Samsung độ ph&acirc;n giải 2000 x 2040 pixels cho mỗi bảng mắt v&agrave; tần số qu&eacute;t 90 / 120Hz.</p>\r\n<p style=\"box-sizing: border-box;"
+                        img:
+                          type: string
+                          example: admin/images/blogs/tin-moi/main/psvr-2-cung-cac-cong-nghe-moi-0-356x200w.jpg
+                        cat_id:
+                          type: integer
+                          example: 2
+                        cat_sub_id:
+                          type: integer
+                          example: 6
+                        users_id:
+                          type: integer
+                          example: 1
+                        views:
+                          type: integer
+                          example: 0
+                        author:
+                          type: string
+                          example: 2NITE
+                        active:
+                          type: integer
+                          example: 1
+                        created_at:
+                          type: string
+                          example: '2022-01-05T07:25:03.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-22T18:27:56.000000Z'
+                  number_page:
+                    type: integer
+                    example: 1
+                  count:
+                    type: integer
+                    example: 1
+                  per_page:
+                    type: string
+                    example: '10'
+                  page:
+                    type: string
+                    example: '1'
+                  keyword:
+                    type: string
+                    example: 'Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới'
+      tags:
+        - Blog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kw:
+                  type: string
+                  description: ''
+                  example: fugit
+              required:
+                - kw
+      security: []
+  /api/blogs/blog_properties:
+    get:
+      summary: 'Blog properties.'
+      operationId: blogProperties
+      description: 'Danh sách các thuộc tính của bài viết.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"Danh sách thuộc tính của bảng Blog"}'
+      tags:
+        - Blog
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: varchar(255)
+                  description: 'Tiêu đề bài viết'
+                  example: et
+                slug:
+                  type: longtext
+                  description: 'Slug bài viết'
+                  example: eligendi
+                desc:
+                  type: longtext
+                  description: 'Mô tả ngắn bài viết'
+                  example: quam
+                img:
+                  type: varchar
+                  description: 'Path hình ảnh bài viết'
+                  example: numquam
+                cat_id:
+                  type: bigint
+                  description: 'Danh mục chính bài viết'
+                  example: voluptas
+                cat_sub_id:
+                  type: bigint
+                  description: 'Danh mục phụ bài viết'
+                  example: velit
+                users_id:
+                  type: bigint
+                  description: 'Id tác giả'
+                  example: dolorum
+                views:
+                  type: bigint
+                  description: 'Lượt xem bài viết'
+                  example: vero
+                author:
+                  type: varchar
+                  description: 'Tên tác giả'
+                  example: non
+                active:
+                  type: integer
+                  description: 'Trạng thái bài viết (1: được đăng , 2: đã gỡ)'
+                  example: 4
+      security: []
+  /api/blogs/categories/properties:
+    get:
+      summary: 'Blog category properties.'
+      operationId: blogCategoryProperties
+      description: 'Các thuộc tính của danh mục bài viết.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"Danh sách thuộc tính của bảng danh mục bài viết"}'
+      tags:
+        - BlogCategories
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: varchar
+                  description: 'Tiêu đề danh mục'
+                  example: consectetur
+                slug:
+                  type: varchar
+                  description: 'Slug danh mục'
+                  example: ea
+      security: []
+  /api/blogs/categories/list_all:
+    get:
+      summary: 'List all blog categories.'
+      operationId: listAllBlogCategories
+      description: 'Danh mục bài viết.'
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXmkjH
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXmkjH
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  categories:
+                    -
+                      id: 1
+                      name: 'Sửa chữa'
+                      slug: sua-chua
+                      created_at: '2022-01-05T06:05:29.000000Z'
+                      updated_at: '2022-01-05T06:05:29.000000Z'
+                    -
+                      id: 2
+                      name: 'Tin mới'
+                      slug: tin-moi
+                      created_at: '2022-01-05T06:06:33.000000Z'
+                      updated_at: '2022-01-05T06:06:33.000000Z'
+                    -
+                      id: 3
+                      name: 'Đập Hộp - Review'
+                      slug: dap-hop-review
+                      created_at: '2022-01-05T06:06:43.000000Z'
+                      updated_at: '2022-01-05T06:06:43.000000Z'
+                    -
+                      id: 4
+                      name: 'Hướng Dẫn - Thủ Thuật'
+                      slug: huong-dan-thu-thuat
+                      created_at: '2022-01-05T06:06:49.000000Z'
+                      updated_at: '2022-01-05T06:06:49.000000Z'
+                properties:
+                  categories:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Sửa chữa'
+                        slug: sua-chua
+                        created_at: '2022-01-05T06:05:29.000000Z'
+                        updated_at: '2022-01-05T06:05:29.000000Z'
+                      -
+                        id: 2
+                        name: 'Tin mới'
+                        slug: tin-moi
+                        created_at: '2022-01-05T06:06:33.000000Z'
+                        updated_at: '2022-01-05T06:06:33.000000Z'
+                      -
+                        id: 3
+                        name: 'Đập Hộp - Review'
+                        slug: dap-hop-review
+                        created_at: '2022-01-05T06:06:43.000000Z'
+                        updated_at: '2022-01-05T06:06:43.000000Z'
+                      -
+                        id: 4
+                        name: 'Hướng Dẫn - Thủ Thuật'
+                        slug: huong-dan-thu-thuat
+                        created_at: '2022-01-05T06:06:49.000000Z'
+                        updated_at: '2022-01-05T06:06:49.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Sửa chữa'
+                        slug:
+                          type: string
+                          example: sua-chua
+                        created_at:
+                          type: string
+                          example: '2022-01-05T06:05:29.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-01-05T06:05:29.000000Z'
+      tags:
+        - BlogCategories
+      security: []
+  /api/auth/reset/passowrd/forgot:
+    post:
+      summary: 'Forgot Password.'
+      operationId: forgotPassword
+      description: 'Api dùng để xác nhận số điện thoại và gửi OTP để khôi phục mật khẩu.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  check: true
+                  send_code: true
+                  code: 160101
+                  phone: '0858467890'
+                  message: 'Gửi mã OTP thành công'
+                  phone_format: '+84858467890'
+                properties:
+                  check:
+                    type: boolean
+                    example: true
+                  send_code:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 160101
+                  phone:
+                    type: string
+                    example: '0858467890'
+                  message:
+                    type: string
+                    example: 'Gửi mã OTP thành công'
+                  phone_format:
+                    type: string
+                    example: '+84858467890'
+      tags:
+        - Password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  description: 'max:15'
+                  example: '0986868568'
+              required:
+                - phone
+      security: []
+  /api/auth/reset/passowrd/verification:
+    post:
+      summary: 'Api Verification OTP.'
+      operationId: apiVerificationOTP
+      description: 'Api dùng đẻ xác nhận mã OTP có trong hệ thống.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  info:
+                    phone: '0858458469'
+                    code: 600728
+                    created_at: '2022-03-22 18:46:15'
+                  code: '600728'
+                  verification: true
+                properties:
+                  info:
+                    type: object
+                    properties:
+                      phone:
+                        type: string
+                        example: '0858458469'
+                      code:
+                        type: integer
+                        example: 600728
+                      created_at:
+                        type: string
+                        example: '2022-03-22 18:46:15'
+                  code:
+                    type: string
+                    example: '600728'
+                  verification:
+                    type: boolean
+                    example: true
+      tags:
+        - Password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: integer
+                  description: 'max:6'
+                  example: 160101
+              required:
+                - code
+      security: []
+  /api/auth/reset/passowrd/new_password:
+    post:
+      summary: 'Api New Password.'
+      operationId: apiNewPassword
+      description: 'Api dùng để thay đổi mật khẩu mới.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  changed_password: true
+                  message: 'Đã thay đổi mật khẩu thành công'
+                properties:
+                  changed_password:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Đã thay đổi mật khẩu thành công'
+      tags:
+        - Password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: integer
+                  description: 'max:6'
+                  example: 160101
+                phone:
+                  type: string
+                  description: 'max:15'
+                  example: '0801160169'
+                password:
+                  type: string
+                  description: ''
+                  example: TestApi1612001
+              required:
+                - code
+                - phone
+                - password
+      security: []
+  /api/products/list:
+    get:
+      summary: 'List all products.'
+      operationId: listAllProducts
+      description: ''
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: query
+          name: category
+          description: 'Default: null For All Cate'
+          example: ps5
+          required: false
+          schema:
+            type: string
+            description: 'Default: null For All Cate'
+            example: ps5
+        -
+          in: query
+          name: genre
+          description: 'Default: null For All Genre Game'
+          example: 'Action,Adventure'
+          required: false
+          schema:
+            type: string
+            description: 'Default: null For All Genre Game'
+            example: 'Action,Adventure'
+        -
+          in: query
+          name: sort
+          description: 'ASC/DESC Default: DESC'
+          example: DESC
+          required: false
+          schema:
+            type: string
+            description: 'ASC/DESC Default: DESC'
+            example: DESC
+        -
+          in: query
+          name: key_sort
+          description: 'Default: id'
+          example: id
+          required: false
+          schema:
+            type: string
+            description: 'Default: id'
+            example: id
+        -
+          in: query
+          name: per_page
+          description: 'Default: 10'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Default: 10'
+            example: 10
+        -
+          in: query
+          name: page
+          description: 'Default: all'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Default: all'
+            example: 1
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  category: '81'
+                  genres:
+                    - 'Action Adventure'
+                    - Action
+                  number_page: 1
+                  count: 6
+                  sort: DESC
+                  key_sort: id
+                  per_page: '10'
+                  page: '1'
+                  products:
+                    -
+                      id: 103
+                      name: 'Dying Light 2 Stay Human - US'
+                      slug: dying-light-2-stay-human-us
+                      des: 'Thông tin game Thể loạiAction Adventure Hệ máyPS4, Xbox One/Series, PS5 ESRBMature 17+Violence, blood and gore, sexual content and/or strong language. Ngày phát hành4/02/2022 Nhà sản xuất & phát hànhTechland..'
+                      keywords: null
+                      price: 1630000
+                      historical_cost: 1150000
+                      content: "<table class=\"table table-bordered attribute\" style=\"border-spacing: 0px; border-collapse: inherit; background-color: #ffffff; margin: 20px auto; border-width: 0px 0px 2px; border-style: solid; border-color: transparent transparent #b30000; width: 1098px; max-width: 100%; padding: 10px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px;\">\r\n<thead style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; font-size: 13px; font-weight: bold; text-transform: uppercase; background: #ffe000; border-top: 0px; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\" colspan=\"2\"><span style=\"box-sizing: border-box;\">TH&Ocirc;NG TIN GAME</span></td>\r\n</tr>\r\n</thead>\r\n<tbody style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\">Thể loại</td>\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-bottom-style: solid; border-left-style: solid; border-bottom-color: transparent; border-left-color:"
+                      insurance: null
+                      policy: '4,5,8,9'
+                      model: P5G106
+                      video: null
+                      banner: null
+                      banner_link: null
+                      main_img: admin/images/products/playstation-5/main/dying-light-2-stay-human-ps5-305x305h.jpg
+                      sub_img: admin/images/products/playstation-5/sub/dying-light-2-stay-human-41-305x305.jpg
+                      bg: null
+                      type: game
+                      sub_type: null
+                      cat_id: 77
+                      cat_name: 'PlayStation 5'
+                      cat_2_id: 0
+                      cat_2_sub: 0
+                      sub_1_cat_id: 81
+                      sub_1_cat_name: 'Game PS5'
+                      sub_2_cat_id: null
+                      sub_2_cat_name: null
+                      op_sub_1_id: null
+                      op_sub_1_name: null
+                      op_sub_2_id: null
+                      op_sub_2_name: null
+                      producer_id: 36
+                      producer_slug: techland
+                      cat_game_id: 'Action Adventure'
+                      option_color: null
+                      option: null
+                      stock: 1
+                      new: 1
+                      usage_stt: 1
+                      num_orders: 0
+                      highlight: 2
+                      author: 2NITEE
+                      author_id: 1
+                      created_at: '2022-02-22T18:57:25.000000Z'
+                      updated_at: '2022-03-22T11:12:10.000000Z'
+                properties:
+                  category:
+                    type: string
+                    example: '81'
+                  genres:
+                    type: array
+                    example:
+                      - 'Action Adventure'
+                      - Action
+                    items:
+                      type: string
+                  number_page:
+                    type: integer
+                    example: 1
+                  count:
+                    type: integer
+                    example: 6
+                  sort:
+                    type: string
+                    example: DESC
+                  key_sort:
+                    type: string
+                    example: id
+                  per_page:
+                    type: string
+                    example: '10'
+                  page:
+                    type: string
+                    example: '1'
+                  products:
+                    type: array
+                    example:
+                      -
+                        id: 103
+                        name: 'Dying Light 2 Stay Human - US'
+                        slug: dying-light-2-stay-human-us
+                        des: 'Thông tin game Thể loạiAction Adventure Hệ máyPS4, Xbox One/Series, PS5 ESRBMature 17+Violence, blood and gore, sexual content and/or strong language. Ngày phát hành4/02/2022 Nhà sản xuất & phát hànhTechland..'
+                        keywords: null
+                        price: 1630000
+                        historical_cost: 1150000
+                        content: "<table class=\"table table-bordered attribute\" style=\"border-spacing: 0px; border-collapse: inherit; background-color: #ffffff; margin: 20px auto; border-width: 0px 0px 2px; border-style: solid; border-color: transparent transparent #b30000; width: 1098px; max-width: 100%; padding: 10px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px;\">\r\n<thead style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; font-size: 13px; font-weight: bold; text-transform: uppercase; background: #ffe000; border-top: 0px; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\" colspan=\"2\"><span style=\"box-sizing: border-box;\">TH&Ocirc;NG TIN GAME</span></td>\r\n</tr>\r\n</thead>\r\n<tbody style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\">Thể loại</td>\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-bottom-style: solid; border-left-style: solid; border-bottom-color: transparent; border-left-color:"
+                        insurance: null
+                        policy: '4,5,8,9'
+                        model: P5G106
+                        video: null
+                        banner: null
+                        banner_link: null
+                        main_img: admin/images/products/playstation-5/main/dying-light-2-stay-human-ps5-305x305h.jpg
+                        sub_img: admin/images/products/playstation-5/sub/dying-light-2-stay-human-41-305x305.jpg
+                        bg: null
+                        type: game
+                        sub_type: null
+                        cat_id: 77
+                        cat_name: 'PlayStation 5'
+                        cat_2_id: 0
+                        cat_2_sub: 0
+                        sub_1_cat_id: 81
+                        sub_1_cat_name: 'Game PS5'
+                        sub_2_cat_id: null
+                        sub_2_cat_name: null
+                        op_sub_1_id: null
+                        op_sub_1_name: null
+                        op_sub_2_id: null
+                        op_sub_2_name: null
+                        producer_id: 36
+                        producer_slug: techland
+                        cat_game_id: 'Action Adventure'
+                        option_color: null
+                        option: null
+                        stock: 1
+                        new: 1
+                        usage_stt: 1
+                        num_orders: 0
+                        highlight: 2
+                        author: 2NITEE
+                        author_id: 1
+                        created_at: '2022-02-22T18:57:25.000000Z'
+                        updated_at: '2022-03-22T11:12:10.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 103
+                        name:
+                          type: string
+                          example: 'Dying Light 2 Stay Human - US'
+                        slug:
+                          type: string
+                          example: dying-light-2-stay-human-us
+                        des:
+                          type: string
+                          example: 'Thông tin game Thể loạiAction Adventure Hệ máyPS4, Xbox One/Series, PS5 ESRBMature 17+Violence, blood and gore, sexual content and/or strong language. Ngày phát hành4/02/2022 Nhà sản xuất & phát hànhTechland..'
+                        keywords:
+                          type: string
+                          example: null
+                        price:
+                          type: integer
+                          example: 1630000
+                        historical_cost:
+                          type: integer
+                          example: 1150000
+                        content:
+                          type: string
+                          example: "<table class=\"table table-bordered attribute\" style=\"border-spacing: 0px; border-collapse: inherit; background-color: #ffffff; margin: 20px auto; border-width: 0px 0px 2px; border-style: solid; border-color: transparent transparent #b30000; width: 1098px; max-width: 100%; padding: 10px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px;\">\r\n<thead style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; font-size: 13px; font-weight: bold; text-transform: uppercase; background: #ffe000; border-top: 0px; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\" colspan=\"2\"><span style=\"box-sizing: border-box;\">TH&Ocirc;NG TIN GAME</span></td>\r\n</tr>\r\n</thead>\r\n<tbody style=\"box-sizing: border-box;\">\r\n<tr style=\"box-sizing: border-box;\">\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\">Thể loại</td>\r\n<td style=\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-bottom-style: solid; border-left-style: solid; border-bottom-color: transparent; border-left-color:"
+                        insurance:
+                          type: string
+                          example: null
+                        policy:
+                          type: string
+                          example: '4,5,8,9'
+                        model:
+                          type: string
+                          example: P5G106
+                        video:
+                          type: string
+                          example: null
+                        banner:
+                          type: string
+                          example: null
+                        banner_link:
+                          type: string
+                          example: null
+                        main_img:
+                          type: string
+                          example: admin/images/products/playstation-5/main/dying-light-2-stay-human-ps5-305x305h.jpg
+                        sub_img:
+                          type: string
+                          example: admin/images/products/playstation-5/sub/dying-light-2-stay-human-41-305x305.jpg
+                        bg:
+                          type: string
+                          example: null
+                        type:
+                          type: string
+                          example: game
+                        sub_type:
+                          type: string
+                          example: null
+                        cat_id:
+                          type: integer
+                          example: 77
+                        cat_name:
+                          type: string
+                          example: 'PlayStation 5'
+                        cat_2_id:
+                          type: integer
+                          example: 0
+                        cat_2_sub:
+                          type: integer
+                          example: 0
+                        sub_1_cat_id:
+                          type: integer
+                          example: 81
+                        sub_1_cat_name:
+                          type: string
+                          example: 'Game PS5'
+                        sub_2_cat_id:
+                          type: string
+                          example: null
+                        sub_2_cat_name:
+                          type: string
+                          example: null
+                        op_sub_1_id:
+                          type: string
+                          example: null
+                        op_sub_1_name:
+                          type: string
+                          example: null
+                        op_sub_2_id:
+                          type: string
+                          example: null
+                        op_sub_2_name:
+                          type: string
+                          example: null
+                        producer_id:
+                          type: integer
+                          example: 36
+                        producer_slug:
+                          type: string
+                          example: techland
+                        cat_game_id:
+                          type: string
+                          example: 'Action Adventure'
+                        option_color:
+                          type: string
+                          example: null
+                        option:
+                          type: string
+                          example: null
+                        stock:
+                          type: integer
+                          example: 1
+                        new:
+                          type: integer
+                          example: 1
+                        usage_stt:
+                          type: integer
+                          example: 1
+                        num_orders:
+                          type: integer
+                          example: 0
+                        highlight:
+                          type: integer
+                          example: 2
+                        author:
+                          type: string
+                          example: 2NITEE
+                        author_id:
+                          type: integer
+                          example: 1
+                        created_at:
+                          type: string
+                          example: '2022-02-22T18:57:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-22T11:12:10.000000Z'
+      tags:
+        - Products
+      security: []
+  '/api/products/product/{slug}':
+    get:
+      summary: 'Retrieve a product.'
+      operationId: retrieveAProduct
+      description: ''
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  product:
+                    id: 40
+                    name: 'PlayStation 5 / PS5 Standard Edition - VN [ CFI-1118A 01 ]'
+                    slug: playstation-5-ps5-standard-edition-vn-cfi-1118a-01
+                    des: 'Về thiết kế PS5 sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, không vuông vức "đậm chất Sony" như PS4, hay Sony Xperia...bắt mắt với tông màu trắng chủ đạo kết hợp màu đen bên trong thân máy cùng đèn LED xanh dương mang lại cảm giác đây chính là thiết kế của tương lai. Vỏ ngoài PS5 ..'
+                    keywords: 'sony, sony playstation, playstation 5, ps5, may choi game ps5'
+                    price: 20800000
+                    historical_cost: 17500000
+                    content: "<p>&nbsp;</p>\r\n<p><iframe style=\"box-sizing: border-box; max-width: 100%; border-width: initial; border-style: none; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://www.youtube.com/embed/xUJplfTW8XQ\" width=\"700\" height=\"394\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">VỀ THIẾT KẾ</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/index.php?route=product/search&amp;search=playstation%205&amp;category_id=668\">PS5</a>&nbsp;sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, kh&ocirc;ng vu&ocirc;ng vức \"đậm chất Sony\" như PS4, hay Sony Xperia...bắt mắt với t&ocirc;ng m&agrave;u trắng chủ đạo kết hợp m&agrave;u đen b&ecirc;n trong th&acirc;n m&aacute;y c&ugrave;ng đ&egrave;n LED xanh dương mang lại cảm gi&aacute;c đ&acirc;y ch&iacute;nh l&agrave; thiết kế của tương lai."
+                    insurance: '7,8'
+                    policy: '9,18,21'
+                    model: '14720'
+                    video: '<iframe width="310" height="200" src="https://www.youtube.com/embed/z7xQitZX0uw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+                    banner: admin/images/products/playstation-5/banner/len-doi-ps5-new-product-banner-630x239(4).jpg
+                    banner_link: thong-tin/len-doi-ps5-tiet-kiem-den-6-trieu
+                    main_img: admin/images/products/playstation-5/main/ps5-standard-vn-00-305x305.jpg
+                    sub_img: admin/images/products/playstation-5/sub/ps5-40-305x305.jpg
+                    bg: null
+                    type: machine
+                    sub_type: null
+                    cat_id: 77
+                    cat_name: 'PlayStation 5'
+                    cat_2_id: 0
+                    cat_2_sub: 0
+                    sub_1_cat_id: 79
+                    sub_1_cat_name: 'Máy PS5'
+                    sub_2_cat_id: null
+                    sub_2_cat_name: null
+                    op_sub_1_id: null
+                    op_sub_1_name: null
+                    op_sub_2_id: null
+                    op_sub_2_name: null
+                    producer_id: 3
+                    producer_slug: sony-playstation-world
+                    cat_game_id: null
+                    option_color: null
+                    option: null
+                    stock: 1
+                    new: 2
+                    usage_stt: 1
+                    num_orders: 0
+                    highlight: 1
+                    author: 2NITE
+                    author_id: 1
+                    created_at: '2021-11-24T10:37:49.000000Z'
+                    updated_at: '2022-03-22T18:27:56.000000Z'
+                  policies:
+                    '0':
+                      id: 9
+                      title: 'THANH TOÁN & TRẢ GÓP'
+                      content: '<p>Miễn ph&iacute; thanh to&aacute;n thẻ ATM.<br />Thanh to&aacute;n thẻ Visa, Master +2%.<br />Trả G&oacute;p: Trả trước 10% + CMND + Hộ khẩu / Bằng l&aacute;i (<a href="https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop" target="_blank" rel="noopener">Xem chi tiết</a>)<br />Trả G&oacute;p: D&ugrave;ng thẻ t&iacute;n dụng l&atilde;i suất 0% (<a href="https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop#2" target="_blank" rel="noopener">Xem chi tiết</a>)</p>'
+                      icon: '<i class="fas fa-shield-alt"></i>'
+                      position: 3
+                      fullset: 0
+                      created_at: '2021-10-23T12:44:18.000000Z'
+                      updated_at: '2021-10-23T12:44:18.000000Z'
+                    '1':
+                      id: 18
+                      title: 'BẢO HÀNH'
+                      content: '<p>Bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng</p>'
+                      icon: '<i class="fas fa-shield-alt"></i>'
+                      position: 0
+                      fullset: 0
+                      created_at: '2021-10-28T10:22:28.000000Z'
+                      updated_at: '2021-10-28T10:22:28.000000Z'
+                    '2':
+                      id: 21
+                      title: 'GÓI BẢO HÀNH 7 NGÀY'
+                      content: '<p>&Aacute;p dụng b&aacute;n tại cửa h&agrave;ng hoặc giao h&agrave;ng t&iacute;nh ph&iacute;</p>'
+                      icon: '<i class="fas fa-exclamation-circle"></i>'
+                      position: 0
+                      fullset: 0
+                      created_at: '2021-10-29T14:36:40.000000Z'
+                      updated_at: '2021-10-29T14:36:40.000000Z'
+                  fullset: 0
+                  related_blog: []
+                  banner:
+                    id: 238
+                    link: admin/images/products/playstation-5/images_700x700/ps5-0-standard-vn-00-700x700.jpg
+                    products_id: 40
+                    size: 700
+                    index: 1
+                    created_at: '2021-11-24T10:37:49.000000Z'
+                    updated_at: '2021-11-24T10:37:49.000000Z'
+                  group: 1
+                  related_product: []
+                  related_cat_blog:
+                    -
+                      id: 14
+                      posts: '4'
+                      product_id: null
+                      cat_id: 79
+                      for: category
+                      created_at: '2022-03-15T07:17:10.000000Z'
+                      updated_at: '2022-03-15T07:17:10.000000Z'
+                    -
+                      id: 12
+                      posts: '22'
+                      product_id: null
+                      cat_id: 79
+                      for: category
+                      created_at: '2022-03-15T07:17:10.000000Z'
+                      updated_at: '2022-03-15T07:17:10.000000Z'
+                    -
+                      id: 11
+                      posts: '21'
+                      product_id: null
+                      cat_id: 79
+                      for: category
+                      created_at: '2022-03-15T07:17:10.000000Z'
+                      updated_at: '2022-03-15T07:17:10.000000Z'
+                    -
+                      id: 13
+                      posts: '20'
+                      product_id: null
+                      cat_id: 79
+                      for: category
+                      created_at: '2022-03-15T07:17:10.000000Z'
+                      updated_at: '2022-03-15T07:17:10.000000Z'
+                  bundled_skin:
+                    id: 2
+                    skin_cat_id: 86
+                    cat_id: 79
+                    created_at: '2022-03-15T06:49:28.000000Z'
+                    updated_at: '2022-03-15T07:17:10.000000Z'
+                  bundled_accessory:
+                    -
+                      id: 4
+                      products_id: 30
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                    -
+                      id: 5
+                      products_id: 31
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                    -
+                      id: 6
+                      products_id: 32
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                    -
+                      id: 7
+                      products_id: 33
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                    -
+                      id: 8
+                      products_id: 34
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                    -
+                      id: 9
+                      products_id: 35
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                    -
+                      id: 10
+                      products_id: 45
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                    -
+                      id: 11
+                      products_id: 46
+                      cat_id: 79
+                      created_at: '2022-03-15T06:32:29.000000Z'
+                      updated_at: '2022-03-15T06:32:29.000000Z'
+                properties:
+                  product:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 40
+                      name:
+                        type: string
+                        example: 'PlayStation 5 / PS5 Standard Edition - VN [ CFI-1118A 01 ]'
+                      slug:
+                        type: string
+                        example: playstation-5-ps5-standard-edition-vn-cfi-1118a-01
+                      des:
+                        type: string
+                        example: 'Về thiết kế PS5 sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, không vuông vức "đậm chất Sony" như PS4, hay Sony Xperia...bắt mắt với tông màu trắng chủ đạo kết hợp màu đen bên trong thân máy cùng đèn LED xanh dương mang lại cảm giác đây chính là thiết kế của tương lai. Vỏ ngoài PS5 ..'
+                      keywords:
+                        type: string
+                        example: 'sony, sony playstation, playstation 5, ps5, may choi game ps5'
+                      price:
+                        type: integer
+                        example: 20800000
+                      historical_cost:
+                        type: integer
+                        example: 17500000
+                      content:
+                        type: string
+                        example: "<p>&nbsp;</p>\r\n<p><iframe style=\"box-sizing: border-box; max-width: 100%; border-width: initial; border-style: none; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\" src=\"https://www.youtube.com/embed/xUJplfTW8XQ\" width=\"700\" height=\"394\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe></p>\r\n<h4 style=\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\">VỀ THIẾT KẾ</h4>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\"><a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/index.php?route=product/search&amp;search=playstation%205&amp;category_id=668\">PS5</a>&nbsp;sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, kh&ocirc;ng vu&ocirc;ng vức \"đậm chất Sony\" như PS4, hay Sony Xperia...bắt mắt với t&ocirc;ng m&agrave;u trắng chủ đạo kết hợp m&agrave;u đen b&ecirc;n trong th&acirc;n m&aacute;y c&ugrave;ng đ&egrave;n LED xanh dương mang lại cảm gi&aacute;c đ&acirc;y ch&iacute;nh l&agrave; thiết kế của tương lai."
+                      insurance:
+                        type: string
+                        example: '7,8'
+                      policy:
+                        type: string
+                        example: '9,18,21'
+                      model:
+                        type: string
+                        example: '14720'
+                      video:
+                        type: string
+                        example: '<iframe width="310" height="200" src="https://www.youtube.com/embed/z7xQitZX0uw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+                      banner:
+                        type: string
+                        example: admin/images/products/playstation-5/banner/len-doi-ps5-new-product-banner-630x239(4).jpg
+                      banner_link:
+                        type: string
+                        example: thong-tin/len-doi-ps5-tiet-kiem-den-6-trieu
+                      main_img:
+                        type: string
+                        example: admin/images/products/playstation-5/main/ps5-standard-vn-00-305x305.jpg
+                      sub_img:
+                        type: string
+                        example: admin/images/products/playstation-5/sub/ps5-40-305x305.jpg
+                      bg:
+                        type: string
+                        example: null
+                      type:
+                        type: string
+                        example: machine
+                      sub_type:
+                        type: string
+                        example: null
+                      cat_id:
+                        type: integer
+                        example: 77
+                      cat_name:
+                        type: string
+                        example: 'PlayStation 5'
+                      cat_2_id:
+                        type: integer
+                        example: 0
+                      cat_2_sub:
+                        type: integer
+                        example: 0
+                      sub_1_cat_id:
+                        type: integer
+                        example: 79
+                      sub_1_cat_name:
+                        type: string
+                        example: 'Máy PS5'
+                      sub_2_cat_id:
+                        type: string
+                        example: null
+                      sub_2_cat_name:
+                        type: string
+                        example: null
+                      op_sub_1_id:
+                        type: string
+                        example: null
+                      op_sub_1_name:
+                        type: string
+                        example: null
+                      op_sub_2_id:
+                        type: string
+                        example: null
+                      op_sub_2_name:
+                        type: string
+                        example: null
+                      producer_id:
+                        type: integer
+                        example: 3
+                      producer_slug:
+                        type: string
+                        example: sony-playstation-world
+                      cat_game_id:
+                        type: string
+                        example: null
+                      option_color:
+                        type: string
+                        example: null
+                      option:
+                        type: string
+                        example: null
+                      stock:
+                        type: integer
+                        example: 1
+                      new:
+                        type: integer
+                        example: 2
+                      usage_stt:
+                        type: integer
+                        example: 1
+                      num_orders:
+                        type: integer
+                        example: 0
+                      highlight:
+                        type: integer
+                        example: 1
+                      author:
+                        type: string
+                        example: 2NITE
+                      author_id:
+                        type: integer
+                        example: 1
+                      created_at:
+                        type: string
+                        example: '2021-11-24T10:37:49.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2022-03-22T18:27:56.000000Z'
+                  policies:
+                    type: object
+                    properties:
+                      -
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 9
+                          title:
+                            type: string
+                            example: 'THANH TOÁN & TRẢ GÓP'
+                          content:
+                            type: string
+                            example: '<p>Miễn ph&iacute; thanh to&aacute;n thẻ ATM.<br />Thanh to&aacute;n thẻ Visa, Master +2%.<br />Trả G&oacute;p: Trả trước 10% + CMND + Hộ khẩu / Bằng l&aacute;i (<a href="https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop" target="_blank" rel="noopener">Xem chi tiết</a>)<br />Trả G&oacute;p: D&ugrave;ng thẻ t&iacute;n dụng l&atilde;i suất 0% (<a href="https://game.haloshop.vn/dich-vu-tra-gop-tai-haloshop#2" target="_blank" rel="noopener">Xem chi tiết</a>)</p>'
+                          icon:
+                            type: string
+                            example: '<i class="fas fa-shield-alt"></i>'
+                          position:
+                            type: integer
+                            example: 3
+                          fullset:
+                            type: integer
+                            example: 0
+                          created_at:
+                            type: string
+                            example: '2021-10-23T12:44:18.000000Z'
+                          updated_at:
+                            type: string
+                            example: '2021-10-23T12:44:18.000000Z'
+                      -
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 18
+                          title:
+                            type: string
+                            example: 'BẢO HÀNH'
+                          content:
+                            type: string
+                            example: '<p>Bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng</p>'
+                          icon:
+                            type: string
+                            example: '<i class="fas fa-shield-alt"></i>'
+                          position:
+                            type: integer
+                            example: 0
+                          fullset:
+                            type: integer
+                            example: 0
+                          created_at:
+                            type: string
+                            example: '2021-10-28T10:22:28.000000Z'
+                          updated_at:
+                            type: string
+                            example: '2021-10-28T10:22:28.000000Z'
+                      -
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 21
+                          title:
+                            type: string
+                            example: 'GÓI BẢO HÀNH 7 NGÀY'
+                          content:
+                            type: string
+                            example: '<p>&Aacute;p dụng b&aacute;n tại cửa h&agrave;ng hoặc giao h&agrave;ng t&iacute;nh ph&iacute;</p>'
+                          icon:
+                            type: string
+                            example: '<i class="fas fa-exclamation-circle"></i>'
+                          position:
+                            type: integer
+                            example: 0
+                          fullset:
+                            type: integer
+                            example: 0
+                          created_at:
+                            type: string
+                            example: '2021-10-29T14:36:40.000000Z'
+                          updated_at:
+                            type: string
+                            example: '2021-10-29T14:36:40.000000Z'
+                  fullset:
+                    type: integer
+                    example: 0
+                  related_blog:
+                    type: array
+                    example: []
+                  banner:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 238
+                      link:
+                        type: string
+                        example: admin/images/products/playstation-5/images_700x700/ps5-0-standard-vn-00-700x700.jpg
+                      products_id:
+                        type: integer
+                        example: 40
+                      size:
+                        type: integer
+                        example: 700
+                      index:
+                        type: integer
+                        example: 1
+                      created_at:
+                        type: string
+                        example: '2021-11-24T10:37:49.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2021-11-24T10:37:49.000000Z'
+                  group:
+                    type: integer
+                    example: 1
+                  related_product:
+                    type: array
+                    example: []
+                  related_cat_blog:
+                    type: array
+                    example:
+                      -
+                        id: 14
+                        posts: '4'
+                        product_id: null
+                        cat_id: 79
+                        for: category
+                        created_at: '2022-03-15T07:17:10.000000Z'
+                        updated_at: '2022-03-15T07:17:10.000000Z'
+                      -
+                        id: 12
+                        posts: '22'
+                        product_id: null
+                        cat_id: 79
+                        for: category
+                        created_at: '2022-03-15T07:17:10.000000Z'
+                        updated_at: '2022-03-15T07:17:10.000000Z'
+                      -
+                        id: 11
+                        posts: '21'
+                        product_id: null
+                        cat_id: 79
+                        for: category
+                        created_at: '2022-03-15T07:17:10.000000Z'
+                        updated_at: '2022-03-15T07:17:10.000000Z'
+                      -
+                        id: 13
+                        posts: '20'
+                        product_id: null
+                        cat_id: 79
+                        for: category
+                        created_at: '2022-03-15T07:17:10.000000Z'
+                        updated_at: '2022-03-15T07:17:10.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 14
+                        posts:
+                          type: string
+                          example: '4'
+                        product_id:
+                          type: string
+                          example: null
+                        cat_id:
+                          type: integer
+                          example: 79
+                        for:
+                          type: string
+                          example: category
+                        created_at:
+                          type: string
+                          example: '2022-03-15T07:17:10.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-15T07:17:10.000000Z'
+                  bundled_skin:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      skin_cat_id:
+                        type: integer
+                        example: 86
+                      cat_id:
+                        type: integer
+                        example: 79
+                      created_at:
+                        type: string
+                        example: '2022-03-15T06:49:28.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2022-03-15T07:17:10.000000Z'
+                  bundled_accessory:
+                    type: array
+                    example:
+                      -
+                        id: 4
+                        products_id: 30
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                      -
+                        id: 5
+                        products_id: 31
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                      -
+                        id: 6
+                        products_id: 32
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                      -
+                        id: 7
+                        products_id: 33
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                      -
+                        id: 8
+                        products_id: 34
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                      -
+                        id: 9
+                        products_id: 35
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                      -
+                        id: 10
+                        products_id: 45
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                      -
+                        id: 11
+                        products_id: 46
+                        cat_id: 79
+                        created_at: '2022-03-15T06:32:29.000000Z'
+                        updated_at: '2022-03-15T06:32:29.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 4
+                        products_id:
+                          type: integer
+                          example: 30
+                        cat_id:
+                          type: integer
+                          example: 79
+                        created_at:
+                          type: string
+                          example: '2022-03-15T06:32:29.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-15T06:32:29.000000Z'
+      tags:
+        - Products
+      security: []
+    parameters:
+      -
+        in: path
+        name: slug
+        description: ''
+        example: nintendo-switch-oled-model-with-neon-red-blue-joycon
+        required: true
+        schema:
+          type: string
+  /api/products/search_product:
+    get:
+      summary: 'Search Products.'
+      operationId: searchProducts
+      description: ''
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: query
+          name: kw
+          description: ''
+          example: 'DualSense - PS5 Wireless Game Controller Chính Hãng'
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 'DualSense - PS5 Wireless Game Controller Chính Hãng'
+        -
+          in: query
+          name: per_page
+          description: 'Default: 10'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Default: 10'
+            example: 10
+        -
+          in: query
+          name: page
+          description: 'Default: all'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Default: all'
+            example: 1
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  products:
+                    -
+                      id: 30
+                      name: 'DualSense - PS5 Wireless Game Controller Chính Hãng'
+                      slug: dualsense-ps5-wireless-game-controller-chinh-hang
+                      des: 'Khác với mọi năm, thay vì lấy tên DualShock như 4 đời console trước đó, Sony đã chọn cái tên DualSense để bày tỏ về những công nghệ mới đặc biệt được tích hợp trên tay cầm PlayStation 5 - cỗ máy next-gen năm nay. Hướng dẫn kết nối tay cầm DualSense với thiết bị khác Hướng dẫn vệ sinh tay cầm D..'
+                      keywords: 'sony, sony playstation, playstation 5, ps5, tay cam ps5, dualshock 5, dualsense, tay cam playstation 5, dualsense chinh hang'
+                      price: 1980000
+                      historical_cost: 1100000
+                      content: "<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; color: red;\"><span style=\"box-sizing: border-box; font-weight: bold;\">Sản phẩm được ph&acirc;n phối ch&iacute;nh h&atilde;ng Sony PlayStation VN, bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng.</span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\">Kh&aacute;c với mọi năm, thay v&igrave; lấy t&ecirc;n DualShock như 4 đời console trước đ&oacute;, Sony đ&atilde; chọn c&aacute;i t&ecirc;n&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/dualsense-wireless-controller\">DualSense</a>&nbsp;để b&agrave;y tỏ về những c&ocirc;ng nghệ mới đặc biệt được t&iacute;ch hợp tr&ecirc;n tay cầm&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/may-ps5\">PlayStation 5</a>&nbsp;- cỗ m&aacute;y next-gen năm nay."
+                      info: null
+                      insurance: null
+                      policy: '8,9,18'
+                      model: '15118'
+                      video: '<iframe width="630" height="354" src="https://www.youtube.com/embed/I11b1xpjDdI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+                      banner: null
+                      banner_link: null
+                      main_img: admin/images/products/playstation-5/main/dualsense-ps5-00-305x305.jpg
+                      sub_img: admin/images/products/playstation-5/sub/dualsense-ps5-41-305x305w.jpg
+                      bg: null
+                      type: access
+                      sub_type: controller
+                      cat_id: 77
+                      cat_name: 'PlayStation 5'
+                      cat_2_id: 0
+                      cat_2_sub: 0
+                      sub_1_cat_id: 82
+                      sub_1_cat_name: 'Phụ kiện PS5'
+                      sub_2_cat_id: null
+                      sub_2_cat_name: null
+                      op_sub_1_id: null
+                      op_sub_1_name: null
+                      op_sub_2_id: null
+                      op_sub_2_name: null
+                      producer_id: 3
+                      producer_slug: sony-playstation-world
+                      cat_game_id: null
+                      option_color: null
+                      option: null
+                      stock: 3
+                      new: 1
+                      usage_stt: 1
+                      num_orders: 0
+                      highlight: 1
+                      author: 2NITE
+                      author_id: 1
+                      created_at: '2021-11-24T09:23:01.000000Z'
+                      updated_at: '2022-03-22T18:27:56.000000Z'
+                  number_page: 1
+                  count: 1
+                  per_page: 10
+                  page: 1
+                properties:
+                  products:
+                    type: array
+                    example:
+                      -
+                        id: 30
+                        name: 'DualSense - PS5 Wireless Game Controller Chính Hãng'
+                        slug: dualsense-ps5-wireless-game-controller-chinh-hang
+                        des: 'Khác với mọi năm, thay vì lấy tên DualShock như 4 đời console trước đó, Sony đã chọn cái tên DualSense để bày tỏ về những công nghệ mới đặc biệt được tích hợp trên tay cầm PlayStation 5 - cỗ máy next-gen năm nay. Hướng dẫn kết nối tay cầm DualSense với thiết bị khác Hướng dẫn vệ sinh tay cầm D..'
+                        keywords: 'sony, sony playstation, playstation 5, ps5, tay cam ps5, dualshock 5, dualsense, tay cam playstation 5, dualsense chinh hang'
+                        price: 1980000
+                        historical_cost: 1100000
+                        content: "<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; color: red;\"><span style=\"box-sizing: border-box; font-weight: bold;\">Sản phẩm được ph&acirc;n phối ch&iacute;nh h&atilde;ng Sony PlayStation VN, bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng.</span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\">Kh&aacute;c với mọi năm, thay v&igrave; lấy t&ecirc;n DualShock như 4 đời console trước đ&oacute;, Sony đ&atilde; chọn c&aacute;i t&ecirc;n&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/dualsense-wireless-controller\">DualSense</a>&nbsp;để b&agrave;y tỏ về những c&ocirc;ng nghệ mới đặc biệt được t&iacute;ch hợp tr&ecirc;n tay cầm&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/may-ps5\">PlayStation 5</a>&nbsp;- cỗ m&aacute;y next-gen năm nay."
+                        info: null
+                        insurance: null
+                        policy: '8,9,18'
+                        model: '15118'
+                        video: '<iframe width="630" height="354" src="https://www.youtube.com/embed/I11b1xpjDdI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+                        banner: null
+                        banner_link: null
+                        main_img: admin/images/products/playstation-5/main/dualsense-ps5-00-305x305.jpg
+                        sub_img: admin/images/products/playstation-5/sub/dualsense-ps5-41-305x305w.jpg
+                        bg: null
+                        type: access
+                        sub_type: controller
+                        cat_id: 77
+                        cat_name: 'PlayStation 5'
+                        cat_2_id: 0
+                        cat_2_sub: 0
+                        sub_1_cat_id: 82
+                        sub_1_cat_name: 'Phụ kiện PS5'
+                        sub_2_cat_id: null
+                        sub_2_cat_name: null
+                        op_sub_1_id: null
+                        op_sub_1_name: null
+                        op_sub_2_id: null
+                        op_sub_2_name: null
+                        producer_id: 3
+                        producer_slug: sony-playstation-world
+                        cat_game_id: null
+                        option_color: null
+                        option: null
+                        stock: 3
+                        new: 1
+                        usage_stt: 1
+                        num_orders: 0
+                        highlight: 1
+                        author: 2NITE
+                        author_id: 1
+                        created_at: '2021-11-24T09:23:01.000000Z'
+                        updated_at: '2022-03-22T18:27:56.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 30
+                        name:
+                          type: string
+                          example: 'DualSense - PS5 Wireless Game Controller Chính Hãng'
+                        slug:
+                          type: string
+                          example: dualsense-ps5-wireless-game-controller-chinh-hang
+                        des:
+                          type: string
+                          example: 'Khác với mọi năm, thay vì lấy tên DualShock như 4 đời console trước đó, Sony đã chọn cái tên DualSense để bày tỏ về những công nghệ mới đặc biệt được tích hợp trên tay cầm PlayStation 5 - cỗ máy next-gen năm nay. Hướng dẫn kết nối tay cầm DualSense với thiết bị khác Hướng dẫn vệ sinh tay cầm D..'
+                        keywords:
+                          type: string
+                          example: 'sony, sony playstation, playstation 5, ps5, tay cam ps5, dualshock 5, dualsense, tay cam playstation 5, dualsense chinh hang'
+                        price:
+                          type: integer
+                          example: 1980000
+                        historical_cost:
+                          type: integer
+                          example: 1100000
+                        content:
+                          type: string
+                          example: "<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; color: red;\"><span style=\"box-sizing: border-box; font-weight: bold;\">Sản phẩm được ph&acirc;n phối ch&iacute;nh h&atilde;ng Sony PlayStation VN, bảo h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng.</span></p>\r\n<p style=\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\">Kh&aacute;c với mọi năm, thay v&igrave; lấy t&ecirc;n DualShock như 4 đời console trước đ&oacute;, Sony đ&atilde; chọn c&aacute;i t&ecirc;n&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/dualsense-wireless-controller\">DualSense</a>&nbsp;để b&agrave;y tỏ về những c&ocirc;ng nghệ mới đặc biệt được t&iacute;ch hợp tr&ecirc;n tay cầm&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\" href=\"https://game.haloshop.vn/may-ps5\">PlayStation 5</a>&nbsp;- cỗ m&aacute;y next-gen năm nay."
+                        info:
+                          type: string
+                          example: null
+                        insurance:
+                          type: string
+                          example: null
+                        policy:
+                          type: string
+                          example: '8,9,18'
+                        model:
+                          type: string
+                          example: '15118'
+                        video:
+                          type: string
+                          example: '<iframe width="630" height="354" src="https://www.youtube.com/embed/I11b1xpjDdI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+                        banner:
+                          type: string
+                          example: null
+                        banner_link:
+                          type: string
+                          example: null
+                        main_img:
+                          type: string
+                          example: admin/images/products/playstation-5/main/dualsense-ps5-00-305x305.jpg
+                        sub_img:
+                          type: string
+                          example: admin/images/products/playstation-5/sub/dualsense-ps5-41-305x305w.jpg
+                        bg:
+                          type: string
+                          example: null
+                        type:
+                          type: string
+                          example: access
+                        sub_type:
+                          type: string
+                          example: controller
+                        cat_id:
+                          type: integer
+                          example: 77
+                        cat_name:
+                          type: string
+                          example: 'PlayStation 5'
+                        cat_2_id:
+                          type: integer
+                          example: 0
+                        cat_2_sub:
+                          type: integer
+                          example: 0
+                        sub_1_cat_id:
+                          type: integer
+                          example: 82
+                        sub_1_cat_name:
+                          type: string
+                          example: 'Phụ kiện PS5'
+                        sub_2_cat_id:
+                          type: string
+                          example: null
+                        sub_2_cat_name:
+                          type: string
+                          example: null
+                        op_sub_1_id:
+                          type: string
+                          example: null
+                        op_sub_1_name:
+                          type: string
+                          example: null
+                        op_sub_2_id:
+                          type: string
+                          example: null
+                        op_sub_2_name:
+                          type: string
+                          example: null
+                        producer_id:
+                          type: integer
+                          example: 3
+                        producer_slug:
+                          type: string
+                          example: sony-playstation-world
+                        cat_game_id:
+                          type: string
+                          example: null
+                        option_color:
+                          type: string
+                          example: null
+                        option:
+                          type: string
+                          example: null
+                        stock:
+                          type: integer
+                          example: 3
+                        new:
+                          type: integer
+                          example: 1
+                        usage_stt:
+                          type: integer
+                          example: 1
+                        num_orders:
+                          type: integer
+                          example: 0
+                        highlight:
+                          type: integer
+                          example: 1
+                        author:
+                          type: string
+                          example: 2NITE
+                        author_id:
+                          type: integer
+                          example: 1
+                        created_at:
+                          type: string
+                          example: '2021-11-24T09:23:01.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-22T18:27:56.000000Z'
+                  number_page:
+                    type: integer
+                    example: 1
+                  count:
+                    type: integer
+                    example: 1
+                  per_page:
+                    type: integer
+                    example: 10
+                  page:
+                    type: integer
+                    example: 1
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kw:
+                  type: string
+                  description: ''
+                  example: quia
+              required:
+                - kw
+      security: []
+  /api/products/product_properties:
+    get:
+      summary: 'Product properties.'
+      operationId: productProperties
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"Đây là tất cả thuộc tính của bảng sản phẩm"}'
+      tags:
+        - Products
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: varchar(255)
+                  description: 'Tên sản phẩm'
+                  example: dolore
+                slug:
+                  type: longtext
+                  description: 'Slug sản phẩm'
+                  example: laborum
+                des:
+                  type: longtext
+                  description: 'Mô tả ngắn sản phẩm'
+                  example: enim
+                keywords:
+                  type: longtext
+                  description: 'Keywords SEO or Tag sản phẩm'
+                  example: neque
+                price:
+                  type: bigint
+                  description: 'Giá bán của sản phẩm'
+                  example: facilis
+                historical_cost:
+                  type: bigint
+                  description: 'Giá gốc của sản phẩm'
+                  example: omnis
+                content:
+                  type: longtext
+                  description: 'Nội dung của sản phẩm'
+                  example: earum
+                info:
+                  type: longtext
+                  description: 'Thông tin của sản phẩm'
+                  example: accusamus
+                insurance:
+                  type: longtext
+                  description: 'Chính sách bảo hành,options đi kèm với của sản phẩm'
+                  example: necessitatibus
+                policy:
+                  type: longtext
+                  description: 'Chính sách của cửa hàng'
+                  example: voluptas
+                model:
+                  type: varchar
+                  description: 'Model của sản phẩm'
+                  example: aliquid
+                video:
+                  type: longtext
+                  description: 'Mã nhúng utube của sản phẩm'
+                  example: est
+                banner:
+                  type: varchar
+                  description: 'Banner đi kèm với sản phẩm'
+                  example: a
+                banner_link:
+                  type: varchar
+                  description: 'Link banner của sản phẩm'
+                  example: id
+                main_img:
+                  type: varchar
+                  description: 'Hình ảnh chính của sản phẩm'
+                  example: maiores
+                sub_img:
+                  type: varchar
+                  description: 'Hình ảnh phụ của sản phẩm'
+                  example: laborum
+                bg:
+                  type: longtext
+                  description: 'Hình ảnh background của sản phẩm'
+                  example: odit
+                type:
+                  type: varchar
+                  description: 'Kiểu sản phẩm'
+                  example: incidunt
+                sub_type:
+                  type: varchar
+                  description: 'Kiểu phụ sản phẩm'
+                  example: nam
+                cat_id:
+                  type: bigint
+                  description: 'ID Danh mục chính sản phẩm'
+                  example: quaerat
+                cat_name:
+                  type: varchar
+                  description: 'Tên danh mục chính'
+                  example: voluptatem
+                sub_1_cat_id:
+                  type: bigint
+                  description: 'ID danh mục phụ 1 của danh mục chính'
+                  example: et
+                sub_1_cat_name:
+                  type: varchar
+                  description: 'Tên danh mục phụ 1 của danh mục chính'
+                  example: necessitatibus
+                sub_2_cat_id:
+                  type: bigint
+                  description: 'ID danh mục phụ 2 của danh mục chính'
+                  example: ex
+                sub_2_cat_name:
+                  type: varchar
+                  description: 'Tên danh mục phụ 2 của danh mục chính'
+                  example: voluptates
+                cat_id_2:
+                  type: bigint
+                  description: 'ID Danh mục chính 2 của sản phẩm'
+                  example: corporis
+                op_sub_1_id:
+                  type: bigint
+                  description: 'ID option 1 của dạnh mục phụ 1 của danh mục chính'
+                  example: beatae
+                op_sub_1_name:
+                  type: varchar
+                  description: 'Tên option 1 của dạnh mục phụ 1 của danh mục chính'
+                  example: nobis
+                op_sub_2_id:
+                  type: bigint
+                  description: 'ID option 2 của dạnh mục phụ 1 của danh mục chính'
+                  example: ducimus
+                op_sub_2_name:
+                  type: varchar
+                  description: 'Tên option 2 của dạnh mục phụ 1 của danh mục chính'
+                  example: consectetur
+                cat_2_sub:
+                  type: bigint
+                  description: 'ID Danh mục phụ 1 của danh mục chính 2 sản phẩm'
+                  example: ratione
+                producer_id:
+                  type: bigint
+                  description: 'ID nhà sản xuất sản phẩm'
+                  example: suscipit
+                producer_slug:
+                  type: varchar
+                  description: 'Slug nhà sản xuất sản phẩm'
+                  example: voluptatem
+                cat_game_id:
+                  type: ID
+                  description: 'thể loại game của sản phẩm'
+                  example: et
+                stock:
+                  type: integer
+                  description: 'Tình trạng kho của sản phẩm (1: còn hàng , 2: hàng sắp về , 3:hết hàng)'
+                  example: 13
+                new:
+                  type: integer
+                  description: 'Trạng thái mới của sản phẩm (1: mới đăng , 2: bình thường)'
+                  example: 11
+                usage_stt:
+                  type: integer
+                  description: 'Trạng thái sử dụng sản phẩm (1: sản phẩm chưa qua sử dụng , 2: sản phẩm đã qua sử dụng)'
+                  example: 13
+                num_orders:
+                  type: bigint
+                  description: 'Số lượt mua sản phẩm'
+                  example: iure
+                highlight:
+                  type: integer
+                  description: 'Sản Phẩm nổi bật (1: sp bình thương , 2: sp hot)'
+                  example: 10
+                author_id:
+                  type: bigint
+                  description: 'Id người đăng sản phẩm'
+                  example: aliquam
+                author_name:
+                  type: varchar
+                  description: 'Tên người đăng sản phẩm'
+                  example: aut
+      security: []
+  /api/products/categories/properties:
+    get:
+      summary: 'Product category properties.'
+      operationId: productCategoryProperties
+      description: 'Các thuộc tính của danh mục sản phẩm.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: multipart/form-data
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"Đây là tất cả thuộc tính của bảng danh mục sản phẩm"}'
+      tags:
+        - ProductsCategories
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: varchar(255)
+                  description: 'Tên danh mục'
+                  example: vero
+                title:
+                  type: mediumtext
+                  description: 'Tiêu đề danh mục'
+                  example: ab
+                desc:
+                  type: longtext
+                  description: 'Mô tả ngắn danh mục'
+                  example: modi
+                keywords:
+                  type: longtext
+                  description: 'Keywords SEO or Tag danh mục'
+                  example: id
+                parent_id:
+                  type: integer
+                  description: 'id danh mục cha (0: là danh mục gốc)'
+                  example: 12
+                slug:
+                  type: varchar
+                  description: 'Slug danh mục'
+                  example: et
+                img:
+                  type: string
+                  format: binary
+                  description: 'Hình ảnh danh mục'
+                icon:
+                  type: varchar
+                  description: 'Icon danh mục'
+                  example: sapiente
+                level:
+                  type: integer
+                  description: 'Level danh mục (danh mục gốc level = 0)'
+                  example: 20
+                is_game:
+                  type: integer
+                  description: '(2: không là danh mục game , 1: là danh mục game)'
+                  example: 8
+      security: []
+  /api/products/categories/list_all:
+    get:
+      summary: 'List all product categories.'
+      operationId: listAllProductCategories
+      description: 'Cây Danh Mục sản phẩm.'
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXmkjH
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXmkjH
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  categories:
+                    '0':
+                      id: 77
+                      name: 'PlayStation 5'
+                      title: 'PS5 | Kho máy, game, phụ kiện PS5 tại 2NITE SHOP'
+                      desc: 'Máy Chơi Game Playstation 5, PS5 chính hãng, bảo hành 12 tháng, tặng quà độc quyền, hỗ trợ trả góp 0% chỉ có tại 2NITE SHOP.'
+                      keywords: 'playstation 5,playstation,sony,sony playstation,ps5'
+                      parent_id: 0
+                      slug: ps5
+                      img: admin/images/category/banner/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg
+                      icon: admin/images/category/icon/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg
+                      level: 0
+                      is_game: 0
+                      created_at: '2021-11-18T13:31:11.000000Z'
+                      updated_at: '2022-03-15T06:26:32.000000Z'
+                      children:
+                        -
+                          id: 79
+                          name: 'Máy PS5'
+                          title: 'Máy PS5 | Máy Playstation 5 Chính Hãng Giá Rẻ tại 2NITE SHOP'
+                          desc: 'Máy Chơi Game Playstation 5, PS5 chính hãng, bảo hành 12 tháng, tặng quà độc quyền, hỗ trợ trả góp 0% chỉ có tại 2NITE SHOP.'
+                          keywords: 'sony,ps5,playstation 5,may ps5,may playstation 5'
+                          parent_id: 77
+                          slug: may-ps5
+                          img: admin/images/category/banner/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg
+                          icon: null
+                          level: 1
+                          is_game: 0
+                          created_at: '2021-11-18T13:36:43.000000Z'
+                          updated_at: '2022-03-15T07:17:10.000000Z'
+                          children: []
+                        -
+                          id: 80
+                          name: 'Máy PS5 USED'
+                          title: 'Máy PS5 Cũ | Máy Playstation 5 Chính Hãng Giá Rẻ tại 2NITE SHOP'
+                          desc: 'Máy Chơi Game PS5, PlayStation đã qua sử dụng | Chuyên Máy Playstation 5 Chính Hãng đã qua sử dụng tại 2NITE SHOP, Bảo hành toàn diện, Dịch vụ đẳng cấp.'
+                          keywords: 'sony,ps5,playstation 5,may ps5,may playstation 5,ps5 cũ,ps5 đã qua sử dụng,playstation 5 cũ,ps5 second hand'
+                          parent_id: 77
+                          slug: may-ps5-cu
+                          img: null
+                          icon: null
+                          level: 1
+                          is_game: 0
+                          created_at: '2021-11-18T13:37:36.000000Z'
+                          updated_at: '2022-02-25T16:10:00.000000Z'
+                          children: []
+                        -
+                          id: 81
+                          name: 'Game PS5'
+                          title: 'Đĩa game PS5 | Kho game Playstation 5 | Kho game PS5 giá rẻ tại 2NITE SHOP'
+                          desc: 'Kho game gốc PS5 giá rẻ, cập nhật game mới liên tục tại 2NITE SHOP.'
+                          keywords: 'game ps5, game playstation 5, game ps5 gia re, game playstation 5 gia re, game ps5 giá rẻ, game playstation 5 giá rẻ'
+                          parent_id: 77
+                          slug: game-ps5
+                          img: admin/images/category/banner/game-ps5-t3-22-categories.jpg
+                          icon: null
+                          level: 1
+                          is_game: 1
+                          created_at: '2021-11-18T13:38:11.000000Z'
+                          updated_at: '2022-03-03T16:58:02.000000Z'
+                          children: []
+                        -
+                          id: 82
+                          name: 'Phụ kiện PS5'
+                          title: 'Kho phụ kiện PS5 | Kho phụ kiện Playstation 5 Chính Hãng Giá Rẻ tại 2NITE SHOP'
+                          desc: 'Kho phụ kiện Playstation 5 Chính Hãng Giá Rẻ tại Haloshop'
+                          keywords: 'phu kien ps5, phu kien playstation 5, phụ kiện ps5, phụ kiện playstation 5'
+                          parent_id: 77
+                          slug: phu-kien-ps5
+                          img: null
+                          icon: null
+                          level: 1
+                          is_game: 0
+                          created_at: '2021-11-18T13:38:41.000000Z'
+                          updated_at: '2022-02-25T16:10:43.000000Z'
+                          children: []
+                        -
+                          id: 83
+                          name: 'Ổ cứng gắn trong'
+                          title: 'Ổ cứng gắn trong | Ổ cứng mở rộng bộ nhớ cho PS5'
+                          desc: 'Danh mục các sản phẩm ổ cứng mở rộng bộ nhớ chuyên dùng cho PS5, hàng chính hãng Samsung, WD,..'
+                          keywords: 'ssd, ổ cứng ssd, ssd gắn trong, ssd ps5, ssd cho ps5, ssd samsung 980 pro, ssd 1tb cho ps5, ssd 2tb cho ps5'
+                          parent_id: 77
+                          slug: o-cung-gan-trong-cho-ps5
+                          img: null
+                          icon: null
+                          level: 1
+                          is_game: 0
+                          created_at: '2021-11-18T13:39:11.000000Z'
+                          updated_at: '2022-02-25T16:10:57.000000Z'
+                          children: []
+                        -
+                          id: 84
+                          name: 'Skin PS5'
+                          title: 'Skin PS5 | Thay áo mới tuyệt đẹp cho Console của bạn'
+                          desc: 'Danh mục các sản phẩm skin PS5, thay áo mới cá tính, độc đáo cho Console của bạn, 2NITE có sẵn các loại skin cho PS5, PS4, Xbox Series, Nintendo Switch...'
+                          keywords: 'skin ps5, dan skin cho ps5, skin dep cho ps5'
+                          parent_id: 77
+                          slug: skin-ps5
+                          img: null
+                          icon: null
+                          level: 1
+                          is_game: 0
+                          created_at: '2021-11-18T13:39:36.000000Z'
+                          updated_at: '2022-02-25T16:12:03.000000Z'
+                          children:
+                            -
+                              id: 85
+                              name: 'Skin PS5 Digital'
+                              title: 'Skin PS5 Digital | Thay áo mới tuyệt đẹp cho Console của bạn'
+                              desc: 'Danh mục các sản phẩm skin PS5 Digital, thay áo mới cá tính, độc đáo cho Console của bạn, 2NITE có sẵn các loại skin cho PS5, PS4, Xbox Series, Nintendo Switch...'
+                              keywords: 'skin ps5 digital, dan skin cho ps5 digital, skin dep cho ps5 digital'
+                              parent_id: 84
+                              slug: skin-ps5-digital-dep
+                              img: null
+                              icon: null
+                              level: 2
+                              is_game: 0
+                              created_at: '2021-11-18T13:40:05.000000Z'
+                              updated_at: '2022-02-25T16:12:00.000000Z'
+                              children: []
+                            -
+                              id: 86
+                              name: 'Skin PS5 Standard'
+                              title: 'Skin PS5 Standard | Thay áo mới tuyệt đẹp cho Console của bạn'
+                              desc: 'Danh mục các sản phẩm skin PS5 Standard, thay áo mới cá tính, độc đáo cho Console của bạn, 2NITE có sẵn các loại skin cho PS5, PS4, Xbox Series, Nintendo Switch...'
+                              keywords: 'skin ps5 standard, dan skin cho ps5 standard, skin dep cho ps5 standard'
+                              parent_id: 84
+                              slug: skin-ps5-standard-dep
+                              img: null
+                              icon: null
+                              level: 2
+                              is_game: 0
+                              created_at: '2021-11-18T13:41:12.000000Z'
+                              updated_at: '2022-02-25T16:11:57.000000Z'
+                              children: []
+                properties:
+                  categories:
+                    type: object
+                    properties:
+                      -
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 77
+                          name:
+                            type: string
+                            example: 'PlayStation 5'
+                          title:
+                            type: string
+                            example: 'PS5 | Kho máy, game, phụ kiện PS5 tại 2NITE SHOP'
+                          desc:
+                            type: string
+                            example: 'Máy Chơi Game Playstation 5, PS5 chính hãng, bảo hành 12 tháng, tặng quà độc quyền, hỗ trợ trả góp 0% chỉ có tại 2NITE SHOP.'
+                          keywords:
+                            type: string
+                            example: 'playstation 5,playstation,sony,sony playstation,ps5'
+                          parent_id:
+                            type: integer
+                            example: 0
+                          slug:
+                            type: string
+                            example: ps5
+                          img:
+                            type: string
+                            example: admin/images/category/banner/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg
+                          icon:
+                            type: string
+                            example: admin/images/category/icon/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg
+                          level:
+                            type: integer
+                            example: 0
+                          is_game:
+                            type: integer
+                            example: 0
+                          created_at:
+                            type: string
+                            example: '2021-11-18T13:31:11.000000Z'
+                          updated_at:
+                            type: string
+                            example: '2022-03-15T06:26:32.000000Z'
+                          children:
+                            type: array
+                            example:
+                              -
+                                id: 79
+                                name: 'Máy PS5'
+                                title: 'Máy PS5 | Máy Playstation 5 Chính Hãng Giá Rẻ tại 2NITE SHOP'
+                                desc: 'Máy Chơi Game Playstation 5, PS5 chính hãng, bảo hành 12 tháng, tặng quà độc quyền, hỗ trợ trả góp 0% chỉ có tại 2NITE SHOP.'
+                                keywords: 'sony,ps5,playstation 5,may ps5,may playstation 5'
+                                parent_id: 77
+                                slug: may-ps5
+                                img: admin/images/category/banner/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg
+                                icon: null
+                                level: 1
+                                is_game: 0
+                                created_at: '2021-11-18T13:36:43.000000Z'
+                                updated_at: '2022-03-15T07:17:10.000000Z'
+                                children: []
+                              -
+                                id: 80
+                                name: 'Máy PS5 USED'
+                                title: 'Máy PS5 Cũ | Máy Playstation 5 Chính Hãng Giá Rẻ tại 2NITE SHOP'
+                                desc: 'Máy Chơi Game PS5, PlayStation đã qua sử dụng | Chuyên Máy Playstation 5 Chính Hãng đã qua sử dụng tại 2NITE SHOP, Bảo hành toàn diện, Dịch vụ đẳng cấp.'
+                                keywords: 'sony,ps5,playstation 5,may ps5,may playstation 5,ps5 cũ,ps5 đã qua sử dụng,playstation 5 cũ,ps5 second hand'
+                                parent_id: 77
+                                slug: may-ps5-cu
+                                img: null
+                                icon: null
+                                level: 1
+                                is_game: 0
+                                created_at: '2021-11-18T13:37:36.000000Z'
+                                updated_at: '2022-02-25T16:10:00.000000Z'
+                                children: []
+                              -
+                                id: 81
+                                name: 'Game PS5'
+                                title: 'Đĩa game PS5 | Kho game Playstation 5 | Kho game PS5 giá rẻ tại 2NITE SHOP'
+                                desc: 'Kho game gốc PS5 giá rẻ, cập nhật game mới liên tục tại 2NITE SHOP.'
+                                keywords: 'game ps5, game playstation 5, game ps5 gia re, game playstation 5 gia re, game ps5 giá rẻ, game playstation 5 giá rẻ'
+                                parent_id: 77
+                                slug: game-ps5
+                                img: admin/images/category/banner/game-ps5-t3-22-categories.jpg
+                                icon: null
+                                level: 1
+                                is_game: 1
+                                created_at: '2021-11-18T13:38:11.000000Z'
+                                updated_at: '2022-03-03T16:58:02.000000Z'
+                                children: []
+                              -
+                                id: 82
+                                name: 'Phụ kiện PS5'
+                                title: 'Kho phụ kiện PS5 | Kho phụ kiện Playstation 5 Chính Hãng Giá Rẻ tại 2NITE SHOP'
+                                desc: 'Kho phụ kiện Playstation 5 Chính Hãng Giá Rẻ tại Haloshop'
+                                keywords: 'phu kien ps5, phu kien playstation 5, phụ kiện ps5, phụ kiện playstation 5'
+                                parent_id: 77
+                                slug: phu-kien-ps5
+                                img: null
+                                icon: null
+                                level: 1
+                                is_game: 0
+                                created_at: '2021-11-18T13:38:41.000000Z'
+                                updated_at: '2022-02-25T16:10:43.000000Z'
+                                children: []
+                              -
+                                id: 83
+                                name: 'Ổ cứng gắn trong'
+                                title: 'Ổ cứng gắn trong | Ổ cứng mở rộng bộ nhớ cho PS5'
+                                desc: 'Danh mục các sản phẩm ổ cứng mở rộng bộ nhớ chuyên dùng cho PS5, hàng chính hãng Samsung, WD,..'
+                                keywords: 'ssd, ổ cứng ssd, ssd gắn trong, ssd ps5, ssd cho ps5, ssd samsung 980 pro, ssd 1tb cho ps5, ssd 2tb cho ps5'
+                                parent_id: 77
+                                slug: o-cung-gan-trong-cho-ps5
+                                img: null
+                                icon: null
+                                level: 1
+                                is_game: 0
+                                created_at: '2021-11-18T13:39:11.000000Z'
+                                updated_at: '2022-02-25T16:10:57.000000Z'
+                                children: []
+                              -
+                                id: 84
+                                name: 'Skin PS5'
+                                title: 'Skin PS5 | Thay áo mới tuyệt đẹp cho Console của bạn'
+                                desc: 'Danh mục các sản phẩm skin PS5, thay áo mới cá tính, độc đáo cho Console của bạn, 2NITE có sẵn các loại skin cho PS5, PS4, Xbox Series, Nintendo Switch...'
+                                keywords: 'skin ps5, dan skin cho ps5, skin dep cho ps5'
+                                parent_id: 77
+                                slug: skin-ps5
+                                img: null
+                                icon: null
+                                level: 1
+                                is_game: 0
+                                created_at: '2021-11-18T13:39:36.000000Z'
+                                updated_at: '2022-02-25T16:12:03.000000Z'
+                                children:
+                                  -
+                                    id: 85
+                                    name: 'Skin PS5 Digital'
+                                    title: 'Skin PS5 Digital | Thay áo mới tuyệt đẹp cho Console của bạn'
+                                    desc: 'Danh mục các sản phẩm skin PS5 Digital, thay áo mới cá tính, độc đáo cho Console của bạn, 2NITE có sẵn các loại skin cho PS5, PS4, Xbox Series, Nintendo Switch...'
+                                    keywords: 'skin ps5 digital, dan skin cho ps5 digital, skin dep cho ps5 digital'
+                                    parent_id: 84
+                                    slug: skin-ps5-digital-dep
+                                    img: null
+                                    icon: null
+                                    level: 2
+                                    is_game: 0
+                                    created_at: '2021-11-18T13:40:05.000000Z'
+                                    updated_at: '2022-02-25T16:12:00.000000Z'
+                                    children: []
+                                  -
+                                    id: 86
+                                    name: 'Skin PS5 Standard'
+                                    title: 'Skin PS5 Standard | Thay áo mới tuyệt đẹp cho Console của bạn'
+                                    desc: 'Danh mục các sản phẩm skin PS5 Standard, thay áo mới cá tính, độc đáo cho Console của bạn, 2NITE có sẵn các loại skin cho PS5, PS4, Xbox Series, Nintendo Switch...'
+                                    keywords: 'skin ps5 standard, dan skin cho ps5 standard, skin dep cho ps5 standard'
+                                    parent_id: 84
+                                    slug: skin-ps5-standard-dep
+                                    img: null
+                                    icon: null
+                                    level: 2
+                                    is_game: 0
+                                    created_at: '2021-11-18T13:41:12.000000Z'
+                                    updated_at: '2022-02-25T16:11:57.000000Z'
+                                    children: []
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  example: 79
+                                name:
+                                  type: string
+                                  example: 'Máy PS5'
+                                title:
+                                  type: string
+                                  example: 'Máy PS5 | Máy Playstation 5 Chính Hãng Giá Rẻ tại 2NITE SHOP'
+                                desc:
+                                  type: string
+                                  example: 'Máy Chơi Game Playstation 5, PS5 chính hãng, bảo hành 12 tháng, tặng quà độc quyền, hỗ trợ trả góp 0% chỉ có tại 2NITE SHOP.'
+                                keywords:
+                                  type: string
+                                  example: 'sony,ps5,playstation 5,may ps5,may playstation 5'
+                                parent_id:
+                                  type: integer
+                                  example: 77
+                                slug:
+                                  type: string
+                                  example: may-ps5
+                                img:
+                                  type: string
+                                  example: admin/images/category/banner/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg
+                                icon:
+                                  type: string
+                                  example: null
+                                level:
+                                  type: integer
+                                  example: 1
+                                is_game:
+                                  type: integer
+                                  example: 0
+                                created_at:
+                                  type: string
+                                  example: '2021-11-18T13:36:43.000000Z'
+                                updated_at:
+                                  type: string
+                                  example: '2022-03-15T07:17:10.000000Z'
+                                children:
+                                  type: array
+                                  example: []
+      tags:
+        - ProductsCategories
+      security: []
+  /api/products/categories/game:
+    get:
+      summary: 'List all Game Genre.'
+      operationId: listAllGameGenre
+      description: 'Lấy danh sách danh mục game của sản phẩm.'
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  categories_game:
+                    -
+                      id: 16
+                      name: Action
+                      created_at: '2021-10-22T04:56:10.000000Z'
+                      updated_at: '2021-10-22T04:56:10.000000Z'
+                    -
+                      id: 17
+                      name: 'Action Adventure'
+                      created_at: '2021-10-22T04:56:29.000000Z'
+                      updated_at: '2021-10-22T04:56:29.000000Z'
+                properties:
+                  categories_game:
+                    type: array
+                    example:
+                      -
+                        id: 16
+                        name: Action
+                        created_at: '2021-10-22T04:56:10.000000Z'
+                        updated_at: '2021-10-22T04:56:10.000000Z'
+                      -
+                        id: 17
+                        name: 'Action Adventure'
+                        created_at: '2021-10-22T04:56:29.000000Z'
+                        updated_at: '2021-10-22T04:56:29.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 16
+                        name:
+                          type: string
+                          example: Action
+                        created_at:
+                          type: string
+                          example: '2021-10-22T04:56:10.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2021-10-22T04:56:10.000000Z'
+      tags:
+        - ProductsCategories
+      security: []
+  /api/products/categories/producer:
+    get:
+      summary: 'List all Producer.'
+      operationId: listAllProducer
+      description: 'Lấy danh sách nhà sản xuất.'
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  categories_producer:
+                    -
+                      id: 2
+                      name: 'Electronic Arts'
+                      slug: electronic-arts
+                      created_at: '2021-10-22T05:33:35.000000Z'
+                      updated_at: '2021-10-22T05:33:35.000000Z'
+                    -
+                      id: 3
+                      name: 'Sony PlayStation'
+                      slug: sony-playstation-world
+                      created_at: '2021-10-22T05:34:39.000000Z'
+                      updated_at: '2021-10-22T05:34:39.000000Z'
+                properties:
+                  categories_producer:
+                    type: array
+                    example:
+                      -
+                        id: 2
+                        name: 'Electronic Arts'
+                        slug: electronic-arts
+                        created_at: '2021-10-22T05:33:35.000000Z'
+                        updated_at: '2021-10-22T05:33:35.000000Z'
+                      -
+                        id: 3
+                        name: 'Sony PlayStation'
+                        slug: sony-playstation-world
+                        created_at: '2021-10-22T05:34:39.000000Z'
+                        updated_at: '2021-10-22T05:34:39.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 2
+                        name:
+                          type: string
+                          example: 'Electronic Arts'
+                        slug:
+                          type: string
+                          example: electronic-arts
+                        created_at:
+                          type: string
+                          example: '2021-10-22T05:33:35.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2021-10-22T05:33:35.000000Z'
+      tags:
+        - ProductsCategories
+      security: []
+  /api/users:
+    get:
+      summary: 'GET USERS.'
+      operationId: gETUSERS
+      description: ''
+      parameters:
+        -
+          in: query
+          name: token_api
+          description: ''
+          example: 19aIotXOerK
+          required: true
+          schema:
+            type: string
+            description: ''
+            example: 19aIotXOerK
+        -
+          in: query
+          name: sort
+          description: 'ASC/DESC Default: DESC'
+          example: DESC
+          required: false
+          schema:
+            type: string
+            description: 'ASC/DESC Default: DESC'
+            example: DESC
+        -
+          in: query
+          name: key_sort
+          description: 'Default: id'
+          example: id
+          required: false
+          schema:
+            type: string
+            description: 'Default: id'
+            example: id
+        -
+          in: query
+          name: item_page
+          description: 'Default: 10'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Default: 10'
+            example: 10
+        -
+          in: query
+          name: page
+          description: 'Default: all'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Default: all'
+            example: 1
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  page: '1'
+                  number_page: 52
+                  count: 104
+                  users:
+                    -
+                      id: 340
+                      role_id: 5
+                      name: 'vuong anh 2'
+                      email: laracast16@gmail.com
+                      phone: '0858458464'
+                      email_verified_at: null
+                      avatar: null
+                      created_at: '2022-03-12T07:43:33.000000Z'
+                      updated_at: '2022-03-12T07:43:33.000000Z'
+                      provider_id: null
+                      provider: null
+                      ban: 0
+                    -
+                      id: 339
+                      role_id: 5
+                      name: vuonganh
+                      email: laracast@gmail.com
+                      phone: '0868578690'
+                      email_verified_at: null
+                      avatar: null
+                      created_at: '2022-03-12T07:41:43.000000Z'
+                      updated_at: '2022-03-12T07:41:43.000000Z'
+                      provider_id: null
+                      provider: null
+                      ban: 0
+                properties:
+                  page:
+                    type: string
+                    example: '1'
+                  number_page:
+                    type: integer
+                    example: 52
+                  count:
+                    type: integer
+                    example: 104
+                  users:
+                    type: array
+                    example:
+                      -
+                        id: 340
+                        role_id: 5
+                        name: 'vuong anh 2'
+                        email: laracast16@gmail.com
+                        phone: '0858458464'
+                        email_verified_at: null
+                        avatar: null
+                        created_at: '2022-03-12T07:43:33.000000Z'
+                        updated_at: '2022-03-12T07:43:33.000000Z'
+                        provider_id: null
+                        provider: null
+                        ban: 0
+                      -
+                        id: 339
+                        role_id: 5
+                        name: vuonganh
+                        email: laracast@gmail.com
+                        phone: '0868578690'
+                        email_verified_at: null
+                        avatar: null
+                        created_at: '2022-03-12T07:41:43.000000Z'
+                        updated_at: '2022-03-12T07:41:43.000000Z'
+                        provider_id: null
+                        provider: null
+                        ban: 0
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 340
+                        role_id:
+                          type: integer
+                          example: 5
+                        name:
+                          type: string
+                          example: 'vuong anh 2'
+                        email:
+                          type: string
+                          example: laracast16@gmail.com
+                        phone:
+                          type: string
+                          example: '0858458464'
+                        email_verified_at:
+                          type: string
+                          example: null
+                        avatar:
+                          type: string
+                          example: null
+                        created_at:
+                          type: string
+                          example: '2022-03-12T07:43:33.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2022-03-12T07:43:33.000000Z'
+                        provider_id:
+                          type: string
+                          example: null
+                        provider:
+                          type: string
+                          example: null
+                        ban:
+                          type: integer
+                          example: 0
+      tags:
+        - User
+      security: []
+tags:
+  -
+    name: Auth
+    description: "\nAPIs for Auth"
+  -
+    name: 'Auth Api'
+    description: ''
+  -
+    name: Blog
+    description: "\nAPIs for managing Blog"
+  -
+    name: BlogCategories
+    description: "\nAPIs for managing BlogCategories"
+  -
+    name: Password
+    description: "\nAPIs for managing Password"
+  -
+    name: Products
+    description: "\nAPIs for managing Products"
+  -
+    name: ProductsCategories
+    description: "\nAPIs for managing Products"
+  -
+    name: User
+    description: "\nAPIs for managing users"

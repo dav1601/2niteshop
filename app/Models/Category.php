@@ -18,13 +18,14 @@ class Category extends Model
         'slug',
         'img',
         'icon',
+        'position',
         'level',
         'is_game'
     ];
-    public static function tree()
+    public static function tree($except = true)
     {
-        $array_except = array(145, 141);
-        $allCategories = Category::whereNotIn('id', $array_except)->get();
+        $array_except =  $except ? array(145, 141) : [];
+        $allCategories = Category::whereNotIn('id', $array_except)->orderBy('position', 'ASC')->get();
         $rootCategories = $allCategories->where('parent_id', '=', 0);
         self::formatTree($rootCategories, $allCategories);
         return $rootCategories;
@@ -59,7 +60,7 @@ class Category extends Model
     // //////////////
     static function ParentTree($id)
     {
-        $allCategories = Category::where('id', '!=', 145)->get();
+        $allCategories = Category::where('id', '!=', 145)->orderBy('position', 'ASC')->get();
         $category = Category::where('id', '=', $id)->get();
         self::formatParentTree($category, $allCategories);
         return $category;

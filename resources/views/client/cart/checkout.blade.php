@@ -189,28 +189,10 @@
                     </div>
                 </div>
                 {{-- end section cp --}}
-                <div class="section__checkout section__cart">
-                    <div class="section__checkout--title">
-                        Giỏ hàng
-                    </div>
-                    <div class="section__checkout--body">
-                        <div id="checkout_cart">
-                            @foreach (Cart::instance('shopping')->content()->sortBy('id') as $cart )
-                            <x-Cart :cart="$cart" />
-                            @endforeach
-                        </div>
-                        <div id="checkout_total">
-                            <div class="row mx-0 ck_total">
-                                <span class="col-md-9 col-6 pl-0">Chi phí vận chuyển linh hoạt:</span>
-                                <strong class="col-md-3 col-6 pr-md-4 pr-2">CALL-{{getVal('switchboard')->value }}</strong>
-                            </div>
-                            <div class="row mx-0 ck_total">
-                                <span class="col-md-9 col-6 pl-0">Tổng Tiền:</span>
-                                <strong class="col-md-3 col-6 pr-md-4 pr-2" id="ck_total">{{ crf(total()) }}</strong>
-                            </div>
-                        </div>
-                    </div>
+                <div id="cart__checkout">
+                {{-- ajax --}}
                 </div>
+
                 {{-- end section cart --}}
                 <div class="section__checkout section__cart">
                     <div class="section__checkout--title">

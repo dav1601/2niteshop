@@ -4,7 +4,7 @@
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/category.js')}}?ver=@php echo filemtime('public/admin/app/js/category.js') @endphp">
+<script src="{{ asset('admin/app/js/category.js')}}?ver=@php echo filemtime('admin/app/js/category.js') @endphp">
 </script>
 @endsection
 

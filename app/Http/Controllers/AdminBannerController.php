@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminBannerController extends Controller
 {
-    public function __construct()
+    public $file;
+    public function __construct(FileInterface $file)
     {
         $this->middleware(function ($request, $next) {
             session(['active' => 'banner']);
             return $next($request);
         });
+        $this->file = $file;
     }
     ////////////////////////////////////////
 
@@ -52,16 +54,6 @@ class AdminBannerController extends Controller
                 'position' => 'required',
                 'index' => 'required',
                 'img' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-            ],
-            [
-                'name.required' => "Không được để trống tên banner",
-                'link.required' => "Không được để trống link banner",
-                'position.required' => "Không được để trống vị trí banner",
-                'index.required' => "Không được để trống thứ tự banner",
-                'img.required' => "Không được để trống file ảnh",
-                'img.image' => "File không phải là file ảnh",
-                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'img.max' => "File ảnh không vượt quá 500kb",
             ]
         );
         if ($validator->fails()) {
@@ -92,14 +84,6 @@ class AdminBannerController extends Controller
                 'name' => 'required',
                 'link' => 'required',
                 'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-            ],
-            [
-                'name.required' => "Không được để trống tên banner",
-                'link.required' => "Không được để trống link banner",
-                'img.required' => "Không được để trống file ảnh",
-                'img.image' => "File không phải là file ảnh",
-                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'img.max' => "File ảnh không vượt quá 500kb",
             ]
         );
         if ($validator->fails()) {
@@ -110,7 +94,7 @@ class AdminBannerController extends Controller
             $data['link'] = $request->link;
             if ($request->has('img')) {
                 if ($banner->img != NULL)
-                    $this->file->deleteFile("public/" . $banner->img);
+                    $file->deleteFile("" . $banner->img);
                 $path_img = "admin/images/banners/";
                 $data['img'] = $file->storeFileImg($request->img, $path_img);
             }
@@ -124,82 +108,89 @@ class AdminBannerController extends Controller
 
     public function slide_view_add(Request $request)
     {
-        $slides = Slides::all();
-        Carbon::setLocale('vi');
-        $carbon = new Carbon;
-        return view('admin.slides_banners.slides.index', compact('slides', 'carbon'));
+        $slides = Slides::with('author')->get();
+        return view('admin.slides_banners.slides.index', compact('slides'));
     }
 
     ////////////////////////////////////////
     ////////////////////////////////////////
 
-    public function slide_handle_add(Request $request, FileInterface $file)
+    public function slide_handle_add(Request $request)
     {
         $data = array();
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required',
-                'link' => 'required',
-                'index' => 'required',
-                'img' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-            ],
-            [
-                'name.required' => "Bạn chưa nhập tên slide",
-                'link.required' => "Bạn chưa nhập link slide",
-                'index.required' => "Bạn chưa chọn vị trí slide",
-                'img.required' => "Chưa có ảnh slide",
-                'img.image' => "File không phải là file ảnh",
-                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'img.max' => "File ảnh không vượt quá 500kb",
-            ]
-        );
+        $validator = $this->slide_validator($request->all());
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         } else {
-            if ($request->status == 1) {
-                if (Slides::where('index', '=', $request->index)->where('status', '=', 1)->first()) {
-                    return redirect()->back()->with('index', '1');
-                } else {
-                    $data['name'] = $request->name;
-                    $data['link'] = $request->link;
-                    $data['index'] = $request->index;
-                    $data['status'] = $request->stt;
-                    $data['author_post'] = Auth::user()->name;
-                    $main_img = $request->img;
-                    $n_main = $main_img->getClientOriginalName();
-                    if (file_exists("public/admin/images/slides/" . $n_main)) {
-                        $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                        $ext = $main_img->getClientOriginalExtension();
-                        $n_main = $filename . '(1)' . '.' . $ext;
-                        $i = 1;
-                        while (file_exists("public/admin/images/slides/" . $n_main)) {
-                            $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                            $i++;
-                        }
-                    }
-                    $save_main = "admin/images/slides/" . $n_main;
-                    $main_img->move("public/admin/images/slides", $n_main);
-                    $data['img'] = $save_main;
-                }
-                // ////////////
-            } else {
-                $data['name'] = $request->name;
-                $data['link'] = $request->link;
-                $data['index'] = $request->index;
-                $data['status'] = $request->stt;
-                $data['author_post'] = Auth::user()->name;
-                $path = "admin/images/slides/";
-                $data['img'] = $file->storeFileImg($request->img, $path);
+            $path = "admin/images/slides/";
+
+            $data['name'] = $request->name;
+            $data['link'] = $request->link;
+            $daa['users_id'] = Auth::id();
+            $data['author_post'] = Auth::id();
+            $save_main =  $this->file->storeFileImg($request->img, $path);
+            $$data['img'] = $save_main;
+            $created =  Slides::create($data);
+            if ($created) {
+                Slides::where('id', $created->id)->update(['index' => $created->id]);
             }
-            // ///
-            Slides::create($data);
             return redirect()->back()->with('ok', '1');
         }
     }
+    public function slide_validator($request, $id = null)
+    {
+        $name = $id ? "|unique:slides,name," . $id : "";
+        $validator = Validator::make(
+            $request,
+            [
+                'name' => 'required' . $name,
+                'link' => 'required',
+                'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:1000',
+            ]
 
+        );
+        return $validator;
+    }
     ////////////////////////////////////////
+    public function slide_update(Request $request)
+    {
+        $validator = $this->slide_validator($request->all());
+        if ($validator->fails()) {
+            $data['error'] = $validator->errors()->first();
+        } else {
+            $slide = Slides::where('id',  $request->id)->first();
+            $path = "admin/images/slides/";
+            $data_update['name'] = $request->name;
+            $data_update['link'] = $request->link;
+            $data_update['users_id'] = Auth::id();
+            $data_update['author_post'] = Auth::id();
+            if ($request->img) {
+                if ($slide->img) {
+                    $this->file->deleteFile($slide->img);
+                }
+                $save_main =  $this->file->storeFileImg($request->img, $path);
+                $data_update['img'] = $save_main;
+            }
+            $updated =  Slides::where('id', $request->id)->update($data_update);
+            if (!$updated) {
+                $data['error'] = "Updated fail";
+            }
+        }
+        return response()->json($data);
+    }
     //////////////////////////////////////
+    //    ///////////////////////////////////////
+    public function slide_modal_content(Request $request)
+    {
+        $id = $request->id;
+        $html = "";
+        $slide = Slides::where('id', $id)->first();
+        $html .= view('components.admin.modal.slide.content', compact('slide'));
+        $data['html'] = $html;
+        return response()->json($data);
+    }
+    //  //////////////////////////////////////// end slide_modal_content
+    // //////////////////////////////////
 
     public function handle_update(Request $request)
     {
@@ -325,6 +316,62 @@ class AdminBannerController extends Controller
             return redirect()->back()->with('ok', 1);
         }
     }
+    //    ///////////////////////////////////////
+    public function slide_handle(Request $request)
+    {
+        $act = $request->act;
+        $ido = $request->ido;
+        $ida = $request->ida;
+        $indexo = $request->indexo;
+        $indexa = $request->indexa;
+        $id = $request->has('id') ? $request->id : 0;
+        $status = $request->active;
+        $html = '';
+        $html_edit = '';
+        $data['update_s'] = false;
+        $data['update_slide']['errors'] = null;
+        switch ($act) {
+            case 'update_index':
 
+            case 'update_stt':
+                $last = Slides::where('status', '=', 1)->first();
+                $index = $status == 1 ? (int) $last->index + 1 : NULL;
+                Slides::where('id', $id)->update(['index' => $index, 'status' => $status]);
+                break;
+            case 'update_slide':
+                $validator = $this->slide_validator($request->all());
+                if ($validator->fails()) {
+                    $data['update_slide']['errors'] = $validator->errors();
+                } else {
+                    $slide = Slides::where('id',  $id)->first();
+                    $path = "admin/images/slides/";
+                    $data_update['name'] = $request->name;
+                    $data_update['link'] = $request->link;
+                    if ($request->img) {
+                        if ($slide->img) {
+                            $this->file->deleteFile($slide->img);
+                        }
+                        $save_main =  $this->file->storeFileImg($request->img, $path);
+                        $data_update['img'] = $save_main;
+                    }
+                    $updated =  Slides::where('id', $request->id)->update($data_update);
+                    if ($updated) {
+                        $data['update_s'] = true;
+                    }
+                }
+                $slide = Slides::where('id', $id)->first();
+                $html_edit .= view('components.admin.modal.slide.content', ['slide' => $slide]);
+                $data['html_edit'] = $html_edit;
+                break;
+            default:
+                break;
+        }
+        $slides = Slides::with("author")->get();
+        $html .= view('components.admin.slides.show', compact('slides'));
+
+        $data['html'] = $html;
+        return response()->json($data);
+    }
+    //  //////////////////////////////////////// end name
     ////////////////////////////////////////
 }

@@ -1,1 +1,0 @@
-<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script><?php /**PATH E:\xampp\htdocs\2niteshop\home\u217861923\domains\vachill.com\public_html\vendor\cloudinary-labs\cloudinary-laravel\src/../resources/views/js.blade.php ENDPATH**/ ?>

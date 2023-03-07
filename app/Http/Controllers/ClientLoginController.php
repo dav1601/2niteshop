@@ -17,7 +17,11 @@ class ClientLoginController extends Controller
 
     public function login(Request $request)
     {
-
+        $isAjax = $request->has('ajax');
+        $errors = [];
+        $data['errors']['input'] = [];
+        $data['s'] = false;
+        $data['errors']['login'] = "";
         $validator = Validator::make(
             $request->all(),
             [
@@ -32,6 +36,10 @@ class ClientLoginController extends Controller
             ]
         );
         if ($validator->fails()) {
+            if ($isAjax) {
+                $data['errors']['input'] = $validator->errors();
+                return response()->json($data);
+            }
             return redirect()->route("login")->withInput()->withErrors($validator);
         } else {
             $remember = false;
@@ -42,15 +50,41 @@ class ClientLoginController extends Controller
             if (Auth::attempt($credentials, $remember)) {
                 Cart::instance('shopping')->destroy();
                 Cart::instance('shopping')->restore(Auth::id());
+                if ($isAjax) {
+                    $data['role']  = Auth::user()->role_id;
+                    $data['s'] = true;
+                    return response()->json($data);
+                }
                 if (Auth::user()->role_id <= 3) {
                     return redirect()->route('dashboard');
                 }
                 return redirect()->route('home');
             } else {
+                if ($isAjax) {
+                    $data['errors']['login'] = "Sai tên tài khoản hoặc mật khẩu";
+                    return response()->json($data);
+                }
                 return redirect()->route("login")->with('error', '1');
             }
         }
     }
+    //    ///////////////////////////////////////
+    public function load_auth_template(Request $request)
+    {
+        $type = $request->type;
+        $html = "";
+        switch ($type) {
+            case 'login':
+                $html .= view('components.admin.modal.auth.login', ['modal' => true]);
+                break;
+            case 'reg':
+                $html .= view('components.admin.modal.auth.reg', ['isModal' => true]);
+                break;
+        }
+        $data['html'] = $html;
+        return response()->json($data);
+    }
+    //  //////////////////////////////////////// end load_auth_template
 
     ////////////////////////////////////////
 }

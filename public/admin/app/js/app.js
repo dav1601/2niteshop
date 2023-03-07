@@ -1,9 +1,11 @@
+
 $(function () {
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+
     $("li.module a").attr("target", "_blank");
     endLoading();
     function endLoading() {
@@ -24,6 +26,16 @@ $(function () {
         $.format_price($(this).val());
     });
     //
+    $(document).on("change", ".dav-input-file", function () {
+        $.preview_img($(this));
+    });
+    $(document).on("click", ".clear-images", function () {
+        const id = $(this).attr("data-id");
+        $("#" + id).val("");
+        $("#for" + id).text("Đang trống");
+        $(".preview-" + id).remove();
+        $(this).remove();
+    });
 
     // END PRICE
 

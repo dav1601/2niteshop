@@ -11,7 +11,7 @@ Tài khoản của bạn
 <span class="note">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
 @endsection
 @section('rc')
-<input type="hidden" name="" id="ajax__avatar--loading" value="{{ url('public/client/images/fire.svg') }}">
+<input type="hidden" name="" id="ajax__avatar--loading" value="{{ url('client/images/fire.svg') }}">
 {!! Form::open(['url' => route('hanle_edit_profile' , ['id'=>Auth::id()]) , 'method' => "POST" , 'files' => true]) !!}
 @if (session('ok'))
 <script>

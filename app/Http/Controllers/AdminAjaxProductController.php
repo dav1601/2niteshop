@@ -315,7 +315,7 @@ class AdminAjaxProductController extends Controller
         $prd_id = gllProducts::where('id', '=', $id)->first()->products_id;
         $gll = gllProducts::where('index', '=', gllProducts::where('id', '=', $id)->first()->index)->where('products_id', '=', $prd_id)->get();
         foreach ($gll as $g) {
-            unlink("public/" . $g->link);
+            unlink("" . $g->link);
         }
         gllProducts::where('index', '=', gllProducts::where('id', '=', $id)->first()->index)->where('products_id', '=', $prd_id)->delete();
         $gall = Products::find($prd_id)->gll()->orderBy('index', 'ASC')->get();

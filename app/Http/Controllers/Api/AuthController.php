@@ -223,7 +223,7 @@ class AuthController extends Controller
         $data['phone'] = $request->phone;
         if ($request->has('avatar') && $request->avatar != Null) {
             if ($user->avatar != NULL)
-                unlink("public/" . $user->avatar);
+                unlink("" . $user->avatar);
             $path = "admin/images/avatar/";
             $data['avatar'] = $file->storeFileImg($request->avatar, $path);
         }

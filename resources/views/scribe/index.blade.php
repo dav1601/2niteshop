@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>2NITE SHOP API</title>
+    <title>2NITE SHOP API DOCS</title>
 
     <link href="https://fonts.googleapis.com/css?family=PT+Sans&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset("/vendor/scribe/css/theme-default.style.css") }}" media="screen">
     <link rel="stylesheet" href="{{ asset("/vendor/scribe/css/theme-default.print.css") }}" media="print">
-    <link rel="shortcut icon" href="http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/public/client/images/email-logo.png?ver=1668280429" type="image/x-icon">
+    <link rel="shortcut icon" href="" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 
     <link rel="stylesheet"
@@ -26,13 +26,13 @@
             </style>
 
     <script>
-        var baseUrl = "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html";
+        var baseUrl = "http://127.0.0.1:8000";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
-    <script src="{{ asset("/vendor/scribe/js/tryitout-4.2.2.js") }}"></script>
+    <script src="{{ asset("/vendor/scribe/js/tryitout-4.16.0.js") }}"></script>
 
-    <script src="{{ asset("/vendor/scribe/js/theme-default-4.2.2.js") }}"></script>
+    <script src="{{ asset("/vendor/scribe/js/theme-default-4.16.0.js") }}"></script>
 
 </head>
 
@@ -45,7 +45,6 @@
     </span>
 </a>
 <div class="tocify-wrapper">
-            <img src="public/client/images/email-logo.png" alt="logo" class="logo" style="padding-top: 10px;" width="230px" />
     
             <div class="lang-selector">
                                             <button type="button" class="lang-button"
@@ -225,7 +224,7 @@
                             <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
                     </ul>
         <ul class="toc-footer" id="last-updated">
-        <li>Last updated: Last updated: November 13, 2022</li>
+        <li>Last updated: Last updated: February 27, 2023</li>
     </ul>
 </div>
 
@@ -263,8 +262,9 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/login" \
+    "http://127.0.0.1:8000/api/auth/login" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
     \"email\": \"2niteshop@gmail.com\",
     \"password\": \"Anh$1234\"
@@ -274,7 +274,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/login"
+    "http://127.0.0.1:8000/api/auth/login"
 );
 
 const headers = {
@@ -378,7 +378,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-login', this);">
     <h3>
@@ -438,8 +438,9 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/signup" \
+    "http://127.0.0.1:8000/api/auth/signup" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
     \"name\": \"Vuong Anh\",
     \"email\": \"2niteshop@gmail.com\",
@@ -452,7 +453,7 @@ fetch(url, {
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/signup"
+    "http://127.0.0.1:8000/api/auth/signup"
 );
 
 const headers = {
@@ -503,7 +504,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-signup', this);">
     <h3>
@@ -598,18 +599,21 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/logout" \
+    "http://127.0.0.1:8000/api/auth/logout" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --header "Authorization: Bearer {token}"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/logout"
+    "http://127.0.0.1:8000/api/auth/logout"
 );
 
 const headers = {
-    "Authorization": "Bearer {token}",
+    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -645,7 +649,7 @@ is_logout =&gt; true
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Authorization":"Bearer {token}"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-logout', this);">
     <h3>
@@ -693,18 +697,21 @@ is_logout =&gt; true
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/me/ut" \
+    --get "http://127.0.0.1:8000/api/auth/me/et" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --header "Authorization: Bearer {token}"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/me/ut"
+    "http://127.0.0.1:8000/api/auth/me/et"
 );
 
 const headers = {
-    "Authorization": "Bearer {token}",
+    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -753,7 +760,7 @@ fetch(url, {
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Authorization":"Bearer {token}"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-me--id-', this);">
     <h3>
@@ -791,7 +798,7 @@ fetch(url, {
                 <input type="text"
                name="id"
                data-endpoint="GETapi-auth-me--id-"
-               value="ut"
+               value="et"
                data-component="url" hidden>
     <br>
 <p>The ID of the me.</p>
@@ -812,18 +819,21 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/me/orders/et" \
+    --get "http://127.0.0.1:8000/api/auth/me/orders/totam" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --header "Authorization: Bearer {token}"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/me/orders/et"
+    "http://127.0.0.1:8000/api/auth/me/orders/totam"
 );
 
 const headers = {
-    "Authorization": "Bearer {token}",
+    "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -857,7 +867,7 @@ fetch(url, {
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Authorization":"Bearer {token}"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-me-orders--id-', this);">
     <h3>
@@ -895,7 +905,7 @@ fetch(url, {
                 <input type="text"
                name="id"
                data-endpoint="GETapi-auth-me-orders--id-"
-               value="et"
+               value="totam"
                data-component="url" hidden>
     <br>
 <p>The ID of the order.</p>
@@ -916,23 +926,24 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/update/blanditiis" \
-    --header "Authorization: Bearer {token}" \
+    "http://127.0.0.1:8000/api/auth/update/omnis" \
     --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --header "Authorization: Bearer {token}" \
     --form "name=VUong Anh" \
     --form "phone=0987687678" \
-    --form "avatar=@C:\Users\Admin\AppData\Local\Temp\phpD766.tmp" </code></pre></div>
+    --form "avatar=@C:\Users\Admin\AppData\Local\Temp\php6A8.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/update/blanditiis"
+    "http://127.0.0.1:8000/api/auth/update/omnis"
 );
 
 const headers = {
-    "Authorization": "Bearer {token}",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 const body = new FormData();
@@ -989,7 +1000,7 @@ fetch(url, {
       data-authed="1"
       data-hasfiles="1"
       data-isarraybody="0"
-      data-headers='{"Authorization":"Bearer {token}","Content-Type":"multipart\/form-data"}'
+      data-headers='{"Content-Type":"multipart\/form-data","Accept":"application\/json","Authorization":"Bearer {token}"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-update--id-', this);">
     <h3>
@@ -1027,7 +1038,7 @@ fetch(url, {
                 <input type="text"
                name="id"
                data-endpoint="POSTapi-auth-update--id-"
-               value="blanditiis"
+               value="omnis"
                data-component="url" hidden>
     <br>
 <p>The ID of the update.</p>
@@ -1082,12 +1093,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/list?token_api=19aIotXOerK&amp;category=tin-moi&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/blogs/list?token_api=19aIotXOerK&amp;category=tin-moi&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/list"
+    "http://127.0.0.1:8000/api/blogs/list"
 );
 
 const params = {
@@ -1101,8 +1114,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -1173,7 +1192,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-list', this);">
     <h3>
@@ -1273,12 +1292,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/blog/illum?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/blogs/blog/est?token_api=19aIotXOerK" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/blog/illum"
+    "http://127.0.0.1:8000/api/blogs/blog/est"
 );
 
 const params = {
@@ -1287,8 +1308,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -1366,7 +1393,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-blog--slug-', this);">
     <h3>
@@ -1396,7 +1423,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-blogs-blog--slug-"
-               value="illum"
+               value="est"
                data-component="url" hidden>
     <br>
 <p>The slug of the blog.</p>
@@ -1427,17 +1454,18 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/search_blog?token_api=19aIotXOerK&amp;kw=Sony+c%C3%B4ng+b%E1%BB%91+PlayStation+VR+2+4K+HDR+v%C3%A0+game+Horizon+Call+of+the+Mountain+m%E1%BB%9Bi&amp;per_page=10&amp;page=1" \
+    --get "http://127.0.0.1:8000/api/blogs/search_blog?token_api=19aIotXOerK&amp;kw=Sony+c%C3%B4ng+b%E1%BB%91+PlayStation+VR+2+4K+HDR+v%C3%A0+game+Horizon+Call+of+the+Mountain+m%E1%BB%9Bi&amp;per_page=10&amp;page=1" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
-    \"kw\": \"eos\"
+    \"kw\": \"neque\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/search_blog"
+    "http://127.0.0.1:8000/api/blogs/search_blog"
 );
 
 const params = {
@@ -1455,7 +1483,7 @@ const headers = {
 };
 
 let body = {
-    "kw": "eos"
+    "kw": "neque"
 };
 
 fetch(url, {
@@ -1513,7 +1541,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-search_blog', this);">
     <h3>
@@ -1584,7 +1612,7 @@ fetch(url, {
                 <input type="text"
                name="kw"
                data-endpoint="GETapi-blogs-search_blog"
-               value="eos"
+               value="neque"
                data-component="body" hidden>
     <br>
 
@@ -1604,26 +1632,27 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/blog_properties" \
+    --get "http://127.0.0.1:8000/api/blogs/blog_properties" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
-    \"title\": \"perspiciatis\",
-    \"slug\": \"esse\",
-    \"desc\": \"in\",
-    \"img\": \"ut\",
-    \"cat_id\": \"non\",
-    \"cat_sub_id\": \"non\",
-    \"users_id\": \"tempore\",
-    \"views\": \"earum\",
-    \"author\": \"ut\",
-    \"active\": 18
+    \"title\": \"amet\",
+    \"slug\": \"voluptas\",
+    \"desc\": \"aut\",
+    \"img\": \"esse\",
+    \"cat_id\": \"consequatur\",
+    \"cat_sub_id\": \"id\",
+    \"users_id\": \"rerum\",
+    \"views\": \"doloribus\",
+    \"author\": \"voluptas\",
+    \"active\": 13
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/blog_properties"
+    "http://127.0.0.1:8000/api/blogs/blog_properties"
 );
 
 const headers = {
@@ -1632,16 +1661,16 @@ const headers = {
 };
 
 let body = {
-    "title": "perspiciatis",
-    "slug": "esse",
-    "desc": "in",
-    "img": "ut",
-    "cat_id": "non",
-    "cat_sub_id": "non",
-    "users_id": "tempore",
-    "views": "earum",
-    "author": "ut",
-    "active": 18
+    "title": "amet",
+    "slug": "voluptas",
+    "desc": "aut",
+    "img": "esse",
+    "cat_id": "consequatur",
+    "cat_sub_id": "id",
+    "users_id": "rerum",
+    "views": "doloribus",
+    "author": "voluptas",
+    "active": 13
 };
 
 fetch(url, {
@@ -1676,7 +1705,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-blog_properties', this);">
     <h3>
@@ -1706,7 +1735,7 @@ fetch(url, {
                 <input type="text"
                name="title"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="perspiciatis"
+               value="amet"
                data-component="body" hidden>
     <br>
 <p>Tiêu đề bài viết</p>
@@ -1716,7 +1745,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="esse"
+               value="voluptas"
                data-component="body" hidden>
     <br>
 <p>Slug bài viết</p>
@@ -1726,7 +1755,7 @@ fetch(url, {
                 <input type="text"
                name="desc"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="in"
+               value="aut"
                data-component="body" hidden>
     <br>
 <p>Mô tả ngắn bài viết</p>
@@ -1736,7 +1765,7 @@ fetch(url, {
                 <input type="text"
                name="img"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="ut"
+               value="esse"
                data-component="body" hidden>
     <br>
 <p>Path hình ảnh bài viết</p>
@@ -1746,7 +1775,7 @@ fetch(url, {
                 <input type="text"
                name="cat_id"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="non"
+               value="consequatur"
                data-component="body" hidden>
     <br>
 <p>Danh mục chính bài viết</p>
@@ -1756,7 +1785,7 @@ fetch(url, {
                 <input type="text"
                name="cat_sub_id"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="non"
+               value="id"
                data-component="body" hidden>
     <br>
 <p>Danh mục phụ bài viết</p>
@@ -1766,7 +1795,7 @@ fetch(url, {
                 <input type="text"
                name="users_id"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="tempore"
+               value="rerum"
                data-component="body" hidden>
     <br>
 <p>Id tác giả</p>
@@ -1776,7 +1805,7 @@ fetch(url, {
                 <input type="text"
                name="views"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="earum"
+               value="doloribus"
                data-component="body" hidden>
     <br>
 <p>Lượt xem bài viết</p>
@@ -1786,7 +1815,7 @@ fetch(url, {
                 <input type="text"
                name="author"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="ut"
+               value="voluptas"
                data-component="body" hidden>
     <br>
 <p>Tên tác giả</p>
@@ -1796,7 +1825,7 @@ fetch(url, {
                 <input type="number"
                name="active"
                data-endpoint="GETapi-blogs-blog_properties"
-               value="18"
+               value="13"
                data-component="body" hidden>
     <br>
 <p>Trạng thái bài viết (1: được đăng , 2: đã gỡ)</p>
@@ -1820,18 +1849,19 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/categories/properties" \
+    --get "http://127.0.0.1:8000/api/blogs/categories/properties" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
-    \"name\": \"pariatur\",
-    \"slug\": \"nisi\"
+    \"name\": \"voluptatum\",
+    \"slug\": \"non\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/categories/properties"
+    "http://127.0.0.1:8000/api/blogs/categories/properties"
 );
 
 const headers = {
@@ -1840,8 +1870,8 @@ const headers = {
 };
 
 let body = {
-    "name": "pariatur",
-    "slug": "nisi"
+    "name": "voluptatum",
+    "slug": "non"
 };
 
 fetch(url, {
@@ -1876,7 +1906,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-categories-properties', this);">
     <h3>
@@ -1906,7 +1936,7 @@ fetch(url, {
                 <input type="text"
                name="name"
                data-endpoint="GETapi-blogs-categories-properties"
-               value="pariatur"
+               value="voluptatum"
                data-component="body" hidden>
     <br>
 <p>Tiêu đề danh mục</p>
@@ -1916,7 +1946,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-blogs-categories-properties"
-               value="nisi"
+               value="non"
                data-component="body" hidden>
     <br>
 <p>Slug danh mục</p>
@@ -1936,12 +1966,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/categories/list_all?token_api=19aIotXmkjH"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/blogs/categories/list_all?token_api=19aIotXmkjH" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/blogs/categories/list_all"
+    "http://127.0.0.1:8000/api/blogs/categories/list_all"
 );
 
 const params = {
@@ -1950,8 +1982,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2011,7 +2049,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-blogs-categories-list_all', this);">
     <h3>
@@ -2065,8 +2103,9 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/reset/passowrd/forgot" \
+    "http://127.0.0.1:8000/api/auth/reset/passowrd/forgot" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
     \"phone\": \"0986868568\"
 }"
@@ -2075,7 +2114,7 @@ fetch(url, {
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/reset/passowrd/forgot"
+    "http://127.0.0.1:8000/api/auth/reset/passowrd/forgot"
 );
 
 const headers = {
@@ -2126,7 +2165,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-reset-passowrd-forgot', this);">
     <h3>
@@ -2176,8 +2215,9 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/reset/passowrd/verification" \
+    "http://127.0.0.1:8000/api/auth/reset/passowrd/verification" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
     \"code\": 160101
 }"
@@ -2186,7 +2226,7 @@ fetch(url, {
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/reset/passowrd/verification"
+    "http://127.0.0.1:8000/api/auth/reset/passowrd/verification"
 );
 
 const headers = {
@@ -2238,7 +2278,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-reset-passowrd-verification', this);">
     <h3>
@@ -2288,8 +2328,9 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/reset/passowrd/new_password" \
+    "http://127.0.0.1:8000/api/auth/reset/passowrd/new_password" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
     \"code\": 160101,
     \"phone\": \"0801160169\",
@@ -2300,7 +2341,7 @@ fetch(url, {
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/auth/reset/passowrd/new_password"
+    "http://127.0.0.1:8000/api/auth/reset/passowrd/new_password"
 );
 
 const headers = {
@@ -2349,7 +2390,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-reset-passowrd-new_password', this);">
     <h3>
@@ -2423,12 +2464,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/list?token_api=19aIotXOerK&amp;category=ps5&amp;genre=Action%2CAdventure&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/products/list?token_api=19aIotXOerK&amp;category=ps5&amp;genre=Action%2CAdventure&amp;sort=DESC&amp;key_sort=id&amp;per_page=10&amp;page=1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/list"
+    "http://127.0.0.1:8000/api/products/list"
 );
 
 const params = {
@@ -2443,8 +2486,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2534,7 +2583,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-list', this);">
     <h3>
@@ -2644,12 +2693,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/product/nintendo-switch-oled-model-with-neon-red-blue-joycon?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/products/product/nintendo-switch-oled-model-with-neon-red-blue-joycon?token_api=19aIotXOerK" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/product/nintendo-switch-oled-model-with-neon-red-blue-joycon"
+    "http://127.0.0.1:8000/api/products/product/nintendo-switch-oled-model-with-neon-red-blue-joycon"
 );
 
 const params = {
@@ -2658,8 +2709,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2884,7 +2941,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-product--slug-', this);">
     <h3>
@@ -2945,17 +3002,18 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/search_product?token_api=19aIotXOerK&amp;kw=DualSense+-+PS5+Wireless+Game+Controller+Ch%C3%ADnh+H%C3%A3ng&amp;per_page=10&amp;page=1" \
+    --get "http://127.0.0.1:8000/api/products/search_product?token_api=19aIotXOerK&amp;kw=DualSense+-+PS5+Wireless+Game+Controller+Ch%C3%ADnh+H%C3%A3ng&amp;per_page=10&amp;page=1" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
-    \"kw\": \"dolor\"
+    \"kw\": \"enim\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/search_product"
+    "http://127.0.0.1:8000/api/products/search_product"
 );
 
 const params = {
@@ -2973,7 +3031,7 @@ const headers = {
 };
 
 let body = {
-    "kw": "dolor"
+    "kw": "enim"
 };
 
 fetch(url, {
@@ -3063,7 +3121,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-search_product', this);">
     <h3>
@@ -3134,7 +3192,7 @@ fetch(url, {
                 <input type="text"
                name="kw"
                data-endpoint="GETapi-products-search_product"
-               value="dolor"
+               value="enim"
                data-component="body" hidden>
     <br>
 
@@ -3154,57 +3212,58 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/product_properties" \
+    --get "http://127.0.0.1:8000/api/products/product_properties" \
     --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
     --data "{
-    \"name\": \"iste\",
-    \"slug\": \"dolores\",
-    \"des\": \"alias\",
-    \"keywords\": \"at\",
-    \"price\": \"qui\",
-    \"historical_cost\": \"quis\",
-    \"content\": \"ipsam\",
-    \"info\": \"exercitationem\",
-    \"insurance\": \"non\",
-    \"policy\": \"adipisci\",
-    \"model\": \"a\",
-    \"video\": \"id\",
-    \"banner\": \"voluptate\",
-    \"banner_link\": \"qui\",
-    \"main_img\": \"voluptas\",
-    \"sub_img\": \"ratione\",
-    \"bg\": \"a\",
-    \"type\": \"dolorem\",
-    \"sub_type\": \"sint\",
-    \"cat_id\": \"aut\",
-    \"cat_name\": \"ab\",
-    \"sub_1_cat_id\": \"culpa\",
-    \"sub_1_cat_name\": \"rem\",
-    \"sub_2_cat_id\": \"sit\",
-    \"sub_2_cat_name\": \"ea\",
-    \"cat_id_2\": \"tempore\",
-    \"op_sub_1_id\": \"animi\",
-    \"op_sub_1_name\": \"voluptatem\",
-    \"op_sub_2_id\": \"facere\",
-    \"op_sub_2_name\": \"laborum\",
-    \"cat_2_sub\": \"et\",
-    \"producer_id\": \"veniam\",
-    \"producer_slug\": \"sunt\",
-    \"cat_game_id\": \"quas\",
-    \"stock\": 6,
-    \"new\": 8,
-    \"usage_stt\": 1,
-    \"num_orders\": \"nihil\",
-    \"highlight\": 14,
-    \"author_id\": \"id\",
-    \"author_name\": \"porro\"
+    \"name\": \"sint\",
+    \"slug\": \"optio\",
+    \"des\": \"eos\",
+    \"keywords\": \"dolores\",
+    \"price\": \"rerum\",
+    \"historical_cost\": \"sed\",
+    \"content\": \"consectetur\",
+    \"info\": \"doloribus\",
+    \"insurance\": \"unde\",
+    \"policy\": \"sit\",
+    \"model\": \"laborum\",
+    \"video\": \"et\",
+    \"banner\": \"dolorum\",
+    \"banner_link\": \"quas\",
+    \"main_img\": \"suscipit\",
+    \"sub_img\": \"dolorem\",
+    \"bg\": \"dignissimos\",
+    \"type\": \"quia\",
+    \"sub_type\": \"quis\",
+    \"cat_id\": \"porro\",
+    \"cat_name\": \"quidem\",
+    \"sub_1_cat_id\": \"aut\",
+    \"sub_1_cat_name\": \"sapiente\",
+    \"sub_2_cat_id\": \"pariatur\",
+    \"sub_2_cat_name\": \"rem\",
+    \"cat_id_2\": \"ipsam\",
+    \"op_sub_1_id\": \"atque\",
+    \"op_sub_1_name\": \"reprehenderit\",
+    \"op_sub_2_id\": \"nulla\",
+    \"op_sub_2_name\": \"deleniti\",
+    \"cat_2_sub\": \"sed\",
+    \"producer_id\": \"eos\",
+    \"producer_slug\": \"sit\",
+    \"cat_game_id\": \"debitis\",
+    \"stock\": 9,
+    \"new\": 1,
+    \"usage_stt\": 8,
+    \"num_orders\": \"labore\",
+    \"highlight\": 6,
+    \"author_id\": \"laboriosam\",
+    \"author_name\": \"nostrum\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/product_properties"
+    "http://127.0.0.1:8000/api/products/product_properties"
 );
 
 const headers = {
@@ -3213,47 +3272,47 @@ const headers = {
 };
 
 let body = {
-    "name": "iste",
-    "slug": "dolores",
-    "des": "alias",
-    "keywords": "at",
-    "price": "qui",
-    "historical_cost": "quis",
-    "content": "ipsam",
-    "info": "exercitationem",
-    "insurance": "non",
-    "policy": "adipisci",
-    "model": "a",
-    "video": "id",
-    "banner": "voluptate",
-    "banner_link": "qui",
-    "main_img": "voluptas",
-    "sub_img": "ratione",
-    "bg": "a",
-    "type": "dolorem",
-    "sub_type": "sint",
-    "cat_id": "aut",
-    "cat_name": "ab",
-    "sub_1_cat_id": "culpa",
-    "sub_1_cat_name": "rem",
-    "sub_2_cat_id": "sit",
-    "sub_2_cat_name": "ea",
-    "cat_id_2": "tempore",
-    "op_sub_1_id": "animi",
-    "op_sub_1_name": "voluptatem",
-    "op_sub_2_id": "facere",
-    "op_sub_2_name": "laborum",
-    "cat_2_sub": "et",
-    "producer_id": "veniam",
-    "producer_slug": "sunt",
-    "cat_game_id": "quas",
-    "stock": 6,
-    "new": 8,
-    "usage_stt": 1,
-    "num_orders": "nihil",
-    "highlight": 14,
-    "author_id": "id",
-    "author_name": "porro"
+    "name": "sint",
+    "slug": "optio",
+    "des": "eos",
+    "keywords": "dolores",
+    "price": "rerum",
+    "historical_cost": "sed",
+    "content": "consectetur",
+    "info": "doloribus",
+    "insurance": "unde",
+    "policy": "sit",
+    "model": "laborum",
+    "video": "et",
+    "banner": "dolorum",
+    "banner_link": "quas",
+    "main_img": "suscipit",
+    "sub_img": "dolorem",
+    "bg": "dignissimos",
+    "type": "quia",
+    "sub_type": "quis",
+    "cat_id": "porro",
+    "cat_name": "quidem",
+    "sub_1_cat_id": "aut",
+    "sub_1_cat_name": "sapiente",
+    "sub_2_cat_id": "pariatur",
+    "sub_2_cat_name": "rem",
+    "cat_id_2": "ipsam",
+    "op_sub_1_id": "atque",
+    "op_sub_1_name": "reprehenderit",
+    "op_sub_2_id": "nulla",
+    "op_sub_2_name": "deleniti",
+    "cat_2_sub": "sed",
+    "producer_id": "eos",
+    "producer_slug": "sit",
+    "cat_game_id": "debitis",
+    "stock": 9,
+    "new": 1,
+    "usage_stt": 8,
+    "num_orders": "labore",
+    "highlight": 6,
+    "author_id": "laboriosam",
+    "author_name": "nostrum"
 };
 
 fetch(url, {
@@ -3288,7 +3347,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json"}'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-product_properties', this);">
     <h3>
@@ -3318,7 +3377,7 @@ fetch(url, {
                 <input type="text"
                name="name"
                data-endpoint="GETapi-products-product_properties"
-               value="iste"
+               value="sint"
                data-component="body" hidden>
     <br>
 <p>Tên sản phẩm</p>
@@ -3328,7 +3387,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-products-product_properties"
-               value="dolores"
+               value="optio"
                data-component="body" hidden>
     <br>
 <p>Slug sản phẩm</p>
@@ -3338,7 +3397,7 @@ fetch(url, {
                 <input type="text"
                name="des"
                data-endpoint="GETapi-products-product_properties"
-               value="alias"
+               value="eos"
                data-component="body" hidden>
     <br>
 <p>Mô tả ngắn sản phẩm</p>
@@ -3348,7 +3407,7 @@ fetch(url, {
                 <input type="text"
                name="keywords"
                data-endpoint="GETapi-products-product_properties"
-               value="at"
+               value="dolores"
                data-component="body" hidden>
     <br>
 <p>Keywords SEO or Tag sản phẩm</p>
@@ -3358,7 +3417,7 @@ fetch(url, {
                 <input type="text"
                name="price"
                data-endpoint="GETapi-products-product_properties"
-               value="qui"
+               value="rerum"
                data-component="body" hidden>
     <br>
 <p>Giá bán của sản phẩm</p>
@@ -3368,7 +3427,7 @@ fetch(url, {
                 <input type="text"
                name="historical_cost"
                data-endpoint="GETapi-products-product_properties"
-               value="quis"
+               value="sed"
                data-component="body" hidden>
     <br>
 <p>Giá gốc của sản phẩm</p>
@@ -3378,7 +3437,7 @@ fetch(url, {
                 <input type="text"
                name="content"
                data-endpoint="GETapi-products-product_properties"
-               value="ipsam"
+               value="consectetur"
                data-component="body" hidden>
     <br>
 <p>Nội dung của sản phẩm</p>
@@ -3388,7 +3447,7 @@ fetch(url, {
                 <input type="text"
                name="info"
                data-endpoint="GETapi-products-product_properties"
-               value="exercitationem"
+               value="doloribus"
                data-component="body" hidden>
     <br>
 <p>Thông tin của sản phẩm</p>
@@ -3398,7 +3457,7 @@ fetch(url, {
                 <input type="text"
                name="insurance"
                data-endpoint="GETapi-products-product_properties"
-               value="non"
+               value="unde"
                data-component="body" hidden>
     <br>
 <p>Chính sách bảo hành,options đi kèm với của sản phẩm</p>
@@ -3408,7 +3467,7 @@ fetch(url, {
                 <input type="text"
                name="policy"
                data-endpoint="GETapi-products-product_properties"
-               value="adipisci"
+               value="sit"
                data-component="body" hidden>
     <br>
 <p>Chính sách của cửa hàng</p>
@@ -3418,7 +3477,7 @@ fetch(url, {
                 <input type="text"
                name="model"
                data-endpoint="GETapi-products-product_properties"
-               value="a"
+               value="laborum"
                data-component="body" hidden>
     <br>
 <p>Model của sản phẩm</p>
@@ -3428,7 +3487,7 @@ fetch(url, {
                 <input type="text"
                name="video"
                data-endpoint="GETapi-products-product_properties"
-               value="id"
+               value="et"
                data-component="body" hidden>
     <br>
 <p>Mã nhúng utube của sản phẩm</p>
@@ -3438,7 +3497,7 @@ fetch(url, {
                 <input type="text"
                name="banner"
                data-endpoint="GETapi-products-product_properties"
-               value="voluptate"
+               value="dolorum"
                data-component="body" hidden>
     <br>
 <p>Banner đi kèm với sản phẩm</p>
@@ -3448,7 +3507,7 @@ fetch(url, {
                 <input type="text"
                name="banner_link"
                data-endpoint="GETapi-products-product_properties"
-               value="qui"
+               value="quas"
                data-component="body" hidden>
     <br>
 <p>Link banner của sản phẩm</p>
@@ -3458,7 +3517,7 @@ fetch(url, {
                 <input type="text"
                name="main_img"
                data-endpoint="GETapi-products-product_properties"
-               value="voluptas"
+               value="suscipit"
                data-component="body" hidden>
     <br>
 <p>Hình ảnh chính của sản phẩm</p>
@@ -3468,7 +3527,7 @@ fetch(url, {
                 <input type="text"
                name="sub_img"
                data-endpoint="GETapi-products-product_properties"
-               value="ratione"
+               value="dolorem"
                data-component="body" hidden>
     <br>
 <p>Hình ảnh phụ của sản phẩm</p>
@@ -3478,7 +3537,7 @@ fetch(url, {
                 <input type="text"
                name="bg"
                data-endpoint="GETapi-products-product_properties"
-               value="a"
+               value="dignissimos"
                data-component="body" hidden>
     <br>
 <p>Hình ảnh background của sản phẩm</p>
@@ -3488,7 +3547,7 @@ fetch(url, {
                 <input type="text"
                name="type"
                data-endpoint="GETapi-products-product_properties"
-               value="dolorem"
+               value="quia"
                data-component="body" hidden>
     <br>
 <p>Kiểu sản phẩm</p>
@@ -3498,7 +3557,7 @@ fetch(url, {
                 <input type="text"
                name="sub_type"
                data-endpoint="GETapi-products-product_properties"
-               value="sint"
+               value="quis"
                data-component="body" hidden>
     <br>
 <p>Kiểu phụ sản phẩm</p>
@@ -3508,7 +3567,7 @@ fetch(url, {
                 <input type="text"
                name="cat_id"
                data-endpoint="GETapi-products-product_properties"
-               value="aut"
+               value="porro"
                data-component="body" hidden>
     <br>
 <p>ID Danh mục chính sản phẩm</p>
@@ -3518,7 +3577,7 @@ fetch(url, {
                 <input type="text"
                name="cat_name"
                data-endpoint="GETapi-products-product_properties"
-               value="ab"
+               value="quidem"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục chính</p>
@@ -3528,7 +3587,7 @@ fetch(url, {
                 <input type="text"
                name="sub_1_cat_id"
                data-endpoint="GETapi-products-product_properties"
-               value="culpa"
+               value="aut"
                data-component="body" hidden>
     <br>
 <p>ID danh mục phụ 1 của danh mục chính</p>
@@ -3538,7 +3597,7 @@ fetch(url, {
                 <input type="text"
                name="sub_1_cat_name"
                data-endpoint="GETapi-products-product_properties"
-               value="rem"
+               value="sapiente"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục phụ 1 của danh mục chính</p>
@@ -3548,7 +3607,7 @@ fetch(url, {
                 <input type="text"
                name="sub_2_cat_id"
                data-endpoint="GETapi-products-product_properties"
-               value="sit"
+               value="pariatur"
                data-component="body" hidden>
     <br>
 <p>ID danh mục phụ 2 của danh mục chính</p>
@@ -3558,7 +3617,7 @@ fetch(url, {
                 <input type="text"
                name="sub_2_cat_name"
                data-endpoint="GETapi-products-product_properties"
-               value="ea"
+               value="rem"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục phụ 2 của danh mục chính</p>
@@ -3568,7 +3627,7 @@ fetch(url, {
                 <input type="text"
                name="cat_id_2"
                data-endpoint="GETapi-products-product_properties"
-               value="tempore"
+               value="ipsam"
                data-component="body" hidden>
     <br>
 <p>ID Danh mục chính 2 của sản phẩm</p>
@@ -3578,7 +3637,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_1_id"
                data-endpoint="GETapi-products-product_properties"
-               value="animi"
+               value="atque"
                data-component="body" hidden>
     <br>
 <p>ID option 1 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3588,7 +3647,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_1_name"
                data-endpoint="GETapi-products-product_properties"
-               value="voluptatem"
+               value="reprehenderit"
                data-component="body" hidden>
     <br>
 <p>Tên option 1 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3598,7 +3657,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_2_id"
                data-endpoint="GETapi-products-product_properties"
-               value="facere"
+               value="nulla"
                data-component="body" hidden>
     <br>
 <p>ID option 2 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3608,7 +3667,7 @@ fetch(url, {
                 <input type="text"
                name="op_sub_2_name"
                data-endpoint="GETapi-products-product_properties"
-               value="laborum"
+               value="deleniti"
                data-component="body" hidden>
     <br>
 <p>Tên option 2 của dạnh mục phụ 1 của danh mục chính</p>
@@ -3618,7 +3677,7 @@ fetch(url, {
                 <input type="text"
                name="cat_2_sub"
                data-endpoint="GETapi-products-product_properties"
-               value="et"
+               value="sed"
                data-component="body" hidden>
     <br>
 <p>ID Danh mục phụ 1 của danh mục chính 2 sản phẩm</p>
@@ -3628,7 +3687,7 @@ fetch(url, {
                 <input type="text"
                name="producer_id"
                data-endpoint="GETapi-products-product_properties"
-               value="veniam"
+               value="eos"
                data-component="body" hidden>
     <br>
 <p>ID nhà sản xuất sản phẩm</p>
@@ -3638,7 +3697,7 @@ fetch(url, {
                 <input type="text"
                name="producer_slug"
                data-endpoint="GETapi-products-product_properties"
-               value="sunt"
+               value="sit"
                data-component="body" hidden>
     <br>
 <p>Slug nhà sản xuất sản phẩm</p>
@@ -3648,7 +3707,7 @@ fetch(url, {
                 <input type="text"
                name="cat_game_id"
                data-endpoint="GETapi-products-product_properties"
-               value="quas"
+               value="debitis"
                data-component="body" hidden>
     <br>
 <p>thể loại game của sản phẩm</p>
@@ -3658,7 +3717,7 @@ fetch(url, {
                 <input type="number"
                name="stock"
                data-endpoint="GETapi-products-product_properties"
-               value="6"
+               value="9"
                data-component="body" hidden>
     <br>
 <p>Tình trạng kho của sản phẩm (1: còn hàng , 2: hàng sắp về , 3:hết hàng)</p>
@@ -3668,7 +3727,7 @@ fetch(url, {
                 <input type="number"
                name="new"
                data-endpoint="GETapi-products-product_properties"
-               value="8"
+               value="1"
                data-component="body" hidden>
     <br>
 <p>Trạng thái mới của sản phẩm (1: mới đăng , 2: bình thường)</p>
@@ -3678,7 +3737,7 @@ fetch(url, {
                 <input type="number"
                name="usage_stt"
                data-endpoint="GETapi-products-product_properties"
-               value="1"
+               value="8"
                data-component="body" hidden>
     <br>
 <p>Trạng thái sử dụng sản phẩm (1: sản phẩm chưa qua sử dụng , 2: sản phẩm đã qua sử dụng)</p>
@@ -3688,7 +3747,7 @@ fetch(url, {
                 <input type="text"
                name="num_orders"
                data-endpoint="GETapi-products-product_properties"
-               value="nihil"
+               value="labore"
                data-component="body" hidden>
     <br>
 <p>Số lượt mua sản phẩm</p>
@@ -3698,7 +3757,7 @@ fetch(url, {
                 <input type="number"
                name="highlight"
                data-endpoint="GETapi-products-product_properties"
-               value="14"
+               value="6"
                data-component="body" hidden>
     <br>
 <p>Sản Phẩm nổi bật (1: sp bình thương , 2: sp hot)</p>
@@ -3708,7 +3767,7 @@ fetch(url, {
                 <input type="text"
                name="author_id"
                data-endpoint="GETapi-products-product_properties"
-               value="id"
+               value="laboriosam"
                data-component="body" hidden>
     <br>
 <p>Id người đăng sản phẩm</p>
@@ -3718,7 +3777,7 @@ fetch(url, {
                 <input type="text"
                name="author_name"
                data-endpoint="GETapi-products-product_properties"
-               value="porro"
+               value="nostrum"
                data-component="body" hidden>
     <br>
 <p>Tên người đăng sản phẩm</p>
@@ -3742,23 +3801,24 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/properties" \
+    --get "http://127.0.0.1:8000/api/products/categories/properties" \
     --header "Content-Type: multipart/form-data" \
-    --form "name=ratione" \
-    --form "title=ut" \
-    --form "desc=optio" \
-    --form "keywords=illo" \
-    --form "parent_id=18" \
-    --form "slug=numquam" \
-    --form "icon=et" \
-    --form "level=6" \
-    --form "is_game=12" \
-    --form "img=@C:\Users\Admin\AppData\Local\Temp\phpD6E7.tmp" </code></pre></div>
+    --header "Accept: application/json" \
+    --form "name=molestias" \
+    --form "title=magnam" \
+    --form "desc=dolorum" \
+    --form "keywords=officiis" \
+    --form "parent_id=7" \
+    --form "slug=totam" \
+    --form "icon=ad" \
+    --form "level=15" \
+    --form "is_game=10" \
+    --form "img=@C:\Users\Admin\AppData\Local\Temp\php658.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/properties"
+    "http://127.0.0.1:8000/api/products/categories/properties"
 );
 
 const headers = {
@@ -3767,15 +3827,15 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('name', 'ratione');
-body.append('title', 'ut');
-body.append('desc', 'optio');
-body.append('keywords', 'illo');
-body.append('parent_id', '18');
-body.append('slug', 'numquam');
-body.append('icon', 'et');
-body.append('level', '6');
-body.append('is_game', '12');
+body.append('name', 'molestias');
+body.append('title', 'magnam');
+body.append('desc', 'dolorum');
+body.append('keywords', 'officiis');
+body.append('parent_id', '7');
+body.append('slug', 'totam');
+body.append('icon', 'ad');
+body.append('level', '15');
+body.append('is_game', '10');
 body.append('img', document.querySelector('input[name="img"]').files[0]);
 
 fetch(url, {
@@ -3810,7 +3870,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="1"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"multipart\/form-data"}'
+      data-headers='{"Content-Type":"multipart\/form-data","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-properties', this);">
     <h3>
@@ -3840,7 +3900,7 @@ fetch(url, {
                 <input type="text"
                name="name"
                data-endpoint="GETapi-products-categories-properties"
-               value="ratione"
+               value="molestias"
                data-component="body" hidden>
     <br>
 <p>Tên danh mục</p>
@@ -3850,7 +3910,7 @@ fetch(url, {
                 <input type="text"
                name="title"
                data-endpoint="GETapi-products-categories-properties"
-               value="ut"
+               value="magnam"
                data-component="body" hidden>
     <br>
 <p>Tiêu đề danh mục</p>
@@ -3860,7 +3920,7 @@ fetch(url, {
                 <input type="text"
                name="desc"
                data-endpoint="GETapi-products-categories-properties"
-               value="optio"
+               value="dolorum"
                data-component="body" hidden>
     <br>
 <p>Mô tả ngắn danh mục</p>
@@ -3870,7 +3930,7 @@ fetch(url, {
                 <input type="text"
                name="keywords"
                data-endpoint="GETapi-products-categories-properties"
-               value="illo"
+               value="officiis"
                data-component="body" hidden>
     <br>
 <p>Keywords SEO or Tag danh mục</p>
@@ -3880,7 +3940,7 @@ fetch(url, {
                 <input type="number"
                name="parent_id"
                data-endpoint="GETapi-products-categories-properties"
-               value="18"
+               value="7"
                data-component="body" hidden>
     <br>
 <p>id danh mục cha (0: là danh mục gốc)</p>
@@ -3890,7 +3950,7 @@ fetch(url, {
                 <input type="text"
                name="slug"
                data-endpoint="GETapi-products-categories-properties"
-               value="numquam"
+               value="totam"
                data-component="body" hidden>
     <br>
 <p>Slug danh mục</p>
@@ -3910,7 +3970,7 @@ fetch(url, {
                 <input type="text"
                name="icon"
                data-endpoint="GETapi-products-categories-properties"
-               value="et"
+               value="ad"
                data-component="body" hidden>
     <br>
 <p>Icon danh mục</p>
@@ -3920,7 +3980,7 @@ fetch(url, {
                 <input type="number"
                name="level"
                data-endpoint="GETapi-products-categories-properties"
-               value="6"
+               value="15"
                data-component="body" hidden>
     <br>
 <p>Level danh mục (danh mục gốc level = 0)</p>
@@ -3930,7 +3990,7 @@ fetch(url, {
                 <input type="number"
                name="is_game"
                data-endpoint="GETapi-products-categories-properties"
-               value="12"
+               value="10"
                data-component="body" hidden>
     <br>
 <p>(2: không là danh mục game , 1: là danh mục game)</p>
@@ -3950,12 +4010,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/list_all?token_api=19aIotXmkjH"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/products/categories/list_all?token_api=19aIotXmkjH" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/list_all"
+    "http://127.0.0.1:8000/api/products/categories/list_all"
 );
 
 const params = {
@@ -3964,8 +4026,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -4143,7 +4211,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-list_all', this);">
     <h3>
@@ -4193,12 +4261,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/game?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/products/categories/game?token_api=19aIotXOerK" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/game"
+    "http://127.0.0.1:8000/api/products/categories/game"
 );
 
 const params = {
@@ -4207,8 +4277,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -4252,7 +4328,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-game', this);">
     <h3>
@@ -4302,12 +4378,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/producer?token_api=19aIotXOerK"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/products/categories/producer?token_api=19aIotXOerK" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/products/categories/producer"
+    "http://127.0.0.1:8000/api/products/categories/producer"
 );
 
 const params = {
@@ -4316,8 +4394,14 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -4363,7 +4447,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-products-categories-producer', this);">
     <h3>
@@ -4417,12 +4501,14 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/users?token_api=19aIotXOerK&amp;sort=DESC&amp;key_sort=id&amp;item_page=10&amp;page=1"</code></pre></div>
+    --get "http://127.0.0.1:8000/api/users?token_api=19aIotXOerK&amp;sort=DESC&amp;key_sort=id&amp;item_page=10&amp;page=1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/2niteshop/home/u217861923/domains/vachill.com/public_html/api/users"
+    "http://127.0.0.1:8000/api/users"
 );
 
 const params = {
@@ -4435,15 +4521,21 @@ const params = {
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
 fetch(url, {
     method: "GET",
+    headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
 
 <span id="example-responses-GETapi-users">
             <blockquote>
-            <p>Example response (200, success):</p>
+            <p>Example response (success):</p>
         </blockquote>
                 <pre>
 
@@ -4499,7 +4591,7 @@ fetch(url, {
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='[]'
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-users', this);">
     <h3>

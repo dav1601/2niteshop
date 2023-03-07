@@ -10,13 +10,15 @@ endpoints:
     metadata:
       groupName: 'Auth Api'
       groupDescription: ''
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: Logout.
       description: 'Api cho phép bạn logout và xoá token user trong hệ thống.'
       authenticated: true
       custom: []
     headers:
+      Content-Type: application/json
+      Accept: application/json
       Authorization: 'Bearer {token}'
     urlParameters: []
     cleanUrlParameters: []
@@ -33,13 +35,10 @@ endpoints:
           is_logout => true
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer VEDvgehdPa3Zf4k6bc618a5'
+    auth: []
     controller: null
     method: null
     route: null
@@ -51,24 +50,26 @@ endpoints:
     metadata:
       groupName: 'Auth Api'
       groupDescription: ''
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'GET USER LOGGED.'
       description: 'Api này cho phép lấy user đã đăng nhập.'
       authenticated: true
       custom: []
     headers:
+      Content-Type: application/json
+      Accept: application/json
       Authorization: 'Bearer {token}'
     urlParameters:
       id:
         name: id
         description: 'The ID of the me.'
         required: true
-        example: ut
+        example: fugit
         type: string
         custom: []
     cleanUrlParameters:
-      id: ut
+      id: fugit
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -95,13 +96,10 @@ endpoints:
               }
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer aEDf6e145aZcPg8dVbk63hv'
+    auth: []
     controller: null
     method: null
     route: null
@@ -113,24 +111,26 @@ endpoints:
     metadata:
       groupName: 'Auth Api'
       groupDescription: ''
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'GET ORDERS USER LOGGED.'
       description: 'Api này cho phép lấy danh sách đơn hàng user đã đăng nhập.'
       authenticated: true
       custom: []
     headers:
+      Content-Type: application/json
+      Accept: application/json
       Authorization: 'Bearer {token}'
     urlParameters:
       id:
         name: id
         description: 'The ID of the order.'
         required: true
-        example: et
+        example: sint
         type: string
         custom: []
     cleanUrlParameters:
-      id: et
+      id: sint
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -141,13 +141,10 @@ endpoints:
         status: 200
         content: ''
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 1b8D6465dackfaeZ3gvEhVP'
+    auth: []
     controller: null
     method: null
     route: null
@@ -159,25 +156,26 @@ endpoints:
     metadata:
       groupName: 'Auth Api'
       groupDescription: ''
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'POST UPDATE INFO USER.'
       description: 'Api này cho phép cập nhật thông tin của user.'
       authenticated: true
       custom: []
     headers:
-      Authorization: 'Bearer {token}'
       Content-Type: multipart/form-data
+      Accept: application/json
+      Authorization: 'Bearer {token}'
     urlParameters:
       id:
         name: id
         description: 'The ID of the update.'
         required: true
-        example: blanditiis
+        example: repudiandae
         type: string
         custom: []
     cleanUrlParameters:
-      id: blanditiis
+      id: repudiandae
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -230,13 +228,10 @@ endpoints:
               }
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6dDEVae6143cZ5a8Pgkfbvh'
+    auth: []
     controller: null
     method: null
     route: null

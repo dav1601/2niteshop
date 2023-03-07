@@ -28,19 +28,20 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet"
-        href="{{ asset('admin/app/css/app.css') }}?ver=@php echo filemtime('public/admin/app/css/app.css') @endphp">
+        href="{{ asset('admin/app/css/app.css') }}?ver=@php echo filemtime('admin/app/css/app.css') @endphp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('import_css')
     <x-app.plugin.debug />
+    @routes
     <script type="text/javascript">
         const user = {!! json_encode(Auth::user()) !!};
     </script>
     <script type="text/javascript">
         const path_ab = {!! json_encode(env('PATH_TINYMCE')) !!};
     </script>
-    @routes
+
     <script src="{{ asset('plugin/bootstrap/js/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('plugin/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('plugin/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -54,10 +55,9 @@
         integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    @yield('import_js')
+
     <script src="{{ $file->ver('admin/app/js/tinymce.js') }}"></script>
-    <script src="{{ asset('admin/app/js/app.js') }}?ver=@php echo filemtime('public/admin/app/js/app.js') @endphp">
-    </script>
+    <script src="{{ asset('admin/app/js/app.js') }}?ver=@php echo filemtime('admin/app/js/app.js') @endphp"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -65,6 +65,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"
         integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.min.js"></script>
+    <script src="{{ $file->ver('js/laravel-server/laravel-echo-server.js') }}"></script>
+    @yield('import_js')
 
 </head>
 
@@ -110,7 +113,7 @@
                                     </div>
                                 </a>
                                 <div id="dashboard"
-                                    class="collapse module_drop {{ $module == 'dashboard' ? 'show' : '' }}"
+                                    class="module_drop {{ $module == 'dashboard' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
                                         <li class="item">
@@ -153,7 +156,7 @@
                                     </div>
                                 </a>
                                 <div id="product"
-                                    class="collapse module_drop {{ $module == 'category' ? 'show' : '' }} {{ $module == 'prd' ? 'show' : '' }}"
+                                    class="module_drop {{ $module == 'category' ? 'show' : '' }} {{ $module == 'prd' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
                                         <li class="item">
@@ -237,7 +240,7 @@
                                     </div>
                                 </a>
                                 <div id="user"
-                                    class="collapse module_drop {{ $module == 'users' ? 'show' : '' }}"
+                                    class="module_drop {{ $module == 'users' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
                                         <li class="item">
@@ -287,7 +290,7 @@
                                     </div>
                                 </a>
                                 <div id="order"
-                                    class="collapse module_drop {{ $module == 'orders' ? 'show' : '' }}"
+                                    class="module_drop {{ $module == 'orders' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
                                         <li class="item">
@@ -345,7 +348,7 @@
                                     </div>
                                 </a>
                                 <div id="blog"
-                                    class="collapse module_drop {{ $module == 'blog' ? 'show' : '' }}"
+                                    class="module_drop {{ $module == 'blog' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
                                         <li class="item">
@@ -395,7 +398,7 @@
                                     </div>
                                 </a>
                                 <div id="banner"
-                                    class="collapse module_drop {{ $module == 'banner' ? 'show' : '' }}"
+                                    class="module_drop {{ $module == 'banner' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
                                         <li class="item">
@@ -438,7 +441,7 @@
                                     </div>
                                 </a>
                                 <div id="page"
-                                    class="collapse module_drop {{ $module == 'pages' ? 'show' : '' }}"
+                                    class="module_drop {{ $module == 'pages' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
                                         <li class="item">

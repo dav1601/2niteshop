@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" href="{{ $file->ver('plugin/bootstrap/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ $file->ver('plugin/reset.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -15,5 +14,5 @@
     integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="{{ $file->import_css('app.css') }}">
-
 @yield('import_css')
+<link rel="stylesheet" href="client/app/login/style.css">

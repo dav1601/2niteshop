@@ -5,7 +5,7 @@ $(function () {
         },
     });
     var url_cart = route("add_cart");
-   
+
     var url_address = route("change_address");
     $(document).on("change", "#prov", function () {
         var id = $(this).val();
@@ -16,6 +16,7 @@ $(function () {
                 data: { id: id, type: 1 },
                 dataType: "json",
                 success: function (data) {
+                 
                     if (data.type == 1) {
                         $("#dist").html(data.html);
                     } else {

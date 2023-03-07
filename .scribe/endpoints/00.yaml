@@ -12,13 +12,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing users
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'GET USERS.'
       description: ''
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -106,7 +108,7 @@ endpoints:
           ]
           }
         headers: []
-        description: '200, success'
+        description: success
         custom: []
     responseFields: []
     auth: []

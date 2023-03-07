@@ -4,9 +4,9 @@
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/category.js')}}?ver=@php echo filemtime('public/admin/app/js/category.js') @endphp">
+<script src="{{ asset('admin/app/js/category.js')}}?ver=@php echo filemtime('admin/app/js/category.js') @endphp">
 </script>
-<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
+<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
 </script>
 @endsection
 
@@ -68,7 +68,7 @@ Chinh sách của shop
                            @foreach (Config::get('product.position'); as $p )
                                <option value="{{ $p }}">{{ $p }}</option>
                            @endforeach
-                        
+
                         </select>
                     </div>
                     <div class="form-group mb-5">

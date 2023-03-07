@@ -29,23 +29,9 @@
     @include('layouts.js', ['name' => $name])
     {{-- end script --}}
 </head>
+<x-client.plugin.facebook />
 
 <body>
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {},
-            Tawk_LoadStart = new Date();
-        (function() {
-            var s1 = document.createElement("script"),
-                s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/620a40269bd1f31184dc8432/1frs0l6ee';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
-    </script>
-    <!--End of Tawk.to Script-->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SB7F2KSJJL"></script>
     <script>
@@ -61,13 +47,11 @@
     {{-- <div id="popup">
 
     </div> --}}
-    <div id="bg-loading"></div>
-    <div id="bg-menu" class="d-none"></div>
+
     <x-mobile.menu />
     <x-mobile.cart.wp />
-    <div id="loading">
-        <img src="{{ $file->ver_img_local('admin/images/layout/loading-unscreen.gif') }}" alt="Loading........." width="200">
-    </div>
+
+
     @if (Gate::allows('group-admin'))
         <x-admin.navbar />
     @endif
@@ -132,7 +116,7 @@
                                                     <span class="d-block pl-2">Tài Khoản Của Tôi</span>
                                                 </a>
                                                 <ul id="collapseOne"
-                                                    class="collapse {{ $name != 'purchase' ? 'show' : '' }} mt-2"
+                                                    class="{{ $name != 'purchase' ? 'show' : '' }} collapse mt-2"
                                                     data-parent="#user__accordion">
                                                     <li>
                                                         <a href="{{ route('profile') }}"
@@ -197,5 +181,6 @@
     </div>
     <x-Ajax />
 </body>
+<x-server.common />
 
 </html>

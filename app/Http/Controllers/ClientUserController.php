@@ -11,14 +11,18 @@ use App\Models\Products;
 use App\Repositories\FileInterface;
 use Illuminate\Http\Request;
 use App\Repositories\UserInterface;
+use App\Repositories\VaEventInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ClientUserController extends Controller
 {
-    public function __construct(UserInterface $user)
+    public $user;
+    public $file;
+    public function __construct(UserInterface $user, FileInterface $file)
     {
         $this->user = $user;
+        $this->file = $file;
     }
 
     ////////////////////////////////////////
@@ -72,7 +76,7 @@ class ClientUserController extends Controller
 
     //////////////////////////////////////
 
-    public function ajax__order_search(Request $request)
+    public function ajax__order_search(Request $request, VaEventInterface $vaev)
     {
         $data = array();
         $pagination = '';
@@ -80,27 +84,23 @@ class ClientUserController extends Controller
         $data_create = array();
         $data_update = array();
         $error = array();
-        $kw = $request->kw;
-        $orders_all = new Orders();
-        if ($kw != null) {
-            $orders_all = $orders_all->where('id', '=', $kw);
+        $act = $request->act;
+        $kw = $request->id ? $request->id : null;
+        $type = $request->type ? $request->type : 0;
+        if ($act == "cancel") {
+            $id = (int) $request->ida;
+            Orders::where('users_id', Auth::id())->where('id', $id)->update(['status' => 4]);
+            $vaev->admin_update_order($id);
         }
-        $orders_all = $orders_all->orderBy('id', 'DESC')->where('users_id', '=', Auth::id())->get();
-        if (count($orders_all) > 0) {
-            $type = 0;
-            foreach ($orders_all as $item) {
-                $output .= view('components.client.account.purchase.item', compact('item', 'type'));
-            }
-        } else {
-            $output .= view('components.empty.nodata');
-        }
+        $output .= view('components.cart.purchase.content', compact('type', 'kw'));
+        $data['kw'] = $kw;
         $data['html'] = $output;
         return response()->json($data);
     }
 
     ////////////////////////////////////////
 
-    public function hanle_edit_profile($id, Request $request , FileInterface $file )
+    public function hanle_edit_profile($id, Request $request, FileInterface $file)
     {
         $validator = Validator::make(
             $request->all(),
@@ -123,12 +123,12 @@ class ClientUserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         } else {
-            $user = User::where('id', '=' , $id)->first();
+            $user = User::where('id', '=', $id)->first();
             $data['name'] = $request->name;
             $data['phone'] = $request->phone;
             if ($request->has('avatar')) {
-                if($user->avatar != NULL)
-                $this->file->deleteFile("public/".$user->avatar);
+                if ($user->avatar != NULL)
+                    $file->deleteFile("" . $user->avatar);
                 $path = "admin/images/avatar/";
                 $data['avatar'] = $file->storeFileImg($request->avatar, $path);
             }
@@ -154,7 +154,7 @@ class ClientUserController extends Controller
         $error = array();
         $ok = 0;
         $path = "admin/images/ajax/avatar/";
-        $path_public = "public/admin/images/ajax/avatar/";
+        $path_public = "admin/images/ajax/avatar/";
         $validator = Validator::make(
             $request->all(),
             [

@@ -2,6 +2,7 @@
 @import "_naviteam";
 @import "_responsive";
 @import "_layout";
+@import "_component";
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 html {
     scroll-behavior: smooth;
@@ -23,7 +24,6 @@ body {
         }
     }
 }
-
 
 .table-center {
     td {

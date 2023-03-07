@@ -63,7 +63,7 @@
                         </li>
                     @else
                         <li class="info__menu--item account-1">
-                            <a href="{{ route('login') }}" class="d-block">
+                            <a class="loadModalLogin" href="#" class="d-block">
                                 <div class="item__content">
                                     <i class="fas fa-user"></i>
                                     <div class="text">
@@ -76,11 +76,11 @@
                                 <ul class="b1ad__drop--menu">
                                     <li class="b1ad__drop--item">
                                         <div class="arrow-up"></div>
-                                        <a href="{{ route('login') }}">
+                                        <a class="loadModalLogin" href="#">
                                             <i class="fas fa-sign-in-alt not pr-1"></i>
                                             <span>Đăng Nhập</span>
                                         </a>
-                                        <a href="{{ route('register') }}">
+                                        <a href="#" class="loadModalReg">
                                             <i class="fas fa-sign-in-alt not pr-1"></i>
                                             <span>Đăng Ký</span>
                                         </a>

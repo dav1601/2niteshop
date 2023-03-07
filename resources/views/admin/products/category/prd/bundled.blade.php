@@ -4,9 +4,9 @@
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/products.js')}}?ver=@php echo filemtime('public/admin/app/js/category.js') @endphp">
+<script src="{{ asset('admin/app/js/products.js')}}?ver=@php echo filemtime('admin/app/js/category.js') @endphp">
 </script>
-<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
+<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
 </script>
 @endsection
 

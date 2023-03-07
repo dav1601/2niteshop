@@ -3,7 +3,7 @@
 @endsection
 @section('import_js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="{{ asset('admin/app/js/user.js') }}?ver=@php echo filemtime('public/admin/app/js/user.js') @endphp">
+    <script src="{{ asset('admin/app/js/user.js') }}?ver=@php echo filemtime('admin/app/js/user.js') @endphp">
     </script>
 @endsection
 @section('name')

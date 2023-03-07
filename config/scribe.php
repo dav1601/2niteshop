@@ -9,7 +9,7 @@ return [
     /*
      * The HTML <title> for the generated documentation. If this is empty, Scribe will infer it from config('app.name').
      */
-    'title' => "2NITE SHOP API",
+    'title' => "2NITE SHOP API DOCS",
 
     /*
      * A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
@@ -72,7 +72,10 @@ return [
                 /*
                  * Additional headers to be added to the example requests
                  */
-                'headers' => [],
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
 
                 /*
                  * If no @response or @transformer declarations are found for the route,
@@ -84,7 +87,7 @@ return [
                      * API calls will be made only for routes in this group matching these HTTP methods (GET, POST, etc).
                      * List the methods here or use '*' to mean all methods. Leave empty to disable API calls.
                      */
-                    'methods' => ['*'],
+                    'methods' => ['GET'],
 
                     /*
                      * Laravel config variables which should be set for the API call.
@@ -135,7 +138,7 @@ return [
      * - "static" will generate a static HTMl page in the /public/docs folder,
      * - "laravel" will generate the documentation as a Blade view, so you can add routing and authentication.
      */
-    'type' => 'laravel',
+    'type' => 'static',
 
     /*
      * Settings for `static` type output.
@@ -165,15 +168,16 @@ return [
         'docs_url' => '/docs',
 
         /*
-         * Middleware to attach to the docs endpoint (if `add_routes` is true).
-         */
-        'middleware' => [],
-        /*
          * Directory within `public` in which to store CSS and JS assets.
          * By default, assets are stored in `public/vendor/scribe`.
          * If set, assets will be stored in `public/{{assets_directory}}`
          */
         'assets_directory' => null,
+
+        /*
+         * Middleware to attach to the docs endpoint (if `add_routes` is true).
+         */
+        'middleware' => [""],
     ],
 
     'try_it_out' => [
@@ -187,7 +191,7 @@ return [
          * The base URL for the API tester to use (for example, you can set this to your staging URL).
          * Leave as null to use the current app URL (config(app.url)).
          */
-        'base_url' => env("BASE_URL_DOCS_API"),
+        'base_url' => null,
 
         /**
          * Fetch a CSRF token before each request, and add it as an X-XSRF-TOKEN header. Needed if you're using Laravel Sanctum.
@@ -207,7 +211,7 @@ return [
         /*
          * Set this to true if any endpoints in your API use authentication.
          */
-        'enabled' => true,
+        'enabled' => false,
 
         /*
          * Set this to true if your API should be authenticated by default. If so, you must also set `enabled` (above) to true.
@@ -224,7 +228,7 @@ return [
         /*
          * The name of the auth parameter (eg token, key, apiKey) or header (eg Authorization, Api-Key).
          */
-        'name' => 'Authorization',
+        'name' => 'key',
 
         /*
          * The value of the parameter to be used by Scribe to authenticate response calls.
@@ -250,12 +254,11 @@ return [
      * Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
      */
     'intro_text' => <<<INTRO
-Tài liệu này nhằm mục đích cung cấp tất cả thông tin bạn cần để làm việc với API của 2NITE SHOP.
+This documentation aims to provide all the information you need to work with our API.
 
 <aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
 You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
-INTRO
-    ,
+INTRO,
 
     /*
      * Example requests for each endpoint will be shown in each of these languages.
@@ -302,6 +305,35 @@ INTRO
         ],
     ],
 
+    'groups' => [
+        /*
+         * Endpoints which don't have a @group will be placed in this default group.
+         */
+        'default' => 'Endpoints',
+
+        /*
+         * By default, Scribe will sort groups alphabetically, and endpoints in the order their routes are defined.
+         * You can override this by listing the groups, subgroups and endpoints here in the order you want them.
+         *
+         * Any groups, subgroups or endpoints you don't list here will be added as usual after the ones here.
+         * If an endpoint/subgroup is listed under a group it doesn't belong in, it will be ignored.
+         * Note: you must include the initial '/' when writing an endpoint.
+         */
+        'order' => [
+            // 'This group will come first',
+            // 'This group will come next' => [
+            //     'POST /this-endpoint-will-comes-first',
+            //     'GET /this-endpoint-will-comes-next',
+            // ],
+            // 'This group will come third' => [
+            //     'This subgroup will come first' => [
+            //         'GET /this-other-endpoint-will-comes-first',
+            //         'GET /this-other-endpoint-will-comes-next',
+            //     ]
+            // ]
+        ],
+    ],
+
     /*
      * Custom logo path. This will be used as the value of the src attribute for the <img> tag,
      * so make sure it points to an accessible URL or path. Set to false to not use a logo.
@@ -311,7 +343,34 @@ INTRO
      * - 'logo' => 'img/logo.png' // for `laravel` type
      *
      */
-    'logo' => 'public/client/images/email-logo.png',
+    'logo' => false,
+
+    /**
+     * Customize the "Last updated" value displayed in the docs by specifying tokens and formats.
+     * Examples:
+     * - {date:F j Y} => March 28, 2022
+     * - {git:short} => Short hash of the last Git commit
+     *
+     * Available tokens are `{date:<format>}` and `{git:<format>}`.
+     * The format you pass to `date` will be passed to PhP's `date()` function.
+     * The format you pass to `git` can be either "short" or "long".
+     */
+    'last_updated' => 'Last updated: {date:F j, Y}',
+
+    'examples' => [
+        /*
+         * If you would like the package to generate the same example values for parameters on each run,
+         * set this to any number (eg. 1234)
+         */
+        'faker_seed' => null,
+
+        /*
+         * With API resources and transformers, Scribe tries to generate example models to use in your API responses.
+         * By default, Scribe will try the model's factory, and if that fails, try fetching the first from the database.
+         * You can reorder or remove strategies here.
+         */
+        'models_source' => ['factoryCreate', 'factoryMake', 'databaseFirst'],
+    ],
 
     /**
      * The strategies Scribe will use to extract information about your routes at each stage.
@@ -320,27 +379,33 @@ INTRO
     'strategies' => [
         'metadata' => [
             Strategies\Metadata\GetFromDocBlocks::class,
+            Strategies\Metadata\GetFromMetadataAttributes::class,
         ],
         'urlParameters' => [
             Strategies\UrlParameters\GetFromLaravelAPI::class,
             Strategies\UrlParameters\GetFromLumenAPI::class,
+            Strategies\UrlParameters\GetFromUrlParamAttribute::class,
             Strategies\UrlParameters\GetFromUrlParamTag::class,
         ],
         'queryParameters' => [
             Strategies\QueryParameters\GetFromFormRequest::class,
             Strategies\QueryParameters\GetFromInlineValidator::class,
+            Strategies\QueryParameters\GetFromQueryParamAttribute::class,
             Strategies\QueryParameters\GetFromQueryParamTag::class,
         ],
         'headers' => [
             Strategies\Headers\GetFromRouteRules::class,
+            Strategies\Headers\GetFromHeaderAttribute::class,
             Strategies\Headers\GetFromHeaderTag::class,
         ],
         'bodyParameters' => [
             Strategies\BodyParameters\GetFromFormRequest::class,
             Strategies\BodyParameters\GetFromInlineValidator::class,
+            Strategies\BodyParameters\GetFromBodyParamAttribute::class,
             Strategies\BodyParameters\GetFromBodyParamTag::class,
         ],
         'responses' => [
+            Strategies\Responses\UseResponseAttributes::class,
             Strategies\Responses\UseTransformerTags::class,
             Strategies\Responses\UseApiResourceTags::class,
             Strategies\Responses\UseResponseTag::class,
@@ -348,6 +413,7 @@ INTRO
             Strategies\Responses\ResponseCalls::class,
         ],
         'responseFields' => [
+            Strategies\ResponseFields\GetFromResponseFieldAttribute::class,
             Strategies\ResponseFields\GetFromResponseFieldTag::class,
         ],
     ],
@@ -371,44 +437,5 @@ INTRO
      * Tell Scribe which connections should be transacted here.
      * If you only use one db connection, you can leave this as is.
      */
-    'database_connections_to_transact' => [config('database.default')],
-    'groups' => [
-        /*
-         * Endpoints which don't have a @group will be placed in this default group.
-         */
-        'default' => 'Endpoints',
-        /*
-         * By default, Scribe will sort groups alphabetically, and endpoints in the order their routes are defined.
-         * You can override this by listing the groups, subgroups and endpoints here in the order you want them.
-         *
-         * Any groups, subgroups or endpoints you don't list here will be added as usual after the ones here.
-         * If an endpoint/subgroup is listed under a group it doesn't belong in, it will be ignored.
-         * Note: you must include the initial '/' when writing an endpoint.
-         */
-        'order' => [],
-    ],
-    /**
-     * Customize the "Last updated" value displayed in the docs by specifying tokens and formats.
-     * Examples:
-     * - {date:F j Y} => March 28, 2022
-     * - {git:short} => Short hash of the last Git commit
-     *
-     * Available tokens are `{date:<format>}` and `{git:<format>}`.
-     * The format you pass to `date` will be passed to PhP's `date()` function.
-     * The format you pass to `git` can be either "short" or "long".
-     */
-    'last_updated' => 'Last updated: {date:F j, Y}',
-    'examples' => [
-        /*
-         * If you would like the package to generate the same example values for parameters on each run,
-         * set this to any number (eg. 1234)
-         */
-        'faker_seed' => null,
-        /*
-         * With API resources and transformers, Scribe tries to generate example models to use in your API responses.
-         * By default, Scribe will try the model's factory, and if that fails, try fetching the first from the database.
-         * You can reorder or remove strategies here.
-         */
-        'models_source' => ['factoryCreate', 'factoryMake', 'databaseFirst'],
-    ]
+    'database_connections_to_transact' => [config('database.default')]
 ];

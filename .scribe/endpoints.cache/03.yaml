@@ -14,13 +14,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Blog
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'List all blog.'
       description: 'Lấy danh sách bài viết.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -125,7 +127,7 @@ endpoints:
           }
 
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -142,23 +144,25 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Blog
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Retrieve a blog.'
       description: 'API này cho phép bạn truy xuất và xem một bài viết cụ thể bằng ID'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters:
       slug:
         name: slug
         description: 'The slug of the blog.'
         required: true
-        example: illum
+        example: placeat
         type: string
         custom: []
     cleanUrlParameters:
-      slug: illum
+      slug: placeat
     queryParameters:
       token_api:
         name: token_api
@@ -227,7 +231,7 @@ endpoints:
               ]
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -244,14 +248,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Blog
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Search Blogs.'
       description: 'API này cho phép bạn tìm kiếm bài viết theo từ khoá.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -293,11 +298,11 @@ endpoints:
         name: kw
         description: ''
         required: true
-        example: eos
+        example: fugit
         type: string
         custom: []
     cleanBodyParameters:
-      kw: eos
+      kw: fugit
     fileParameters: []
     responses:
       -
@@ -328,7 +333,7 @@ endpoints:
               "keyword": "Sony công bố PlayStation VR 2 4K HDR và game Horizon Call of the Mountain mới"
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -345,14 +350,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Blog
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Blog properties.'
       description: 'Danh sách các thuộc tính của bài viết.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -362,90 +368,90 @@ endpoints:
         name: title
         description: 'Tiêu đề bài viết'
         required: false
-        example: perspiciatis
+        example: et
         type: varchar(255)
         custom: []
       slug:
         name: slug
         description: 'Slug bài viết'
         required: false
-        example: esse
+        example: eligendi
         type: longtext
         custom: []
       desc:
         name: desc
         description: 'Mô tả ngắn bài viết'
         required: false
-        example: in
+        example: quam
         type: longtext
         custom: []
       img:
         name: img
         description: 'Path hình ảnh bài viết'
         required: false
-        example: ut
+        example: numquam
         type: varchar
         custom: []
       cat_id:
         name: cat_id
         description: 'Danh mục chính bài viết'
         required: false
-        example: non
+        example: voluptas
         type: bigint
         custom: []
       cat_sub_id:
         name: cat_sub_id
         description: 'Danh mục phụ bài viết'
         required: false
-        example: non
+        example: velit
         type: bigint
         custom: []
       users_id:
         name: users_id
         description: 'Id tác giả'
         required: false
-        example: tempore
+        example: dolorum
         type: bigint
         custom: []
       views:
         name: views
         description: 'Lượt xem bài viết'
         required: false
-        example: earum
+        example: vero
         type: bigint
         custom: []
       author:
         name: author
         description: 'Tên tác giả'
         required: false
-        example: ut
+        example: non
         type: varchar
         custom: []
       active:
         name: active
         description: 'Trạng thái bài viết (1: được đăng , 2: đã gỡ)'
         required: false
-        example: 18
+        example: 4
         type: integer
         custom: []
     cleanBodyParameters:
-      title: perspiciatis
-      slug: esse
-      desc: in
-      img: ut
-      cat_id: non
-      cat_sub_id: non
-      users_id: tempore
-      views: earum
-      author: ut
-      active: 18
+      title: et
+      slug: eligendi
+      desc: quam
+      img: numquam
+      cat_id: voluptas
+      cat_sub_id: velit
+      users_id: dolorum
+      views: vero
+      author: non
+      active: 4
     fileParameters: []
     responses:
       -
         status: 200
         content: '{"Danh sách thuộc tính của bảng Blog"}'
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []

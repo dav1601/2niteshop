@@ -15,7 +15,7 @@ class show extends Component
     public $cart;
     public function __construct($cart = null)
     {
-        if ($cart === null) {
+        if (!$cart) {
             $cart =  Cart::instance('shopping')->content()->sortBy('id');
         }
         $this->cart = $cart;

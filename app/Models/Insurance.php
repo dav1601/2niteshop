@@ -12,5 +12,6 @@ class Insurance extends Model
     protected $fillable = [
         'name',
         'price',
+        'group'
     ];
 }

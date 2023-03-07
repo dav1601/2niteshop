@@ -1,0 +1,1271 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/127.0.0.1:8000"
+        }
+    ],
+    "info": {
+        "name": "2NITE SHOP API DOCS",
+        "_postman_id": "5faa1768-a5cc-40e5-bd9a-2bded5e06942",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "description": "\nAPIs for Auth",
+            "item": [
+                {
+                    "name": "Login.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"2niteshop@gmail.com\",\"password\":\"Anh$1234\"}"
+                        },
+                        "description": "Api cho ph\u00e9p b\u1ea1n \u0111\u0103ng nh\u1eadp v\u00e0o h\u1ec7 th\u1ed1ng.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"is_login\":true,\n    \"status\": \"success\",\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.*eyJhdWQiOiI1IiwianRpIjoiNzEzY2YzMjI4YzgyNWNhMjM1MGQzYTVkOThhZDI0ZmExODVlNjFjYWQzOGM5YmI0NjU0ZTcyYTQzNmNiNzYxZGUyZjYzMDU4NmY2YTdhMzUiLCJpYXQiOjE2NDczNDA3ODYuMzE0NzM1LC*JuYmYiOjE2NDczNDA3ODYuMzE0NzM5LCJleHAiOjE5NjI5NTk5ODYuMjYzNjA5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.*FlqtOsjiMBBn_UzoLT_HN-FiYsd9QyoCRNsaTZ4y4BvT4hCq2R9Qx4HmKzXtuaDFBdisQ36gEVElyV7l3WDjgm4H-1wtl0PwuMp_j7uWQzJGMQwebV3YlnUJM-BqAYPaaWymnixVp26WUnabDZEx4B4dong3AWUMboIXRg*xNZCvOc7GyjIGAvepDFVrpa8qBWEuX5fR1U6A8NkYf-PUAWQbY5H3D57WIWHUTlScNO2aaKXL1xYyQVcd2V2D1dS0RQtsZ-Oc4OuDvbCoPkBNeU_15tK7oagB_q2i5p44O97d1vmUjjiJOyacjIsIVBJAUhcOgbLARqXJK*QndEV6wWmbojNzmKKk-rtLWu5_pK3ODOqjhNIfWezVXy3MO4an6GEpoLpedq4jzu--pLWWJ3fb_MYc4MP6bKQtHDVuLZtyB1KnHyjQ181UZYTMwJKVX7DM5aKi-TbC4xCut2c8JhjymWat3H2g3soHUKffGTiyn7_eKhAs*f7oSvDUKDxPPinAydWWWX6w7fa_slLMLRUjzl1tYGHI-BsJ_p1Tk9QbQnWX89kQ0oBDYApITWxmP9fVGIqVQksom7oP18JO-rP3JMPygxvoQfYoI7mCBe-T9q-SMyzXq4a7QmfsOMi3g6rK3kZnyxURQ6FLG-XN8GCAc8\",\n    \"token_type\": \"Bearer\",\n    \"expires_at\": \"2032-03-15 17:39:46\",\n    \"cart\": {\n        \"751a67de0e70aba0bc788781dc89923e\": {\n            \"rowId\": \"751a67de0e70aba0bc788781dc89923e\",\n            \"id\": 54,\n            \"name\": \"Nintendo Switch OLED model with Neon Red Blue Joy\u2011Con\",\n            \"qty\": \"1\",\n            \"price\": 9400000,\n            \"options\": {\n                \"ins\": \"7\",\n                \"color\": 0,\n                \"model\": \"15923\",\n                \"image\": \"admin\/images\/products\/nintendo-switch\/main\/nintendo-switch-oled-red-blue-joy-con-00-305x305.jpg\",\n                \"sub_total\": \"10400000\",\n                \"cost\": 8100000\n            },\n            \"tax\": \"0.00\",\n            \"isSaved\": false,\n            \"subtotal\": \"9400000.00\"\n        },\n        \"802275dbe2134cdf804a737b253425b3\": {\n            \"rowId\": \"802275dbe2134cdf804a737b253425b3\",\n            \"id\": 67,\n            \"name\": \"Nintendo Switch Lite - Blue\",\n            \"qty\": \"1\",\n            \"price\": 4980000,\n            \"options\": {\n                \"ins\": \"8\",\n                \"color\": 0,\n                \"model\": \"15432\",\n                \"image\": \"admin\/images\/products\/nintendo-switch-lite\/main\/nintendo-switch-lite-blue-00-305x305.jpg\",\n                \"sub_total\": \"4980000\",\n                \"cost\": 4000000\n            },\n            \"tax\": \"0.00\",\n            \"isSaved\": false,\n            \"subtotal\": \"4980000.00\"\n        }\n    },\n    \"user\": {\n        \"id\": 1,\n        \"role_id\": 1,\n        \"name\": \"2NITEE API\",\n        \"email\": \"api2nite@gmail.com\",\n        \"phone\": \"0967898460\",\n        \"email_verified_at\": null,\n        \"avatar\": \"admin\/images\/avatar\/273897681_461480892292312_8005546585052258809_n(1).jpg\",\n        \"created_at\": \"2022-02-19T08:06:28.000000Z\",\n        \"updated_at\": \"2022-03-15T09:31:49.000000Z\",\n        \"provider_id\": null,\n        \"provider\": null,\n        \"ban\": 0\n    },\n    \"remember\": false\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Singup.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/signup",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/signup"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Vuong Anh\",\"email\":\"2niteshop@gmail.com\",\"password\":\"Anh$1234\",\"phone\":\"0987687679\",\"password_confirmation\":\"Anh$1234\"}"
+                        },
+                        "description": "Api n\u00e0y cho ph\u00e9p b\u1ea1n \u0111\u0103ng k\u00fd t\u00e0i kho\u1ea3n user trong h\u1ec7 th\u1ed1ng.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"message\": \"\u0110\u0103ng k\u00fd th\u00e0nh c\u00f4ng\",\n    \"success\": true\n}\n",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Auth Api",
+            "description": "",
+            "item": [
+                {
+                    "name": "Logout.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Api cho ph\u00e9p b\u1ea1n logout v\u00e0 xo\u00e1 token user trong h\u1ec7 th\u1ed1ng."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\nis_logout => true\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET USER LOGGED.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/me\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/me\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "fugit",
+                                    "description": "The ID of the me."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Api n\u00e0y cho ph\u00e9p l\u1ea5y user \u0111\u00e3 \u0111\u0103ng nh\u1eadp."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"user\": {\n        \"id\": 337,\n        \"role_id\": 5,\n        \"name\": \"Garrison Farrell\",\n        \"email\": \"tkub@example.org\",\n        \"phone\": \"0944373354\",\n        \"email_verified_at\": null,\n        \"avatar\": null,\n        \"provider_id\": null,\n        \"provider\": null,\n        \"ban\": 0,\n        \"created_at\": \"2022-02-19T08:40:34.000000Z\",\n        \"updated_at\": \"2022-02-19T08:40:34.000000Z\"\n    }\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET ORDERS USER LOGGED.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/me\/orders\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/me\/orders\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "sint",
+                                    "description": "The ID of the order."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Api n\u00e0y cho ph\u00e9p l\u1ea5y danh s\u00e1ch \u0111\u01a1n h\u00e0ng user \u0111\u00e3 \u0111\u0103ng nh\u1eadp."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST UPDATE INFO USER.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/update\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/update\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "repudiandae",
+                                    "description": "The ID of the update."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "VUong Anh",
+                                    "type": "text",
+                                    "description": "max 255"
+                                },
+                                {
+                                    "key": "phone",
+                                    "value": "0987687678",
+                                    "type": "text",
+                                    "description": "min:6"
+                                },
+                                {
+                                    "key": "avatar",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Api n\u00e0y cho ph\u00e9p c\u1eadp nh\u1eadt th\u00f4ng tin c\u1ee7a user."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"success\": 1,\n    \"updated_fail\": false,\n    \"user\": {\n        \"id\": 1,\n        \"role_id\": 1,\n        \"name\": \"2NITEAPI\",\n        \"email\": \"2nitetestapi@gmail.com\",\n        \"phone\": \"0811122260\",\n        \"email_verified_at\": null,\n        \"avatar\": \"admin\/images\/avatar\/245119900_260411806011768_6267318235776841110_n.jpg\",\n        \"provider_id\": null,\n        \"provider\": null,\n        \"ban\": 0,\n        \"created_at\": \"2022-02-19T08:06:28.000000Z\",\n        \"updated_at\": \"2022-03-22T11:39:20.000000Z\"\n    }\n}\n",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Blog",
+            "description": "\nAPIs for managing Blog",
+            "item": [
+                {
+                    "name": "List all blog.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/blogs\/list",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "tin-moi",
+                                    "description": "Slug Danh M\u1ee5c",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "DESC",
+                                    "description": "ASC\/DESC Default: DESC",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "key_sort",
+                                    "value": "id",
+                                    "description": "Default: id",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "10",
+                                    "description": "Default: 10",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Default: all",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/blogs\/list?token_api=19aIotXOerK&category=tin-moi&sort=DESC&key_sort=id&per_page=10&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "L\u1ea5y danh s\u00e1ch b\u00e0i vi\u1ebft.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"category\": \"tin-moi\",\n    \"number_page\": 3,\n    \"count\": 21,\n    \"sort\": \"DESC\",\n    \"key_sort\": \"id\",\n    \"per_page\": \"10\",\n    \"page\": \"1\",\n    \"blogs\": [\n        {\n            \"id\": 23,\n            \"title\": \"Nh\u1eefng t\u1ef1a game \u0111\u00e1ng mong \u0111\u1ee3i th\u00e1ng 2\/2022 - Th\u00e1ng n\u00e0y ch\u01a1i g\u00ec\",\n            \"slug\": \"nhung-tua-game-dang-mong-doi-thang-22022-thang-nay-choi-gi\",\n            \"content\": \"<p style=\\\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\\\"><span style=\\\"box-sizing: border-box; font-weight: bold;\\\"><em style=\\\"box-sizing: border-box;\\\">K&iacute;nh ch&agrave;o n\u0103m m\u1edbi! HaLo v&agrave; Say Game xin g\u1eedi nh\u1eefng l\u1eddi ch&uacute;c b&igrave;nh an \u0111\u1ebfn v\u1edbi m\u1ecdi kh&aacute;n gi\u1ea3 \u0111&atilde; \u0111\u1ed3ng h&agrave;nh c&ugrave;ng HaLo su\u1ed1t th\u1eddi gian qua v&agrave; s\u1ebd c&ograve;n \u1ee7ng h\u1ed9 trong t\u01b0\u01a1ng lai v\u1ec1 sau.<\/em><\/span><\/p>\\r\\n<p style=\\\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\\\">Nh\u1eefng ng&agrave;y ngh\u1ec9 T\u1ebft tuy ng\u1eafn nh\u01b0ng l\u1ea1i l&agrave; c\u01a1 h\u1ed9i t\u1ed1t cho m\u1ed9t s\u1ed1 b\u1ea1n c&oacute; th\u1ec3 t\u0103ng thu nh\u1eadp \u0111\u1ed9t bi\u1ebfn nh\u01b0ng c\u0169ng s\u1ebd khi\u1ebfn c&aacute;c anh em kh&aacute;c hao h\u1ee5t kha kh&aacute; s\u1ed1 d\u01b0. D&ugrave; v\u1eady c&aacute;c b\u1ea1n c\u0169ng \u0111\u1eebng qu&ecirc;n c&aacute;c t\u1ef1a game c\u1ef1c ph\u1ea9m s\u1ebd l&ecirc;n k\u1ec7 trong th&aacute;ng 2 n&agrave;y v&agrave; nhanh ch&oacute;ng b\u1ed5 sung v&agrave;o b\u1ed9 s\u01b0u t\u1eadp c\u1ee7a m&igrave;nh nh&eacute;. V&agrave; \u0111&acirc;y l&agrave; video Nh\u1eefng t\u1ef1a game Hay th&aacute;ng 2\/2022 c\u1ee7a&nbsp;<a style=\\\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;\\\"\",\n            \"desc\": \"K\u00ednh ch\u00e0o n\u0103m m\u1edbi! HaLo v\u00e0 Say Game xin g\u1eedi nh\u1eefng l\u1eddi ch\u00fac b\u00ecnh an \u0111\u1ebfn v\u1edbi m\u1ecdi kh\u00e1n gi\u1ea3 \u0111\u00e3 \u0111\u1ed3ng h\u00e0nh c\u00f9ng HaLo su\u1ed1t th\u1eddi gian qua v\u00e0 s\u1ebd c\u00f2n \u1ee7ng h\u1ed9 trong t\u01b0\u01a1ng lai v\u1ec1 sau. Nh\u1eefng ng\u00e0y ngh\u1ec9 T\u1ebft tuy ng\u1eafn nh\u01b0ng l\u1ea1i l\u00e0 c\u01a1 h\u1ed9i t\u1ed1t cho m\u1ed9t s\u1ed1 b\u1ea1n c\u00f3 th\u1ec3 t\u0103ng..\",\n            \"img\": \"admin\/images\/blogs\/tin-moi\/main\/nhung-tua-game-dang-choi-thang-2-2022-0-356x200w.jpeg\",\n            \"cat_id\": 2,\n            \"cat_sub_id\": null,\n            \"users_id\": 1,\n            \"views\": 0,\n            \"author\": \"2NITE\",\n            \"active\": 1,\n            \"created_at\": \"2022-02-09T17:27:09.000000Z\",\n            \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n        },\n        {\n            \"id\": 20,\n            \"title\": \"C\u00e1c t\u1ef1a game \u0111\u1ed9c quy\u1ec1n PlayStation \u0111\u00e1ng ch\u01a1i nh\u1ea5t tr\u00ean PS5\/PS4 trong n\u0103m 2022\",\n            \"slug\": \"cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5ps4-trong-nam-2022\",\n            \"content\": \"<p><em style=\\\"box-sizing: border-box; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\\\"><span style=\\\"box-sizing: border-box; font-weight: bold;\\\">Cu\u1ed1i c&ugrave;ng th&igrave; ch&uacute;ng ta c\u0169ng \u0111&atilde; b\u01b0\u1edbc sang n\u0103m 2022, ng&agrave;y ra m\u1eaft c\u1ee7a nh\u1eefng t\u1ef1a game m&agrave; ai ai c\u0169ng \u0111ang mong ch\u1edd l\u1ea1i g\u1ea7n h\u01a1n bao gi\u1edd h\u1ebft, \u0111\u1eb7c bi\u1ec7t l&agrave; \u0111\u1ed1i v\u1edbi nh\u1eefng b\u1ea1n n&agrave;o \u0111ang s\u1edf h\u1eefu chi\u1ebfc m&aacute;y game PS4\/ PS5. Nh\u01b0 ti&ecirc;u \u0111\u1ec1 ng&agrave;y h&ocirc;m nay, ch&uacute;ng m&igrave;nh s\u1ebd t\u1ed5ng h\u1ee3p l\u1ea1i danh s&aacute;ch c&aacute;c t\u1ef1a game \u0111\u1ed9c quy\u1ec1n PlayStation s\u1ebd ra m\u1eaft trong n\u0103m 2022 n&agrave;y nh&eacute;.<\/span><\/em><\/p>\\r\\n<div class=\\\"related-post\\\" style=\\\"box-sizing: border-box; padding-left: 20px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\\\">\\r\\n<ul style=\\\"box-sizing: border-box; margin: 5px; padding-left: 30px;\\\">\\r\\n<li style=\\\"box-sizing: border-box; margin: 10px 0px 0px; padding: 0px; text-indent: 15px; line-height: 25px !important; text-align: justify;\\\"><a style=\\\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\\\" href=\\\"https:\/\/game.haloshop.vn\/psn-va-rui-ro-khi-mua-tai-khoan-lau\\\"\",\n            \"desc\": \"Cu\u1ed1i c\u00f9ng th\u00ec ch\u00fang ta c\u0169ng \u0111\u00e3 b\u01b0\u1edbc sang n\u0103m 2022, ng\u00e0y ra m\u1eaft c\u1ee7a nh\u1eefng t\u1ef1a game m\u00e0 ai ai c\u0169ng \u0111ang mong ch\u1edd l\u1ea1i g\u1ea7n h\u01a1n bao gi\u1edd h\u1ebft, \u0111\u1eb7c bi\u1ec7t l\u00e0 \u0111\u1ed1i v\u1edbi nh\u1eefng b\u1ea1n n\u00e0o \u0111ang s\u1edf h\u1eefu chi\u1ebfc m\u00e1y game PS4\/ PS5. Nh\u01b0 ti\u00eau \u0111\u1ec1 ng\u00e0y h\u00f4m nay, ch\u00fang m\u00ecnh s\u1ebd t\u1ed5ng..\",\n            \"img\": \"admin\/images\/blogs\/tin-moi\/main\/cac-tua-game-doc-quyen-playstation-dang-choi-nhat-tren-ps5-ps4-trong-nam-2022-0-356x200w.jpg\",\n            \"cat_id\": 2,\n            \"cat_sub_id\": 6,\n            \"users_id\": 1,\n            \"views\": 0,\n            \"author\": \"2NITE\",\n            \"active\": 1,\n            \"created_at\": \"2022-01-11T16:01:13.000000Z\",\n            \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n        }\n    ]\n}\n\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a blog.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/blogs\/blog\/:slug",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/blogs\/blog\/:slug?token_api=19aIotXOerK",
+                            "variable": [
+                                {
+                                    "id": "slug",
+                                    "key": "slug",
+                                    "value": "placeat",
+                                    "description": "The slug of the blog."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "API n\u00e0y cho ph\u00e9p b\u1ea1n truy xu\u1ea5t v\u00e0 xem m\u1ed9t b\u00e0i vi\u1ebft c\u1ee5 th\u1ec3 b\u1eb1ng ID",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"blog\": {\n        \"id\": 1,\n        \"title\": \"Sony c\u00f4ng b\u1ed1 PlayStation VR 2 4K HDR v\u00e0 game Horizon Call of the Mountain m\u1edbi\",\n        \"slug\": \"sony-cong-bo-playstation-vr-2-4k-hdr-va-game-horizon-call-of-the-mountain-moi\",\n        \"content\": \"<p><img style=\\\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\\\" src=\\\"https:\/\/game.haloshop.vn\/image\/catalog\/blogs\/psvr-2\/psvr-2-cung-cac-cong-nghe-moi-1.jpg\\\" alt=\\\"Sony c&ocirc;ng b\u1ed1 PlayStation VR 2 v&agrave; game Horizon Call of the Mountain m\u1edbi\\\" \/><\/p>\\r\\n<h4 style=\\\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\\\">C&Ocirc;NG NGH\u1ec6 M\u1edaI NH\u1ea4T<\/h4>\\r\\n<p style=\\\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\\\">Sony c\u0169ng gi\u1edbi thi\u1ec7u v\u1ec1 nh\u1eefng c&ocirc;ng ngh\u1ec7 m\u1edbi nh\u1ea5t \u0111\u01b0\u1ee3c trang b\u1ecb tr&ecirc;n c\u1eb7p k&iacute;nh PS VR 2 m\u1edbi nh\u1ea5t n&agrave;y.<\/p>\\r\\n<p style=\\\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\\\"><span style=\\\"box-sizing: border-box; font-weight: bold;\\\">H&igrave;nh \u1ea3nh ch&acirc;n th\u1ef1c:<\/span>&nbsp;\u0110\u1ec3 c&oacute; tr\u1ea3i nghi\u1ec7m t\u1ed1t nh\u1ea5t PSVR 2 cung c\u1ea5p 4K HDR, ph\u1ea1m vi quan s&aacute;t (Field of View) kho\u1ea3ng 110 \u0111\u1ed9.\",\n        \"img\": \"admin\/images\/blogs\/tin-moi\/main\/psvr-2-cung-cac-cong-nghe-moi-0-356x200w.jpg\",\n        \"cat_id\": 2,\n        \"cat_sub_id\": 6,\n        \"users_id\": 1,\n        \"views\": 0,\n        \"author\": \"2NITE\",\n        \"active\": 1,\n        \"created_at\": \"2022-01-05T07:25:03.000000Z\",\n        \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n    },\n    \"involve\": [\n        {\n            \"id\": 2,\n            \"title\": \"Top game mi\u1ec5n ph\u00ed tr\u00ean PlayStation trong th\u00e1ng 1\/2022\",\n            \"slug\": \"top-game-mien-phi-tren-playstation-trong-thang-12022\",\n            \"content\": \"<h3 style=\\\"box-sizing: border-box; font-family: Montserrat; line-height: 1.5; color: #333333; margin: 15px 0px; font-size: 28px; text-align: center; text-transform: uppercase; background-color: #ffffff;\\\">GAME MI\u1ec4N PH&Iacute; PLAYSTATION PLUS TH&Aacute;NG 1\/2022<\/h3>\\r\\n<p><img style=\\\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\\\" src=\\\"https:\/\/game.haloshop.vn\/image\/catalog\/blogs\/game-mien-phi-thang-nay\/2022\/game-playstation-mien-phi-thang-1-2022-1.jpg\\\" alt=\\\"Game Mi\u1ec5n Ph&iacute; Th&aacute;ng 11\\\" \/><\/p>\\r\\n<div class=\\\"image-caption\\\" style=\\\"box-sizing: border-box; text-align: center; padding: 5px 10px; width: 686px; background-color: #f5f5f5; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; margin: 0px auto 20px !important;\\\"><a style=\\\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\\\" .\",\n            \"img\": \"admin\/images\/blogs\/tin-moi\/main\/game-playstation-mien-phi-thang-1-2022-0-356x200w.jpg\",\n            \"cat_id\": 2,\n            \"cat_sub_id\": null,\n            \"users_id\": 1,\n            \"views\": 0,\n            \"author\": \"2NITE\",\n            \"active\": 1,\n            \"created_at\": \"2022-01-05T07:30:23.000000Z\",\n            \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"title\": \"Nh\u1eefng t\u1ef1a game \u0111\u00e1ng mong \u0111\u1ee3i th\u00e1ng 1\/2022 - Th\u00e1ng n\u00e0y ch\u01a1i g\u00ec\",\n            \"slug\": \"nhung-tua-game-dang-mong-doi-thang-12022-thang-nay-choi-gi\",\n            \"content\": \"<p style=\\\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\\\">Happy New Year! B\u01b0\u1edbc sang n\u0103m m\u1edbi nh\u01b0ng m&ugrave;a sale cho k\u1ef3 ngh\u1ec9 l\u1ec5 v\u1eabn c&ograve;n \u0111ang ti\u1ebfp di\u1ec5n. V&agrave; \u0111\u1eb7c bi\u1ec7t trong th&aacute;ng 1 n\u0103m 2022 n&agrave;y s\u1ebd c&oacute; r\u1ea5t nhi\u1ec1u t\u1ef1a game m\u1edbi v&ocirc; c&ugrave;ng h\u1ea5p d\u1eabn tr&igrave;nh l&agrave;ng, r\u1ea5t \u0111&aacute;ng \u0111\u1ec3 b\u1ea1n ch\u1ed1t \u0111\u01a1n \u0111\u1ea5y. \u0110\u1ebfn h\u1eb9n l\u1ea1i l&ecirc;n, chuy&ecirc;n m\u1ee5c gi\u1edbi thi\u1ec7u nh\u1eefng t\u1ef1a game \u0111&aacute;ng mua trong th&aacute;ng \u0111\u1ea7u ti&ecirc;n n\u0103m m\u1edbi c\u1ee7a&nbsp;<a style=\\\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block; font-weight: 600;\\\" href=\\\"https:\/\/www.youtube.com\/c\/saygame?sub_confirmation=1\\\"\",\n            \"desc\": \"Happy New Year! B\u01b0\u1edbc sang n\u0103m m\u1edbi nh\u01b0ng m\u00f9a sale cho k\u1ef3 ngh\u1ec9 l\u1ec5 v\u1eabn c\u00f2n \u0111ang ti\u1ebfp di\u1ec5n. V\u00e0 \u0111\u1eb7c bi\u1ec7t trong th\u00e1ng 1 n\u0103m 2022 n\u00e0y s\u1ebd c\u00f3 r\u1ea5t nhi\u1ec1u t\u1ef1a game m\u1edbi v\u00f4 c\u00f9ng h\u1ea5p d\u1eabn tr\u00ecnh l\u00e0ng, r\u1ea5t \u0111\u00e1ng \u0111\u1ec3 b\u1ea1n ch\u1ed1t \u0111\u01a1n \u0111\u1ea5y. \u0110\u1ebfn h\u1eb9n l\u1ea1i l\u00ean, chuy\u00ean m\u1ee5c gi\u1edbi thi..\",\n            \"img\": \"admin\/images\/blogs\/tin-moi\/main\/nhung-tua-game-dang-choi-thang-1-2022-0-356x200w.jpg\",\n            \"cat_id\": 2,\n            \"cat_sub_id\": null,\n            \"users_id\": 1,\n            \"views\": 0,\n            \"author\": \"2NITE\",\n            \"active\": 1,\n            \"created_at\": \"2022-01-05T07:34:18.000000Z\",\n            \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n        }\n    ]\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Search Blogs.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/blogs\/search_blog",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "kw",
+                                    "value": "Sony+c%C3%B4ng+b%E1%BB%91+PlayStation+VR+2+4K+HDR+v%C3%A0+game+Horizon+Call+of+the+Mountain+m%E1%BB%9Bi",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "10",
+                                    "description": "Default: 10",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Default: all",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/blogs\/search_blog?token_api=19aIotXOerK&kw=Sony+c%C3%B4ng+b%E1%BB%91+PlayStation+VR+2+4K+HDR+v%C3%A0+game+Horizon+Call+of+the+Mountain+m%E1%BB%9Bi&per_page=10&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"kw\":\"fugit\"}"
+                        },
+                        "description": "API n\u00e0y cho ph\u00e9p b\u1ea1n t\u00ecm ki\u1ebfm b\u00e0i vi\u1ebft theo t\u1eeb kho\u00e1.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"blogs\": [\n        {\n            \"id\": 1,\n            \"title\": \"Sony c\u00f4ng b\u1ed1 PlayStation VR 2 4K HDR v\u00e0 game Horizon Call of the Mountain m\u1edbi\",\n            \"slug\": \"sony-cong-bo-playstation-vr-2-4k-hdr-va-game-horizon-call-of-the-mountain-moi\",\n            \"content\": \"<p><img style=\\\"box-sizing: border-box; border: 0px; vertical-align: middle; max-width: 100%; height: auto; align-self: flex-start; cursor: pointer; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\\\" src=\\\"https:\/\/game.haloshop.vn\/image\/catalog\/blogs\/psvr-2\/psvr-2-cung-cac-cong-nghe-moi-1.jpg\\\" alt=\\\"Sony c&ocirc;ng b\u1ed1 PlayStation VR 2 v&agrave; game Horizon Call of the Mountain m\u1edbi\\\" \/><\/p>\\r\\n<h4 style=\\\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\\\">C&Ocirc;NG NGH\u1ec6 M\u1edaI NH\u1ea4T<\/h4>\\r\\n<p style=\\\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\\\">Sony c\u0169ng gi\u1edbi thi\u1ec7u v\u1ec1 nh\u1eefng c&ocirc;ng ngh\u1ec7 m\u1edbi nh\u1ea5t \u0111\u01b0\u1ee3c trang b\u1ecb tr&ecirc;n c\u1eb7p k&iacute;nh PS VR 2 m\u1edbi nh\u1ea5t n&agrave;y.<\/p>\\r\\n<p style=\\\"box-sizing: border-box; margin: 10px 0px; text-align: justify; padding: 0px 15px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; line-height: 25px !important;\\\"><span style=\\\"box-sizing: border-box; font-weight: bold;\\\">H&igrave;nh \u1ea3nh ch&acirc;n th\u1ef1c:<\/span>&nbsp;\u0110\u1ec3 c&oacute; tr\u1ea3i nghi\u1ec7m t\u1ed1t nh\u1ea5t PSVR 2 cung c\u1ea5p 4K HDR, ph\u1ea1m vi quan s&aacute;t (Field of View) kho\u1ea3ng 110 \u0111\u1ed9. V\u1edbi m&agrave;n h&igrave;nh OLED t\u1eeb Samsung \u0111\u1ed9 ph&acirc;n gi\u1ea3i 2000 x 2040 pixels cho m\u1ed7i b\u1ea3ng m\u1eaft v&agrave; t\u1ea7n s\u1ed1 qu&eacute;t 90 \/ 120Hz.<\/p>\\r\\n<p style=\\\"box-sizing: border-box;\",\n            \"img\": \"admin\/images\/blogs\/tin-moi\/main\/psvr-2-cung-cac-cong-nghe-moi-0-356x200w.jpg\",\n            \"cat_id\": 2,\n            \"cat_sub_id\": 6,\n            \"users_id\": 1,\n            \"views\": 0,\n            \"author\": \"2NITE\",\n            \"active\": 1,\n            \"created_at\": \"2022-01-05T07:25:03.000000Z\",\n            \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n        }\n    ],\n    \"number_page\": 1,\n    \"count\": 1,\n    \"per_page\": \"10\",\n    \"page\": \"1\",\n    \"keyword\": \"Sony c\u00f4ng b\u1ed1 PlayStation VR 2 4K HDR v\u00e0 game Horizon Call of the Mountain m\u1edbi\"\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Blog properties.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/blogs\/blog_properties",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/blogs\/blog_properties"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"et\",\"slug\":\"eligendi\",\"desc\":\"quam\",\"img\":\"numquam\",\"cat_id\":\"voluptas\",\"cat_sub_id\":\"velit\",\"users_id\":\"dolorum\",\"views\":\"vero\",\"author\":\"non\",\"active\":4}"
+                        },
+                        "description": "Danh s\u00e1ch c\u00e1c thu\u1ed9c t\u00ednh c\u1ee7a b\u00e0i vi\u1ebft.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"Danh s\u00e1ch thu\u1ed9c t\u00ednh c\u1ee7a b\u1ea3ng Blog\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "BlogCategories",
+            "description": "\nAPIs for managing BlogCategories",
+            "item": [
+                {
+                    "name": "Blog category properties.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/blogs\/categories\/properties",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/blogs\/categories\/properties"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"consectetur\",\"slug\":\"ea\"}"
+                        },
+                        "description": "C\u00e1c thu\u1ed9c t\u00ednh c\u1ee7a danh m\u1ee5c b\u00e0i vi\u1ebft.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"Danh s\u00e1ch thu\u1ed9c t\u00ednh c\u1ee7a b\u1ea3ng danh m\u1ee5c b\u00e0i vi\u1ebft\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List all blog categories.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/blogs\/categories\/list_all",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXmkjH",
+                                    "description": "",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/blogs\/categories\/list_all?token_api=19aIotXmkjH"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Danh m\u1ee5c b\u00e0i vi\u1ebft.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"categories\": [\n        {\n            \"id\": 1,\n            \"name\": \"S\u1eeda ch\u1eefa\",\n            \"slug\": \"sua-chua\",\n            \"created_at\": \"2022-01-05T06:05:29.000000Z\",\n            \"updated_at\": \"2022-01-05T06:05:29.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Tin m\u1edbi\",\n            \"slug\": \"tin-moi\",\n            \"created_at\": \"2022-01-05T06:06:33.000000Z\",\n            \"updated_at\": \"2022-01-05T06:06:33.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"\u0110\u1eadp H\u1ed9p - Review\",\n            \"slug\": \"dap-hop-review\",\n            \"created_at\": \"2022-01-05T06:06:43.000000Z\",\n            \"updated_at\": \"2022-01-05T06:06:43.000000Z\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"H\u01b0\u1edbng D\u1eabn - Th\u1ee7 Thu\u1eadt\",\n            \"slug\": \"huong-dan-thu-thuat\",\n            \"created_at\": \"2022-01-05T06:06:49.000000Z\",\n            \"updated_at\": \"2022-01-05T06:06:49.000000Z\"\n        }\n\n    ]\n}\n",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Password",
+            "description": "\nAPIs for managing Password",
+            "item": [
+                {
+                    "name": "Forgot Password.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/reset\/passowrd\/forgot",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/reset\/passowrd\/forgot"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"phone\":\"0986868568\"}"
+                        },
+                        "description": "Api d\u00f9ng \u0111\u1ec3 x\u00e1c nh\u1eadn s\u1ed1 \u0111i\u1ec7n tho\u1ea1i v\u00e0 g\u1eedi OTP \u0111\u1ec3 kh\u00f4i ph\u1ee5c m\u1eadt kh\u1ea9u.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"check\": true,\n    \"send_code\": true,\n    \"code\": 160101,\n    \"phone\": \"0858467890\",\n    \"message\": \"G\u1eedi m\u00e3 OTP th\u00e0nh c\u00f4ng\",\n    \"phone_format\": \"+84858467890\"\n  }\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Api Verification OTP.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/reset\/passowrd\/verification",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/reset\/passowrd\/verification"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"code\":160101}"
+                        },
+                        "description": "Api d\u00f9ng \u0111\u1ebb x\u00e1c nh\u1eadn m\u00e3 OTP c\u00f3 trong h\u1ec7 th\u1ed1ng.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"info\": {\n      \"phone\": \"0858458469\",\n      \"code\": 600728,\n      \"created_at\": \"2022-03-22 18:46:15\"\n    },\n    \"code\": \"600728\",\n    \"verification\": true\n  }\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Api New Password.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/reset\/passowrd\/new_password",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/reset\/passowrd\/new_password"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"code\":160101,\"phone\":\"0801160169\",\"password\":\"TestApi1612001\"}"
+                        },
+                        "description": "Api d\u00f9ng \u0111\u1ec3 thay \u0111\u1ed5i m\u1eadt kh\u1ea9u m\u1edbi.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"changed_password\": true,\n    \"message\": \"\u0110\u00e3 thay \u0111\u1ed5i m\u1eadt kh\u1ea9u th\u00e0nh c\u00f4ng\"\n  }\n",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Products",
+            "description": "\nAPIs for managing Products",
+            "item": [
+                {
+                    "name": "List all products.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/list",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "ps5",
+                                    "description": "Default: null For All Cate",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "genre",
+                                    "value": "Action%2CAdventure",
+                                    "description": "Default: null For All Genre Game",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "DESC",
+                                    "description": "ASC\/DESC Default: DESC",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "key_sort",
+                                    "value": "id",
+                                    "description": "Default: id",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "10",
+                                    "description": "Default: 10",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Default: all",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/products\/list?token_api=19aIotXOerK&category=ps5&genre=Action%2CAdventure&sort=DESC&key_sort=id&per_page=10&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"category\": \"81\",\n    \"genres\": [\n        \"Action Adventure\",\n        \"Action\"\n    ],\n    \"number_page\": 1,\n    \"count\": 6,\n    \"sort\": \"DESC\",\n    \"key_sort\": \"id\",\n    \"per_page\": \"10\",\n    \"page\": \"1\",\n    \"products\": [\n        {\n            \"id\": 103,\n            \"name\": \"Dying Light 2 Stay Human - US\",\n            \"slug\": \"dying-light-2-stay-human-us\",\n            \"des\": \"Th\u00f4ng tin game Th\u1ec3 lo\u1ea1iAction Adventure H\u1ec7 m\u00e1yPS4, Xbox One\/Series, PS5 ESRBMature 17+Violence, blood and gore, sexual content and\/or strong language. Ng\u00e0y ph\u00e1t h\u00e0nh4\/02\/2022 Nh\u00e0 s\u1ea3n xu\u1ea5t & ph\u00e1t h\u00e0nhTechland..\",\n            \"keywords\": null,\n            \"price\": 1630000,\n            \"historical_cost\": 1150000,\n            \"content\": \"<table class=\\\"table table-bordered attribute\\\" style=\\\"border-spacing: 0px; border-collapse: inherit; background-color: #ffffff; margin: 20px auto; border-width: 0px 0px 2px; border-style: solid; border-color: transparent transparent #b30000; width: 1098px; max-width: 100%; padding: 10px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px;\\\">\\r\\n<thead style=\\\"box-sizing: border-box;\\\">\\r\\n<tr style=\\\"box-sizing: border-box;\\\">\\r\\n<td style=\\\"box-sizing: border-box; padding: 8px 14px; font-size: 13px; font-weight: bold; text-transform: uppercase; background: #ffe000; border-top: 0px; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\\\" colspan=\\\"2\\\"><span style=\\\"box-sizing: border-box;\\\">TH&Ocirc;NG TIN GAME<\/span><\/td>\\r\\n<\/tr>\\r\\n<\/thead>\\r\\n<tbody style=\\\"box-sizing: border-box;\\\">\\r\\n<tr style=\\\"box-sizing: border-box;\\\">\\r\\n<td style=\\\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-left: 0px solid transparent; border-bottom-style: solid; border-bottom-color: transparent; line-height: 1.42857; vertical-align: middle;\\\">Th\u1ec3 lo\u1ea1i<\/td>\\r\\n<td style=\\\"box-sizing: border-box; padding: 8px 14px; border-top: 0px solid transparent; border-right: 0px solid transparent; border-bottom-style: solid; border-left-style: solid; border-bottom-color: transparent; border-left-color:\",\n            \"insurance\": null,\n            \"policy\": \"4,5,8,9\",\n            \"model\": \"P5G106\",\n            \"video\": null,\n            \"banner\": null,\n            \"banner_link\": null,\n            \"main_img\": \"admin\/images\/products\/playstation-5\/main\/dying-light-2-stay-human-ps5-305x305h.jpg\",\n            \"sub_img\": \"admin\/images\/products\/playstation-5\/sub\/dying-light-2-stay-human-41-305x305.jpg\",\n            \"bg\": null,\n            \"type\": \"game\",\n            \"sub_type\": null,\n            \"cat_id\": 77,\n            \"cat_name\": \"PlayStation 5\",\n            \"cat_2_id\": 0,\n            \"cat_2_sub\": 0,\n            \"sub_1_cat_id\": 81,\n            \"sub_1_cat_name\": \"Game PS5\",\n            \"sub_2_cat_id\": null,\n            \"sub_2_cat_name\": null,\n            \"op_sub_1_id\": null,\n            \"op_sub_1_name\": null,\n            \"op_sub_2_id\": null,\n            \"op_sub_2_name\": null,\n            \"producer_id\": 36,\n            \"producer_slug\": \"techland\",\n            \"cat_game_id\": \"Action Adventure\",\n            \"option_color\": null,\n            \"option\": null,\n            \"stock\": 1,\n            \"new\": 1,\n            \"usage_stt\": 1,\n            \"num_orders\": 0,\n            \"highlight\": 2,\n            \"author\": \"2NITEE\",\n            \"author_id\": 1,\n            \"created_at\": \"2022-02-22T18:57:25.000000Z\",\n            \"updated_at\": \"2022-03-22T11:12:10.000000Z\"\n        }\n    ]\n}\n\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a product.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/product\/:slug",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/products\/product\/:slug?token_api=19aIotXOerK",
+                            "variable": [
+                                {
+                                    "id": "slug",
+                                    "key": "slug",
+                                    "value": "nintendo-switch-oled-model-with-neon-red-blue-joycon",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"product\": {\n      \"id\": 40,\n      \"name\": \"PlayStation 5 \/ PS5 Standard Edition - VN [ CFI-1118A 01 ]\",\n      \"slug\": \"playstation-5-ps5-standard-edition-vn-cfi-1118a-01\",\n      \"des\": \"V\u1ec1 thi\u1ebft k\u1ebf PS5 s\u1edf h\u1eefu thi\u1ebft k\u1ebf r\u1ea5t m\u1ec1m m\u1ea1i v\u1edbi nh\u1eefng \u0111\u01b0\u1eddng cong \u1ea5n t\u01b0\u1ee3ng, kh\u00f4ng vu\u00f4ng v\u1ee9c \\\"\u0111\u1eadm ch\u1ea5t Sony\\\" nh\u01b0 PS4, hay Sony Xperia...b\u1eaft m\u1eaft v\u1edbi t\u00f4ng m\u00e0u tr\u1eafng ch\u1ee7 \u0111\u1ea1o k\u1ebft h\u1ee3p m\u00e0u \u0111en b\u00ean trong th\u00e2n m\u00e1y c\u00f9ng \u0111\u00e8n LED xanh d\u01b0\u01a1ng mang l\u1ea1i c\u1ea3m gi\u00e1c \u0111\u00e2y ch\u00ednh l\u00e0 thi\u1ebft k\u1ebf c\u1ee7a t\u01b0\u01a1ng lai. V\u1ecf ngo\u00e0i PS5 ..\",\n      \"keywords\": \"sony, sony playstation, playstation 5, ps5, may choi game ps5\",\n      \"price\": 20800000,\n      \"historical_cost\": 17500000,\n      \"content\": \"<p>&nbsp;<\/p>\\r\\n<p><iframe style=\\\"box-sizing: border-box; max-width: 100%; border-width: initial; border-style: none; display: block; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; margin: 15px auto !important;\\\" src=\\\"https:\/\/www.youtube.com\/embed\/xUJplfTW8XQ\\\" width=\\\"700\\\" height=\\\"394\\\" frameborder=\\\"0\\\" allowfullscreen=\\\"allowfullscreen\\\"><\/iframe><\/p>\\r\\n<h4 style=\\\"box-sizing: border-box; font-family: Montserrat; line-height: 1.1; color: #146678; margin: 10px 0px; font-size: 18px; text-transform: uppercase; background-color: #ffffff;\\\">V\u1ec0 THI\u1ebeT K\u1ebe<\/h4>\\r\\n<p style=\\\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\\\"><a style=\\\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\\\" href=\\\"https:\/\/game.haloshop.vn\/index.php?route=product\/search&amp;search=playstation%205&amp;category_id=668\\\">PS5<\/a>&nbsp;s\u1edf h\u1eefu thi\u1ebft k\u1ebf r\u1ea5t m\u1ec1m m\u1ea1i v\u1edbi nh\u1eefng \u0111\u01b0\u1eddng cong \u1ea5n t\u01b0\u1ee3ng, kh&ocirc;ng vu&ocirc;ng v\u1ee9c \\\"\u0111\u1eadm ch\u1ea5t Sony\\\" nh\u01b0 PS4, hay Sony Xperia...b\u1eaft m\u1eaft v\u1edbi t&ocirc;ng m&agrave;u tr\u1eafng ch\u1ee7 \u0111\u1ea1o k\u1ebft h\u1ee3p m&agrave;u \u0111en b&ecirc;n trong th&acirc;n m&aacute;y c&ugrave;ng \u0111&egrave;n LED xanh d\u01b0\u01a1ng mang l\u1ea1i c\u1ea3m gi&aacute;c \u0111&acirc;y ch&iacute;nh l&agrave; thi\u1ebft k\u1ebf c\u1ee7a t\u01b0\u01a1ng lai.\",\n      \"insurance\": \"7,8\",\n      \"policy\": \"9,18,21\",\n      \"model\": \"14720\",\n      \"video\": \"<iframe width=\\\"310\\\" height=\\\"200\\\" src=\\\"https:\/\/www.youtube.com\/embed\/z7xQitZX0uw\\\" title=\\\"YouTube video player\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\" allowfullscreen><\/iframe>\",\n      \"banner\": \"admin\/images\/products\/playstation-5\/banner\/len-doi-ps5-new-product-banner-630x239(4).jpg\",\n      \"banner_link\": \"thong-tin\/len-doi-ps5-tiet-kiem-den-6-trieu\",\n      \"main_img\": \"admin\/images\/products\/playstation-5\/main\/ps5-standard-vn-00-305x305.jpg\",\n      \"sub_img\": \"admin\/images\/products\/playstation-5\/sub\/ps5-40-305x305.jpg\",\n      \"bg\": null,\n      \"type\": \"machine\",\n      \"sub_type\": null,\n      \"cat_id\": 77,\n      \"cat_name\": \"PlayStation 5\",\n      \"cat_2_id\": 0,\n      \"cat_2_sub\": 0,\n      \"sub_1_cat_id\": 79,\n      \"sub_1_cat_name\": \"M\u00e1y PS5\",\n      \"sub_2_cat_id\": null,\n      \"sub_2_cat_name\": null,\n      \"op_sub_1_id\": null,\n      \"op_sub_1_name\": null,\n      \"op_sub_2_id\": null,\n      \"op_sub_2_name\": null,\n      \"producer_id\": 3,\n      \"producer_slug\": \"sony-playstation-world\",\n      \"cat_game_id\": null,\n      \"option_color\": null,\n      \"option\": null,\n      \"stock\": 1,\n      \"new\": 2,\n      \"usage_stt\": 1,\n      \"num_orders\": 0,\n      \"highlight\": 1,\n      \"author\": \"2NITE\",\n      \"author_id\": 1,\n      \"created_at\": \"2021-11-24T10:37:49.000000Z\",\n      \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n    },\n    \"policies\": {\n      \"0\": {\n        \"id\": 9,\n        \"title\": \"THANH TO\u00c1N & TR\u1ea2 G\u00d3P\",\n        \"content\": \"<p>Mi\u1ec5n ph&iacute; thanh to&aacute;n th\u1ebb ATM.<br \/>Thanh to&aacute;n th\u1ebb Visa, Master +2%.<br \/>Tr\u1ea3 G&oacute;p: Tr\u1ea3 tr\u01b0\u1edbc 10% + CMND + H\u1ed9 kh\u1ea9u \/ B\u1eb1ng l&aacute;i (<a href=\\\"https:\/\/game.haloshop.vn\/dich-vu-tra-gop-tai-haloshop\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\">Xem chi ti\u1ebft<\/a>)<br \/>Tr\u1ea3 G&oacute;p: D&ugrave;ng th\u1ebb t&iacute;n d\u1ee5ng l&atilde;i su\u1ea5t 0% (<a href=\\\"https:\/\/game.haloshop.vn\/dich-vu-tra-gop-tai-haloshop#2\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\">Xem chi ti\u1ebft<\/a>)<\/p>\",\n        \"icon\": \"<i class=\\\"fas fa-shield-alt\\\"><\/i>\",\n        \"position\": 3,\n        \"fullset\": 0,\n        \"created_at\": \"2021-10-23T12:44:18.000000Z\",\n        \"updated_at\": \"2021-10-23T12:44:18.000000Z\"\n      },\n      \"1\": {\n        \"id\": 18,\n        \"title\": \"B\u1ea2O H\u00c0NH\",\n        \"content\": \"<p>B\u1ea3o h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng<\/p>\",\n        \"icon\": \"<i class=\\\"fas fa-shield-alt\\\"><\/i>\",\n        \"position\": 0,\n        \"fullset\": 0,\n        \"created_at\": \"2021-10-28T10:22:28.000000Z\",\n        \"updated_at\": \"2021-10-28T10:22:28.000000Z\"\n      },\n      \"2\": {\n        \"id\": 21,\n        \"title\": \"G\u00d3I B\u1ea2O H\u00c0NH 7 NG\u00c0Y\",\n        \"content\": \"<p>&Aacute;p d\u1ee5ng b&aacute;n t\u1ea1i c\u1eeda h&agrave;ng ho\u1eb7c giao h&agrave;ng t&iacute;nh ph&iacute;<\/p>\",\n        \"icon\": \"<i class=\\\"fas fa-exclamation-circle\\\"><\/i>\",\n        \"position\": 0,\n        \"fullset\": 0,\n        \"created_at\": \"2021-10-29T14:36:40.000000Z\",\n        \"updated_at\": \"2021-10-29T14:36:40.000000Z\"\n      }\n    },\n    \"fullset\": 0,\n    \"related_blog\": [],\n    \"banner\": {\n      \"id\": 238,\n      \"link\": \"admin\/images\/products\/playstation-5\/images_700x700\/ps5-0-standard-vn-00-700x700.jpg\",\n      \"products_id\": 40,\n      \"size\": 700,\n      \"index\": 1,\n      \"created_at\": \"2021-11-24T10:37:49.000000Z\",\n      \"updated_at\": \"2021-11-24T10:37:49.000000Z\"\n    },\n    \"group\": 1,\n    \"related_product\": [],\n    \"related_cat_blog\": [\n      {\n        \"id\": 14,\n        \"posts\": \"4\",\n        \"product_id\": null,\n        \"cat_id\": 79,\n        \"for\": \"category\",\n        \"created_at\": \"2022-03-15T07:17:10.000000Z\",\n        \"updated_at\": \"2022-03-15T07:17:10.000000Z\"\n      },\n      {\n        \"id\": 12,\n        \"posts\": \"22\",\n        \"product_id\": null,\n        \"cat_id\": 79,\n        \"for\": \"category\",\n        \"created_at\": \"2022-03-15T07:17:10.000000Z\",\n        \"updated_at\": \"2022-03-15T07:17:10.000000Z\"\n      },\n      {\n        \"id\": 11,\n        \"posts\": \"21\",\n        \"product_id\": null,\n        \"cat_id\": 79,\n        \"for\": \"category\",\n        \"created_at\": \"2022-03-15T07:17:10.000000Z\",\n        \"updated_at\": \"2022-03-15T07:17:10.000000Z\"\n      },\n      {\n        \"id\": 13,\n        \"posts\": \"20\",\n        \"product_id\": null,\n        \"cat_id\": 79,\n        \"for\": \"category\",\n        \"created_at\": \"2022-03-15T07:17:10.000000Z\",\n        \"updated_at\": \"2022-03-15T07:17:10.000000Z\"\n      }\n    ],\n    \"bundled_skin\": {\n      \"id\": 2,\n      \"skin_cat_id\": 86,\n      \"cat_id\": 79,\n      \"created_at\": \"2022-03-15T06:49:28.000000Z\",\n      \"updated_at\": \"2022-03-15T07:17:10.000000Z\"\n    },\n    \"bundled_accessory\": [\n      {\n        \"id\": 4,\n        \"products_id\": 30,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      },\n      {\n        \"id\": 5,\n        \"products_id\": 31,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      },\n      {\n        \"id\": 6,\n        \"products_id\": 32,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      },\n      {\n        \"id\": 7,\n        \"products_id\": 33,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      },\n      {\n        \"id\": 8,\n        \"products_id\": 34,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      },\n      {\n        \"id\": 9,\n        \"products_id\": 35,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      },\n      {\n        \"id\": 10,\n        \"products_id\": 45,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      },\n      {\n        \"id\": 11,\n        \"products_id\": 46,\n        \"cat_id\": 79,\n        \"created_at\": \"2022-03-15T06:32:29.000000Z\",\n        \"updated_at\": \"2022-03-15T06:32:29.000000Z\"\n      }\n    ]\n  }\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Search Products.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/search_product",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "kw",
+                                    "value": "DualSense+-+PS5+Wireless+Game+Controller+Ch%C3%ADnh+H%C3%A3ng",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "10",
+                                    "description": "Default: 10",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Default: all",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/products\/search_product?token_api=19aIotXOerK&kw=DualSense+-+PS5+Wireless+Game+Controller+Ch%C3%ADnh+H%C3%A3ng&per_page=10&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"kw\":\"quia\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"products\": [\n      {\n        \"id\": 30,\n        \"name\": \"DualSense - PS5 Wireless Game Controller Ch\u00ednh H\u00e3ng\",\n        \"slug\": \"dualsense-ps5-wireless-game-controller-chinh-hang\",\n        \"des\": \"Kh\u00e1c v\u1edbi m\u1ecdi n\u0103m, thay v\u00ec l\u1ea5y t\u00ean DualShock nh\u01b0 4 \u0111\u1eddi console tr\u01b0\u1edbc \u0111\u00f3, Sony \u0111\u00e3 ch\u1ecdn c\u00e1i t\u00ean DualSense \u0111\u1ec3 b\u00e0y t\u1ecf v\u1ec1 nh\u1eefng c\u00f4ng ngh\u1ec7 m\u1edbi \u0111\u1eb7c bi\u1ec7t \u0111\u01b0\u1ee3c t\u00edch h\u1ee3p tr\u00ean tay c\u1ea7m PlayStation 5 - c\u1ed7 m\u00e1y next-gen n\u0103m nay. H\u01b0\u1edbng d\u1eabn k\u1ebft n\u1ed1i tay c\u1ea7m DualSense v\u1edbi thi\u1ebft b\u1ecb kh\u00e1c H\u01b0\u1edbng d\u1eabn v\u1ec7 sinh tay c\u1ea7m D..\",\n        \"keywords\": \"sony, sony playstation, playstation 5, ps5, tay cam ps5, dualshock 5, dualsense, tay cam playstation 5, dualsense chinh hang\",\n        \"price\": 1980000,\n        \"historical_cost\": 1100000,\n        \"content\": \"<p style=\\\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff; color: red;\\\"><span style=\\\"box-sizing: border-box; font-weight: bold;\\\">S\u1ea3n ph\u1ea9m \u0111\u01b0\u1ee3c ph&acirc;n ph\u1ed1i ch&iacute;nh h&atilde;ng Sony PlayStation VN, b\u1ea3o h&agrave;nh ch&iacute;nh h&atilde;ng 12 th&aacute;ng.<\/span><\/p>\\r\\n<p style=\\\"box-sizing: border-box; margin: 10px 0px 15px; text-align: justify; padding: 0px 15px; line-height: 14px; color: #333333; font-family: 'Nunito Sans'; font-size: 15px; background-color: #ffffff;\\\">Kh&aacute;c v\u1edbi m\u1ecdi n\u0103m, thay v&igrave; l\u1ea5y t&ecirc;n DualShock nh\u01b0 4 \u0111\u1eddi console tr\u01b0\u1edbc \u0111&oacute;, Sony \u0111&atilde; ch\u1ecdn c&aacute;i t&ecirc;n&nbsp;<a style=\\\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\\\" href=\\\"https:\/\/game.haloshop.vn\/dualsense-wireless-controller\\\">DualSense<\/a>&nbsp;\u0111\u1ec3 b&agrave;y t\u1ecf v\u1ec1 nh\u1eefng c&ocirc;ng ngh\u1ec7 m\u1edbi \u0111\u1eb7c bi\u1ec7t \u0111\u01b0\u1ee3c t&iacute;ch h\u1ee3p tr&ecirc;n tay c\u1ea7m&nbsp;<a style=\\\"box-sizing: border-box; background-color: transparent; color: #146678; text-decoration-line: none; touch-action: manipulation; display: inline-block;\\\" href=\\\"https:\/\/game.haloshop.vn\/may-ps5\\\">PlayStation 5<\/a>&nbsp;- c\u1ed7 m&aacute;y next-gen n\u0103m nay.\",\n        \"info\": null,\n        \"insurance\": null,\n        \"policy\": \"8,9,18\",\n        \"model\": \"15118\",\n        \"video\": \"<iframe width=\\\"630\\\" height=\\\"354\\\" src=\\\"https:\/\/www.youtube.com\/embed\/I11b1xpjDdI\\\" title=\\\"YouTube video player\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\" allowfullscreen><\/iframe>\",\n        \"banner\": null,\n        \"banner_link\": null,\n        \"main_img\": \"admin\/images\/products\/playstation-5\/main\/dualsense-ps5-00-305x305.jpg\",\n        \"sub_img\": \"admin\/images\/products\/playstation-5\/sub\/dualsense-ps5-41-305x305w.jpg\",\n        \"bg\": null,\n        \"type\": \"access\",\n        \"sub_type\": \"controller\",\n        \"cat_id\": 77,\n        \"cat_name\": \"PlayStation 5\",\n        \"cat_2_id\": 0,\n        \"cat_2_sub\": 0,\n        \"sub_1_cat_id\": 82,\n        \"sub_1_cat_name\": \"Ph\u1ee5 ki\u1ec7n PS5\",\n        \"sub_2_cat_id\": null,\n        \"sub_2_cat_name\": null,\n        \"op_sub_1_id\": null,\n        \"op_sub_1_name\": null,\n        \"op_sub_2_id\": null,\n        \"op_sub_2_name\": null,\n        \"producer_id\": 3,\n        \"producer_slug\": \"sony-playstation-world\",\n        \"cat_game_id\": null,\n        \"option_color\": null,\n        \"option\": null,\n        \"stock\": 3,\n        \"new\": 1,\n        \"usage_stt\": 1,\n        \"num_orders\": 0,\n        \"highlight\": 1,\n        \"author\": \"2NITE\",\n        \"author_id\": 1,\n        \"created_at\": \"2021-11-24T09:23:01.000000Z\",\n        \"updated_at\": \"2022-03-22T18:27:56.000000Z\"\n      }\n    ],\n    \"number_page\": 1,\n    \"count\": 1,\n    \"per_page\": 10,\n    \"page\": 1\n  }\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Product properties.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/product_properties",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products\/product_properties"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"dolore\",\"slug\":\"laborum\",\"des\":\"enim\",\"keywords\":\"neque\",\"price\":\"facilis\",\"historical_cost\":\"omnis\",\"content\":\"earum\",\"info\":\"accusamus\",\"insurance\":\"necessitatibus\",\"policy\":\"voluptas\",\"model\":\"aliquid\",\"video\":\"est\",\"banner\":\"a\",\"banner_link\":\"id\",\"main_img\":\"maiores\",\"sub_img\":\"laborum\",\"bg\":\"odit\",\"type\":\"incidunt\",\"sub_type\":\"nam\",\"cat_id\":\"quaerat\",\"cat_name\":\"voluptatem\",\"sub_1_cat_id\":\"et\",\"sub_1_cat_name\":\"necessitatibus\",\"sub_2_cat_id\":\"ex\",\"sub_2_cat_name\":\"voluptates\",\"cat_id_2\":\"corporis\",\"op_sub_1_id\":\"beatae\",\"op_sub_1_name\":\"nobis\",\"op_sub_2_id\":\"ducimus\",\"op_sub_2_name\":\"consectetur\",\"cat_2_sub\":\"ratione\",\"producer_id\":\"suscipit\",\"producer_slug\":\"voluptatem\",\"cat_game_id\":\"et\",\"stock\":13,\"new\":11,\"usage_stt\":13,\"num_orders\":\"iure\",\"highlight\":10,\"author_id\":\"aliquam\",\"author_name\":\"aut\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"\u0110\u00e2y l\u00e0 t\u1ea5t c\u1ea3 thu\u1ed9c t\u00ednh c\u1ee7a b\u1ea3ng s\u1ea3n ph\u1ea9m\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "ProductsCategories",
+            "description": "\nAPIs for managing Products",
+            "item": [
+                {
+                    "name": "Product category properties.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/categories\/properties",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products\/categories\/properties"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "vero",
+                                    "type": "text",
+                                    "description": "T\u00ean danh m\u1ee5c"
+                                },
+                                {
+                                    "key": "title",
+                                    "value": "ab",
+                                    "type": "text",
+                                    "description": "Ti\u00eau \u0111\u1ec1 danh m\u1ee5c"
+                                },
+                                {
+                                    "key": "desc",
+                                    "value": "modi",
+                                    "type": "text",
+                                    "description": "M\u00f4 t\u1ea3 ng\u1eafn danh m\u1ee5c"
+                                },
+                                {
+                                    "key": "keywords",
+                                    "value": "id",
+                                    "type": "text",
+                                    "description": "Keywords SEO or Tag danh m\u1ee5c"
+                                },
+                                {
+                                    "key": "parent_id",
+                                    "value": 12,
+                                    "type": "text",
+                                    "description": "id danh m\u1ee5c cha (0: l\u00e0 danh m\u1ee5c g\u1ed1c)"
+                                },
+                                {
+                                    "key": "slug",
+                                    "value": "et",
+                                    "type": "text",
+                                    "description": "Slug danh m\u1ee5c"
+                                },
+                                {
+                                    "key": "icon",
+                                    "value": "sapiente",
+                                    "type": "text",
+                                    "description": "Icon danh m\u1ee5c"
+                                },
+                                {
+                                    "key": "level",
+                                    "value": 20,
+                                    "type": "text",
+                                    "description": "Level danh m\u1ee5c (danh m\u1ee5c g\u1ed1c level = 0)"
+                                },
+                                {
+                                    "key": "is_game",
+                                    "value": 8,
+                                    "type": "text",
+                                    "description": "(2: kh\u00f4ng l\u00e0 danh m\u1ee5c game , 1: l\u00e0 danh m\u1ee5c game)"
+                                },
+                                {
+                                    "key": "img",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "C\u00e1c thu\u1ed9c t\u00ednh c\u1ee7a danh m\u1ee5c s\u1ea3n ph\u1ea9m.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"\u0110\u00e2y l\u00e0 t\u1ea5t c\u1ea3 thu\u1ed9c t\u00ednh c\u1ee7a b\u1ea3ng danh m\u1ee5c s\u1ea3n ph\u1ea9m\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List all product categories.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/categories\/list_all",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXmkjH",
+                                    "description": "",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/products\/categories\/list_all?token_api=19aIotXmkjH"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "C\u00e2y Danh M\u1ee5c s\u1ea3n ph\u1ea9m.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"categories\": {\n      \"0\": {\n        \"id\": 77,\n        \"name\": \"PlayStation 5\",\n        \"title\": \"PS5 | Kho m\u00e1y, game, ph\u1ee5 ki\u1ec7n PS5 t\u1ea1i 2NITE SHOP\",\n        \"desc\": \"M\u00e1y Ch\u01a1i Game Playstation 5, PS5 ch\u00ednh h\u00e3ng, b\u1ea3o h\u00e0nh 12 th\u00e1ng, t\u1eb7ng qu\u00e0 \u0111\u1ed9c quy\u1ec1n, h\u1ed7 tr\u1ee3 tr\u1ea3 g\u00f3p 0% ch\u1ec9 c\u00f3 t\u1ea1i 2NITE SHOP.\",\n        \"keywords\": \"playstation 5,playstation,sony,sony playstation,ps5\",\n        \"parent_id\": 0,\n        \"slug\": \"ps5\",\n        \"img\": \"admin\/images\/category\/banner\/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg\",\n        \"icon\": \"admin\/images\/category\/icon\/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg\",\n        \"level\": 0,\n        \"is_game\": 0,\n        \"created_at\": \"2021-11-18T13:31:11.000000Z\",\n        \"updated_at\": \"2022-03-15T06:26:32.000000Z\",\n        \"children\": [\n          {\n            \"id\": 79,\n            \"name\": \"M\u00e1y PS5\",\n            \"title\": \"M\u00e1y PS5 | M\u00e1y Playstation 5 Ch\u00ednh H\u00e3ng Gi\u00e1 R\u1ebb t\u1ea1i 2NITE SHOP\",\n            \"desc\": \"M\u00e1y Ch\u01a1i Game Playstation 5, PS5 ch\u00ednh h\u00e3ng, b\u1ea3o h\u00e0nh 12 th\u00e1ng, t\u1eb7ng qu\u00e0 \u0111\u1ed9c quy\u1ec1n, h\u1ed7 tr\u1ee3 tr\u1ea3 g\u00f3p 0% ch\u1ec9 c\u00f3 t\u1ea1i 2NITE SHOP.\",\n            \"keywords\": \"sony,ps5,playstation 5,may ps5,may playstation 5\",\n            \"parent_id\": 77,\n            \"slug\": \"may-ps5\",\n            \"img\": \"admin\/images\/category\/banner\/ps5-tang-binh-nuoc-xiaomi-categories-1280x280.jpg\",\n            \"icon\": null,\n            \"level\": 1,\n            \"is_game\": 0,\n            \"created_at\": \"2021-11-18T13:36:43.000000Z\",\n            \"updated_at\": \"2022-03-15T07:17:10.000000Z\",\n            \"children\": []\n          },\n          {\n            \"id\": 80,\n            \"name\": \"M\u00e1y PS5 USED\",\n            \"title\": \"M\u00e1y PS5 C\u0169 | M\u00e1y Playstation 5 Ch\u00ednh H\u00e3ng Gi\u00e1 R\u1ebb t\u1ea1i 2NITE SHOP\",\n            \"desc\": \"M\u00e1y Ch\u01a1i Game PS5, PlayStation \u0111\u00e3 qua s\u1eed d\u1ee5ng | Chuy\u00ean M\u00e1y Playstation 5 Ch\u00ednh H\u00e3ng \u0111\u00e3 qua s\u1eed d\u1ee5ng t\u1ea1i 2NITE SHOP, B\u1ea3o h\u00e0nh to\u00e0n di\u1ec7n, D\u1ecbch v\u1ee5 \u0111\u1eb3ng c\u1ea5p.\",\n            \"keywords\": \"sony,ps5,playstation 5,may ps5,may playstation 5,ps5 c\u0169,ps5 \u0111\u00e3 qua s\u1eed d\u1ee5ng,playstation 5 c\u0169,ps5 second hand\",\n            \"parent_id\": 77,\n            \"slug\": \"may-ps5-cu\",\n            \"img\": null,\n            \"icon\": null,\n            \"level\": 1,\n            \"is_game\": 0,\n            \"created_at\": \"2021-11-18T13:37:36.000000Z\",\n            \"updated_at\": \"2022-02-25T16:10:00.000000Z\",\n            \"children\": []\n          },\n          {\n            \"id\": 81,\n            \"name\": \"Game PS5\",\n            \"title\": \"\u0110\u0129a game PS5 | Kho game Playstation 5 | Kho game PS5 gi\u00e1 r\u1ebb t\u1ea1i 2NITE SHOP\",\n            \"desc\": \"Kho game g\u1ed1c PS5 gi\u00e1 r\u1ebb, c\u1eadp nh\u1eadt game m\u1edbi li\u00ean t\u1ee5c t\u1ea1i 2NITE SHOP.\",\n            \"keywords\": \"game ps5, game playstation 5, game ps5 gia re, game playstation 5 gia re, game ps5 gi\u00e1 r\u1ebb, game playstation 5 gi\u00e1 r\u1ebb\",\n            \"parent_id\": 77,\n            \"slug\": \"game-ps5\",\n            \"img\": \"admin\/images\/category\/banner\/game-ps5-t3-22-categories.jpg\",\n            \"icon\": null,\n            \"level\": 1,\n            \"is_game\": 1,\n            \"created_at\": \"2021-11-18T13:38:11.000000Z\",\n            \"updated_at\": \"2022-03-03T16:58:02.000000Z\",\n            \"children\": []\n          },\n          {\n            \"id\": 82,\n            \"name\": \"Ph\u1ee5 ki\u1ec7n PS5\",\n            \"title\": \"Kho ph\u1ee5 ki\u1ec7n PS5 | Kho ph\u1ee5 ki\u1ec7n Playstation 5 Ch\u00ednh H\u00e3ng Gi\u00e1 R\u1ebb t\u1ea1i 2NITE SHOP\",\n            \"desc\": \"Kho ph\u1ee5 ki\u1ec7n Playstation 5 Ch\u00ednh H\u00e3ng Gi\u00e1 R\u1ebb t\u1ea1i Haloshop\",\n            \"keywords\": \"phu kien ps5, phu kien playstation 5, ph\u1ee5 ki\u1ec7n ps5, ph\u1ee5 ki\u1ec7n playstation 5\",\n            \"parent_id\": 77,\n            \"slug\": \"phu-kien-ps5\",\n            \"img\": null,\n            \"icon\": null,\n            \"level\": 1,\n            \"is_game\": 0,\n            \"created_at\": \"2021-11-18T13:38:41.000000Z\",\n            \"updated_at\": \"2022-02-25T16:10:43.000000Z\",\n            \"children\": []\n          },\n          {\n            \"id\": 83,\n            \"name\": \"\u1ed4 c\u1ee9ng g\u1eafn trong\",\n            \"title\": \"\u1ed4 c\u1ee9ng g\u1eafn trong | \u1ed4 c\u1ee9ng m\u1edf r\u1ed9ng b\u1ed9 nh\u1edb cho PS5\",\n            \"desc\": \"Danh m\u1ee5c c\u00e1c s\u1ea3n ph\u1ea9m \u1ed5 c\u1ee9ng m\u1edf r\u1ed9ng b\u1ed9 nh\u1edb chuy\u00ean d\u00f9ng cho PS5, h\u00e0ng ch\u00ednh h\u00e3ng Samsung, WD,..\",\n            \"keywords\": \"ssd, \u1ed5 c\u1ee9ng ssd, ssd g\u1eafn trong, ssd ps5, ssd cho ps5, ssd samsung 980 pro, ssd 1tb cho ps5, ssd 2tb cho ps5\",\n            \"parent_id\": 77,\n            \"slug\": \"o-cung-gan-trong-cho-ps5\",\n            \"img\": null,\n            \"icon\": null,\n            \"level\": 1,\n            \"is_game\": 0,\n            \"created_at\": \"2021-11-18T13:39:11.000000Z\",\n            \"updated_at\": \"2022-02-25T16:10:57.000000Z\",\n            \"children\": []\n          },\n          {\n            \"id\": 84,\n            \"name\": \"Skin PS5\",\n            \"title\": \"Skin PS5 | Thay \u00e1o m\u1edbi tuy\u1ec7t \u0111\u1eb9p cho Console c\u1ee7a b\u1ea1n\",\n            \"desc\": \"Danh m\u1ee5c c\u00e1c s\u1ea3n ph\u1ea9m skin PS5, thay \u00e1o m\u1edbi c\u00e1 t\u00ednh, \u0111\u1ed9c \u0111\u00e1o cho Console c\u1ee7a b\u1ea1n, 2NITE c\u00f3 s\u1eb5n c\u00e1c lo\u1ea1i skin cho PS5, PS4, Xbox Series, Nintendo Switch...\",\n            \"keywords\": \"skin ps5, dan skin cho ps5, skin dep cho ps5\",\n            \"parent_id\": 77,\n            \"slug\": \"skin-ps5\",\n            \"img\": null,\n            \"icon\": null,\n            \"level\": 1,\n            \"is_game\": 0,\n            \"created_at\": \"2021-11-18T13:39:36.000000Z\",\n            \"updated_at\": \"2022-02-25T16:12:03.000000Z\",\n            \"children\": [\n              {\n                \"id\": 85,\n                \"name\": \"Skin PS5 Digital\",\n                \"title\": \"Skin PS5 Digital | Thay \u00e1o m\u1edbi tuy\u1ec7t \u0111\u1eb9p cho Console c\u1ee7a b\u1ea1n\",\n                \"desc\": \"Danh m\u1ee5c c\u00e1c s\u1ea3n ph\u1ea9m skin PS5 Digital, thay \u00e1o m\u1edbi c\u00e1 t\u00ednh, \u0111\u1ed9c \u0111\u00e1o cho Console c\u1ee7a b\u1ea1n, 2NITE c\u00f3 s\u1eb5n c\u00e1c lo\u1ea1i skin cho PS5, PS4, Xbox Series, Nintendo Switch...\",\n                \"keywords\": \"skin ps5 digital, dan skin cho ps5 digital, skin dep cho ps5 digital\",\n                \"parent_id\": 84,\n                \"slug\": \"skin-ps5-digital-dep\",\n                \"img\": null,\n                \"icon\": null,\n                \"level\": 2,\n                \"is_game\": 0,\n                \"created_at\": \"2021-11-18T13:40:05.000000Z\",\n                \"updated_at\": \"2022-02-25T16:12:00.000000Z\",\n                \"children\": []\n              },\n              {\n                \"id\": 86,\n                \"name\": \"Skin PS5 Standard\",\n                \"title\": \"Skin PS5 Standard | Thay \u00e1o m\u1edbi tuy\u1ec7t \u0111\u1eb9p cho Console c\u1ee7a b\u1ea1n\",\n                \"desc\": \"Danh m\u1ee5c c\u00e1c s\u1ea3n ph\u1ea9m skin PS5 Standard, thay \u00e1o m\u1edbi c\u00e1 t\u00ednh, \u0111\u1ed9c \u0111\u00e1o cho Console c\u1ee7a b\u1ea1n, 2NITE c\u00f3 s\u1eb5n c\u00e1c lo\u1ea1i skin cho PS5, PS4, Xbox Series, Nintendo Switch...\",\n                \"keywords\": \"skin ps5 standard, dan skin cho ps5 standard, skin dep cho ps5 standard\",\n                \"parent_id\": 84,\n                \"slug\": \"skin-ps5-standard-dep\",\n                \"img\": null,\n                \"icon\": null,\n                \"level\": 2,\n                \"is_game\": 0,\n                \"created_at\": \"2021-11-18T13:41:12.000000Z\",\n                \"updated_at\": \"2022-02-25T16:11:57.000000Z\",\n                \"children\": []\n              }\n            ]\n          }\n        ]\n    }\n  }\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List all Game Genre.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/categories\/game",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/products\/categories\/game?token_api=19aIotXOerK"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "L\u1ea5y danh s\u00e1ch danh m\u1ee5c game c\u1ee7a s\u1ea3n ph\u1ea9m.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"categories_game\": [\n      {\n        \"id\": 16,\n        \"name\": \"Action\",\n        \"created_at\": \"2021-10-22T04:56:10.000000Z\",\n        \"updated_at\": \"2021-10-22T04:56:10.000000Z\"\n      },\n      {\n        \"id\": 17,\n        \"name\": \"Action Adventure\",\n        \"created_at\": \"2021-10-22T04:56:29.000000Z\",\n        \"updated_at\": \"2021-10-22T04:56:29.000000Z\"\n      }\n    ]\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List all Producer.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/categories\/producer",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/products\/categories\/producer?token_api=19aIotXOerK"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "L\u1ea5y danh s\u00e1ch nh\u00e0 s\u1ea3n xu\u1ea5t.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"categories_producer\": [\n      {\n        \"id\": 2,\n        \"name\": \"Electronic Arts\",\n        \"slug\": \"electronic-arts\",\n        \"created_at\": \"2021-10-22T05:33:35.000000Z\",\n        \"updated_at\": \"2021-10-22T05:33:35.000000Z\"\n      },\n      {\n        \"id\": 3,\n        \"name\": \"Sony PlayStation\",\n        \"slug\": \"sony-playstation-world\",\n        \"created_at\": \"2021-10-22T05:34:39.000000Z\",\n        \"updated_at\": \"2021-10-22T05:34:39.000000Z\"\n      }\n    ]\n}\n",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "description": "\nAPIs for managing users",
+            "item": [
+                {
+                    "name": "GET USERS.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/users",
+                            "query": [
+                                {
+                                    "key": "token_api",
+                                    "value": "19aIotXOerK",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "DESC",
+                                    "description": "ASC\/DESC Default: DESC",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "key_sort",
+                                    "value": "id",
+                                    "description": "Default: id",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "item_page",
+                                    "value": "10",
+                                    "description": "Default: 10",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Default: all",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/users?token_api=19aIotXOerK&sort=DESC&key_sort=id&item_page=10&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"page\": \"1\",\n\"number_page\": 52,\n\"count\": 104,\n\"users\": [\n{\n\"id\": 340,\n\"role_id\": 5,\n\"name\": \"vuong anh 2\",\n\"email\": \"laracast16@gmail.com\",\n\"phone\": \"0858458464\",\n\"email_verified_at\": null,\n\"avatar\": null,\n\"created_at\": \"2022-03-12T07:43:33.000000Z\",\n\"updated_at\": \"2022-03-12T07:43:33.000000Z\",\n\"provider_id\": null,\n\"provider\": null,\n\"ban\": 0\n},\n{\n\"id\": 339,\n\"role_id\": 5,\n\"name\": \"vuonganh\",\n\"email\": \"laracast@gmail.com\",\n\"phone\": \"0868578690\",\n\"email_verified_at\": null,\n\"avatar\": null,\n\"created_at\": \"2022-03-12T07:41:43.000000Z\",\n\"updated_at\": \"2022-03-12T07:41:43.000000Z\",\n\"provider_id\": null,\n\"provider\": null,\n\"ban\": 0\n}\n]\n}",
+                            "name": "success"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "noauth"
+    }
+}

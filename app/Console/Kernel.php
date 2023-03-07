@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
         Commands\ClearDebugbar::class,
         Commands\ClearHistory::class,
         Commands\CleanAll::class,
-        Commands\UploadFileFromLocalToCloudinary::class
+        Commands\UploadFileFromLocalToCloudinary::class,
+        Commands\ClearDataOrderStats::class
     ];
     /**
      * Define the application's command schedule.

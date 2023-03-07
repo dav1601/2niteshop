@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminUserController extends Controller
 {
+    public $handle_file;
     public function __construct(FileInterface $handle_file)
     {
         $this->middleware(function ($request, $next) {
@@ -58,8 +59,8 @@ class AdminUserController extends Controller
         $user = User::where('id', '=', $id)->firstOrFail();
         $profile = infoAdmin::where('user_id', '=', $id)->firstOrFail();
         $item_page = config('product.item_page') / 2;
-        $blogs = $repom->pagination(Blogs::where('users_id', '=', $id), ['created_at', 'DESC'], $page, $item_page);
-        $products = $repom->pagination(Products::where('author_id', '=', $id), ['created_at', 'DESC'], $page, $item_page);
+        $blogs = $repom->pagination(Blogs::where('users_id', '=', $id), ['created_at', 'DESC'], $page, $item_page, []);
+        $products = $repom->pagination(Products::where('author_id', '=', $id), ['created_at', 'DESC'], $page, $item_page, []);
         $merge = $products->data;
         $activities = $merge->merge($blogs->data);
         $count = $blogs->count + $products->count;
@@ -83,7 +84,7 @@ class AdminUserController extends Controller
     public function show_user(ModelInterface $repom)
     {
         $this->authorize('group-4');
-        $users = $repom->pagination(User::where('id', '!=', Auth::id()), null, null, null);
+        $users = $repom->pagination(User::where('id', '!=', Auth::id()), null, null, null, []);
         return view('admin.users.show_user', compact('users'));
     }
     // /////////
@@ -114,7 +115,7 @@ class AdminUserController extends Controller
             $user = $user->where('provider_id', 'LIKE', '%' . $request->provId . '%');
         }
         $page = $request->page;
-        $repoRes = $repom->pagination($user, ['id', $sort], $page, null);
+        $repoRes = $repom->pagination($user, ['id', $sort], $page, null, []);
         $users = $repoRes->data;
         $number = $repoRes->number_page;
         if ($repoRes->count > 0) {
@@ -260,7 +261,7 @@ class AdminUserController extends Controller
         $error = array();
         $ok = 0;
         $path = "admin/images/ajax/avatar/";
-        $path_public = "public/admin/images/ajax/avatar/";
+        $path_public = "admin/images/ajax/avatar/";
         $validator = Validator::make(
             $request->all(),
             [
@@ -300,7 +301,7 @@ class AdminUserController extends Controller
     }
 
     ////////////////////////////////////////
-    public function ajax__delete__avatar(Request $request)
+    public function ajax__delete__avatar(Request $request, FileInterface $file)
     {
         $data = array();
         $pagination = '';
@@ -308,7 +309,7 @@ class AdminUserController extends Controller
         $data_create = array();
         $data_update = array();
         $error = array();
-        $this->file->deleteFile($request->path);
+        $file->deleteFile($request->path);
         $data['pong'] = $request->path;
         return response()->json($data);
     }
@@ -318,7 +319,7 @@ class AdminUserController extends Controller
 
     ////////////////////////////////////////
 
-    public function save_setting_profile($id, Request $request)
+    public function save_setting_profile($id, Request $request, FileInterface $file)
     {
         $validator = Validator::make(
             $request->all(),
@@ -344,9 +345,9 @@ class AdminUserController extends Controller
             $user = User::where('id', '=', $id)->first();
             if ($request->has('avatar')) {
                 if ($user->avatar != NULL)
-                    $this->file->deleteFile("public/" . $user->avatar);
+                    $file->deleteFile("" . $user->avatar);
                 $path = "admin/images/avatar/";
-                $data_update_user['avatar'] = $this->handle_file->storeFileImg($request->avatar, $path);
+                $data_update_user['avatar'] = $file->storeFileImg($request->avatar, $path);
             }
             $data_update_user['name'] = $request->name;
             $data_update_user['phone'] = $request->phone;

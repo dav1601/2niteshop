@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UpdateProduct;
 use stdClass;
 use App\Models\Policy;
 use App\Models\CatGame;
@@ -363,7 +364,10 @@ class AdminProductController extends Controller
             $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
         }
         // update product
-        Products::where('id', $id)->update($data_update);
+        $updated =  Products::where('id', $id)->update($data_update);
+        if ($updated) {
+            event(new UpdateProduct($id));
+        }
         // handle rela categories
         handle_rela($request, "products-category", $id, false, true);
         // ///////// update pre order product

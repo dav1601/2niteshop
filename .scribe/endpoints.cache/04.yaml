@@ -14,14 +14,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing BlogCategories
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Blog category properties.'
       description: 'Các thuộc tính của danh mục bài viết.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -31,26 +32,26 @@ endpoints:
         name: name
         description: 'Tiêu đề danh mục'
         required: false
-        example: pariatur
+        example: consectetur
         type: varchar
         custom: []
       slug:
         name: slug
         description: 'Slug danh mục'
         required: false
-        example: nisi
+        example: ea
         type: varchar
         custom: []
     cleanBodyParameters:
-      name: pariatur
-      slug: nisi
+      name: consectetur
+      slug: ea
     fileParameters: []
     responses:
       -
         status: 200
         content: '{"Danh sách thuộc tính của bảng danh mục bài viết"}'
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -67,13 +68,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing BlogCategories
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'List all blog categories.'
       description: 'Danh mục bài viết.'
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -127,7 +130,7 @@ endpoints:
               ]
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []

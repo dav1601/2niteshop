@@ -12,14 +12,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Password
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Forgot Password.'
       description: 'Api dùng để xác nhận số điện thoại và gửi OTP để khôi phục mật khẩu.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -48,7 +49,7 @@ endpoints:
               "phone_format": "+84858467890"
             }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -65,14 +66,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Password
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Api Verification OTP.'
       description: 'Api dùng đẻ xác nhận mã OTP có trong hệ thống.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -102,7 +104,7 @@ endpoints:
               "verification": true
             }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -119,14 +121,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Password
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Api New Password.'
       description: 'Api dùng để thay đổi mật khẩu mới.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -167,7 +170,7 @@ endpoints:
               "message": "Đã thay đổi mật khẩu thành công"
             }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []

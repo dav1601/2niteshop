@@ -1,4 +1,3 @@
-
 <div class="cart__item flex-wrap">
     <div class="cart__item--image">
         <a href="{{ route('detail_product', ['slug' => $cart->options->slug]) }}" class="d-block">
@@ -6,6 +5,7 @@
                 class="img-fluid">
         </a>
     </div>
+    <input type="hidden" id="cart__options-{{ $cart->id }}" value="{{ $cart->options->ins }}">
     <div class="cart__item--caption">
         <a href="{{ route('detail_product', ['slug' => $cart->options->slug]) }}" class="d-block name">
             {{ $cart->name }}
@@ -31,8 +31,9 @@
         @endif
         <div class="qty">
             <div class="btn__type">
-                <a class="btn-number py-0" @if ($cart->qty == 1) disabled @endif py-0" data-type="minus"
-                    data-id="{{ $cart->id }}" data-field="qty[{{ $cart->id }}]"><i class="fas fa-minus"></i></a>
+                <a class="btn-number py-0" @if ($cart->qty == 1) disabled @endif data-type="minus"
+                    data-id="{{ $cart->id }}" data-field="qty[{{ $cart->id }}]"><i
+                        class="fas fa-minus"></i></a>
             </div>
             <input type="text" name="qty[{{ $cart->id }}]" min="1" max="1000" class="input-number"
                 data-id="{{ $cart->id }}" data-ajax="{{ true }}" value="{{ $cart->qty }}"

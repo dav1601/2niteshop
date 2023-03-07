@@ -898,6 +898,21 @@
   color: #ffffff;
 }
 
+.swal2-container {
+  z-index: 5001 !important;
+}
+
+.lg-thumb-item.active {
+  border: 2px solid #e74c3c !important;
+}
+
+.lg-thumb-item {
+  border-radius: 8px !important;
+}
+.lg-thumb-item img {
+  border-radius: inherit;
+}
+
 .carousel-indicators {
   display: none;
 }
@@ -908,6 +923,37 @@
 
 .toast-success {
   background-color: #4bb543 !important;
+}
+
+#authContent {
+  border-radius: 8px;
+}
+
+.form-group {
+  position: relative;
+}
+.form-group .eyes-pass {
+  position: absolute;
+  top: 47%;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.form-group .eyes-pass:hover {
+  color: #277b8c;
+}
+
+.fix-auth-card {
+  margin: 0 !important;
+  width: 100% !important;
+  padding: 10px !important;
+  margin-top: 0px !important;
+}
+.fix-auth-card .btn__login:hover {
+  text-decoration: none !important;
+}
+.fix-auth-card .wp-remember {
+  margin-left: 25px !important;
 }
 
 #page__loading {
@@ -1535,6 +1581,30 @@ body::-webkit-scrollbar-thumb,
   border-top-color: #277b8c;
 }
 
+._1MmTVs {
+  padding: 12px 0;
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  color: #212121;
+  background: #eaeaea;
+  border-radius: 2px;
+}
+._1MmTVs input {
+  flex: 1;
+  font-size: 14px;
+  line-height: 16px;
+  border: 0;
+  outline: none;
+  background-color: inherit;
+}
+._1MmTVs i {
+  font-size: 20px;
+  margin: 0 15px;
+  color: #bbb;
+}
+
 .prd__dtl--cart .col-1 {
   flex: 0 0 10% !important;
   max-width: 10% !important;
@@ -1713,6 +1783,7 @@ body::-webkit-scrollbar-thumb,
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
   cursor: pointer;
   transition: background 0.25s;
 }
@@ -2125,6 +2196,11 @@ body::-webkit-scrollbar-thumb,
   margin-bottom: 10px;
   display: block;
 }
+@media (max-width: 375px) {
+  .success__add--content .name {
+    font-size: 14px;
+  }
+}
 .success__add--content .name:hover {
   color: #ee5253;
 }
@@ -2144,6 +2220,11 @@ body::-webkit-scrollbar-thumb,
 }
 .success__add--content .alerT {
   font-size: 15px;
+}
+@media (max-width: 375px) {
+  .success__add--content .alerT {
+    font-size: 14px;
+  }
 }
 .success__add .go__cart {
   align-items: center;
@@ -2170,6 +2251,11 @@ body::-webkit-scrollbar-thumb,
 .success__add .go__cart:hover {
   background: #277b8c;
 }
+@media (max-width: 375px) {
+  .success__add .go__cart {
+    font-size: 12px;
+  }
+}
 .success__add .go__cko {
   align-items: center;
   background: #00b894;
@@ -2194,6 +2280,11 @@ body::-webkit-scrollbar-thumb,
 }
 .success__add .go__cko:hover {
   background: #7bed9f;
+}
+@media (max-width: 375px) {
+  .success__add .go__cko {
+    font-size: 12px;
+  }
 }
 
 #wrapper__detail .dtl__sub {
@@ -4382,6 +4473,10 @@ body {
   position: relative;
 }
 
+#detail__product .lslide img:first-child {
+  width: 100% !important;
+  height: auto !important;
+}
 #detail__product iframe {
   width: 100% !important;
   height: auto;
@@ -4482,8 +4577,9 @@ body {
 }
 #detail__product--content .my__action {
   position: absolute;
-  width: 80px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -4492,6 +4588,7 @@ body {
   color: #e9ecef;
   opacity: 1;
   z-index: 100;
+  top: 50% !important;
   transition: background 0.25s;
   cursor: pointer;
 }
@@ -4500,12 +4597,10 @@ body {
   background: #c41921;
 }
 #detail__product--content .my__action--prev {
-  top: 20px;
   left: 5px;
 }
 #detail__product--content .my__action--next {
-  bottom: 0;
-  left: 5px;
+  right: 5px;
 }
 #detail__product--content .lSSlideOuter .lSPager.lSGallery li.active,
 #detail__product--content .lSSlideOuter .lSPager.lSGallery li:hover {
@@ -4515,20 +4610,21 @@ body {
 #detail__product--content .lSSlideOuter .lSPager.lSGallery li:hover img {
   border-color: #f91322;
 }
+#detail__product--content .dtl__prd--left .lSPager li img {
+  height: 100%;
+  width: 100%;
+  padding: 2px;
+  border-radius: 8px;
+}
+#detail__product--content .dtl__prd--left .lSPager .active {
+  border: 1px solid #e74c3c !important;
+  border-radius: 8px !important;
+}
 #detail__product--content .dtl__prd--left .banner__video {
   margin-top: 40px;
 }
 #detail__product--content .dtl__prd--left .banner__video .prd__banner a img {
   width: 100% !important;
-}
-#detail__product--content .dtl__prd--left .vertical {
-  padding-right: 0px !important;
-  padding-left: 100px;
-  height: 560px;
-}
-#detail__product--content .dtl__prd--left .vertical .lslide img {
-  width: 100%;
-  height: auto;
 }
 #detail__product--content .dtl__prd--right {
   padding-left: 20px !important;
@@ -4650,6 +4746,11 @@ body {
   margin-bottom: 5px;
   text-transform: uppercase;
 }
+@media (max-width: 812px) {
+  #detail__product--content .dtl__prd--right .prd__dtl--policy .policy .call a {
+    font-size: 11px;
+  }
+}
 #detail__product--content .dtl__prd--right .prd__dtl--policy .policy .call a:hover {
   text-decoration: none;
   background: #277b8c;
@@ -4745,6 +4846,18 @@ body {
   padding-bottom: 20px;
   margin-bottom: 10px;
   border-bottom: 1px solid #dddddd;
+}
+@media (max-width: 1024px) {
+  #detail__product--content .dtl__prd--right .prd__dtl--cart .col-1 {
+    flex: 0 0 15% !important;
+    max-width: 15% !important;
+  }
+}
+@media (max-width: 812px) {
+  #detail__product--content .dtl__prd--right .prd__dtl--cart .col-1 {
+    flex: 0 0 20% !important;
+    max-width: 20% !important;
+  }
 }
 #detail__product--content .dtl__prd--right .prd__dtl--cart input {
   text-align: center;
@@ -5496,29 +5609,6 @@ body {
   text-align: left;
 }
 
-#wrapper__account #account .layout__account--purchase #myTabContentPurchase ._1MmTVs {
-  padding: 12px 0;
-  margin: 12px 0;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  color: #212121;
-  background: #eaeaea;
-  border-radius: 2px;
-}
-#wrapper__account #account .layout__account--purchase #myTabContentPurchase ._1MmTVs input {
-  flex: 1;
-  font-size: 14px;
-  line-height: 16px;
-  border: 0;
-  outline: none;
-  background-color: inherit;
-}
-#wrapper__account #account .layout__account--purchase #myTabContentPurchase ._1MmTVs i {
-  font-size: 20px;
-  margin: 0 15px;
-  color: #bbb;
-}
 #wrapper__account #account .layout__account--purchase #myTabContentPurchase .empty__orders {
   width: 100%;
   height: 600px;
@@ -5986,5 +6076,5 @@ body {
   top: 0;
   left: 0;
   width: 100% !important;
-  z-index: 100000;
+  z-index: 5000;
 }

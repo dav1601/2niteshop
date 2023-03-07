@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,17 +11,16 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.sass('resources/sass/admin/app.scss', 'public/admin/app/css')
-    .sass('resources/sass/admin/_variables.scss', 'public/admin/app/css')
-    .sass('resources/sass/admin/_responsive.scss', 'public/admin/app/css')
-    .sass('resources/sass/admin/_layout.scss', 'public/admin/app/css')
-    .sass('resources/sass/admin/_naviteam.scss', 'public/admin/app/css')
-    .sass('resources/sass/client/app.scss', 'public/client/app/css')
-    .sass('resources/sass/client/_variables.scss', 'public/client/app/css')
-    .sass('resources/sass/client/_responsive.scss', 'public/client/app/css')
-    .sass('resources/sass/client/_layout.scss', 'public/client/app/css')
-    .sass('resources/sass/client/_naviteam.scss', 'public/client/app/css')
-    .sass('resources/sass/client/_component.scss', 'public/client/app/css')
-    .sass('resources/sass/client/_footer.scss', 'public/client/app/css')
-  
-
+mix.js("resources/js/laravel-echo-server.js", "public/js/laravel-server")
+    .sass("resources/sass/admin/app.scss", "public/admin/app/css")
+    .sass("resources/sass/admin/_variables.scss", "public/admin/app/css")
+    .sass("resources/sass/admin/_responsive.scss", "public/admin/app/css")
+    .sass("resources/sass/admin/_layout.scss", "public/admin/app/css")
+    .sass("resources/sass/admin/_naviteam.scss", "public/admin/app/css")
+    .sass("resources/sass/client/app.scss", "public/client/app/css")
+    .sass("resources/sass/client/_variables.scss", "public/client/app/css")
+    .sass("resources/sass/client/_responsive.scss", "public/client/app/css")
+    .sass("resources/sass/client/_layout.scss", "public/client/app/css")
+    .sass("resources/sass/client/_naviteam.scss", "public/client/app/css")
+    .sass("resources/sass/client/_component.scss", "public/client/app/css")
+    .sass("resources/sass/client/_footer.scss", "public/client/app/css");

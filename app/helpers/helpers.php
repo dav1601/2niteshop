@@ -24,6 +24,21 @@ function price_product($product,  $ops = "", $options = ['qty' => 1])
     }
     return (int)$price * $qty;
 }
+function price_product_cost($cart)
+{
+    $qty = (int) $cart->qty;
+    $price = (int) ($cart->options->cost);
+    $arrIns = explode(",", $cart->options->ins);
+    if (count($arrIns) > 0) {
+        foreach ($arrIns as  $ins_id) {
+            $item = Insurance::where('id', $ins_id)->first();
+            if ($item) {
+                $price += (int) $item->price;
+            }
+        }
+    }
+    return (int)$price * $qty;
+}
 function get_crawler($crawler = [], $key = null)
 {
     if (count($crawler) <= 0) {

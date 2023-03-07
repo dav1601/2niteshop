@@ -1,6 +1,5 @@
-
 @if (count($cart) > 0)
-    <div id="cart__show" class="cartShow row mx-0">
+    <div class="cartShow row mx-0">
         <div class="col-12 col-lg-8" id="wp_cartShow_left">
             <div class="w-100 cartShow--left">
                 @foreach ($cart as $item)

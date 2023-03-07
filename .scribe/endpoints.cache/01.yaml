@@ -14,13 +14,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'List all products.'
       description: ''
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -152,7 +154,7 @@ endpoints:
           }
 
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -169,13 +171,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Retrieve a product.'
       description: ''
       authenticated: false
       custom: []
-    headers: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
     urlParameters:
       slug:
         name: slug
@@ -401,7 +405,7 @@ endpoints:
               ]
             }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -418,14 +422,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Search Products.'
       description: ''
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
@@ -467,11 +472,11 @@ endpoints:
         name: kw
         description: ''
         required: true
-        example: dolor
+        example: quia
         type: string
         custom: []
     cleanBodyParameters:
-      kw: dolor
+      kw: quia
     fileParameters: []
     responses:
       -
@@ -534,7 +539,7 @@ endpoints:
               "page": 1
             }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -551,14 +556,15 @@ endpoints:
       groupDescription: |-
 
         APIs for managing Products
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: 'Product properties.'
       description: ''
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -568,338 +574,338 @@ endpoints:
         name: name
         description: 'Tên sản phẩm'
         required: false
-        example: iste
+        example: dolore
         type: varchar(255)
         custom: []
       slug:
         name: slug
         description: 'Slug sản phẩm'
         required: false
-        example: dolores
+        example: laborum
         type: longtext
         custom: []
       des:
         name: des
         description: 'Mô tả ngắn sản phẩm'
         required: false
-        example: alias
+        example: enim
         type: longtext
         custom: []
       keywords:
         name: keywords
         description: 'Keywords SEO or Tag sản phẩm'
         required: false
-        example: at
+        example: neque
         type: longtext
         custom: []
       price:
         name: price
         description: 'Giá bán của sản phẩm'
         required: false
-        example: qui
+        example: facilis
         type: bigint
         custom: []
       historical_cost:
         name: historical_cost
         description: 'Giá gốc của sản phẩm'
         required: false
-        example: quis
+        example: omnis
         type: bigint
         custom: []
       content:
         name: content
         description: 'Nội dung của sản phẩm'
         required: false
-        example: ipsam
+        example: earum
         type: longtext
         custom: []
       info:
         name: info
         description: 'Thông tin của sản phẩm'
         required: false
-        example: exercitationem
+        example: accusamus
         type: longtext
         custom: []
       insurance:
         name: insurance
         description: 'Chính sách bảo hành,options đi kèm với của sản phẩm'
         required: false
-        example: non
+        example: necessitatibus
         type: longtext
         custom: []
       policy:
         name: policy
         description: 'Chính sách của cửa hàng'
         required: false
-        example: adipisci
+        example: voluptas
         type: longtext
         custom: []
       model:
         name: model
         description: 'Model của sản phẩm'
         required: false
-        example: a
+        example: aliquid
         type: varchar
         custom: []
       video:
         name: video
         description: 'Mã nhúng utube của sản phẩm'
         required: false
-        example: id
+        example: est
         type: longtext
         custom: []
       banner:
         name: banner
         description: 'Banner đi kèm với sản phẩm'
         required: false
-        example: voluptate
+        example: a
         type: varchar
         custom: []
       banner_link:
         name: banner_link
         description: 'Link banner của sản phẩm'
         required: false
-        example: qui
+        example: id
         type: varchar
         custom: []
       main_img:
         name: main_img
         description: 'Hình ảnh chính của sản phẩm'
         required: false
-        example: voluptas
+        example: maiores
         type: varchar
         custom: []
       sub_img:
         name: sub_img
         description: 'Hình ảnh phụ của sản phẩm'
         required: false
-        example: ratione
+        example: laborum
         type: varchar
         custom: []
       bg:
         name: bg
         description: 'Hình ảnh background của sản phẩm'
         required: false
-        example: a
+        example: odit
         type: longtext
         custom: []
       type:
         name: type
         description: 'Kiểu sản phẩm'
         required: false
-        example: dolorem
+        example: incidunt
         type: varchar
         custom: []
       sub_type:
         name: sub_type
         description: 'Kiểu phụ sản phẩm'
         required: false
-        example: sint
+        example: nam
         type: varchar
         custom: []
       cat_id:
         name: cat_id
         description: 'ID Danh mục chính sản phẩm'
         required: false
-        example: aut
+        example: quaerat
         type: bigint
         custom: []
       cat_name:
         name: cat_name
         description: 'Tên danh mục chính'
         required: false
-        example: ab
+        example: voluptatem
         type: varchar
         custom: []
       sub_1_cat_id:
         name: sub_1_cat_id
         description: 'ID danh mục phụ 1 của danh mục chính'
         required: false
-        example: culpa
+        example: et
         type: bigint
         custom: []
       sub_1_cat_name:
         name: sub_1_cat_name
         description: 'Tên danh mục phụ 1 của danh mục chính'
         required: false
-        example: rem
+        example: necessitatibus
         type: varchar
         custom: []
       sub_2_cat_id:
         name: sub_2_cat_id
         description: 'ID danh mục phụ 2 của danh mục chính'
         required: false
-        example: sit
+        example: ex
         type: bigint
         custom: []
       sub_2_cat_name:
         name: sub_2_cat_name
         description: 'Tên danh mục phụ 2 của danh mục chính'
         required: false
-        example: ea
+        example: voluptates
         type: varchar
         custom: []
       cat_id_2:
         name: cat_id_2
         description: 'ID Danh mục chính 2 của sản phẩm'
         required: false
-        example: tempore
+        example: corporis
         type: bigint
         custom: []
       op_sub_1_id:
         name: op_sub_1_id
         description: 'ID option 1 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: animi
+        example: beatae
         type: bigint
         custom: []
       op_sub_1_name:
         name: op_sub_1_name
         description: 'Tên option 1 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: voluptatem
+        example: nobis
         type: varchar
         custom: []
       op_sub_2_id:
         name: op_sub_2_id
         description: 'ID option 2 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: facere
+        example: ducimus
         type: bigint
         custom: []
       op_sub_2_name:
         name: op_sub_2_name
         description: 'Tên option 2 của dạnh mục phụ 1 của danh mục chính'
         required: false
-        example: laborum
+        example: consectetur
         type: varchar
         custom: []
       cat_2_sub:
         name: cat_2_sub
         description: 'ID Danh mục phụ 1 của danh mục chính 2 sản phẩm'
         required: false
-        example: et
+        example: ratione
         type: bigint
         custom: []
       producer_id:
         name: producer_id
         description: 'ID nhà sản xuất sản phẩm'
         required: false
-        example: veniam
+        example: suscipit
         type: bigint
         custom: []
       producer_slug:
         name: producer_slug
         description: 'Slug nhà sản xuất sản phẩm'
         required: false
-        example: sunt
+        example: voluptatem
         type: varchar
         custom: []
       cat_game_id:
         name: cat_game_id
         description: 'thể loại game của sản phẩm'
         required: false
-        example: quas
+        example: et
         type: ID
         custom: []
       stock:
         name: stock
         description: 'Tình trạng kho của sản phẩm (1: còn hàng , 2: hàng sắp về , 3:hết hàng)'
         required: false
-        example: 6
+        example: 13
         type: integer
         custom: []
       new:
         name: new
         description: 'Trạng thái mới của sản phẩm (1: mới đăng , 2: bình thường)'
         required: false
-        example: 8
+        example: 11
         type: integer
         custom: []
       usage_stt:
         name: usage_stt
         description: 'Trạng thái sử dụng sản phẩm (1: sản phẩm chưa qua sử dụng , 2: sản phẩm đã qua sử dụng)'
         required: false
-        example: 1
+        example: 13
         type: integer
         custom: []
       num_orders:
         name: num_orders
         description: 'Số lượt mua sản phẩm'
         required: false
-        example: nihil
+        example: iure
         type: bigint
         custom: []
       highlight:
         name: highlight
         description: 'Sản Phẩm nổi bật (1: sp bình thương , 2: sp hot)'
         required: false
-        example: 14
+        example: 10
         type: integer
         custom: []
       author_id:
         name: author_id
         description: 'Id người đăng sản phẩm'
         required: false
-        example: id
+        example: aliquam
         type: bigint
         custom: []
       author_name:
         name: author_name
         description: 'Tên người đăng sản phẩm'
         required: false
-        example: porro
+        example: aut
         type: varchar
         custom: []
     cleanBodyParameters:
-      name: iste
-      slug: dolores
-      des: alias
-      keywords: at
-      price: qui
-      historical_cost: quis
-      content: ipsam
-      info: exercitationem
-      insurance: non
-      policy: adipisci
-      model: a
-      video: id
-      banner: voluptate
-      banner_link: qui
-      main_img: voluptas
-      sub_img: ratione
-      bg: a
-      type: dolorem
-      sub_type: sint
-      cat_id: aut
-      cat_name: ab
-      sub_1_cat_id: culpa
-      sub_1_cat_name: rem
-      sub_2_cat_id: sit
-      sub_2_cat_name: ea
-      cat_id_2: tempore
-      op_sub_1_id: animi
-      op_sub_1_name: voluptatem
-      op_sub_2_id: facere
-      op_sub_2_name: laborum
-      cat_2_sub: et
-      producer_id: veniam
-      producer_slug: sunt
-      cat_game_id: quas
-      stock: 6
-      new: 8
-      usage_stt: 1
-      num_orders: nihil
-      highlight: 14
-      author_id: id
-      author_name: porro
+      name: dolore
+      slug: laborum
+      des: enim
+      keywords: neque
+      price: facilis
+      historical_cost: omnis
+      content: earum
+      info: accusamus
+      insurance: necessitatibus
+      policy: voluptas
+      model: aliquid
+      video: est
+      banner: a
+      banner_link: id
+      main_img: maiores
+      sub_img: laborum
+      bg: odit
+      type: incidunt
+      sub_type: nam
+      cat_id: quaerat
+      cat_name: voluptatem
+      sub_1_cat_id: et
+      sub_1_cat_name: necessitatibus
+      sub_2_cat_id: ex
+      sub_2_cat_name: voluptates
+      cat_id_2: corporis
+      op_sub_1_id: beatae
+      op_sub_1_name: nobis
+      op_sub_2_id: ducimus
+      op_sub_2_name: consectetur
+      cat_2_sub: ratione
+      producer_id: suscipit
+      producer_slug: voluptatem
+      cat_game_id: et
+      stock: 13
+      new: 11
+      usage_stt: 13
+      num_orders: iure
+      highlight: 10
+      author_id: aliquam
+      author_name: aut
     fileParameters: []
     responses:
       -
         status: 200
         content: '{"Đây là tất cả thuộc tính của bảng sản phẩm"}'
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []

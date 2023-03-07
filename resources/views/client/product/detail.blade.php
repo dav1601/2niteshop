@@ -11,9 +11,32 @@
 @section('og-type', 'detail product')
 @section('twitter-title', $product->name)
 {{-- end seo meta og twitt --}}
+@section('import_css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/css/lightgallery.min.css"
+        integrity="sha512-F2E+YYE1gkt0T5TVajAslgDfTEUQKtlu4ralVq78ViNxhKXQLrgQLLie8u1tVdG2vWnB3ute4hcdbiBtvJQh0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/css/lg-thumbnail.min.css"
+        integrity="sha512-GRxDpj/bx6/I4y6h2LE5rbGaqRcbTu4dYhaTewlS8Nh9hm/akYprvOTZD7GR+FRCALiKfe8u1gjvWEEGEtoR6g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/css/lg-zoom.min.css"
+        integrity="sha512-vIrTyLijDDcUJrQGs1jduUCSVa3+A2DaWpVfNyj4lmXkqURVQJ8LL62nebC388QV3P4yFBSt/ViDX8LRW0U6uw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+@endsection
 @section('import_js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/lightgallery.min.js"
+        integrity="sha512-pG+XpUdyBtp28FzjpaIaj72KYvZ87ZbmB3iytDK5+WFVyun8r5LJ2x1/Jy/KHdtzUXA0CUVhEnG+Isy1jVJAbA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/plugins/thumbnail/lg-thumbnail.umd.min.js"
+        integrity="sha512-hdzLQVAURjMzysJVkWaKWA2nD+V6CcBx6wH0aWytFnlmgIdTx/n5rDWoruSvK6ghnPaeIgwKuUESlpUhat2X+Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/plugins/zoom/lg-zoom.umd.min.js"
+        integrity="sha512-++PKcAnn9Qf7G3Eu1WUmSR44yHOIH77vnAdLA70w9/PoECvbVzcW6lrrKR2xyfe4iYMbknCx5NSVQEBPl7pYPg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="{{ $file->ver('client/app/js/slide.js') }}"></script>
-    <script src="https://unpkg.com/scrollreveal"></script>
+    {{-- <script src="https://unpkg.com/scrollreveal"></script> --}}
+
 @endsection
 @section('margin')
 @endsection
@@ -46,19 +69,7 @@
             })
             ->first();
         $price = price_product($product, $ops);
-        // if (count($arrIns) > 0) {
-        //     if (count($list_active) > 0) {
-        //         foreach ($list_active as $group => $value) {
-        //             $price += (int) $product->price + (int) $value['price'];
-        //             $data_op[] = $value['id'];
-        //         }
-        //     }
-        // }
-        // else {
-        //     if ($product->stock != 2) {
-        //         $price = (int) $product->price;
-        //     }
-        // }
+
     @endphp
     {{-- @dd($price) --}}
     @if ($product->bg != null)
@@ -98,29 +109,7 @@
                     <li class="b__crumb--item">
                         <i class="fas fa-long-arrow-alt-right"></i>
                     </li>
-                    {{-- @php
-            $index = count($bc);
-        @endphp
-        @foreach ($bc as $key => $b)
-            @php
-                $name = App\Models\Category::select('name')
-                    ->where('slug', $b)
-                    ->first();
-            @endphp
-            @if ($name)
-                @if ($key != $index && $key != 0)
-                    <li class="b__crumb--item">
-                        <i class="fas fa-long-arrow-alt-right"></i>
-                    </li>
-                @endif
-                <li class="b__crumb--item">
-                    <h1>{{ $name->name }}</h1>
-                </li>
-            @endif
-        @endforeach --}}
-                    {{-- <li class="b__crumb--item">
-            <i class="fas fa-long-arrow-alt-right"></i>
-        </li> --}}
+
                     <li class="b__crumb--item">
                         {{ $product->name }}
                     </li>
@@ -133,18 +122,21 @@
                     <div class="dtl__prd--left col-md-6 p-0">
                         <div class="w-100 position-relative">
                             <a class="my__action--prev my__action">
-                                <i class="fas fa-chevron-up"></i>
+                                <i class="fas fa-chevron-left"></i>
                             </a>
                             <a class="my__action--next my__action">
-                                <i class="fas fa-chevron-down"></i>
+                                <i class="fas fa-chevron-right"></i>
                             </a>
 
                             <ul id="vertical">
                                 @foreach ($arrGll[700] as $key => $gll)
-                                    <li data-thumb="{{ $file->ver_img($arrGll[80][$key]['link']) }}?now={{ $carbon->now()->timestamp }}"
-                                        alt="{{ $product->name }}">
-                                        <img src="{{ $file->ver_img($gll['link']) }}?now={{ $carbon->now()->timestamp }}"
-                                            alt="{{ $product->name }}" />
+                                    <li class="gallery-item"
+                                        data-external-thumb-image="{{ $file->ver_img($arrGll[80][$key]['link']) }}"
+                                        data-src="{{ $file->ver_img($gll['link']) }}"
+                                        data-thumb="{{ $file->ver_img($arrGll[80][$key]['link']) }}"
+                                        alt="{{ $product->name }}"
+                                        data-sub-html="<h4>{{ $product->name }} - Giá: {{ crf($price) }}</h4>">
+                                        <img src="{{ $file->ver_img($gll['link']) }}" alt="{{ $product->name }}" />
                                         <x-productlabels :product="$product" />
                                     </li>
                                 @endforeach
@@ -395,6 +387,13 @@
             </div>
         @endif
     </div>
+    <script type="text/javascript">
+        lightGallery(document.getElementById('vertical'), {
+            exThumbImage: 'data-external-thumb-image',
+            plugins: [lgZoom, lgThumbnail],
+            speed: 500,
 
+        });
+    </script>
 
 @endsection

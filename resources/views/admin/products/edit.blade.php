@@ -4,11 +4,11 @@
 @endsection
 @section('import_js')
     <script
-        src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('public/admin/app/js/products.js') @endphp">
+        src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/products.js') @endphp">
     </script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script
-        src="{{ $file->ver_img('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
+        src="{{ $file->ver_img('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
     </script>
     <script src="{{ $file->ver_img('admin/plugin/tags/tagsinput.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"

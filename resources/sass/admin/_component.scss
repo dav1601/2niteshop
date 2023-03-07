@@ -1,0 +1,112 @@
+.switch {
+    position: relative;
+    top: -28px;
+    input {
+        height: 0;
+        width: 0;
+        visibility: hidden;
+    }
+    label {
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 50px;
+        height: 25px;
+        background: grey;
+        display: block;
+        border-radius: 100px;
+        position: relative;
+    }
+
+    label:after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 22.5px;
+        height: 22.5px;
+        background: #fff;
+        border-radius: 90px;
+        transition: 0.3s;
+    }
+
+    input:checked + label {
+        background: #bada55;
+    }
+
+    input:checked + label:after {
+        left: calc(100%);
+        transform: translateX(-100%);
+    }
+
+    label:active:after {
+        width: 50px;
+    }
+}
+.border-preview {
+    border: 1px solid #c0392b;
+}
+.stt-1 {
+    border-right: 1px solid grey;
+}
+.slide-drag {
+    height: 300px;
+    width: 100%;
+    border: 1px dashed grey !important;
+}
+.preview_img {
+    border: 1px dashed grey;
+    padding: 10px;
+    width: 100%;
+}
+.slide-item {
+    i:hover {
+        color: #2980b9;
+    }
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid grey;
+    &-dd {
+        font-size: 16px;
+        margin-left: 10px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+    .--act {
+        i {
+            font-size: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+
+            cursor: pointer;
+        }
+    }
+}
+.admin-cate {
+    // &-dd {
+    //     transition: all 0.25s ease;
+    // }
+
+    &-item.--lv-0 {
+        background: #182c61;
+    }
+    &-item.--lv-1 {
+        background: #3d3d9e;
+    }
+    &-item.--lv-2 {
+        background: #0f415f;
+    }
+    &-item {
+        transition: all 0.5s ease;
+        display: flex;
+        max-width: 400px;
+        min-width: 200px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: grey;
+        border-radius: 20px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+}

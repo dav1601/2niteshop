@@ -21,6 +21,29 @@
 .bs-tooltip-top .arrow::before {
     border-top-color: #277b8c;
 }
+._1MmTVs {
+    padding: 12px 0;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
+    color: #212121;
+    background: #eaeaea;
+    border-radius: 2px;
+    input {
+        flex: 1;
+        font-size: 14px;
+        line-height: 16px;
+        border: 0;
+        outline: none;
+        background-color: inherit;
+    }
+    i {
+        font-size: 20px;
+        margin: 0 15px;
+        color: #bbb;
+    }
+}
 .prd__dtl--cart {
     .col-1 {
         flex: 0 0 10% !important;
@@ -205,6 +228,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        color: white;
         img {
             width: 40px;
             height: 40px;
@@ -627,6 +651,9 @@
         }
         .name {
             font-weight: 700;
+            @include responsive_v(iphone6-7-8-x, down) {
+                font-size: 14px;
+            }
             color: #333;
             margin-bottom: 10px;
             display: block;
@@ -650,15 +677,24 @@
         }
         .alerT {
             font-size: 15px;
+            @include responsive_v(iphone6-7-8-x, down) {
+                font-size: 14px;
+            }
         }
     }
     .go__cart {
         @include davj__btn(100%, $btn_bg_1, $white, #277b8c);
         margin-right: 10px;
+        @include responsive_v(iphone6-7-8-x, down) {
+            font-size: 12px;
+        }
     }
     .go__cko {
         @include davj__btn(100%, #00b894, $white, #7bed9f);
         margin-left: 10px;
+        @include responsive_v(iphone6-7-8-x, down) {
+            font-size: 12px;
+        }
     }
 }
 #wrapper__detail {

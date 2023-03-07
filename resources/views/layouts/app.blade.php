@@ -13,11 +13,7 @@
     @include('layouts.js', ['name' => $name])
     {{-- end script --}}
 </head>
-{{-- <div id="bg-loading"></div>
-<div id="loading">
-    <img src="{{ $file->ver_img_local('admin/images/layout/loading-unscreen.gif') }}" alt="Loading......." width="200">
-</div> --}}
-<!--Start of Tawk.to Script-->
+
 <x-client.plugin.facebook />
 
 <body>
@@ -53,20 +49,8 @@
     <x-modal.preorder />
     <x-Ajax />
 </body>
-<script>
-    var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 4,
-        slidesPerGroup: 4,
-        spaceBetween: 10,
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-    });
-</script>
+
+<x-server.common />
+<x-admin.modal.auth />
 
 </html>

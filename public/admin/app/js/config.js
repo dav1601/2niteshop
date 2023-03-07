@@ -7,6 +7,94 @@ $(function () {
     jQuery.loading = function loading() {
         $("#page__loading").removeClass("d-none");
     };
+    const renderErrForm = (text = "") => {
+        return `<span class="invalid-feedback d-block" role="alert">
+        <strong>${text}</strong></span>`;
+    };
+    jQuery.btn_loading_v2 = function btn_loading_v2(
+        el,
+        loading = true,
+        submit = false
+    ) {
+        let btnSubmit = el;
+        if (submit) {
+            btnSubmit = el.querySelectorAll('button[type="submit"]');
+        }
+        let currentHtml = $(btnSubmit).html();
+        if (loading) {
+            $(btnSubmit).attr("data-old", currentHtml);
+            $(btnSubmit)
+                .html(`<span class="spinner-border spinner-border-sm"  role="status" aria-hidden="true"></span>
+                Loading...`);
+        } else {
+            const old = $(btnSubmit).attr("data-old");
+            $(btnSubmit).html(old);
+        }
+        return;
+    };
+    jQuery.errForm = function errForm(clear = false, form = [], errors = []) {
+        if (clear) {
+            let elErr = $(".invalid-feedback");
+            for (let j = 0; j < elErr.length; j++) {
+                let ele = elErr[j];
+                $(ele).remove();
+            }
+        } else {
+            for (let index = 0; index < form.length; index++) {
+                let element = form[index];
+                let name = element.getAttribute("name");
+                if (errors.hasOwnProperty(name)) {
+                    let html = renderErrForm(errors[name][0]);
+                    $(element).after(html);
+                }
+            }
+        }
+
+        return;
+    };
+    jQuery.btn_loading = function btn_loading(el, content = null) {
+        if (!content) {
+            el.html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...`);
+        } else {
+            el.html(content);
+        }
+    };
+    jQuery.render_img = function render_img(array, el) {
+        const id = el.getAttribute("id");
+        let html = "";
+        if (array.length <= 1) {
+            html += `<div class="preview_img my-3 preview-${id}">
+            <img src="${array[0]}" style="max-width:100%; max-height:600px;" alt="preview" class="preview_item">
+        </div>`;
+        } else {
+            html += `<div class="d-flex flex-wrap preview_img  --mul  my-3 preview-${id}">`;
+            for (let j = 0; j < array.length; j++) {
+                html += ` <div class="mb-4">
+                <img src="${array[j]}" style="max-width:350px ; max-height: 600px; height:auto"  alt="preview" class="preview_item mx-2 border-preview  shadow-1-strong rounded mb-4">
+            </div>`;
+            }
+            html += `</div>`;
+        }
+        html += `<div class="w-100 d-flex justify-content-center align-items-center my-3">
+        <button type="button" class="btn btn-primary clear-images" data-id="${id}">Clear</button>
+    </div>`;
+        return html;
+    };
+    jQuery.preview_img = function preview_img(el) {
+        let array = [];
+        let arrayName = [];
+        let files = el[0].files;
+        let element = el[0];
+        for (let index = 0; index < files.length; index++) {
+            array.push(window.URL.createObjectURL(files[index]));
+            arrayName.push(files[index].name);
+        }
+        el.next().text(arrayName.toString());
+        let html = $.render_img(array, element);
+        return el.parent(".custom-file").parent(".form-group").after(html);
+    };
+
     jQuery.end_loading = function end_loading() {
         $("#page__loading").addClass("d-none");
     };

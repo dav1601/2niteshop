@@ -4,6 +4,62 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+    jQuery.load_data = function load_data(
+        $action = "load",
+        $type = 1,
+        $val = 0,
+        $id = 0,
+        $page = 1
+    ) {
+        let sort = $(prefix + "sort").val();
+        let stt = $(prefix + "stt").val();
+        let nameOrMail = $(prefix + "nameMail").val();
+        let phone = $(prefix + "phone").val();
+        let dateP = $("#dateprev input").val();
+        let dateN = $("#datenext input").val();
+        let p = $(prefix + "prov").val();
+        let d = $(prefix + "dist").val();
+        let w = $(prefix + "ward").val();
+
+        $.ajax({
+            type: "post",
+            url: route("handle_ajax_orders"),
+            data: {
+                act: $action,
+                type: $type,
+                sort: sort,
+                stt: stt,
+                nameOrMail: nameOrMail,
+                phone: phone,
+                dateP: dateP,
+                dateN: dateN,
+                p: p,
+                d: d,
+                w: w,
+                id: $id,
+                page: $page,
+                val: $val,
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#table__show--orders").html(data.html);
+                if ($action != "load") {
+                    $("#detail__order--update").html(data.html_detail);
+                }
+                if (data.type == 2) {
+                    var mess = "Cập nhật TT đơn hàng số " + $id + " thành công";
+                    toastr.success(mess, "Cập nhật trạng thái đơn hàng");
+                }
+                if (data.type == 3) {
+                    var mess =
+                        "Cập nhật TT thanh toán đơn hàng số " +
+                        $id +
+                        " thành công";
+                    toastr.success(mess, "Cập nhật TT thanh toán đơn hàng");
+                }
+            },
+        });
+    };
     var currentPage = $(".page-item.active .page-link").attr("data-page");
     $("#dateprev input").datetimepicker({
         format: "YYYY-MM-DD HH:mm:ss",
@@ -23,117 +79,66 @@ $(function () {
         .datetimepicker()
         .on("dp.hide", function () {
             $("#datenext input").val("");
-            load_data();
+            $.load_data();
         })
         .on("dp.show", function () {
             $("#datenext input").val("");
-            load_data();
+            $.load_data();
         })
         .on("dp.change", function () {
             $("#datenext input").val("");
-            load_data();
+            $.load_data();
         })
 
         .on("dp.update", function () {
             $("#datenext input").val("");
-            load_data();
+            $.load_data();
         });
     $("#datenext input")
         .datetimepicker()
         .on("dp.hide", function () {
             $("#dateprev input").val("");
-            load_data();
+            $.load_data();
         })
         .on("dp.show", function () {
             $("#dateprev input").val("");
-            load_data();
+            $.load_data();
         })
         .on("dp.change", function () {
             $("#dateprev input").val("");
-            load_data();
+            $.load_data();
         })
 
         .on("dp.update", function () {
             $("#dateprev input").val("");
-            load_data();
+            $.load_data();
         });
     // /////////////////////////////////
+    // alert(route("change_address_2"));
     var prefix = "#ord__filter--";
     var prefix_2 = "#ord_cus--";
-    var url_2 = route('change_address_2');
-    var route = $("#route").val();
-    var load_data = function load_data(
-        $action = "load",
-        $type = 1,
-        $sort = $(prefix + "sort").val(),
-        $stt = $(prefix + "stt").val(),
-        $nameOrMail = $(prefix + "nameMail").val(),
-        $phone = $(prefix + "phone").val(),
-        $dateP = $("#dateprev input").val(),
-        $dateN = $("#datenext input").val(),
-        $p = $(prefix + "prov").val(),
-        $d = $(prefix + "dist").val(),
-        $w = $(prefix + "ward").val(),
-        $id = 0,
-        $page = 1,
-        $val = 0
-    ) {
-        $.ajax({
-            type: "post",
-            url: route('handle_ajax_orders'),
-            data: {
-                act: $action,
-                type: $type,
-                sort: $sort,
-                stt: $stt,
-                nameOrMail: $nameOrMail,
-                phone: $phone,
-                dateP: $dateP,
-                dateN: $dateN,
-                p: $p,
-                d: $d,
-                w: $w,
-                id: $id,
-                page: $page,
-                val: $val,
-            },
-            dataType: "json",
-            success: function (data) {
-                $("#table__show--orders").html(data.html);
-                if (data.type == 2) {
-                    var mess = "Cập nhật TT đơn hàng số " + $id + " thành công";
-                    toastr.success(mess, "Cập nhật trạng thái đơn hàng");
-                }
-                if (data.type == 3) {
-                    var mess =
-                        "Cập nhật TT thanh toán đơn hàng số " +
-                        $id +
-                        " thành công";
-                    toastr.success(mess, "Cập nhật TT thanh toán đơn hàng");
-                }
-                console.log(data);
-            },
-        });
-    };
+    var url_2 = route("change_address_2");
+    $.load_data("load");
+
     // /////////////
 
     // //////////////////////////
-    if (route == "show_orders") {
-        setInterval(load_data, 5000);
-    }
+    // if (route == "show_orders") {
+    //     setInterval(load_data, 5000);
+    // }
     // /////////////
     // //////////////////////////////////
     $(document).on("change", prefix + "sort", function () {
-        load_data();
+        $.load_data();
     });
     $(document).on("change", prefix + "stt", function () {
-        load_data();
+        $.load_data();
     });
     $(document).on("keyup", prefix + "nameMail", function () {
-        load_data();
+        $.load_data();
     });
     $(document).on("keyup", prefix + "phone", function () {
-        load_data();
+        $.load_data();
     });
     $(document).on("change", prefix + "prov", function () {
         var id = $(prefix + "prov" + " option:selected").attr("data-id");
@@ -156,7 +161,7 @@ $(function () {
             $(prefix + "dist").html('<option value="0">Tất Cả</option>');
             $(prefix + "ward").html('<option value="0">Tất Cả</option>');
         }
-        load_data();
+        $.load_data();
     });
     $(document).on("change", prefix + "dist", function () {
         var id = $(prefix + "dist" + " option:selected").attr("data-id");
@@ -178,10 +183,10 @@ $(function () {
         } else {
             $(prefix + "ward").html('<option value="0">Tất Cả</option>');
         }
-        load_data();
+        $.load_data();
     });
     $(document).on("change", prefix + "ward", function () {
-        load_data();
+        $.load_data();
     });
     $(document).on("change", ".update__status", function () {
         var id = $(this).attr("data-id");
@@ -191,60 +196,15 @@ $(function () {
         } else {
             $(".update__paid").val(1);
         }
-        load_data(
-            ($action = "update_stt"),
-            ($type = 2),
-            ($sort = $(prefix + "sort").val()),
-            ($stt = $(prefix + "stt").val()),
-            ($nameOrMail = $(prefix + "nameMail").val()),
-            ($phone = $(prefix + "phone").val()),
-            ($dateP = $("#dateprev input").val()),
-            ($dateN = $("#datenext input").val()),
-            ($p = $(prefix + "prov").val()),
-            ($d = $(prefix + "dist").val()),
-            ($w = $(prefix + "ward").val()),
-            ($id = id),
-            ($page = currentPage),
-            ($val = val)
-        );
+        $.load_data("update_stt", 2, val, id);
     });
     $(document).on("change", ".update__paid", function () {
         var id = $(this).attr("data-id");
         var val = $(this).val();
-        load_data(
-            ($action = "update_paid"),
-            ($type = 3),
-            ($sort = $(prefix + "sort").val()),
-            ($stt = $(prefix + "stt").val()),
-            ($nameOrMail = $(prefix + "nameMail").val()),
-            ($phone = $(prefix + "phone").val()),
-            ($dateP = $("#dateprev input").val()),
-            ($dateN = $("#datenext input").val()),
-            ($p = $(prefix + "prov").val()),
-            ($d = $(prefix + "dist").val()),
-            ($w = $(prefix + "ward").val()),
-            ($id = id),
-            ($page = currentPage),
-            ($val = val)
-        );
+        $.load_data("update_paid", 3, val, id);
     });
     $(document).on("click", ".page-link", function () {
-        load_data(
-            ($action = "load"),
-            ($type = 1),
-            ($sort = $(prefix + "sort").val()),
-            ($stt = $(prefix + "stt").val()),
-            ($nameOrMail = $(prefix + "nameMail").val()),
-            ($phone = $(prefix + "phone").val()),
-            ($dateP = $("#dateprev input").val()),
-            ($dateN = $("#datenext input").val()),
-            ($p = $(prefix + "prov").val()),
-            ($d = $(prefix + "dist").val()),
-            ($w = $(prefix + "ward").val()),
-            ($id = 0),
-            ($page = $(this).attr("data-page")),
-            ($val = 0)
-        );
+        $.load_data("paging", 4, null, null, $(this).attr("data-page"));
     });
     // end ordersssssssssssssssssssssssssssssss
 
@@ -291,10 +251,9 @@ $(function () {
         $w = $(prefix_2 + "ward").val(),
         $page = 1
     ) {
-
         $.ajax({
             type: "post",
-            url: route('handle_ajax_customers'),
+            url: route("handle_ajax_customers"),
             data: {
                 act: $action,
                 vip: $vip,
@@ -317,9 +276,9 @@ $(function () {
         });
     };
 
-    if (route == "customers") {
-        setInterval(intervalCustomers, 5000);
-    }
+    // if (route == "customers") {
+    //     setInterval(intervalCustomers, 5000);
+    // }
 
     $(document).on("change", prefix_2 + "prov", function () {
         var id = $(prefix_2 + "prov" + " option:selected").attr("data-id");
@@ -379,5 +338,4 @@ $(function () {
         load_data_customers();
     });
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
-
 });

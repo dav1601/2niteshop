@@ -37,7 +37,7 @@ class AdminCategoryController extends Controller
     }
     public function cat(Request $request)
     {
-        $categories = category_child(Category::all(), 0);
+        $categories = Category::tree(false);
         if ($request->has('selected')) {
             $selected = $request->selected;
         } else {
@@ -99,26 +99,8 @@ class AdminCategoryController extends Controller
                 'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
                 'icon' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
                 'gll.*' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500'
-            ],
-            [
-                'name.required' => "Không Được Để Trống Tên",
-                'name.unique' => "Danh Mục Đã Tồn Tại",
-                'title.required' => "Không Được Để Trống Title",
-                'title.unique' => "Title Danh Mục Đã Tồn Tại",
-                'desc.required' => "Bạn chưa nhập description",
-                'keywords.required' => "Bạn chưa nhập keywords",
-                'slug.required' => "Không Được Để Trống Slug",
-                'slug.unique' => "Slug Đã Tồn Tại",
-                'img.image' => "File không phải là file ảnh",
-                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'img.max' => "File ảnh không vượt quá 500kb",
-                'icon.image' => "File không phải là file ảnh",
-                'icon.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg ",
-                'icon.max' => "File ảnh không vượt quá 500kb",
-                'gll.*.image' => "Có File Không Phải Là File Ảnh",
-                'gll.*.mimes' => "Có File Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'gll.*.max' => "Có File ảnh vượt quá 500kb",
             ]
+
         );
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
@@ -153,60 +135,7 @@ class AdminCategoryController extends Controller
             }
             $created = Category::create($data);
             if ($created) {
-                // if ($request->has('gll')) {
-                //     $index = 0;
-                //     foreach ($request->gll as $gl) {
-                //         $index++;
-                //         $gl_name = $gl->getClientOriginalName();
-                //         $path_save_gl = "admin/images/category/banner/" .   $gl_name;
-                //         $gl->move("public/admin/images/category/banner",   $gl_name);
-                //         if ($index == 1) {
-                //             $data2['link'] = "psn-card";
-                //         }
-                //         if ($index == 2) {
-                //             $data2['link'] = "xbox-live-cards";
-                //         }
-                //         if ($index == 3) {
-                //             $data2['link'] = "nintendo-eshop-cards";
-                //         }
-                //         $data2['index'] = $index;
-                //         $data2['path'] = $path_save_gl;
-                //         $data2['cate_id'] = $created->id;
-                //         gllCat::create($data2);
-                //         unset($gl);
-                //     }
-                // }
-                //  start handle related produts
-                // if ($request->bundled_skin != null) {
-                //     bundled_skin_cat::create([
-                //         'skin_cat_id' => $request->bundled_skin,
-                //         'cat_id' => $created->id,
-                //     ]);
-                // }
-                // ///////////////
-                // if ($request->has('products')) {
-                //     if (count($request->products) > 0) {
-                //         foreach ($request->products as $products_id) {
-                //             bundled_accessory_cat::create([
-                //                 'products_id' => $products_id,
-                //                 'cat_id' => $created->id,
-                //             ]);
-                //         }
-                //     }
-                // }
-                // // //////////////
-                // if ($request->has('blogs')) {
-                //     if (count($request->blogs) > 0) {
-                //         foreach ($request->blogs as $posts) {
-                //             RelatedPosts::create([
-                //                 'posts' => $posts,
-                //                 'cat_id' => $created->id,
-                //                 'for' => "category"
-                //             ]);
-                //         }
-                //     }
-                // }
-                // end handle related blogs
+              
                 return redirect()->back()->with('ok', '1');
             }
             return redirect()->back()->with('error', '1');
@@ -270,14 +199,14 @@ class AdminCategoryController extends Controller
             }
             if ($request->has('img')) {
                 if ($category->img != NULL)
-                    $this->file->deleteFile("public/" . $category->img);
+                    $this->file->deleteFile("" . $category->img);
                 $path = "admin/images/category/banner/";
                 $data['img'] = $file->storeFileImg($request->img, $path);
             }
             if ($request->has('icon')) {
                 if ($request->parent == 0) {
                     if ($category->icon != NULL)
-                        $this->file->deleteFile("public/" . $category->icon);
+                        $this->file->deleteFile("" . $category->icon);
                     $path_icon = "admin/images/category/icon/";
                     $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
                 } else {
@@ -530,38 +459,30 @@ class AdminCategoryController extends Controller
         return view('admin.products.category.policy.edit', compact('policy'));
     }
 
-    // /////////////////////////////////////// end policy
-    ////////////////////////////////////////
-
-    // public function bundled(Request $request)
-    // {
-    //     $bundled = Bundled::all();
-    //     $category = Category::where('parent_id', '=', 0)->get();
-    //     return view('admin.products.category.prd.bundled', compact('bundled', 'category'));
-    // }
-
-    ////////////////////////////////////////
-    ////////////////////////////////////////
-
-    // public function handle_add_bundled(Request $request)
-    // {
-    //     $data_create = array();
-    //     if ($request->has('access')) {
-    //         $data_create['bundled_accessory'] = implode(",", $request->access);
-    //     }
-    //     $data_create['bundled_skin'] = $request->bundled_skin;
-    //     $data_create['cat_id'] = $request->cat_id;
-    //     Bundled::create($data_create);
-    //     return redirect()->back()->with('ok', '1');
-    // }
-
-    // ////////////////////////////////////////
-    // public function handle_delete_bundled($id)
-    // {
-    //     Bundled::where('id', $id)->delete();
-    //     return redirect()->back()->with('delete', '1');
-    // }
-
-    // ////////////////////////////////////////// end bundled
-
+    //    ///////////////////////////////////////
+    public function handle_category(Request $request)
+    {
+        $act = $request->act;
+        $data['error'] = false;
+        if ($act == "receive") {
+            $idChild = $request->idChild;
+            $idParent = $request->idParent;
+            $lv = $request->level;
+            $updated =   Category::where('id',  $idChild)->update(['parent_id' => $idParent, 'level' => $lv]);
+            if (!$updated) {
+                $data['error'] = true;
+            }
+        }
+        if ($act == "update") {
+            $arraySort = $request->arraySort;
+            foreach ($arraySort as $key => $id) {
+                $updated = Category::where('id', $id)->update(['position' => $key]);
+                if (!$updated) {
+                    $data['error'] = true;
+                }
+            }
+        }
+        return response()->json($data);
+    }
+    //  //////////////////////////////////////// end handle_category
 }

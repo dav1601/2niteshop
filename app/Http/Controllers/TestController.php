@@ -2,19 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ads;
-use App\Models\User;
-use App\Models\Blogs;
-use App\Models\Config;
-use App\Models\gllCat;
-use App\Models\Slides;
-use App\Models\Banners;
 use App\Models\Category;
-use App\Models\Products;
-use App\Models\showHome;
-use App\Models\gllProducts;
 use Illuminate\Http\Request;
 use App\Models\ProductCategories;
+use App\Models\Slides;
 use App\Repositories\FileInterface;
 
 use App\Repositories\ModelInterface;
@@ -29,53 +20,42 @@ class TestController extends Controller
     {
 
         // Session::forget("crawler");
-        // $products = Products::all();
-        // foreach ($products as  $prd) {
-        //     $c1 = $prd->cat_id;
-        //     $c2 = $prd->sub_1_cat_id;
-        //     $c3 = $prd->sub_2_cat_id;
-        //     if ($c1) {
-        //         if (!ProductCategories::where('products_id', $prd->id)->where('category_id', $c1)->first()) {
-        //             ProductCategories::create([
-        //                 'products_id' => $prd->id,
-        //                 'category_id' => $c1
-        //             ]);
-        //         }
-        //     }
-
-
-        //     if ($c2) {
-        //         if (!ProductCategories::where('products_id', $prd->id)->where('category_id', $c2)->first()) {
-        //             ProductCategories::create([
-        //                 'products_id' => $prd->id,
-        //                 'category_id' => $c2
-        //             ]);
-        //         }
-        //     }
-        //     if ($c3) {
-        //         if (!ProductCategories::where('products_id', $prd->id)->where('category_id', $c3)->first()) {
-        //             ProductCategories::create([
-        //                 'products_id' => $prd->id,
-        //                 'category_id' => $c3
-        //             ]);
-        //         }
-        //     }
+        // $s =  Slides::all();
+        // foreach ($s as $key => $value) {
+        //     Slides::where('id', $value->id)->update(['users_id' => 1, 'index' => $value->id]);
         // }
-        // echo "ok";
-       
-
+        // $categories =  Category::tree(false);
+        // $index = 0;
+        // foreach ($categories as $category) {
+        //     if ($category->parent_id == 0) {
+        //         Category::where('id',  $category->id)->update(['position' => $index]);
+        //     }
+        //     $index++;
+        //     // $this->update_sort_child($category);
+        // }
     }
-    public function handle($path)
-
+    public  function update_sort_child($category)
     {
-        if ($path && File::exists(public_path($path))) {
-            $folder = pathinfo($path)['dirname'];
-            $upload =  Cloudinary::upload(public_path($path), ["folder" => $folder]);
-            $save = [];
-            $save["id"] = $upload->getPublicId();
-            $save["path"] = $upload->getSecurePath();
-            return json_encode($save);
+        if ($category->children) {
+            $index = 0;
+            foreach ($category->children as $key => $value) {
+                Category::where('id',  $value->id)->update(['position' => $index]);
+                $index++;
+                $this->update_sort_child($value);
+            }
         }
-        return null;
     }
+    //     public function handle($path)
+
+    //     {
+    //         if ($path && File::exists(public_path($path))) {
+    //             $folder = pathinfo($path)['dirname'];
+    //             $upload =  Cloudinary::upload(public_path($path), ["folder" => $folder]);
+    //             $save = [];
+    //             $save["id"] = $upload->getPublicId();
+    //             $save["path"] = $upload->getSecurePath();
+    //             return json_encode($save);
+    //         }
+    //         return null;
+    //     }
 }

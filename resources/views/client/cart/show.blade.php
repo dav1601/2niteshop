@@ -24,8 +24,11 @@
 
     <div id="cart">
         <div class="container" id="cart__show">
-            <x-client.cart.show />
-
+            {{-- <x-client.cart.show /> --}}
+            <div class="d-flex justify-content-center">
+                <img src="https://res.cloudinary.com/vanh-tech/image/upload/v1676041175/Ellipsis-1s-200px_hpwekn.gif"
+                    alt="loading-cart" width="100">
+            </div>
         </div>
     </div>
 @endsection

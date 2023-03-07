@@ -30,13 +30,21 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') == "local") {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
-        $this->app->singleton(
+        $this->app->bind(
             \App\Repositories\AdminPrdInterface::class,
             \App\Repositories\AdminPrdRepo::class
         );
-        $this->app->singleton(
+        $this->app->bind(
             \App\Repositories\ModelInterface::class,
             \App\Repositories\ModelRepo::class
+        );
+        $this->app->bind(
+            \App\Repositories\ModelInterface::class,
+            \App\Repositories\ModelRepo::class
+        );
+        $this->app->bind(
+            \App\Repositories\VaEventInterface::class,
+            \App\Repositories\VaEventRepo::class
         );
     }
 

@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="{{ asset('plugin/bootstrap/css/bootstrap.min.css') }}">
     <title>Document</title>
 </head>
 
 <body>
     <style>
-
         body {
             margin-top: 20px;
             font-family: DejaVu Sans !important;
@@ -146,12 +146,12 @@
                         <div class="invoice-ribbon">
                             <div class="ribbon-inner">PAID</div>
                         </div>
-                        <table class="table table-borderless">
+                        <table class="table-borderless table">
                             <tbody>
                                 <tr>
                                     <td>
-                                        <img src="{{ asset('client/images/email-logo.png') }}" alt="" width="100"
-                                            height="auto">
+                                        <img src="{{ asset('client/images/email-logo.png') }}" alt=""
+                                            width="100" height="auto">
                                     </td>
                                     <td class="top-right invoice__top--right" style="z-index: 1000;">
                                         <h3 class="marginright">INVOICE-{{ $ordered->id }} </h3>
@@ -162,7 +162,7 @@
                             </tbody>
                         </table>
                         <hr>
-                        <table class="table table-borderless">
+                        <table class="table-borderless table">
                             <tbody>
                                 <tr>
                                     <td>
@@ -184,7 +184,7 @@
                                     </td>
                                     <td>
                                         <p class="lead marginbottom payment-info">Payment details</p>
-                                        <p>Date: {{$ordered->date_s}}</p>
+                                        <p>Date: {{ $ordered->date_s }}</p>
                                         <p>VAT: DK888-777 </p>
                                         <p>Total Amount: {{ crf($ordered->total) }}</p>
                                         <p>Account Name: Flatter</p>
@@ -197,35 +197,59 @@
 
 
                         <div class="row table-row">
-                            <table class="table table-striped">
+                            <table class="table-striped table">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" style="width:5%">#</th>
+                                        <th class="text-center">#</th>
                                         <th style="width:50%">Tên sản phẩm</th>
-                                        <th class="text-right" style="width:15%">Số lượng</th>
-                                        <th class="text-right" style="width:15%">Giá</th>
-                                        <th class="text-right" style="width:15%">Subtotal</th>
+                                        <th style="width:50%">Options đi kèm</th>
+                                        <th class="text-right">Số lượng</th>
+                                        <th class="text-right">Giá</th>
+                                        <th class="text-right">Tổng phụ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $index = 0;
                                     @endphp
-                                    @foreach ($cart as $item )
-                                    @php
-                                    $index++;
-                                    if ($item->options->ins != 0){
-                                        $ins = App\Models\Insurance::where('id', '=' , $item->options->ins)->first();
-                                        $price = crf($ins->price);
-                                    }
-                                    @endphp
-                                    <tr>
-                                        <td class="text-center">{{ $index }}</td>
-                                        <td> {{ $item->name }} @if ($item->options->ins != 0) ({{ App\Models\bundled_product::where('id', '=' , $ins->group)->first()->name }} : {{ $ins->name }}(+ {{ $price }})  ) @endif </td>
-                                        <td class="text-right"> {{ $item->qty }} </td>
-                                        <td class="text-right"> {{ crf($item->price) }} </td>
-                                        <td class="text-right"> {{ crf($item->options->sub_total) }} </td>
-                                    </tr>
+                                    @foreach ($cart as $item)
+                                        @php
+                                            $index++;
+                                        @endphp
+                                        <tr>
+                                            <td class="text-center">{{ $index }}</td>
+                                            <td>
+                                                {{ $item->name }}
+                                            </td>
+                                            <td>
+                                                @if ($item->options->ins)
+                                                    @php
+                                                        $arrIns = explode(',', $item->options->ins);
+                                                    @endphp
+
+                                                    @foreach ($arrIns as $insid)
+                                                        @php
+                                                            $ins = App\Models\Insurance::where('id', $insid)->first();
+                                                        @endphp
+                                                        @if ($ins)
+                                                            <span>
+                                                                {{ App\Models\bundled_product::where('id', $ins->group)->first()->name }}:
+                                                                {{ $ins->name }}(+ {{ crf($ins->price) }})
+                                                            </span>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <span>Không có</span>
+                                                @endif
+
+                                            </td>
+                                            <td class="text-right">x{{ $item->qty }}
+                                            </td>
+                                            <td class="text-right"> {{ crf($item->price) }}
+                                            </td>
+                                            <td class="text-right">
+                                                {{ crf($item->options->sub_total) }} </td>
+                                        </tr>
                                     @endforeach
 
 
@@ -235,7 +259,7 @@
                         </div>
 
 
-                        <table class="table table-borderless">
+                        <table class="table-borderless table">
                             <tbody>
                                 <tr>
                                     <td>
@@ -245,7 +269,8 @@
                                             width="400">
                                     </td>
                                     <td class="top-right" style="z-index: 1000;">
-                                        <p style="font-size: 20px;">Total : <strong>{{ crf($ordered->total) }}</strong> </p>
+                                        <p style="font-size: 20px;">Total : <strong>{{ crf($ordered->total) }}</strong>
+                                        </p>
                                 </tr>
                             </tbody>
                         </table>

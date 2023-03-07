@@ -1,61 +1,55 @@
-body {
-  background-image: url("http://localhost/nava/public/client/images/bg.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  z-index: 1;
-  }
-  .social-login img {
+.social-login img {
     width: 24px;
-  }
-  a {
+}
+a {
     text-decoration: none;
-  }
-  
-  .card {
+}
+
+.card-form {
     font-family: sans-serif;
     width: 300px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 3em;
-    margin-bottom:3em;
+    margin-bottom: 3em;
     border-radius: 10px;
     background-color: #ffff;
     padding: 1.8rem;
     box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.1);
     z-index: 2;
     opacity: 1 !important;
-  }
-  .reg {
+}
+.reg {
     margin-top: 1em !important;
-  }
-  
-  .title {
+}
+
+.title {
     text-align: center;
     font-weight: bold;
     margin: 0;
     color: rgb(69, 69, 185);
     text-transform: uppercase;
-  }
-  .subtitle {
+}
+.subtitle {
     text-align: center;
     font-weight: bold;
-  }
-  .btn-text {
+}
+.btn-text {
     margin: 0;
-  }
-  .form-group {
-      margin-bottom: 5px;
-      display: flex;
-      flex-direction: column;
-  }
-  .social-login {
+}
+.form-group {
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.social-login {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-  }
-  
-  .btn__login {
+}
+
+.btn__login {
     background: #fff;
     border: solid 2px rgb(245 239 239);
     border-radius: 8px;
@@ -68,60 +62,59 @@ body {
     justify-content: center;
     margin-bottom: 10px;
     transition: all 0.25s;
-  }
-  .btn__login--fb:hover {
-      background: #4267B2;
-      color: white;
-  }
-  .btn__login--google:hover{
-    background:#DB4437;
+}
+.btn__login--fb:hover {
+    background: #4267b2;
     color: white;
-  }
-  .btn__login--git:hover{
-    background:#333;
+}
+.btn__login--google:hover {
+    background: #db4437;
     color: white;
-  }
-  
-  .or {
+}
+.btn__login--git:hover {
+    background: #333;
+    color: white;
+}
+
+.or {
     text-align: center;
     font-weight: bold;
     border-bottom: 2px solid rgb(245 239 239);
     line-height: 0.1em;
     margin: 25px 0;
-  }
-  .or span {
+}
+.or span {
     background: #fff;
     padding: 0 10px;
-  }
-  
- 
-  .email-login label {
+}
+
+.email-login label {
     color: rgb(170 166 166);
-  }
-  .invalid-feedback {
+}
+.invalid-feedback {
     font-size: 14px;
     color: red;
     line-height: 1.5;
     margin: 5px 0;
-  }
-  input[type="email"],
-  input[type="password"],
-  input[type="text"]{
+}
+.input-auth-pass,
+.input-auth-email,
+.input-auth-text {
     padding: 15px 20px;
     margin-top: 8px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-sizing: border-box;
-  }
-  input[type="checkbox"] {
-      transform: scale(1.2);
-      outline: 0;
-      border: 1px solid;
-      box-shadow: none;
-  }
-  
-  .cta-btn {
+}
+input[type="checkbox"] {
+    transform: scale(1.2);
+    outline: 0;
+    border: 1px solid;
+    box-shadow: none;
+}
+
+.cta-btn {
     background-color: rgb(69, 69, 185);
     color: white;
     padding: 18px 20px;
@@ -133,13 +126,12 @@ body {
     cursor: pointer;
     text-transform: capitalize;
     font-size: 15px;
-  }
-  
-  .forget-pass {
+}
+
+.forget-pass {
     text-align: center;
     display: block;
-  }
-  .forget-pass:hover {
-      color: rgb(69, 69, 185);
-  }
-  
+}
+.forget-pass:hover {
+    color: rgb(69, 69, 185);
+}

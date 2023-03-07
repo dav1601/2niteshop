@@ -1,6 +1,6 @@
 <div id="collapse-{{ $id}}" class="collapse multi-collapse" data-id="{{ $id }}" aria-labelledby="headingOne"  >
 <ul class="nite__menu lv-{{ $level }}">
-    <x-category.categories :categories="$category" />
+<x-category.categories :categories="$category" />
    @if ($id == 120)
    <li class="nite__menu--item">
     <a href="{{ url('category/amiibo') }}"  >

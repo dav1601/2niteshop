@@ -4,9 +4,9 @@
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('public/admin/app/js/tinymce.js') @endphp">
+<script src="{{ asset('admin/app/js/tinymce.js')}}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
 </script>
-<script src="{{ asset('admin/app/js/prd_related.js')}}?ver=@php echo filemtime('public/admin/app/js/prd_related.js') @endphp">
+<script src="{{ asset('admin/app/js/prd_related.js')}}?ver=@php echo filemtime('admin/app/js/prd_related.js') @endphp">
 </script>
 @endsection
 
@@ -28,7 +28,7 @@ Danh Mục Bài Viết
 <div class="row mx-0">
     <input type="hidden" name="" id="array__selected" value="{{ $selected }}">
     <input type="hidden" name="" id="url__selected" value="{{ $url }}">
-   
+
     <div class="col-12 mt-4 p-0">
         <div class="w-100">
             <div class="card">

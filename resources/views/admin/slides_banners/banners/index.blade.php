@@ -4,7 +4,7 @@
 @section('import_js')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
 </script>
-<script src="{{ asset('admin/app/js/banners.js')}}?ver=@php echo filemtime('public/admin/app/js/banners.js') @endphp">
+<script src="{{ asset('admin/app/js/banners.js')}}?ver=@php echo filemtime('admin/app/js/banners.js') @endphp">
 </script>
 @endsection
 
@@ -19,7 +19,7 @@ Quản Lý Banners
 </script>
 @endif
 <div class="row mx-0">
-  
+
     {{-- ---------------------- --}}
     <div class="col-12 mt-4 p-0">
         <div class="w-100">

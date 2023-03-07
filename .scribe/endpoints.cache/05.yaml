@@ -14,14 +14,15 @@ endpoints:
       groupDescription: |-
 
         APIs for Auth
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: Login.
       description: 'Api cho phép bạn đăng nhập vào hệ thống.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -110,7 +111,7 @@ endpoints:
               "remember": false
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -127,14 +128,15 @@ endpoints:
       groupDescription: |-
 
         APIs for Auth
-      subgroup: null
-      subgroupDescription: null
+      subgroup: ''
+      subgroupDescription: ''
       title: Singup.
       description: 'Api này cho phép bạn đăng ký tài khoản user trong hệ thống.'
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -191,7 +193,7 @@ endpoints:
               "success": true
           }
         headers: []
-        description: '200'
+        description: ''
         custom: []
     responseFields: []
     auth: []

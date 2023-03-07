@@ -19,7 +19,7 @@ class DavjCart implements DavjCartInterface
     public function add__or_update($id = 0, $qty = 1, $op_actives = "", $options = [], $realTimeUpdateProduct = false)
     {
         $op_actives = !$op_actives ? '' : $op_actives;
-        $product = Products::select(['slug', 'id', 'main_img', 'model', 'name', 'price'])->where('id', $id)->firstOrFail();
+        $product = Products::select(['slug', 'historical_cost', 'discount', 'id', 'main_img', 'model', 'name', 'price'])->where('id', $id)->firstOrFail();
         $sub_total = 0;
         $res['act'] = "";
         $res['product'] = "";
@@ -35,7 +35,12 @@ class DavjCart implements DavjCartInterface
         }
         if (count($check) > 0) {
             foreach ($check as $item) {
-                $qty = (int) ($item->qty + $qty);
+
+                if ($options['type'] === "update") {
+                    $qty = $qty;
+                } else {
+                    $qty = (int) ($item->qty + $qty);
+                }
                 $sub_total = price_product($product, $op_actives, ['qty' => $qty]);
                 if ($realTimeUpdateProduct) {
                     Cart::instance('shopping')->update(
@@ -49,7 +54,9 @@ class DavjCart implements DavjCartInterface
                                 'model' => $product->model,
                                 'image' => $product->main_img,
                                 'sub_total' => $sub_total,
-                                'slug' => $product->slug
+                                'slug' => $product->slug,
+                                'cost' => $product->historical_cost,
+                                'discount' => $product->discount
                             ],
                         ]
                     );
@@ -66,8 +73,10 @@ class DavjCart implements DavjCartInterface
                                 'model' => $product->model,
                                 'image' => $product->main_img,
                                 'sub_total' => $sub_total,
-                                'option' => $options,
-                                'slug' => $product->slug
+                                'other' => $options,
+                                'slug' => $product->slug,
+                                'cost' => $product->historical_cost,
+                                'discount' => $product->discount
                             ],
                         ]
                     );
@@ -75,7 +84,7 @@ class DavjCart implements DavjCartInterface
             }
             $res['item'] = $check;
             $res['act'] = "update";
-        } else {
+        } elseif (count($check) <= 0 && !$realTimeUpdateProduct) {
             $res['act'] = "add";
             $sub_total = price_product($product, $op_actives, ['qty' => $qty]);
             Cart::instance('shopping')->add(
@@ -89,7 +98,10 @@ class DavjCart implements DavjCartInterface
                         'model' => $product->model,
                         'image' => $product->main_img,
                         'sub_total' => $sub_total,
-                        'other' => $options
+                        'other' => $options,
+                        'slug' => $product->slug,
+                        'cost' => $product->historical_cost,
+                        'discount' => $product->discount
                     ],
                 ]
             );

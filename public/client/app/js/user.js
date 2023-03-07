@@ -353,51 +353,39 @@ $(function () {
         history.replaceState("", "", new_url);
     });
 
-    $(document).on("click", ".update__cancel", function () {
-        var type = $(this).attr("data-type");
-        var id = $(this).attr("data-id");
-        var url = route("ajax__order");
-        $.ajax({
-            type: "post",
-            url: url,
-            data: { act: "cancel", id: id, type: type },
-            dataType: "json",
-            success: function (data) {
-                $("#purchase__layout").html(data.html);
-                renderAlert("success", `Cập nhật đơn hàng số ${id} thành công`);
-            },
+    jQuery.loadOrder = function loadOrder(
+        realTime = false,
+        act = "load",
+        idAct = 0
+    ) {
+        let idOrd = $("#searchBill").val();
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
         });
-    });
-    $(document).on("click", ".update__orders", function () {
-        var type = $(this).attr("data-type");
-        var url = route("ajax__order");
-        $.ajax({
-            type: "post",
-            url: url,
-            data: { act: "load", type: type },
-            dataType: "json",
-            success: function (data) {
-                $("#purchase__layout").html(data.html);
-                renderAlert("success", `Cập nhật toàn bộ đơn hàng thành công`);
-            },
-        });
-    });
-    $(document).on("keyup", "#searchBill", function () {
-        var kw = $(this).val();
+        let type = params.type;
         $.ajax({
             type: "post",
             url: route("ajax__order_search"),
-            data: { kw: kw },
+            data: { id: idOrd, type: type, act: act, ida: idAct },
             dataType: "json",
             beforeSend: function () {
                 $.loading();
             },
             success: function (data) {
-                $(".wp__all").html(data.html);
+                if (realTime) {
+                    $.vaSwal("Thông báo", "Đơn hàng của bạn vừa được cập nhật");
+                }
+                $("#myTabContentPurchase").html(data.html);
                 $.end_loading();
             },
         });
+    };
+    $(document).on("keyup", "#searchBill", function () {
+        $.loadOrder();
     });
-
+    $(document).on("click", ".update__cancel", function () {
+        let id = $(this).attr("data-id");
+        $.loadOrder(false, "cancel", id);
+    });
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });
