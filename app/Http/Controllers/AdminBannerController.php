@@ -332,7 +332,11 @@ class AdminBannerController extends Controller
         $data['update_slide']['errors'] = null;
         switch ($act) {
             case 'update_index':
-
+                $arraySort = explode(",", $request->arrSort);
+                foreach ($arraySort as $key => $idSlide) {
+                    Slides::where('id', $idSlide)->update(['index' => $key]);
+                }
+                break;
             case 'update_stt':
                 $last = Slides::where('status', '=', 1)->first();
                 $index = $status == 1 ? (int) $last->index + 1 : NULL;

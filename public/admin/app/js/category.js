@@ -1,9 +1,5 @@
 $(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
+   
     $(document).on("change", "#img", function () {
         var file = $(this)[0].files;
         $("#forImg").html(file[0].name);
@@ -32,10 +28,19 @@ $(function () {
             }
         });
     });
-    $(document).on("click", ".admin-cate-item", function () {
+    $(document).on("click", ".admin-cate-show", function () {
         const target = $(this).attr("data-id");
+        const hidden = $(this).hasClass("fa-plus");
+        if (hidden) {
+            $(this).removeClass("fa-plus");
+            $(this).addClass("fa-minus");
+        } else {
+            $(this).removeClass("fa-minus");
+            $(this).addClass("fa-plus");
+        }
         $("#admin-cate-collapse-" + target).collapse("toggle");
     });
+
     // $(document).on("mousedown", ".admin-cate-dd", function () {
     //     $(this).draggable({
     //         scroll: true,
@@ -114,6 +119,34 @@ $(function () {
         };
         ajaxSort(data);
     }
+    $(document).on("submit", ".formUpdateCategory", function (e) {
+        e.preventDefault();
+        let form = $(this)[0];
+        $.errForm(true, form);
+        let data = new FormData(this);
+        $.btn_loading_v2(form, true, true);
+        $.ajax({
+            type: "post",
+            url: route("handle_edit_cat"),
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: data,
+            dataType: "json",
+            success: function (res) {
+                $.btn_loading_v2(form, false, true);
+                $.errForm(false, form, res.errors);
+                if (res.s) {
+                    $(".admin-cate-item.--" + data.get("id"))
+                        .children("span")
+                        .text(res.name);
+                    $.vaToas("Chỉnh sửa danh mục thành công");
+                } else {
+                    $.vaToas("Chỉnh sửa danh mục thất bại", "e");
+                }
+            },
+        });
+    });
     function ajaxSort(data) {
         $.ajax({
             type: "post",
@@ -121,15 +154,31 @@ $(function () {
             data: data,
             dataType: "json",
             success: function (res) {
-                if (!res.error) {
-                    $.vaToas("Cập nhật danh mục thành công");
+                console.log(res);
+                if (data.act != "loadEdit") {
+                    if (!res.error) {
+                        $.vaToas("Cập nhật danh mục thành công");
+                    } else {
+                        $.vaToas("Cập nhật danh mục thất bại");
+                    }
                 } else {
-                    $.vaToas("Cập nhật danh mục thất bại");
+                    $("#m_editCategory")
+                        .find(".modal-body")
+                        .html(res.html_edit);
+                    $("#m_editCategoryKw").tagsinput("items");
+                    $("#m_editCategory").modal("show");
                 }
             },
         });
     }
-
+    $(document).on("click", ".admin-cate-edit", function () {
+        const data = {
+            id: $(this).attr("data-id"),
+            act: "loadEdit",
+        };
+        ajaxSort(data);
+        // $("#m_editCategory").modal("show");
+    });
     $(".admin-cate").sortable({
         connectWith: ".admin-cate-connect",
         update: function (event, ui) {

@@ -22,6 +22,7 @@ return new class extends Migration
                 $this->update_sort_child($value);
             }
         }
+      
     }
     public function up()
     {

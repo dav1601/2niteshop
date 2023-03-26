@@ -4,7 +4,7 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-
+     
     $(document).on("click", ".eyes-pass", function () {
         if ($(this).hasClass("fa-eye")) {
             $(this).prev("input").attr("type", "text");
@@ -133,8 +133,6 @@ $(function () {
                         showConfirmButton: false,
                         timer: 6500,
                     });
-                } else {
-                    $.vaToast(data.message);
                 }
             },
         });

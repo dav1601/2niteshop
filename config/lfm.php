@@ -49,7 +49,7 @@ return [
         'file'  => [
             'folder_name'  => 'files',
             'startup_view' => 'list',
-            'max_size'     => 50000, // size in KB
+            'max_size'     => 500000, // size in KB
             'valid_mime'   => [
                 'image/jpeg',
                 'image/pjpeg',
@@ -62,7 +62,7 @@ return [
         'image' => [
             'folder_name'  => 'photos',
             'startup_view' => 'grid',
-            'max_size'     => 50000, // size in KB
+            'max_size'     => 500000, // size in KB
             'valid_mime'   => [
                 'image/jpeg',
                 'image/pjpeg',
@@ -88,7 +88,7 @@ return [
     |--------------------------------------------------------------------------
      */
 
-    'disk'                     => 'public',
+    'disk'                     => 'google_lfm',
 
     'rename_file'              => false,
 
@@ -128,9 +128,9 @@ return [
         'image/png',
     ],
 
-    'thumb_img_width'          => 200, // px
+    // 'thumb_img_width'          => 200, // px
 
-    'thumb_img_height'         => 200, // px
+    // 'thumb_img_height'         => 200, // px
 
     /*
     |--------------------------------------------------------------------------

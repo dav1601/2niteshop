@@ -59,6 +59,12 @@
             </ol>
         </div>
     </div>
+    <div id="top-category">
+        @php
+            $b = \App\Models\BlockCategory::where('id', 1)->first();
+        @endphp
+        {!! $b->content !!}
+    </div>
     <div class="container">
         <div class="row mx-0">
             <div id="category" class="@if (App\Models\Category::where('id', '=', $id)->first()->is_game == 1) col-md-10 col-12 @else col-md-12 @endif pr-0">

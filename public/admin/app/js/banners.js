@@ -1,9 +1,5 @@
 $(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
+
 
     $(document).on("change", "#imgBanner", function () {
         var file = $(this)[0].files;
@@ -69,6 +65,7 @@ $(function () {
             $.btn_loading_v2(form, true, true);
             $.errForm(true, form);
         }
+
         let dataDef = {
             act: act,
         };
@@ -87,7 +84,10 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 cb;
-                $("#slide__show").html(data.html);
+                if (act != "update_index") {
+                    $("#slide__show").html(data.html);
+                }
+
                 if (form) {
                     $("#slideModalContent").html(data.html_edit);
                     if (data.update_slide.errors) {
@@ -158,11 +158,15 @@ $(function () {
     function initSortable() {
         $(".stt-1").sortable({
             update: function (event, ui) {
-                let arrSort = {};
-                let allEl = $(this).children();
+                let arrSort = [];
+                let allEl = $(this).children("li");
+                $.each(allEl, function (indexInArray, valueOfElement) {
+                    arrSort.push($(valueOfElement).attr("slide-id"));
+                });
                 const data = {
-                    arrSort: [],
+                    arrSort: arrSort,
                 };
+                // console.log(data);
                 handle_slide("update_index", data);
             },
         });

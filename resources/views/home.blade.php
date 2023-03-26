@@ -5,7 +5,7 @@
 @section('banner')
     <div class="banner">
         <a href="{{ url($banner->link) }}" class="d-block">
-            <img src="{{ $file->ver_img($banner->img) }}" alt="{{ $banner->name }}" class="img-fluid lazy">
+            <img src="{{ $file->ver_img($banner->img) }}" alt="{{ $banner->name }}" class="w-100 lazy">
         </a>
     </div>
 @endsection

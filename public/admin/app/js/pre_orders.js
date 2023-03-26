@@ -1,9 +1,5 @@
 $(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
+   
     var url = route("ajax_preOrders");
     var prefix = "#preOrder--";
     function load_data(

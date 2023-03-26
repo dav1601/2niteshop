@@ -1,11 +1,13 @@
-
 $(function () {
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-
+    $(document).ajaxSuccess(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-role="tagsinput"]').tagsinput("items");
+    });
     $("li.module a").attr("target", "_blank");
     endLoading();
     function endLoading() {
@@ -13,6 +15,7 @@ $(function () {
         el.addClass("d-none");
     }
     $('[data-toggle="tooltip"]').tooltip();
+    $('[data-role="tagsinput"]').tagsinput("items");
     $("#toggle__sidebar").click(function (e) {
         e.preventDefault();
         $("#sidebar").toggleClass("hide-sidebar");

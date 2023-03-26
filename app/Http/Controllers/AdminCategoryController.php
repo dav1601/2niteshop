@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlockCategory;
 use App\Models\gllCat;
 use App\Models\Policy;
 use App\Models\CatGame;
@@ -35,22 +36,23 @@ class AdminCategoryController extends Controller
     public function index()
     {
     }
+    //    ///////////////////////////////////////
+    public function crawler(Request $request)
+    {
+        $res = [];
+        $crawler = \Goutte::request('GET', $request->url);
+        $res['page_title'] = $crawler->filter('.page-title')->text("");
+        $res['meta'] = va_get_meta($request->url);
+        $parts = explode("/", $request->url);
+        $res['slug'] =  end($parts);
+        return redirect()->back()->with("crawler", $res);
+    }
+    //  //////////////////////////////////////// end crawler
     public function cat(Request $request)
     {
         $categories = Category::tree(false);
-        if ($request->has('selected')) {
-            $selected = $request->selected;
-        } else {
-            $selected = "";
-        }
-        if ($request->has('selected_blog')) {
-            $selected_blog = $request->selected_blog;
-        } else {
-            $selected_blog = "";
-        }
-
         $url = route('cat');
-        return view('admin.products.category.prd.index', compact('categories', 'url', 'selected_blog', 'selected'));
+        return view('admin.products.category.prd.index', compact('categories', 'url'));
     }
     ////////////////////////////////////////
     public function edit($id)
@@ -117,9 +119,11 @@ class AdminCategoryController extends Controller
             if ($request->parent == 0) {
                 $data['parent_id'] = 0;
                 $data['level'] = 0;
+                $last = (int) Category::where('parent_id', 0)->orderBy('position', 'DESC')->first()->position;
             } else {
                 $data['parent_id'] = $request->parent;
                 $data['level'] = Category::where('id', '=', $request->parent)->first()->level + 1;
+                $last = (int) Category::where('parent_id', $request->parent)->where('level', '=', $data['level'])->orderBy('position', 'DESC')->first()->position;
             }
             if ($request->has('img')) {
                 $path = "admin/images/category/banner/";
@@ -133,9 +137,10 @@ class AdminCategoryController extends Controller
                     return redirect()->back()->with('error', '1');
                 }
             }
+            $data['position'] = $last + 1;
             $created = Category::create($data);
             if ($created) {
-              
+
                 return redirect()->back()->with('ok', '1');
             }
             return redirect()->back()->with('error', '1');
@@ -145,7 +150,8 @@ class AdminCategoryController extends Controller
     ////////////////////////////////////////
     public function handle_edit(Request $request, FileInterface $file)
     {
-        $category = Category::where('id', $request->id)->firstOrFail();
+        $res['errors'] = [];
+        $res['s'] = true;
         $validator = Validator::make(
             $request->all(),
             [
@@ -178,9 +184,11 @@ class AdminCategoryController extends Controller
                 'gll.*.max' => "Có File ảnh vượt quá 500kb",
             ]
         );
+
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+            $res['errors'] = $validator->errors();
         } else {
+            $category = Category::where('id', $request->id)->firstOrFail();
             $data['name'] = $request->name;
             $data['title'] = $request->title;
             if ($request->slug == null) {
@@ -190,13 +198,6 @@ class AdminCategoryController extends Controller
             }
             $data['desc'] = $request->desc;
             $data['keywords'] = $request->keywords;
-            if ($request->parent == 0) {
-                $data['parent_id'] = 0;
-                $data['level'] = 0;
-            } else {
-                $data['parent_id'] = $request->parent;
-                $data['level'] = Category::where('id', '=', $request->parent)->first()->level + 1;
-            }
             if ($request->has('img')) {
                 if ($category->img != NULL)
                     $this->file->deleteFile("" . $category->img);
@@ -209,47 +210,15 @@ class AdminCategoryController extends Controller
                         $this->file->deleteFile("" . $category->icon);
                     $path_icon = "admin/images/category/icon/";
                     $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
-                } else {
-                    return redirect()->back()->with('error', '1');
                 }
             }
-            Category::where('id', $request->id)->update($data);
-            // if ($request->bundled_skin != null) {
-            //     if (bundled_skin_cat::where('cat_id',  $request->id)->first()) {
-            //         bundled_skin_cat::where('cat_id',  $request->id)->update(['skin_cat_id' => $request->bundled_skin]);
-            //     } else {
-            //         bundled_skin_cat::where('cat_id',  $request->id)->create(['skin_cat_id' => $request->bundled_skin, 'cat_id' => $request->id]);
-            //     }
-            // } else {
-            //     bundled_skin_cat::where('cat_id', '=', $request->id)->delete();
-            // }
-            // if ($request->has('products')) {
-            //     if (count($request->products) > 0) {
-            //         foreach ($request->products as $products_id) {
-            //             if (!bundled_accessory_cat::where('products_id', $products_id)->where('cat_id', $request->id)->first()) {
-            //                 bundled_accessory_cat::create([
-            //                     'products_id' => $products_id,
-            //                     'cat_id' => $request->id,
-            //                 ]);
-            //             }
-            //         }
-            //     }
-            // }
-            // if ($request->has('blogs')) {
-            //     if (count($request->blogs) > 0) {
-            //         foreach ($request->blogs as $posts) {
-            //             if (!RelatedPosts::where('cat_id', $request->id)->where('posts', $posts)->where('for', 'LIKE', "category")->first()) {
-            //                 RelatedPosts::create([
-            //                     'posts' => $posts,
-            //                     'cat_id' => $request->id,
-            //                     'for' => "category"
-            //                 ]);
-            //             }
-            //         }
-            //     }
-            // }
-            return redirect()->back()->with('update', '1');
+            $updated =  Category::where('id', $request->id)->update($data);
+            $res['name'] = $request->name;
+            if (!$updated) {
+                $res['s'] = false;
+            }
         }
+        return response()->json($res);
     }
 
     ////////////////////////////////////////
@@ -464,9 +433,10 @@ class AdminCategoryController extends Controller
     {
         $act = $request->act;
         $data['error'] = false;
+
         if ($act == "receive") {
             $idChild = $request->idChild;
-            $idParent = $request->idParent;
+            $idParent = $request->has('idParent') ? $request->idParent : null;
             $lv = $request->level;
             $updated =   Category::where('id',  $idChild)->update(['parent_id' => $idParent, 'level' => $lv]);
             if (!$updated) {
@@ -482,7 +452,69 @@ class AdminCategoryController extends Controller
                 }
             }
         }
+        if ($act == "loadEdit") {
+            $id = $request->id;
+            $category = Category::where('id', $id)->first();
+            $data['html_edit'] = '';
+            $data['html_edit'] .= view('components.admin.modal.category.edit', ['category' => $category]);
+        }
         return response()->json($data);
     }
     //  //////////////////////////////////////// end handle_category
+    //    ///////////////////////////////////////
+    public function category_block_view(Request $request)
+    {
+        $blockCategory = BlockCategory::all();
+        $type = $request->has('type') ? $request->get('type') : "add";
+        $isa = $type == "add";
+        $compact = ['blockCategory', 'type', 'isa'];
+        if (!$isa) {
+            $id = $request->id;
+            $block = BlockCategory::where('id', $id)->first();
+            $compact[] = "block";
+        }
+        return view('admin.products.category.prd.block.index', compact($compact));
+    }
+    //  //////////////////////////////////////// end category_block_view
+    //    ///////////////////////////////////////
+    public function category_block_handle(Request $request)
+    {
+        $t = $request->has('type') ? $request->get('type') : 'add';
+        $m = "No Content";
+        $s = "success";
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required',
+                'content' => 'required'
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        } else {
+            $data['title'] = $request->title;
+            $data['content'] = $request->content;
+            switch ($t) {
+                case 'add':
+                    if (!BlockCategory::create($data)) {
+                        $m = "thêm block thất bại";
+                        $s = "error";
+                    } else {
+                        $m = "thêm block thành công";
+                    }
+                    break;
+                case 'update':
+                    $id = $request->id;
+                    if (!BlockCategory::ưhere('id', $id)->update($data)) {
+                        $m = "update block thất bại";
+                        $s = "error";
+                    } else {
+                        $m = "update block thành công";
+                    }
+                    break;
+            }
+        }
+        return redirect()->back()->with($s, $m);
+    }
+    //  //////////////////////////////////////// end category_block_handle
 }

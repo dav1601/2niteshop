@@ -4,6 +4,9 @@
 .va-radius-fb {
     border-radius: 8px;
 }
+.cursor-pointer {
+    cursor: pointer !important;
+}
 .va-checkbox {
     position: relative;
     input {
@@ -72,10 +75,10 @@
         }
     }
     .button-vip-1 {
-        background-color: #D76FB4;
+        background-color: #d76fb4;
         &:hover {
             border: 1px solid white;
-            background-color: #D76FB4;
+            background-color: #d76fb4;
         }
     }
     .button-vip-3 {
@@ -86,10 +89,24 @@
         }
     }
     .button-vip-4 {
-        background-color: #FF3333;
+        background-color: #ff3333;
         &:hover {
             border: 1px solid white;
-            background-color: #FF3333;
+            background-color: #ff3333;
         }
+    }
+}
+@for $i from 1 through 10 {
+    .mb-#{calc($i * 10)} {
+        margin-bottom: calc($i * 10px);
+    }
+    .mt-#{calc($i * 10)} {
+        margin-top: calc($i * 10px);
+    }
+    .ml-#{calc($i * 10)} {
+        margin-left: calc($i * 10px);
+    }
+    .mr-#{calc($i * 10)} {
+        margin-right: calc($i * 10px);
     }
 }

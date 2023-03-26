@@ -3,8 +3,7 @@
     <link rel="stylesheet" href="{{ $file->ver_img('admin/plugin/tags/tagsinput.css') }}">
 @endsection
 @section('import_js')
-    <script
-        src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/products.js') @endphp">
+    <script src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/products.js') @endphp">
     </script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script
@@ -188,176 +187,115 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="main_img" class="custom-file-input" id="main_img">
-                                <label class="custom-file-label" for="main_img" id="forMain">Đổi hình ảnh chính không
-                                    sửa
-                                    đổi bỏ qua</label>
-                            </div>
-                            @error('main_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                            <div class="show_main mt-4">
-                                <img src="{{ $file->ver_img($product->main_img) }}" alt="">
-                            </div>
+                        <x-admin.form.file name='main_img' id="imgProductMain" :custom="[
+                            'plh' => 'Không chỉnh sửa hình ảnh chính 305x305 bỏ qua',
+                        ]" />
+                        <div class="show_main my-4">
+                            <img src="{{ $file->ver_img($product->main_img) }}" alt="">
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="sub_img" class="custom-file-input" id="sub_img">
-                                <label class="custom-file-label" for="sub_img" id="forSub">Đổi hình ảnh phụ không sửa
-                                    đổi bỏ
-                                    qua</label>
+                        <x-admin.form.file name='sub_img' id="imgProductSub" :custom="[
+                            'plh' => 'Không chỉnh sửa hình ảnh sub 305x305 bỏ qua',
+                        ]" />
+                        @if ($product->sub_img != null)
+                            <div class="show_main my-4">
+                                <img src="{{ $file->ver_img($product->sub_img) }}" alt="">
                             </div>
-                            @error('sub_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                            @if ($product->sub_img != null)
-                                <div class="show_main mt-4">
-                                    <img src="{{ $file->ver_img($product->sub_img) }}" alt="">
-                                </div>
-                            @endif
+                        @endif
+                        <x-admin.form.file name='bg' id="imgProductBg" :custom="[
+                            'plh' => 'Không chỉnh sửa bg bỏ qua',
+                        ]" />
+                        @if ($product->bg != null)
+                            <div class="show_main my-4">
+                                <img src="{{ $file->ver_img($product->bg) }}" alt="" width="100%"
+                                    height="auto">
+                            </div>
+                        @else
+                            <span>Chưa có hình ảnh background</span>
+                        @endif
+
+                        <x-admin.form.file name='gll700' id="imgProduct700" :multiple="true" :custom="[
+                            'plh' => 'Không chỉnh sửa gll700 bỏ qua',
+                        ]" />
+
+                        <div class="show_gll_700 my-4">
+                            <table class="table-borderless table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Img</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Index</th>
+                                        <th scope="col">Xoá</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="op_700">
+                                    @foreach ($gll700 as $gl700)
+                                        @if ($gl700->size == 700)
+                                            <tr>
+                                                <th scope="row">{{ $gl700->id }}</th>
+                                                <td>
+                                                    <img src="{{ $file->ver_img($gl700->link) }}" width="200"
+                                                        class="va-radius-fb" alt="">
+                                                </td>
+
+                                                <td>{{ $gl700->size }}</td>
+                                                <td>{{ $gl700->index }}</td>
+                                                <td>
+                                                    <i class="fas fa-trash delete_gll" data-id="{{ $gl700->id }}"></i>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+
+
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="bg" class="custom-file-input" id="bg_product">
-                                <label class="custom-file-label" for="bg_product" id="forBg">Đổi/Thêm hình ảnh
-                                    Backgroud
-                                    (Không đổi/thêm có bỏ qua)</label>
-                            </div>
-                            @error('bg')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                            @if ($product->bg != null)
-                                <div class="show_main mt-4">
-                                    <img src="{{ $file->ver_img($product->bg) }}" alt="" width="100%"
-                                        height="auto">
-                                </div>
-                            @else
-                                <span>Chưa có hình ảnh background</span>
-                            @endif
+                        {{-- ////// --}}
+                        <x-admin.form.file name='gll80' id="imgProduct80" :multiple="true" :custom="[
+                            'plh' => 'Không chỉnh sửa gll80 bỏ qua',
+                        ]" />
+                        <div class="show_gll_80 my-4">
+                            <table class="table-borderless table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Img</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Index</th>
+                                        <th scope="col">Xoá</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="op_80">
+                                    @foreach ($gll80 as $gl80)
+                                        @if ($gl80->size == 80)
+                                            <tr>
+                                                <th scope="row">{{ $gl80->id }}</th>
+                                                <td>
+                                                    <img src="{{ $file->ver_img($gl80->link) }}" class="va-radius-fb"
+                                                        alt="">
+                                                </td>
 
+                                                <td>{{ $gl80->size }}</td>
+                                                <td>{{ $gl80->index }}</td>
+                                                <td>
+                                                    <i class="fas fa-trash delete_gll" data-id="{{ $gl80->id }}"></i>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+
+
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="gll700[]" class="custom-file-input" id="gll700" multiple>
-                                <label class="custom-file-label" for="gll700" id="for700">Thêm Hình Ảnh Chi Tiết
-                                    700x700
-                                    (Không thêm bỏ qua)</label>
-                            </div>
-                            @error('gll700.*')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                            <div class="show_gll_700 mt-4">
-                                <table class="table-borderless table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Img</th>
-                                            <th scope="col">Size</th>
-                                            <th scope="col">Index</th>
-                                            <th scope="col">Xoá</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="op_700">
-                                        @foreach ($gll700 as $gl700)
-                                            @if ($gl700->size == 700)
-                                                <tr>
-                                                    <th scope="row">{{ $gl700->id }}</th>
-                                                    <td>
-                                                        <img src="{{ $file->ver_img($gl700->link) }}" width="200"
-                                                            class="va-radius-fb" alt="">
-                                                    </td>
-
-                                                    <td>{{ $gl700->size }}</td>
-                                                    <td>{{ $gl700->index }}</td>
-                                                    <td>
-                                                        <i class="fas fa-trash delete_gll"
-                                                            data-id="{{ $gl700->id }}"></i>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="gll80[]" class="custom-file-input" id="gll80" multiple>
-                                <label class="custom-file-label" for="gll80" id="for80">Hình Ảnh Chi Tiết
-                                    80x80</label>
-                            </div>
-                            @error('gll80.*')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                            <div class="show_gll_80 mt-4">
-                                <table class="table-borderless table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Img</th>
-                                            <th scope="col">Size</th>
-                                            <th scope="col">Index</th>
-                                            <th scope="col">Xoá</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="op_80">
-                                        @foreach ($gll80 as $gl80)
-                                            @if ($gl80->size == 80)
-                                                <tr>
-                                                    <th scope="row">{{ $gl80->id }}</th>
-                                                    <td>
-                                                        <img src="{{ $file->ver_img($gl80->link) }}" class="va-radius-fb"
-                                                            alt="">
-                                                    </td>
-
-                                                    <td>{{ $gl80->size }}</td>
-                                                    <td>{{ $gl80->index }}</td>
-                                                    <td>
-                                                        <i class="fas fa-trash delete_gll"
-                                                            data-id="{{ $gl80->id }}"></i>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
+                        {{-- ///////// --}}
                         <div class="row mx-0">
-                            <div class="form-group col-6 mb-5 pl-0">
+                            <x-admin.form.file class="col-6 mb-5 pl-0" name='banner' id="bannerProduct"
+                                :custom="[
+                                    'plh' => 'Banner đi kèm 0 chỉnh sửa bỏ qua',
+                                ]" />
+                            {{-- <div class="form-group col-6 mb-5 pl-0">
                                 <div class="custom-file">
                                     <input type="file" name="banner" class="custom-file-input" id="banner_prd">
                                     <label class="custom-file-label" for="banner_prd" id="forBannerPrd">Option 2: Banner
@@ -372,12 +310,13 @@
                                         </button>
                                     </div>
                                 @enderror
-                                @if ($product->banner != null)
-                                    <div class="show_main mt-4">
-                                        <img src="{{ $file->ver_img($product->banner) }}" alt="">
-                                    </div>
-                                @endif
-                            </div>
+
+                            </div> --}}
+                            @if ($product->banner != null)
+                                <div class="show_main my-4">
+                                    <img src="{{ $file->ver_img($product->banner) }}" alt="">
+                                </div>
+                            @endif
                             <div class="form-group col-6 mb-5 pr-0">
                                 <input type="text" class="form-control" name="banner_link"
                                     value="{{ $product->banner_link }}" id=""

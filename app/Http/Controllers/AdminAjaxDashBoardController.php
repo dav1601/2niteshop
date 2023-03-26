@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class AdminAjaxDashBoardController extends Controller
 {
@@ -166,24 +167,19 @@ class AdminAjaxDashBoardController extends Controller
         $id = $request->id;
         switch ($act) {
             case 'load':
-                $list_section = SectionHome::select(['category_id', 'section'])->where('show_id', $id)->get();
-                $list_section = collect($list_section)->groupBy("section")->toArray();
-                $array = [];
-                $i = 0;
-                foreach ($list_section as  $sections) {
-                    $array[$i] = Arr::pluck($sections, "category_id");
-                    array_unshift($array[$i], 0);
-                    $i++;
-                }
-                $section = $array;
+                $section = SectionHome::select(['category_id', 'section'])->where('show_id', $id)->get();
+                $section = collect($section)->groupBy("section")->toArray();
                 break;
 
             default:
                 break;
         }
-        if (count($section) > 0) {
+        if (count($section) > 0 && $act != "load") {
+            $show = true;
             foreach ($section as $key => $item) {
-                $html .= view('components.admin.section.home', ['index' => $key, 'selected' => $item, 'showid' => $id]);
+                $show = $item['show'] == "true";
+                $selected = array_key_exists("selected", $item) ? $item['selected'] : [];
+                $html .= view('components.admin.section.home', ['index' => $key, 'selected' => $selected, 'showid' => $id, 'show' => $show, 'idSection' => $item['id']]);
                 unset($item);
             }
         }

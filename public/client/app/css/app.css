@@ -3721,6 +3721,20 @@ a {
   text-decoration: none;
 }
 
+#top-category .grid-row {
+  border: none !important;
+  justify-content: space-between;
+  align-items: center;
+}
+#top-category .grid-col {
+  border: none !important;
+  background: none !important;
+}
+#top-category .grid-col img {
+  width: 100% !important;
+  height: auto !important;
+}
+
 .show__home {
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -3767,6 +3781,7 @@ body {
   font-weight: 400;
   overflow-x: hidden;
   scroll-behavior: smooth !important;
+  background-size: cover;
 }
 
 #home__blogs {
@@ -4348,7 +4363,6 @@ body {
 }
 #biad__content--home .home__right--slide #homeSlide {
   position: relative;
-  height: 100%;
 }
 #biad__content--home .home__right--slide #homeSlide ol {
   margin-bottom: 1.5rem;
@@ -4368,7 +4382,7 @@ body {
   outline: none;
   border: none;
   font-size: 30px;
-  color: #277b8c;
+  color: #2c3e50;
   visibility: hidden;
 }
 #biad__content--home .home__right--slide .slide__btn:hover {

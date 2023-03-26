@@ -1,9 +1,5 @@
 $(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
+
     jQuery.loading = function loading() {
         $("#page__loading").removeClass("d-none");
     };
@@ -40,6 +36,9 @@ $(function () {
                 $(ele).remove();
             }
         } else {
+            if (errors.length <= 0) {
+                return;
+            }
             for (let index = 0; index < form.length; index++) {
                 let element = form[index];
                 let name = element.getAttribute("name");
@@ -64,11 +63,11 @@ $(function () {
         const id = el.getAttribute("id");
         let html = "";
         if (array.length <= 1) {
-            html += `<div class="preview_img my-3 preview-${id}">
+            html += `<div class="preview_img text-center my-3 preview-${id}">
             <img src="${array[0]}" style="max-width:100%; max-height:600px;" alt="preview" class="preview_item">
         </div>`;
         } else {
-            html += `<div class="d-flex flex-wrap preview_img  --mul  my-3 preview-${id}">`;
+            html += `<div class="d-flex flex-wrap preview_img justify-content-center  --mul  my-3 preview-${id}">`;
             for (let j = 0; j < array.length; j++) {
                 html += ` <div class="mb-4">
                 <img src="${array[j]}" style="max-width:350px ; max-height: 600px; height:auto"  alt="preview" class="preview_item mx-2 border-preview  shadow-1-strong rounded mb-4">
@@ -84,12 +83,14 @@ $(function () {
     jQuery.preview_img = function preview_img(el) {
         let array = [];
         let arrayName = [];
+
         let files = el[0].files;
         let element = el[0];
         for (let index = 0; index < files.length; index++) {
             array.push(window.URL.createObjectURL(files[index]));
             arrayName.push(files[index].name);
         }
+
         el.next().text(arrayName.toString());
         let html = $.render_img(array, element);
         return el.parent(".custom-file").parent(".form-group").after(html);

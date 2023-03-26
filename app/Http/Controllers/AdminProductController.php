@@ -529,7 +529,7 @@ class AdminProductController extends Controller
         $res['price'] = preg_replace('/\D/', '', $crawler->filter('.product-price')->text(0));
         $res["price_new"] = preg_replace('/\D/', '', $crawler->filter('.product-price-new')->text(0));
         $res["price_old"] = preg_replace('/\D/', '', $crawler->filter('.product-price-old')->text(0));
-        $res['meta'] = va_get_meta("https://game.haloshop.vn/may-nintendo-switch/new-nintendo-switch-gray-bh-3-thang");
+        $res['meta'] = va_get_meta($request->url);
         $res['spec'] = $crawler->filter('#tab-specification')->html("");
         $res["content"] = $crawler->filter(".tab-content .block-content")->html("");
         $res["model"] = $crawler->filter(".product-model span")->text("");

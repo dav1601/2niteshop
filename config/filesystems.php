@@ -38,6 +38,13 @@ return [
             'driver' => 'local',
             'root' => storage_path('backup'),
         ],
+        'google_lfm' => [
+            'driver' => 'google',
+            'clientId' => env('LFM_GOOGLE_DRIVE_CLIENT_ID'),
+            'clientSecret' => env('LFM_GOOGLE_DRIVE_CLIENT_SECRET'),
+            'refreshToken' => env('LFM_GOOGLE_DRIVE_REFRESH_TOKEN'),
+            'folder' => env('LFM_GOOGLE_DRIVE_FOLDER'),
+        ],
         'google' => [
             'driver' => 'google',
             'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),

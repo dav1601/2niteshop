@@ -8,7 +8,9 @@
 .char__255 {
     width: 200px;
 }
-
+.trans-025-all {
+    transition: all 0.2s ease;
+}
 #page__loading {
     position: fixed;
     left: 0;

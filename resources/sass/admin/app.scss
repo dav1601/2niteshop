@@ -24,7 +24,21 @@ body {
         }
     }
 }
-
+.grid-row {
+    border: none !important;
+}
+.grid-col {
+    border: none !important;
+    background: none !important;
+    img {
+        width: 100% !important;
+        height: auto !important;
+    }
+}
+.grid-container.container {
+    width: 100% !important;
+    max-width: 100% !important;
+}
 .table-center {
     td {
         cursor: pointer;
@@ -621,3 +635,11 @@ i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
     top: 0;
     left: 0;
 }
+.create-page {
+    &-item {
+        padding: 10px;
+        background: #ecf0f1;
+        border-radius: 8px;
+    }
+}
+

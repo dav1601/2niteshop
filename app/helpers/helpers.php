@@ -39,12 +39,25 @@ function price_product_cost($cart)
     }
     return (int)$price * $qty;
 }
-function get_crawler($crawler = [], $key = null)
+function array_search_key($needle_key, $array)
 {
+    foreach ($array as $key => $value) {
+        if ($key == $needle_key) return $value;
+        if (is_array($value)) {
+            if (($result = array_search_key($needle_key, $value)) !== false)
+                return $result;
+        }
+    }
+    return false;
+}
+function get_crawler($key = null)
+{
+    $crawler = session()->has('crawler') ? session()->get('crawler') : [];
+
     if (count($crawler) <= 0) {
         return "";
     }
-    return $crawler[$key];
+    return array_search_key($key, $crawler);
 }
 function is_product_new($created_at)
 {

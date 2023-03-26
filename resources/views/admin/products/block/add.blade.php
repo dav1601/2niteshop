@@ -7,8 +7,7 @@
 @endsection
 @section('import_js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script
-        src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/products.js') @endphp">
+    <script src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/products.js') @endphp">
     </script>
     <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
     </script>
@@ -18,17 +17,7 @@
 @endsection
 
 @section('content')
-    @if (session('succes') == 1)
-        <script>
-            toastr.success("Thêm Block Sản Phẩm Thành Công");
-        </script>
-    @elseif (session('success') == 2)
-        <script>
-            toastr.success("Thêm Block Sản Phẩm Thất Bại");
-        </script>
-    @endif
-
-
+    
     <div id="block__product" class="row mx-0">
         <div class="col-12 mt-4 p-0">
             <div class="w-100">
@@ -106,4 +95,4 @@
     </div>
 </div>
 {{-- ------------------- --}}
-<x-admin.modal.product.select  btn="blockPrd" />
+<x-admin.modal.product.select btn="blockPrd" />

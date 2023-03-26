@@ -37,38 +37,6 @@ class ClearDataOrderStats extends Command
         Orders::truncate();
         Statistics::truncate();
         Customers::truncate();
-        $products = Products::all();
-        foreach ($products as  $prd) {
-            $c1 = $prd->cat_id;
-            $c2 = $prd->sub_1_cat_id;
-            $c3 = $prd->sub_2_cat_id;
-            if ($c1) {
-                if (!ProductCategories::where('products_id', $prd->id)->where('category_id', $c1)->first()) {
-                    ProductCategories::create([
-                        'products_id' => $prd->id,
-                        'category_id' => $c1
-                    ]);
-                }
-            }
-
-
-            if ($c2) {
-                if (!ProductCategories::where('products_id', $prd->id)->where('category_id', $c2)->first()) {
-                    ProductCategories::create([
-                        'products_id' => $prd->id,
-                        'category_id' => $c2
-                    ]);
-                }
-            }
-            if ($c3) {
-                if (!ProductCategories::where('products_id', $prd->id)->where('category_id', $c3)->first()) {
-                    ProductCategories::create([
-                        'products_id' => $prd->id,
-                        'category_id' => $c3
-                    ]);
-                }
-            }
-        }
         return $this->info('Cleaned Data');
     }
 }

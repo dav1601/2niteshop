@@ -2,8 +2,7 @@
 @section('import_css')
 @endsection
 @section('import_js')
-    <script
-        src="{{ asset('admin/app/js/dashboard.js') }}?ver=@php echo filemtime('admin/app/js/dashboard.js') @endphp">
+    <script src="{{ asset('admin/app/js/dashboard.js') }}?ver=@php echo filemtime('admin/app/js/dashboard.js') @endphp">
     </script>
     <script src="{{ $file->ver('admin/app/js/show_home.js') }}"></script>
     <script>
@@ -42,20 +41,10 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="main_img" class="custom-file-input" id="main_img">
-                                <label class="custom-file-label" for="main_img" id="forMain">Banner Chính</label>
-                            </div>
-                            @error('main_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
+                        <x-admin.form.file name='main_img' id="main_img" :custom="[
+                            'plh' => 'Banner Chính',
+                        ]" />
+
                         <div class="form-group mb-5">
                             <label for="">Link Main</label>
                             <input type="text" class="form-control" name="link_main" id=""
@@ -69,21 +58,10 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="use_img" class="custom-file-input" id="use_img">
-                                <label class="custom-file-label" for="use_img" id="forUse">Banner cẩm nang sử
-                                    dụng</label>
-                            </div>
-                            @error('use_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
+                        <x-admin.form.file name='use_img' id="use_img" :custom="[
+                            'plh' => 'Banner cẩm nang sử
+                                                                                                                                                                                                                                    dụng',
+                        ]" />
                         <div class="form-group mb-5">
                             <label for="">Link Usage</label>
                             <input type="text" class="form-control" name="link_use" id=""
@@ -97,21 +75,11 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="instruct_img" class="custom-file-input" id="instruct_img">
-                                <label class="custom-file-label" for="instruct_img" id="forinstruct">Banner hướng dẫn tạo
-                                    tài khoản</label>
-                            </div>
-                            @error('instruct_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
+
+                        <x-admin.form.file name='instruct_img' id="instruct_img" :custom="[
+                            'plh' => 'Banner phụ kiện khuyên
+                                                                                                                                                                                                                                                            dùng',
+                        ]" />
                         <div class="form-group mb-5">
                             <label for="">Link Hướng dẫn</label>
                             <input type="text" class="form-control" name="link_instruct" id=""
@@ -125,7 +93,7 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mb-5">
+                        {{-- <div class="form-group mb-5">
                             <div class="custom-file">
                                 <input type="file" name="access_img" class="custom-file-input" id="access_img">
                                 <label class="custom-file-label" for="access_img" id="foraccess">Banner phụ kiện khuyên
@@ -139,7 +107,11 @@
                                     </button>
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
+                        <x-admin.form.file name='access_img' id="access_img" :custom="[
+                            'plh' => 'Banner phụ kiện khuyên
+                                                                                                                                                                                                                                                            dùng',
+                        ]" />
                         <div class="form-group mb-5">
                             <label for="">Link phụ kiện</label>
                             <input type="text" class="form-control" name="link_access" id=""
@@ -153,21 +125,11 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="fix_img" class="custom-file-input" id="fix_img">
-                                <label class="custom-file-label" for="fix_img" id="forfix">Banner lỗi và cách khắc
-                                    phục</label>
-                            </div>
-                            @error('fix_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
+
+                        <x-admin.form.file name='fix_img' id="fix_img" :custom="[
+                            'plh' => 'Banner lỗi và cách khắc
+                                                                                                                                                                                                                                                                                                                            phục',
+                        ]" />
                         <div class="form-group mb-5">
                             <label for="">Link Fix</label>
                             <input type="text" class="form-control" name="link_fix" id=""
@@ -194,7 +156,7 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-12 my-4 p-0">
+                        <div class="col-12 my-4 pb-4" >
                             <div class="w-100">
                                 <div class="card">
                                     <div class="card-header text-center">
@@ -206,29 +168,13 @@
                                         <input type="hidden" name="section" value="0" id="count__section">
                                     </div>
                                 </div>
-                                <div id="home__section">
+                                <ul id="home__section">
 
-                                </div>
+                                </ul>
                             </div>
                         </div>
 
-                        {{-- <div class="form-group mb-5">
-                            <label for="">Tab danh mục</label>
-                            <select class="custom-select" name="tab" id="">
-                                @foreach (Config::get('navi.tab') as $tab)
-                                    <option value="{{ $tab }}">{{ $tab }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Vị trí</label>
-                            <select class="custom-select" name="position" id="">
-                                @foreach (Config::get('navi.position_home') as $pos)
-                                    <option value="{{ $pos }}">{{ $pos }}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        <div class="col-12 mb-4 p-0">
+                        {{-- <div class="col-12 mb-4 p-0">
                             <div class="w-100">
                                 <div class="card">
                                     <div class="card-header text-center">
@@ -241,7 +187,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group mb-5">
                             <input type="submit" value="THÊM" class="btn navi_btn w-100">

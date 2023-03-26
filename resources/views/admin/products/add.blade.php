@@ -1,15 +1,10 @@
 @extends('admin.layout.app')
-@section('import_css')
-    <link rel="stylesheet" href="{{ asset('admin/plugin/tags/tagsinput.css') }}">
-@endsection
+
 @section('import_js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/products.js') @endphp">
-    </script>
-    <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
-    </script>
-    <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}"></script>
+    <script src="{{ $file->ver('admin/app/js/products.js') }}"></script>
     <script>
+        // if (route('current'))
         var producer = {{ Js::from($producer) }};
     </script>
     {{-- <script src="{{ asset('admin/app/js/related_all.js') }}"></script> --}}
@@ -26,7 +21,7 @@
         </script>
     @endif
 
-    <div id="product" class="row mx-0">
+    <div class="row mx-0">
         <div class="col-12 mt-4 p-0">
             <div class="w-100">
                 <div class="card">
@@ -49,7 +44,7 @@
                         <div class="form-group mb-5">
                             <label for="">Tên sản phẩm</label>
                             <input type="text" class="form-control" name="name" id=""
-                                value="{{ old('name') }}{{ get_crawler($crawler, 'page_title') }}" placeholder="">
+                                value="{{ old('name') }}{{ get_crawler('page_title') }}" placeholder="">
                             @error('name')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -65,7 +60,7 @@
                                 $desc = '';
                                 $kws = '';
                                 if (count($crawler) > 0) {
-                                    $meta = get_crawler($crawler, 'meta');
+                                    $meta = get_crawler('meta');
                                     $desc = $meta['desc'];
                                     $kws = $meta['kws'];
                                 }
@@ -98,7 +93,7 @@
                                 $price = 0;
                                 $price_cost = 0;
                                 if (count($crawler) > 0) {
-                                    $price = (int) get_crawler($crawler, 'price') != 0 ? (int) get_crawler($crawler, 'price') : (int) get_crawler($crawler, 'price_new');
+                                    $price = (int) get_crawler('price') != 0 ? (int) get_crawler('price') : (int) get_crawler('price_new');
                                     $price_cost = $price - ($price * 20) / 100;
                                 }
 
@@ -154,8 +149,7 @@
                         <div class="form-group mb-5">
                             <label for="">Model</label>
                             <input type="text" class="form-control" name="model"
-                                value="{{ old('model') }}{{ get_crawler($crawler, 'model') }}" id=""
-                                placeholder="">
+                                value="{{ old('model') }}{{ get_crawler('model') }}" id="" placeholder="">
                             @error('model')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -180,7 +174,7 @@
                         </div>
                         <div class="form-group mb-5">
                             <label for="">Thông Tin</label>
-                            <textarea name="info" id="info__tiny" class="form-control my-editor">{!! old('info') !!}{!! get_crawler($crawler, 'spec') !!}</textarea>
+                            <textarea name="info" id="info__tiny" class="form-control my-editor">{!! old('info') !!}{!! get_crawler('spec') !!}</textarea>
                             @error('info')
                                 <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                     {{ $message }}
@@ -204,78 +198,34 @@
                         </div>
                         <x-admin.form.file name='main_img' id="imgProductMain" :custom="[
                             'plh' => 'Hình Ảnh Chính
-                                                                                    305x305',
+                                                                                                                                                            305x305',
                         ]" />
                         <x-admin.form.file name='sub_img' id="imgProductSub" :custom="[
                             'plh' => 'Hình Ảnh Phụ
-                                                            305x305',
+                                                                                                                                    305x305',
                         ]" />
-                        {{-- <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="main_img" class="custom-file-input" id="main_img">
-                                <label class="custom-file-label" for="main_img" id="forMain">Hình Ảnh Chính
-                                    305x305</label>
-                            </div>
-                            @error('main_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div> --}}
-                        {{-- <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="sub_img" class="custom-file-input" id="sub_img">
-                                <label class="custom-file-label" for="sub_img" id="forSub">Hình Ảnh Phụ
-                                    305x305</label>
-                            </div>
-                            @error('sub_img')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div> --}}
+
                         <x-admin.form.file name='bg' id="imgProductBg" :custom="[
                             'plh' => 'Hình Ảnh Backgroud
-                                                                                                                                                                                                                            (Không có bỏ
-                                                                                                                                                                                                                            qua)',
+                                                                                                                                                                                                                                                                                                    (Không có bỏ
+                                                                                                                                                                                                                                                                                                    qua)',
                         ]" />
-                        {{-- <div class="form-group mb-5">
-                            <div class="custom-file">
-                                <input type="file" name="bg" class="custom-file-input" id="bg_product">
-                                <label class="custom-file-label" for="bg_product" id="forBg">Hình Ảnh Backgroud
-                                    (Không có bỏ
-                                    qua)</label>
-                            </div>
-                            @error('bg')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div> --}}
+
                         <x-admin.form.file name='gll700' id="imgProduct700" :multiple="true" :custom="[
                             'plh' => 'Hình Ảnh Chi Tiết
-                                                                                                                                                                                                            700x700',
+                                                                                                                                                                                                                                                                                    700x700',
                         ]" />
 
                         <x-admin.form.file name='gll80' id="imgProduct80" :multiple="true" :custom="[
                             'plh' => 'Hình Ảnh Chi Tiết
-                                                                                                                                                                                                            80x80',
+                                                                                                                                                                                                                                                                                    80x80',
                         ]" />
 
                         <div class="row mx-0">
                             <x-admin.form.file class="col-6 pl-0" name='banner' id="bannerProduct" :custom="[
                                 'plh' => 'Option 2: Banner
-                                                                                                                                                        Đi
-                                                                                                                                                        kèm',
+                                                                                                                                                                                                                                            Đi
+                                                                                                                                                                                                                                            kèm',
                             ]" />
                             {{-- <div class="form-group col-6 mb-5 pl-0">
                                 <div class="custom-file">
@@ -351,7 +301,7 @@
                                     <label for="">Nhà Sản Xuất</label>
                                     <div class="form-group row mx-0 mt-4">
                                         <input type="text" id="producer" name="producer"
-                                            value="{{ get_crawler($crawler, 'producer') }}" class="form-control"
+                                            value="{{ get_crawler('producer') }}" class="form-control"
                                             placeholder="Nhập Tên Nhà sản xuất">
 
                                     </div>

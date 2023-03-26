@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('show_home', function (Blueprint $table) {
-           $table->dropColumn(['cat' , 'cat_2' , 'option']);
+            $table->dropColumn(['cat', 'cat_2', 'option', 'cat_digital']);
         });
     }
 

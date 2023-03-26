@@ -111,6 +111,14 @@ Route::prefix('auth/api/')->group(function () {
 });
 Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::prefix('admin/')->group(function () {
+        Route::prefix('page_builder/')->group(function () {
+            Route::get('create', 'AdminPageBuilder@create')->name('pgb.create');
+            Route::get('edit', 'AdminPageBuilder@edit')->name('pgb.edit');
+            Route::get('index', 'AdminPageBuilder@index')->name('pgb.index');
+            Route::post('handle', 'AdminPageBuilder@handle')->name('pgb.handle');
+            Route::post('render/package', 'AdminPageBuilder@render_package')->name('pgb.render.package');
+        });
+        //  //////////////////////////////////////// endfunction
         Route::get('fullcalender', 'FullCalenderController@index')->name('fullcalender');
         Route::post('fullcalenderAjax', 'FullCalenderController@ajax')->name('fullcalender_ajax');
         Route::prefix('auth/api/')->group(function () {
@@ -189,7 +197,10 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
                 Route::post('handle_update', 'AdminBannerController@handle_update')->name('handle_update_slide');
             });
             Route::prefix('category/product/')->group(function () {
+                Route::get('block', 'AdminCategoryController@category_block_view')->name('category_block_view');
+                Route::post('block/handle', 'AdminCategoryController@category_block_handle')->name('category_block_handle');
                 Route::post('handle', 'AdminCategoryController@handle_category')->name('handle_category');
+                Route::post('crawler', 'AdminCategoryController@crawler')->name('crawler.category');
             });
         });
         // /////////////////////////////////////////
@@ -277,8 +288,6 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
     });
 });
 
-
-
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['auth', 'web']], function () {
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });

@@ -18,7 +18,9 @@ class categories extends Component
     public $id;
     public $customattr;
     public $idard;
-    public function __construct($selected = [], $show = "", $name = "category[]", $class = "check_ins", $id = "category__", $customattr = "",  $idard = "accordionCateogries")
+    public $classbtn;
+    public $classcoll;
+    public function __construct($selected = [], $show = false, $name = "category[]", $class = "check_ins", $id = "category__", $customattr = "",  $idard = "accordionCateogries", $classbtn = "", $classcoll = "")
     {
         $this->selected = $selected;
         $this->show = $show;
@@ -27,6 +29,8 @@ class categories extends Component
         $this->id = $id;
         $this->customattr = $customattr;
         $this->idard = $idard;
+        $this->classbtn = $classbtn;
+        $this->classcoll = $classcoll;
     }
 
     /**

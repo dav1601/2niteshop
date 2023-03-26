@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('admin/plugin/tags/tagsinput.css') }}">
     @yield('import_css')
     <x-app.plugin.debug />
     @routes
@@ -49,15 +50,14 @@
         integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ $file->ver('admin/app/js/config.js') }}"></script>
-    <script src="https://cdn.tiny.cloud/1/46qb89d4cz98aitjnlsvzjvtse38gjx9wq9jacc0re2v39y6/tinymce/5/tinymce.min.js"
-        referrerpolicy="origin"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
         integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
     <script src="{{ $file->ver('admin/app/js/tinymce.js') }}"></script>
-    <script src="{{ asset('admin/app/js/app.js') }}?ver=@php echo filemtime('admin/app/js/app.js') @endphp"></script>
+    <script src="{{ $file->ver('admin/app/js/app.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -67,12 +67,18 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.min.js"></script>
     <script src="{{ $file->ver('js/laravel-server/laravel-echo-server.js') }}"></script>
+    <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}"></script>
+    <script src="https://cdn.tiny.cloud/1/bho6ckhdsdjmv2bmyaxmm2dn52w16ounvk9au2ys2oqo8gty/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script src="{{ $file->ver('admin/app/js/tinymce.js') }}"></script>
+    <script src="{{ $file->ver('admin/app/js/relationship.js') }}"></script>
     @yield('import_js')
 
 </head>
 
 <body>
     <x-layout.pageloading />
+    <x-admin.layout.response />
     <div id="wrapper">
         <div id="sidebar">
             <div class="sidebar">
@@ -124,6 +130,13 @@
                                             </a>
                                         </li>
                                         <li class="item">
+                                            <a href="{{ route('pgb.create') }}"
+                                                class="{{ $route == 'pgb.create' ? 'route_active' : '' }}">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Page Builder</span>
+                                            </a>
+                                        </li>
+                                        <li class="item">
                                             <a href="{{ route('add_cofhome_view') }}"
                                                 class="{{ $route == 'add_cofhome_view' ? 'route_active' : '' }}">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
@@ -171,6 +184,13 @@
                                                 class="{{ $route == 'product_block_view' ? 'route_active' : '' }}">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
                                                 <span>Thêm Block Sản Phẩm</span>
+                                            </a>
+                                        </li>
+                                        <li class="item">
+                                            <a href="{{ route('category_block_view', ['type' => 'add']) }}"
+                                                class="{{ $route == 'category_block_view' ? 'route_active' : '' }}">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Thêm Block Danh Mục</span>
                                             </a>
                                         </li>
                                         <li class="item">

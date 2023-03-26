@@ -1,5 +1,5 @@
-<div class="card secsion__home my-3">
-    <div class="card-header">
+<li class="card secsion__home my-3" data-index="{{ $index }}">
+    <div class="card-header cursor-pointer">
         <div class="d-flex justify-content-between">
             <div class="secsion__home--header">
                 Section-{{ $index + 1 }}
@@ -14,10 +14,10 @@
         @php
             $name = 'section-category-' . $index . '[]';
             $id = 'category__section-' . $index;
-            $attr = 'data-index=' . $index;
+            $attr = 'data-index=' . $index . ' ' . 'section-id=' . $idSection;
             $idard = 'section-accord-' . $index;
         @endphp
-        <x-admin.product.categories :name="$name" class="section__category" :id="$id" :customattr="$attr"
-            :selected="$selected" :idard="$idard" />
+        <x-admin.product.categories :show="$show" classcoll="section-home-coll" :name="$name"
+            class="section__category" :id="$id" :customattr="$attr" :selected="$selected" :idard="$idard" />
     </div>
-</div>
+</li>

@@ -1,9 +1,5 @@
 $(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
+    
     var currentPage = $(".page-item.active .page-link").attr("data-page");
     var prefix = "#user_filter--";
     var url = route("show_user_ajax");

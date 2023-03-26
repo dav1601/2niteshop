@@ -149,6 +149,7 @@ Cập Nhật Danh Mục
                                 @endif
                             </div>
                         </div>
+                        
                         <div class="form-group mb-5">
                             <label for="">Icon</label>
                             <div class="custom-file">
@@ -172,6 +173,8 @@ Cập Nhật Danh Mục
                                 @endif
                             </div>
                         </div>
+
+
                         <div class="form-group mb-5">
                             <label for="">Galley Banner (Chỉ Dành Cho Digital)</label>
                             <div class="custom-file">

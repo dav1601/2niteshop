@@ -1,9 +1,5 @@
 $(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
+  
 
     $(document).on("change", "#img", function () {
         var file = $(this)[0].files;
@@ -164,6 +160,6 @@ $(function () {
     });
     load_data();
     //   /////////////////////////////////////////////////
-   
+
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

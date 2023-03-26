@@ -13,11 +13,7 @@
 @section('name')
     Danh Mục Sản Phẩm
 @endsection
-
 @section('content')
-    <input type="hidden" name="" id="array__selected" value="{{ $selected }}">
-    <input type="hidden" name="" id="url__selected" value="{{ $url }}">
-    <input type="hidden" name="" id="array__selected--blog" value="{{ $selected_blog }}">
     <div id="cat__add--product">
         <div class="row mx-0">
             <div class="col-12 mt-4 p-0">
@@ -46,11 +42,27 @@
                             </script>
                         @endif
                         <div class="card-body">
+                            <div class="form-group w-100">
+                                {!! Form::open(['url' => route('crawler.category'), 'method' => 'POST']) !!}
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" name="url" required
+                                            placeholder="Nhập Url của danh mục halo shop">
+
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="submit" value="Crawl" class="btn w-100 navi_btn text-center">
+
+                                    </div>
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
                             {!! Form::open(['url' => route('handle_add_cat'), 'method' => 'POST', 'files' => true]) !!}
                             <div class="form-group mb-5">
                                 <label for="">Tên Danh Mục</label>
                                 <input type="text" class="form-control" name="name" id=""
-                                    placeholder="Tên Danh Mục (!Duy Nhất)" value="{{ old('name') }}">
+                                    placeholder="Tên Danh Mục (!Duy Nhất)"
+                                    value="{{ old('name') }}{{ get_crawler('page_title') }}">
                                 @error('name')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -63,7 +75,7 @@
                             <div class="form-group mb-5">
                                 <label for="">Title</label>
                                 <input type="text" class="form-control" name="title" id=""
-                                    placeholder="Title Danh Mục" value="{{ old('title') }}">
+                                    placeholder="Title Danh Mục" value="{{ old('title') }}{{ get_crawler('title') }}">
                                 @error('title')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -76,7 +88,7 @@
                             <div class="form-group mb-5">
                                 <label for="">Slug</label>
                                 <input type="text" class="form-control" name="slug" id=""
-                                    placeholder="Slug (!Duy Nhất)" value="{{ old('slug') }}">
+                                    placeholder="Slug (!Duy Nhất)" value="{{ old('slug') }}{{ get_crawler('slug') }}">
                                 @error('slug')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -89,7 +101,7 @@
                             {{-- --}}
                             <div class="form-group mb-5">
                                 <label for="">Description</label>
-                                <textarea type="text" class="form-control" name="desc" id="" placeholder="Description danh mục">{{ old('desc') }}</textarea>
+                                <textarea type="text" class="form-control" name="desc" id="" placeholder="Description danh mục">{{ old('desc') }}{{ get_crawler('desc') }}</textarea>
                                 @error('desc')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -103,7 +115,7 @@
                             <div class="form-group mb-5">
                                 <label for="">Keywords</label>
                                 <input type="text" data-role="tagsinput" class="form-control" name="keywords"
-                                    value="">
+                                    value="{{ get_crawler('kws') }}">
                                 @error('keywords')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -118,11 +130,7 @@
                                 <label for="">Danh Mục Cha</label>
                                 <select class="custom-select" name="parent" id="">
                                     <option value="0">Là Danh Mục Chính</option>
-                                    @foreach ($categories as $cat)
-                                        <option value="{{ $cat->id }}">{{ str_repeat('--', $cat->level) }}
-                                            {{ $cat->name }}
-                                        </option>
-                                    @endforeach
+                                    <x-admin.form.select.option :categories="$categories" />
                                 </select>
                             </div>
                             {{-- --}}
@@ -130,8 +138,8 @@
 
                             <x-admin.form.file name='icon' id="iconCategory" :custom="[
                                 'plh' => 'Icon Danh Mục (!Chỉ
-                                                                                                                    dành cho
-                                                                                                                    danh mục CHÍNH)',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dành cho
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        danh mục CHÍNH)',
                             ]" />
 
 
@@ -163,6 +171,28 @@
             </div>
 
             {{-- END SHOW --}}
+        </div>
+    </div>
+    <div class="modal show" id="m_editCategory" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="m_editCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            {!! Form::open(['url' => '#', 'method' => 'POST', 'files' => true, 'class' => 'formUpdateCategory']) !!}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chỉnh sửa slide</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            {!! Form::close() !!}
         </div>
     </div>
 @endsection

@@ -1,9 +1,5 @@
 $(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
+
     $(document).on("change", "#type", function () {
         var val = $(this).val();
         if (val != "") {
@@ -27,30 +23,30 @@ $(function () {
         }
     });
     var prefix_add = "#task__add--";
-    $(document).on("change", "#main_img", function () {
-        var file = $(this)[0].files;
-        $("#forMain").html(file[0].name);
-    });
-    $(document).on("change", "#use_img", function () {
-        var file = $(this)[0].files;
-        $("#forUse").html(file[0].name);
-    });
-    $(document).on("change", "#val_img", function () {
-        var file = $(this)[0].files;
-        $("#forVImg").html(file[0].name);
-    });
-    $(document).on("change", "#instruct_img", function () {
-        var file = $(this)[0].files;
-        $("#forinstruct").html(file[0].name);
-    });
-    $(document).on("change", "#access_img", function () {
-        var file = $(this)[0].files;
-        $("#foraccess").html(file[0].name);
-    });
-    $(document).on("change", "#fix_img", function () {
-        var file = $(this)[0].files;
-        $("#forfix").html(file[0].name);
-    });
+    // $(document).on("change", "#main_img", function () {
+    //     var file = $(this)[0].files;
+    //     $("#forMain").html(file[0].name);
+    // });
+    // $(document).on("change", "#use_img", function () {
+    //     var file = $(this)[0].files;
+    //     $("#forUse").html(file[0].name);
+    // });
+    // $(document).on("change", "#val_img", function () {
+    //     var file = $(this)[0].files;
+    //     $("#forVImg").html(file[0].name);
+    // });
+    // $(document).on("change", "#instruct_img", function () {
+    //     var file = $(this)[0].files;
+    //     $("#forinstruct").html(file[0].name);
+    // });
+    // $(document).on("change", "#access_img", function () {
+    //     var file = $(this)[0].files;
+    //     $("#foraccess").html(file[0].name);
+    // });
+    // $(document).on("change", "#fix_img", function () {
+    //     var file = $(this)[0].files;
+    //     $("#forfix").html(file[0].name);
+    // });
     $(document).on("change", "#cat", function () {
         var cat_id = $(this).val();
         if (cat_id != "") {
@@ -216,118 +212,123 @@ $(function () {
     // fullcalender
     var url1 = route("fullcalender");
     var url2 = route("fullcalender_ajax");
-    var calendar = $("#calendar").fullCalendar({
-        header: {
-            left: "prev,next today",
-            center: "title",
-            right: "month,agendaWeek,agendaDay",
-        },
+    if (route().current("dashboard")) {
+        var calendar = $("#calendar").fullCalendar({
+            header: {
+                left: "prev,next today",
+                center: "title",
+                right: "month,agendaWeek,agendaDay",
+            },
 
-        editable: true,
-        events: url1,
-        displayEventTime: false,
-        editable: true,
-        eventRender: function (event, element, view) {
-            if (event.allDay === "true") {
-                event.allDay = true;
-            } else {
-                event.allDay = false;
-            }
-        },
-        selectable: true,
-        selectHelper: true,
-        select: function (start, end, allDay) {
-            var title = prompt("Tên Sự Kiện:");
-            if (title) {
-                var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-                var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+            editable: true,
+            events: url1,
+            displayEventTime: false,
+            editable: true,
+            eventRender: function (event, element, view) {
+                if (event.allDay === "true") {
+                    event.allDay = true;
+                } else {
+                    event.allDay = false;
+                }
+            },
+            selectable: true,
+            selectHelper: true,
+            select: function (start, end, allDay) {
+                var title = prompt("Tên Sự Kiện:");
+                if (title) {
+                    var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
+                    var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+                    $.ajax({
+                        url: url2,
+                        data: {
+                            title: title,
+                            start: start,
+                            end: end,
+                            type: "add",
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            displayMessage("Tạo sự kiện thành công");
+                            calendar.fullCalendar(
+                                "renderEvent",
+                                {
+                                    id: data.id,
+                                    title: title,
+                                    start: start,
+                                    end: end,
+                                    allDay: allDay,
+                                },
+                                true
+                            );
+                            calendar.fullCalendar("unselect");
+                        },
+                    });
+                }
+            },
+            eventResize: function (event, delta) {
+                var start = $.fullCalendar.formatDate(
+                    event.start,
+                    "Y-MM-DD HH:mm:ss"
+                );
+                var end = $.fullCalendar.formatDate(
+                    event.end,
+                    "Y-MM-DD HH:mm:ss"
+                );
+                var title = event.title;
+                var id = event.id;
                 $.ajax({
                     url: url2,
+                    type: "POST",
                     data: {
                         title: title,
                         start: start,
                         end: end,
-                        type: "add",
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        displayMessage("Tạo sự kiện thành công");
-                        calendar.fullCalendar(
-                            "renderEvent",
-                            {
-                                id: data.id,
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay,
-                            },
-                            true
-                        );
-                        calendar.fullCalendar("unselect");
-                    },
-                });
-            }
-        },
-        eventResize: function (event, delta) {
-            var start = $.fullCalendar.formatDate(
-                event.start,
-                "Y-MM-DD HH:mm:ss"
-            );
-            var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-            var title = event.title;
-            var id = event.id;
-            $.ajax({
-                url: url2,
-                type: "POST",
-                data: {
-                    title: title,
-                    start: start,
-                    end: end,
-                    id: id,
-                    type: "update",
-                },
-                success: function (response) {
-                    displayMessage("Đã cập nhật sự kiện thành công");
-                },
-            });
-        },
-        eventDrop: function (event, delta) {
-            var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-            var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-
-            $.ajax({
-                url: url2,
-                data: {
-                    title: event.title,
-                    start: start,
-                    end: end,
-                    id: event.id,
-                    type: "update",
-                },
-                type: "POST",
-                success: function (response) {
-                    displayMessage("Đã cập nhật sự kiện thành công");
-                },
-            });
-        },
-        eventClick: function (event) {
-            var deleteMsg = confirm("Bạn chắc chắn muốn xoá chứ ?");
-            if (deleteMsg) {
-                $.ajax({
-                    type: "POST",
-                    url: url2,
-                    data: {
-                        id: event.id,
-                        type: "delete",
+                        id: id,
+                        type: "update",
                     },
                     success: function (response) {
-                        calendar.fullCalendar("removeEvents", event.id);
-                        displayMessage("Đã xoá sự kiện thành công");
+                        displayMessage("Đã cập nhật sự kiện thành công");
                     },
                 });
-            }
-        },
-    });
+            },
+            eventDrop: function (event, delta) {
+                var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
+                var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
+
+                $.ajax({
+                    url: url2,
+                    data: {
+                        title: event.title,
+                        start: start,
+                        end: end,
+                        id: event.id,
+                        type: "update",
+                    },
+                    type: "POST",
+                    success: function (response) {
+                        displayMessage("Đã cập nhật sự kiện thành công");
+                    },
+                });
+            },
+            eventClick: function (event) {
+                var deleteMsg = confirm("Bạn chắc chắn muốn xoá chứ ?");
+                if (deleteMsg) {
+                    $.ajax({
+                        type: "POST",
+                        url: url2,
+                        data: {
+                            id: event.id,
+                            type: "delete",
+                        },
+                        success: function (response) {
+                            calendar.fullCalendar("removeEvents", event.id);
+                            displayMessage("Đã xoá sự kiện thành công");
+                        },
+                    });
+                }
+            },
+        });
+    }
 
     function displayMessage(message) {
         toastr.success(message, "Sự Kiện");
@@ -335,7 +336,6 @@ $(function () {
 
     // endfullcalender
     // /////////////////////
-
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });
