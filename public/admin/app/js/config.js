@@ -1,11 +1,25 @@
 $(function () {
-
     jQuery.loading = function loading() {
         $("#page__loading").removeClass("d-none");
     };
     const renderErrForm = (text = "") => {
         return `<span class="invalid-feedback d-block" role="alert">
         <strong>${text}</strong></span>`;
+    };
+    jQuery.isImage = function isImage(url) {
+        return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+    };
+    jQuery.assign = function assign(obj, keyPath, value) {
+        lastKeyIndex = keyPath.length - 1;
+        for (var i = 0; i < lastKeyIndex; ++i) {
+            key = keyPath[i];
+            if (!(key in obj)) {
+                obj[key] = {};
+            }
+            obj = obj[key];
+        }
+        obj[keyPath[lastKeyIndex]] = value;
+        return obj;
     };
     jQuery.btn_loading_v2 = function btn_loading_v2(
         el,
@@ -16,15 +30,29 @@ $(function () {
         if (submit) {
             btnSubmit = el.querySelectorAll('button[type="submit"]');
         }
+        btnSubmit = $(btnSubmit);
+        if (!btnSubmit) {
+            return;
+        }
+
+        // let isLoading = btnSubmit.attr("is-loading");
+        // if (isLoading !== undefined) {
+        //     if (isLoading) {
+        //         return;
+        //     }
+        // }
         let currentHtml = $(btnSubmit).html();
+        $(btnSubmit).prop("disabled", loading);
         if (loading) {
             $(btnSubmit).attr("data-old", currentHtml);
+            $(btnSubmit).attr("is-loading", true);
             $(btnSubmit)
                 .html(`<span class="spinner-border spinner-border-sm"  role="status" aria-hidden="true"></span>
                 Loading...`);
         } else {
             const old = $(btnSubmit).attr("data-old");
             $(btnSubmit).html(old);
+            $(btnSubmit).attr("is-loading", false);
         }
         return;
     };

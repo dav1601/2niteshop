@@ -1,32 +1,54 @@
+<?php
+    $isCreate = $type === 'create';
+?>
+
+
 <div class="col-12 sta__item mt-4 p-0">
     <div class="w-100">
         <div class="card">
             <div class="card-header text-center">
-                Tạo Page
+                <?php echo e($isCreate ? 'Tạo Page' : 'Edit Page'); ?>
+
             </div>
             <div class="card-body create-page">
-
                 <div class="row w-100">
                     <div class="col-6">
 
                         <div class="create-page-item">
                             <div class="form-group">
-                                <label for="pgb-title" class="text-dark">Tiêu đề trang web</label>
-                                <input type="email" class="form-control" id="pgb-title">
+                                <label for="pgb-title" class="text-dark">Tiêu
+                                    đề trang
+                                    web</label>
+                                <input type="text" value="<?php echo e($isCreate ? '' : $page->title); ?>" class="form-control"
+                                    id="pgb-title">
 
                             </div>
                             <div class="form-group">
                                 <label for="pgb-slug" class="text-dark">Slug</label>
-                                <input type="email" class="form-control" id="pgb-slug">
+                                <input type="text" value="<?php echo e($isCreate ? '' : $page->slug); ?>" class="form-control"
+                                    id="pgb-slug">
                             </div>
                             <div class="form-group">
-                                <select class="custom-select text-dark">
-                                    <option selected value="0">Chọn loại page</option>
-                                    <option value="full">Full Page (Bao gồm menu footer slug...Là 1 trang web hoàn
-                                        chỉnh)</option>
-                                    <option value="template">Template (Thường được nhúng vào thân website)</option>
-                                    <option value="component">Component (Các phần html nhỏ để nhúng vào website)
-                                    </option>
+                                <select class="custom-select text-dark" id="pgb-type">
+                                    <?php if($isCreate): ?>
+                                        <option selected value="0">Chọn loại page</option>
+                                        <option value="full">Full Page (Bao gồm menu footer slug...Là 1 trang web hoàn
+                                            chỉnh)</option>
+                                        <option value="template">Template (Thường được nhúng vào thân website)</option>
+                                        <option value="component">Component (Các phần html nhỏ để nhúng vào website)
+                                        </option>
+                                    <?php else: ?>
+                                        <option value="full" <?php if($page->type === 'full'): ?> selected <?php endif; ?>>Full
+                                            Page (Bao
+                                            gồm menu footer slug...Là 1 trang web hoàn
+                                            chỉnh)</option>
+                                        <option value="template" <?php if($page->type === 'template'): ?> selected <?php endif; ?>>
+                                            Template (Thường được nhúng vào thân website)</option>
+                                        <option <?php if($page->type === 'component'): ?> selected <?php endif; ?> value="component">
+                                            Component (Các phần html nhỏ để nhúng vào website)
+                                        </option>
+                                    <?php endif; ?>
+
                                 </select>
                             </div>
                         </div>
@@ -68,14 +90,14 @@
         </div>
     </div>
 </div>
-
-<div class="col-12 sta__item mt-4" id="wp-sections-build">
-    <div class="w-100">
-        <div class="card">
-            <div class="card-header">
-                Build Section
-            </div>
-            <?php if (isset($component)) { $__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298 = $component; } ?>
+<?php if(!$isCreate): ?>
+    <div class="col-12 sta__item mt-4" id="wp-sections-build">
+        <div class="w-100">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Build Section</span>
+                </div>
+                <?php if (isset($component)) { $__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298 = $component; } ?>
 <?php $component = App\View\Components\Admin\Pagebuilder\Section::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.pagebuilder.section'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -90,8 +112,8 @@
 <?php $component = $__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298; ?>
 <?php unset($__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298); ?>
 <?php endif; ?>
-            <div class="card-footer">
-                <?php if (isset($component)) { $__componentOriginal8895df377ce551d31cc3894729bab76138508615 = $component; } ?>
+                <div class="card-footer">
+                    <?php if (isset($component)) { $__componentOriginal8895df377ce551d31cc3894729bab76138508615 = $component; } ?>
 <?php $component = App\View\Components\Admin\Pagebuilder\Component\Button\Add::resolve(['class' => 'pgb-add-section','t' => 'add-section'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.pagebuilder.component.button.add'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -106,35 +128,58 @@
 <?php $component = $__componentOriginal8895df377ce551d31cc3894729bab76138508615; ?>
 <?php unset($__componentOriginal8895df377ce551d31cc3894729bab76138508615); ?>
 <?php endif; ?>
+                </div>
             </div>
-
         </div>
     </div>
-</div>
+<?php endif; ?>
+
+
 <div class="modal fade" id="pgb-section-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Kim Đan My Luv</h5>
+                <h5 class="modal-title">Asheyguci</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <?php echo Form::open(['url' => '#', 'method' => 'POST', 'id' => 'pgb-section-form', 'files' => true]); ?>
 
-            <div class="modal-body mx-2" id="pgb-section-modal-output">
+            <div class="modal-body p-2" id="pgb-section-modal-output">
                 ...
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="pgb-form-submit" class="btn btn-primary">Save</button>
             </div>
             <?php echo Form::close(); ?>
 
         </div>
 
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="pgb-modal-preview" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="pgb-modal-previewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered pgb-modal-dialog-preview">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="pgb-modal-previewLabel">Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="pgb-modal-preview-content">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 <?php /**PATH E:\xampp\htdocs\2niteshop\home\u217861923\domains\vachill.com\public_html\resources\views/components/admin/pagebuilder/create.blade.php ENDPATH**/ ?>

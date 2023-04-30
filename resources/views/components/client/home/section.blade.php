@@ -2,7 +2,7 @@
     <div class="box__banner">
         <div class="box__banner--main">
             <a href="{{ url($homeItem->main_link) }}" class="d-block px-2">
-                <img src="{{ $file->ver_img($homeItem->main_img) }}" alt="{{ $homeItem->name }}" class="img-fluid lazy">
+                <img src="{{ $file->ver_img($homeItem->main_img) }}" alt="{{ $homeItem->name }}" class="w-100">
             </a>
         </div>
         <div class="box__banner--sub swiper mySwiper">
@@ -11,7 +11,7 @@
                     <div class="swiper-slide">
                         <a href="{{ $homeItem->use_link }}" class="d-block pl-2">
                             <img src="{{ $file->ver_img($homeItem->use_img) }}" alt="{{ $homeItem->name }}"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 @endif
@@ -19,7 +19,7 @@
                     <div class="swiper-slide">
                         <a href="{{ $homeItem->instruct_link }}" class="d-block">
                             <img src="{{ $file->ver_img($homeItem->instruct_img) }}" alt="{{ $homeItem->name }}"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 @endif
@@ -27,7 +27,7 @@
                     <div class="swiper-slide">
                         <a href="{{ $homeItem->access_link }}" class="d-block">
                             <img src="{{ $file->ver_img($homeItem->access_img) }}" alt="{{ $homeItem->name }}"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 @endif
@@ -35,7 +35,7 @@
                     <div class="swiper-slide">
                         <a href="{{ $homeItem->fix_link }}" class="d-block">
                             <img src="{{ $file->ver_img($homeItem->fix_img) }}" alt="{{ $homeItem->name }}"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 @endif
@@ -50,7 +50,6 @@
 {{-- end box banner --}}
 @foreach ($sections as $key => $section)
     @php
-
         $id = 'section-' . $homeItem->id . $key;
     @endphp
     <div class="box__cat pl-1">

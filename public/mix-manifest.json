@@ -1,7 +1,7 @@
 {
     "/js/laravel-server/laravel-echo-server.js": "/js/laravel-server/laravel-echo-server.js",
-    "/client/app/css/app.css": "/client/app/css/app.css",
     "/admin/app/css/app.css": "/admin/app/css/app.css",
+    "/client/app/css/app.css": "/client/app/css/app.css",
     "/client/app/css/_component.css": "/client/app/css/_component.css",
     "/admin/app/css/_naviteam.css": "/admin/app/css/_naviteam.css",
     "/admin/app/css/_layout.css": "/admin/app/css/_layout.css",

@@ -20,12 +20,18 @@ class Category extends Model
         'icon',
         'position',
         'level',
-        'is_game'
+        'is_game',
+        'active',
+        'category-game'
     ];
     public static function tree($except = true)
     {
-        $array_except =  $except ? array(145, 141) : [];
-        $allCategories = Category::whereNotIn('id', $array_except)->orderBy('position', 'ASC')->get();
+        $categoryModel = new Category();
+        if ($except) {
+            $categoryModel = $categoryModel->where('active', "!=", 0);
+        }
+        // $array_except =  $except ? array(145, 141) : [];
+        $allCategories = $categoryModel->orderBy('position', 'ASC')->get();
         $rootCategories = $allCategories->where('parent_id', '=', 0);
         self::formatTree($rootCategories, $allCategories);
         return $rootCategories;

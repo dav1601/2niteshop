@@ -43,14 +43,14 @@ class ClientBlogController extends Controller
         if ($kw  != 0) {
             $blogs = $blogs->where('title', 'LIKE', '%' . $kw . '%');
         }
-        $blogs = $blogs->Paginate(10);
+        $blogs = $blogs->with(['pgbs', 'pgbs.pgb_data'])->orderBy('id', 'DESC')->Paginate(10);
         return view('client.blog.index', compact('blogs', 'bc', 'cat', 'cat_blog', 'kw', 'backLink'));
     }
     ////////////////////////////////////////
 
     public function detail($cat, $slug, Request $request)
     {
-        $blog = Blogs::where('slug', 'LIKE', $slug)->firstOrFail();
+        $blog = Blogs::with(['pgbs', 'pgbs.pgb_data'])->where('slug', 'LIKE', $slug)->firstOrFail();
         $involve = Blogs::where('active', '=', 1)->where('id', '!=', $blog->id);
         $cat_id = $blog->cat_id;
         $cat_sub_id = $blog->cat_sub_id;

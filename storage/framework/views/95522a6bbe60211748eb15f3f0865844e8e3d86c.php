@@ -24,11 +24,13 @@
 <?php unset($__componentOriginal21bcf1c932c9149c46da0b8caaf3876dbacb371f); ?>
 <?php endif; ?>
     <div class="product__item--img" data-id="<?php echo e($message->id); ?>">
-        <a href="<?php echo e($route_product); ?>" class="d-block img_show">
-            <img src="<?php echo e($file->ver_img($message->main_img)); ?>" alt="<?php echo e($message->name); ?>" class="img-fluid lazy">
+        <a href="<?php echo e($route_product); ?>" class="img_show">
+            <img data-sizes="auto" data-src="<?php echo e($file->ver_img($message->main_img)); ?>" alt="<?php echo e($message->name); ?>"
+                class="lazyload">
         </a>
-        <a href="<?php echo e($route_product); ?>" class="d-none img_hide">
-            <img src="<?php echo e($file->ver_img($message->sub_img)); ?>" alt="<?php echo e($message->name); ?>" class="img-fluid lazy">
+        <a href="<?php echo e($route_product); ?>" class="img_hide">
+            <img data-sizes="auto" data-src="<?php echo e($file->ver_img($message->sub_img)); ?>" alt="<?php echo e($message->name); ?>"
+                class="lazyload">
         </a>
         <div class="quick__view qv__<?php echo e($message->id); ?>" data-toggle="tooltip" data-placement="top" title="Xem Nhanh"
             class="open__modal--qview" data-id="<?php echo e($message->id); ?>">

@@ -1,4 +1,12 @@
 @import "_responsive";
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1280px;
+    }
+}
+.container {
+    padding: 0px !important;
+}
 [aria-current="page"] span {
     background: #277b8c !important;
     color: #ffffff;
@@ -157,14 +165,15 @@
         color: #ffffff;
     }
 }
-.container {
-    max-width: 1280px !important;
-    width: 100%;
-    @include responsive_h(iphoneX, down) {
-        padding-left: 0;
-        padding-right: 0;
-    }
-}
+// .container {
+//     max-width: 1280px !important;
+//     width: 100%;
+//     padding: 5px;
+//     // @include responsive_h(iphoneX, down) {
+//     //     padding-left: 0;
+//     //     padding-right: 0;
+//     // }
+// }
 .swal2-container {
     background: none !important;
     top: 10px !important;

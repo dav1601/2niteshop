@@ -91,60 +91,37 @@
                             <i class="fas fa-angle-right"></i>
                         </button>
                     </div>
+                    <div id="bannerBottom" style="margin-top:5px">
+                        @foreach ($banners['b'] as $bn)
+                            <a href="{{ url($bn->link) }}" class="d-inline-block w-100">
+                                <img src="{{ $file->ver_img($bn->img) }}" alt="{{ $bn->name }}" width="100%"
+                                    height="auto" alt="{{ $bn->name }}">
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="home__right--banner">
-                    @foreach ($banners as $bn)
-                        @if ($bn->position == 'Phải')
-                            <a href="{{ url($bn->link) }}" class="d-block">
-                                <img src="{{ $file->ver_img($bn->img) }}" class="lazy" alt="{{ $bn->name }}"
-                                    width="100%" height="auto" alt="{{ $bn->name }}">
-                            </a>
-                        @endif
+                    @foreach ($banners['r'] as $key => $bn)
+                        <a href="{{ url($bn->link) }}" class="d-inline-block r-item">
+                            <img src="{{ $file->ver_img($bn->img) }}" alt="{{ $bn->name }}"
+                                style="border:1px solid orange" width="100%" height="auto" height="auto"
+                                alt="{{ $bn->name }}">
+                        </a>
                     @endforeach
 
                 </div>
             </div>
         </div>
-        {{-- END HOME MENU + SLIDE --}}
-        <div class="w-100 bot__banner owl-carousel owl-theme">
-            @foreach ($banners as $bt)
-                @if ($bt->position == 'Dưới')
-                    <div class="item bot__banner--item">
-                        <a href="{{ url($bt->link) }}" class="d-block w-100">
-                            <img src="{{ $file->ver_img($bt->img) }}" class="img-fluid lazy" alt="{{ $bt->name }}">
-                        </a>
-                    </div>
-                @endif
-            @endforeach
-        </div>
+
         {{-- END BOTTOM BANNER --}}
-        <div class="w-100 owl-carousel owl-theme mb-4">
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="{{ $file->ver_img_local('client/images/plc-1.png') }}" class="img-fluid lazy" alt="plc-1">
-                </a>
-            </div>
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="{{ $file->ver_img_local('client/images/plc-2.png') }}" class="img-fluid lazy" alt="policy">
-                </a>
-            </div>
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="{{ $file->ver_img_local('client/images/plc-3.png') }}" class="img-fluid lazy" alt="policy">
-                </a>
-            </div>
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="{{ $file->ver_img_local('client/images/plc-4.png') }}" class="img-fluid lazy" alt="policy">
-                </a>
-            </div>
-        </div>
+
         {{-- --------------- --}}
-        <div class="w-100 show__home">
-            @foreach ($show_home as $item)
-                <x-client.home.section :item="$item" />
-            @endforeach
+        <div id="home_content">
+            <div class="w-100 show__home">
+                @foreach ($show_home as $item)
+                    <x-client.home.section :item="$item" />
+                @endforeach
+            </div>
         </div>
     </div>
 
@@ -153,7 +130,7 @@
         <div id="home__blogs--content" class="container">
             <a href="{{ url('tin-tuc') }}" id="home__blogs--title">
                 <img src="{{ $file->ver_img_local('client/images/bang-tin-home-banner-1280x80.jpg') }}" alt="Bảng Tin"
-                    class="img-fluid lazy">
+                    class="">
             </a>
             <div id="area__blogs">
                 <div class="tab-content" id="myTabContent__blogs">

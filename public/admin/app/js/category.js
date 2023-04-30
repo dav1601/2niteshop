@@ -1,5 +1,4 @@
 $(function () {
-   
     $(document).on("change", "#img", function () {
         var file = $(this)[0].files;
         $("#forImg").html(file[0].name);
@@ -134,6 +133,7 @@ $(function () {
             data: data,
             dataType: "json",
             success: function (res) {
+                console.log(res);
                 $.btn_loading_v2(form, false, true);
                 $.errForm(false, form, res.errors);
                 if (res.s) {

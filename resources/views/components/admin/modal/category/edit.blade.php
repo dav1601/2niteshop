@@ -44,6 +44,15 @@
     trống)',
 ]" />
 <div class="my-4">
+    <label class="mb-4">Active:</label>
+    <div class="switch">
+        <input type="checkbox" id="{{ 'switch-category-' . $category->id }}" name="active-category"
+            data-id="{{ $category->id }}" class="switch-category"
+            @if ($category->active == 1) checked @endif /><label
+            for="{{ 'switch-category-' . $category->id }}">Toggle</label>
+    </div>
+</div>
+<div class="my-4">
     @if (empty($category->icon))
         <span>Chưa Có Hình Ảnh Icon</span>
     @else

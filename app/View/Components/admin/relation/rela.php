@@ -20,34 +20,17 @@ class rela extends Component
     public $selected;
     public $name;
     public $relaId;
-    public function __construct($rl = "product-products", $relaid = 0, $reverse = false, $selected = "")
+    public $id;
+    public $onlymodel;
+    public function __construct($rl = "product-products", $relaid = 0, $reverse = false, $selected = "", $id = "", $onlymodel = null)
     {
         // $arrela index 0 : relaName , index 1 : relaKey
-        switch ($rl) {
-            case 'products-ins':
-                $arrm = ["Products", "Insurance"];
-                $modelRela = "ProductIns";
-                break;
-            case 'product-products':
-                $arrm = ["Products", "Products"];
-                $modelRela = "RelatedProducts";
-                break;
-            case 'products-plc':
-                $arrm = ["Products", "Policy"];
-                $modelRela = "ProductPlc";
-                break;
-            case 'products-blogs':
-                $arrm = ["Products", "Blogs"];
-                $modelRela = "PrdRelaBlog";
-                break;
-            case 'products-block':
-                $arrm = ["Products", "BlockProduct"];
-                $modelRela = "PrdRelaBlock";
-                break;
-            default:
-                abort(500, "Không tìm thấy relation");
-                break;
+        $rlship = getRelationship($rl);
+        if (!$rlship) {
+            abort(500, "Không tìm thấy relation");
         }
+        $arrm = $rlship['models'];
+        $modelRela = $rlship['modelRela'];
         $arrela = explode("-", $rl);
         if ($reverse) {
             $arrela = array_reverse($arrela);
@@ -67,6 +50,9 @@ class rela extends Component
             case 'block':
                 $title =  "Block đi kèm";
                 break;
+            case 'pgb':
+                $title =  "PageBuilder";
+                break;
             default:
                 $title = "Sản phẩm liên kết";
                 break;
@@ -79,6 +65,8 @@ class rela extends Component
         $this->text = $relaid == 0 ? "Xem và thêm "  : "Xem và sửa ";
         $this->name = "rela__" . $rK;
         $this->selected = $selected;
+        $this->id = $id;
+        $this->onlymodel = $onlymodel;
     }
 
     /**

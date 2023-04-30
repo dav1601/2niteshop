@@ -4,7 +4,55 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-     
+
+    jQuery.ajaxCart = function ajaxCart(data = {}, callback) {
+        const type = data.type;
+        $.ajax({
+            type: "post",
+            url: route("add_cart"),
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                $.end_loading();
+                callback;
+                $(".items").text(data.html_items);
+                $(".cart__drop").html(data.cart_drop);
+                $("#cart__show").html(data.cart);
+                $("#cart__checkout").html(data.checkout);
+                if (type == "add") {
+                    Swal.fire({
+                        position: "top-end",
+                        html: data.add_ok,
+                        showConfirmButton: false,
+                        timer: 6500,
+                    });
+                }
+            },
+        });
+    };
+    function loadCart() {
+        const data = { type: "load" };
+        $.ajaxCart(data);
+    }
+    function initApp() {
+        checkScrollTop();
+        loadCart();
+        set_cookie_view(cookie_view);
+        $.initSwiper();
+        $.initMultipleSwiper();
+    }
+    initApp();
+    function showMobileMenu(show = true, menu = "category") {
+        const el = $(".mobile__menu." + "--" + menu);
+        if (show) {
+            $("body").css("overflow", "hidden");
+            el.css("left", 0);
+        } else {
+            $("body").css("overflow", "auto");
+            el.css("left", "-100vw");
+        }
+        return;
+    }
     $(document).on("click", ".eyes-pass", function () {
         if ($(this).hasClass("fa-eye")) {
             $(this).prev("input").attr("type", "text");
@@ -112,37 +160,6 @@ $(function () {
         });
     });
 
-    jQuery.ajaxCart = function ajaxCart(data = {}, callback) {
-        const type = data.type;
-        $.ajax({
-            type: "post",
-            url: url_cart,
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                $.end_loading();
-                callback;
-                $(".items").text(data.html_items);
-                $(".cart__drop").html(data.cart_drop);
-                $("#cart__show").html(data.cart);
-                $("#cart__checkout").html(data.checkout);
-                if (type == "add") {
-                    Swal.fire({
-                        position: "top-end",
-                        html: data.add_ok,
-                        showConfirmButton: false,
-                        timer: 6500,
-                    });
-                }
-            },
-        });
-    };
-    var url_cart = route("add_cart");
-    function loadCart() {
-        const data = { type: "load" };
-        $.ajaxCart(data);
-    }
-    loadCart();
     //////////////////////
     $(window).scroll(function (event) {
         let scroll = $(window).scrollTop();
@@ -315,7 +332,7 @@ $(function () {
     //     }
     //     console.log()
     // }
-    setHeight();
+    // setHeight();
 
     function renderAlert($icon = "success", $title = "Tiêu Đề") {
         const Toast = Swal.mixin({
@@ -350,14 +367,14 @@ $(function () {
         }
     });
     var url__preOrder = route("pre_order");
-    set_cookie_view(cookie_view);
     var urlQv = route("loadDataQuickView");
     var offset = $("#biad__header--bot").offset().top;
     var height = $("#biad__header--bot").height();
+    var pointSroll = $("#home_content").offset().top;
     var scroll = offset + height;
     function checkScrollTop() {
         var top = $(document).scrollTop();
-        if (top >= scroll + 10) {
+        if (top >= pointSroll) {
             $("#header__scroll")
                 .addClass("davi__sticky animate__animated animate__slideInDown")
                 .removeClass("d-none animate__slideInUp");
@@ -377,7 +394,6 @@ $(function () {
             }
         }
     }
-    checkScrollTop();
     $(document).scroll(function () {
         checkScrollTop();
     });
@@ -562,33 +578,7 @@ $(function () {
     $(document).on("click", ".success__add--close i ", function () {
         Swal.close();
     });
-    // $(document).on("click", ".delete__cart", function () {
-    //     var rowId = $(this).attr("data-rowId");
-    //     $.ajax({
-    //         type: "post",
-    //         url: url_cart,
-    //         data: { rowId: rowId, type: "delete" },
-    //         dataType: "json",
-    //         success: function (data) {
-    //             if (data.items != 0) {
-    //                 $(".cartShow--left").html(data.cart);
-    //             } else {
-    //                 $("#empty_output").html(data.cart);
-    //             }
-    //             $("#checkout_cart").html(data.cart);
-    //             $(".bt-qty strong").text(data.count);
-    //             $("#count_mobile").text(data.count);
-    //             $(".bt-price strong").text(data.total_format);
-    //             $("#ck_total").text(data.total_format);
-    //             $("#cart__drop").html(data.sub_cart);
-    //             $("#items").html(data.html_items);
-    //             $(".cart__drop").html(data.sub_cart);
-    //             $(".items").html(data.html_items);
-    //             $.end_loading();
-    //         },
-    //     });
-    //     return false;
-    // });
+
     function set_ses_popup(nsp) {
         var url_cookie = route("set_nsp");
         $.ajax({
@@ -622,56 +612,22 @@ $(function () {
     $(".carousel").carousel({
         interval: 8000,
     });
-    $("#list__banner").owlCarousel({
-        loop: false,
-        margin: 10,
-        slideBy: 1,
-        nav: true,
-        responsive: {
-            0: {
-                items: 1,
-            },
-            568: {
-                items: 2,
-            },
-            1000: {
-                items: 3,
-            },
-        },
-    });
 
     /////////////////////////////////
     // START RESPONSIVEEEEEEEEEEEE
     $(document).on("click", ".close__menu", function () {
-        var widthMenu = $(".mobile__menu").width();
-        $(".mobile__menu").css("left", -widthMenu);
-        $("#bg-menu").addClass("d-none");
-        $("body").css("overflow-y", "auto");
+        showMobileMenu(false);
     });
 
     // đóng menu
     // mở menu
     $(document).on("click", ".menu-trigger", function () {
-        var widthMenu = $(".mobile__menu").width();
-        $(".mobile__menu").css("left", 0);
-        $("#bg-menu").removeClass("d-none");
-        $("body").css("overflow-y", "hidden");
+        showMobileMenu(true);
     });
-    // Đóng menu cart khi ấn vào background responsive
-    $(document).on("click", "#bg-menu", function () {
-        var widthMenu = $(".mobile__menu").width();
-        var widthCart = $(".cart__mobile").width();
-        $(".mobile__menu").css("left", -widthMenu);
-        $(".cart__mobile").css("right", -widthCart);
-        $("#bg-menu").addClass("d-none");
-        $("body").css("overflow-y", "auto");
-    });
+
     //  đóng cart responsive
     $(".cart__mobile--xmark").click(function (e) {
-        var widthCart = $(".cart__mobile").width();
-        $(".cart__mobile").css("right", -widthCart);
-        $("#bg-menu").addClass("d-none");
-        $("body").css("overflow-y", "auto");
+        showMobileMenu(false, "cart");
     });
     // //////////////////
     $(document).on("click", "#preOrder", function () {
@@ -731,9 +687,7 @@ $(function () {
 
     // END RESPONSIVEEEEEEEEEEEEEEE
     $(".mobile__cart--wrapper").click(function (e) {
-        $("#bg-menu").removeClass("d-none");
-        $(".cart__mobile").css("right", "0");
-        $("body").css("overflow-y", "hidden");
+        showMobileMenu(true, "cart");
     });
     // ///////////////////////
     $(".mobile__search--wrapper").click(function (e) {
@@ -761,8 +715,9 @@ $(function () {
         }
     );
     $(window).resize(function () {
-        setHeight();
+        // setHeight();
         settingBtnModal();
+        $.initSwiper();
         var right = parseInt($(".cart__mobile").css("right"));
         var windowWidth = $(window).width();
         if (right < 0) {

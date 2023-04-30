@@ -27,12 +27,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet"
-        href="<?php echo e(asset('admin/app/css/app.css')); ?>?ver=<?php echo filemtime('admin/app/css/app.css') ?>">
+    <link rel="stylesheet" href="<?php echo e($file->ver('admin/app/css/app.css')); ?>">
+    <?php
+        file_put_contents(public_path('pgb/pgb.css'), '');
+    ?>
+    <link rel="stylesheet" href="<?php echo e(url('pgb/pgb.css')); ?>" id="pgb-link">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="<?php echo e(asset('admin/plugin/tags/tagsinput.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e($file->ver('plugin/color-picker/color.min.css')); ?>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
     <?php echo $__env->yieldContent('import_css'); ?>
     <?php if (isset($component)) { $__componentOriginal9636b50d9f0a3581b759498e9135550b36d917c2 = $component; } ?>
 <?php $component = App\View\Components\App\Plugin\Debug::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
@@ -63,15 +69,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
         integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+        integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="<?php echo e($file->ver('app/common.js')); ?>"></script>
     <script src="<?php echo e($file->ver('admin/app/js/config.js')); ?>"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
         integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-    <script src="<?php echo e($file->ver('admin/app/js/tinymce.js')); ?>"></script>
-    <script src="<?php echo e($file->ver('admin/app/js/app.js')); ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+        integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -86,9 +94,13 @@
         referrerpolicy="origin"></script>
     <script src="<?php echo e($file->ver('admin/app/js/tinymce.js')); ?>"></script>
     <script src="<?php echo e($file->ver('admin/app/js/relationship.js')); ?>"></script>
+    <script src="<?php echo e($file->ver('plugin/color-picker/color.min.js')); ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="<?php echo e($file->ver('admin/app/js/app.js')); ?>"></script>
     <?php echo $__env->yieldContent('import_js'); ?>
 
 </head>
+
 
 <body>
     <?php if (isset($component)) { $__componentOriginal78455ba16b5a14b6a2e98bc3b8a09f0ca8d12fb9 = $component; } ?>
@@ -126,9 +138,9 @@
             <div class="sidebar">
                 <div class="sidebar__head">
                     <div class="sidebar__head--logo d-flex align-items-center">
-                        <img src="<?php echo e(asset('admin/layout/navi.png')); ?>" width="100px" class="rounded-circle"
-                            alt="">
-                        <span>2NITE SHOP</span>
+                        <img src="https://res.cloudinary.com/vanh-tech/image/upload/v1681081513/my_logo_dark_tfzcgj.png"
+                            width="250" height="150" alt="">
+
                     </div>
                     <div class="sidebar__head--info d-flex align-items-center justify-content-center my-2">
                         <?php if(Auth::user()->avatar != null): ?>
@@ -172,8 +184,15 @@
                                             </a>
                                         </li>
                                         <li class="item">
-                                            <a href="<?php echo e(route('pgb.create')); ?>"
-                                                class="<?php echo e($route == 'pgb.create' ? 'route_active' : ''); ?>">
+                                            <a href="<?php echo e(route('pgb.index')); ?>"
+                                                class="<?php echo e($route == 'pgb.index' ? 'route_active' : ''); ?>">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Quản Lý Page Builder</span>
+                                            </a>
+                                        </li>
+                                        <li class="item">
+                                            <a href="<?php echo e(route('pgb.create.or.edit')); ?>"
+                                                class="<?php echo e($route == 'pgb.create.or.edit' ? 'route_active' : ''); ?>">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
                                                 <span>Page Builder</span>
                                             </a>
@@ -521,7 +540,8 @@
 
             </div>
         </div>
-        <div id="content">
+        <div id="content" class="position-relative">
+            <?php echo $__env->yieldContent('outside-content'); ?>
             <div class="content w-100">
                 <div class="content__header">
                     <div class="content__header--left">
@@ -534,8 +554,8 @@
                                 <img src="<?php echo e(asset(Auth::user()->avatar)); ?>" width="60" height="60"
                                     alt="">
                             <?php else: ?>
-                                <img src="<?php echo e(asset('client/images/user-large.png')); ?>" width="60" height="60"
-                                    alt="">
+                                <img src="<?php echo e(asset('client/images/user-large.png')); ?>" width="60"
+                                    height="60" alt="">
                             <?php endif; ?>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right drop-content" aria-labelledby="avatar__drop">

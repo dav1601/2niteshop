@@ -3,7 +3,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
 @endsection
 @section('import_js')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/gcal.min.js"
@@ -11,8 +10,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ $file->ver('admin/app/js/dashboard.js') }}"></script>
     <script src="{{ $file->ver('admin/app/plugin/chart/canvasjs.min.js') }}"></script>
-    <script src="{{ asset('admin/app/js/chart.js') }}?ver=@php echo filemtime('admin/app/js/chart.js') @endphp">
-    </script>
+    <script src="{{ asset('admin/app/js/chart.js') }}?ver=@php echo filemtime('admin/app/js/chart.js') @endphp"></script>
 @endsection
 @section('name')
     Dashboard

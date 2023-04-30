@@ -48,7 +48,8 @@ class HomeController extends Controller
         $menu_fix = FixMenu::all();
         $banner = Banners::where('index', '=', 0)->first();
         $slides = Slides::where('status', '=', 1)->orderBy('index', 'ASC')->get();
-        $blogs = Blogs::with(['author', 'category'])->where('active', '=', 1)->orderBy('id', 'DESC')->limit(8)->get();
+        $blogs = Blogs::with(['author', 'category' , 'pgbs' , 'pgbs.pgb_data'])->where('active', '=', 1)->orderBy('id', 'DESC')->limit(8)->get();
+        $banners = collect($banners)->groupBy("position");
         return view('home', compact('show_home', 'company', 'banner',  'slides', 'banners', 'blogs'));
     }
     //////////////////////////////////////

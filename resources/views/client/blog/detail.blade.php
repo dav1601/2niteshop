@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('title', $blog->title)
 @section('meta-desc', $blog->desc)
-@section('meta-keyword', '2nite shop, 2niteshop, 2nite channel, tin tuc cong nghe, tin tuc game, game moi, game news,
+@section('meta-keyword',
+    '2nite shop, 2niteshop, 2nite channel, tin tuc cong nghe, tin tuc game, game moi, game news,
     tech news, game hot, review, unbox, iphone moi, macbook moi, surface moi, tips, huong dan va thu thuat')
-@section('news_keywords', '2nite shop, 2niteshop, 2nite channel, tin tuc cong nghe, tin tuc game, game moi, game news,
+@section('news_keywords',
+    '2nite shop, 2niteshop, 2nite channel, tin tuc cong nghe, tin tuc game, game moi, game news,
     tech news, game hot, review, unbox, iphone moi, macbook moi, surface moi, tips, huong dan va thu thuat')
 @section('og-title', $blog->title)
 @section('og-desc', $blog->desc)
@@ -53,66 +55,75 @@
             </ol>
         </div>
     </div>
+    @if ($blog->type_content === 'text-editor')
+        <div id="blog__detail">
+            <div class="blog__detail container" style="max-width: 1030px !important;">
+                <div class="blog__detail--title">
+                    <h1>{{ $blog->title }}</h1>
+                </div>
+                <div class="blog__detail--info d-flex align-items-center">
+                    <div class="box-author box">
+                        <span class="b-posted">Tác Giả:</span>
+                        <span class="b-author">
+                            <i class="far fa-user-circle"></i>
+                            <span>{{ $blog->author }}</span>
+                        </span>
+                    </div>
+                    <div class="box-view box">
+                        <i class="far fa-eye"></i>
+                        <span class="b-view">
+                            {{ $blog->views }} Lượt Xem
+                        </span>
+                    </div>
+                    <div class="box-cat box">
+                        <span class="b-icon-cat"><i class="far fa-newspaper"></i></span>
+                        <span class="b-cat">
+                            @php
+                                $slug = url('tin-tuc/' . App\Models\CatBlog::where('id', '=', $blog->cat_id)->first()->slug);
+                                if ($blog->cat_sub_id != null) {
+                                    $slug_2 = url('tin-tuc/' . App\Models\CatBlog::where('id', '=', $blog->cat_sub_id)->first()->slug);
+                                }
+                            @endphp
+                            <a
+                                href="{{ $slug }}">{{ App\Models\CatBlog::where('id', '=', $blog->cat_id)->first()->name }}</a>
+                            @if ($blog->cat_sub_id != null)
+                                <a href="{{ $slug_2 }}">,
+                                    {{ App\Models\CatBlog::where('id', '=', $blog->cat_sub_id)->first()->name }}</a>
+                            @endif
+                        </span>
+                        <span data-url="{{ url()->current() }}" class="d-block ml-3">
+                            <div class="fb-share-button" data-href="{{ url()->current() }}" data-layout="button_count">
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="blog__detail--content w-100">
 
-    <div id="blog__detail">
-        <div class="blog__detail container" style="max-width: 1030px !important;">
-            <div class="blog__detail--title">
-                <h1>{{ $blog->title }}</h1>
-            </div>
-            <div class="blog__detail--info d-flex align-items-center">
-                <div class="box-author box">
-                    <span class="b-posted">Tác Giả:</span>
-                    <span class="b-author">
-                        <i class="far fa-user-circle"></i>
-                        <span>{{ $blog->author }}</span>
-                    </span>
-                </div>
-                <div class="box-view box">
-                    <i class="far fa-eye"></i>
-                    <span class="b-view">
-                        {{ $blog->views }} Lượt Xem
-                    </span>
-                </div>
-                <div class="box-cat box">
-                    <span class="b-icon-cat"><i class="far fa-newspaper"></i></span>
-                    <span class="b-cat">
-                        @php
-                            $slug = url('tin-tuc/' . App\Models\CatBlog::where('id', '=', $blog->cat_id)->first()->slug);
-                            if ($blog->cat_sub_id != null) {
-                                $slug_2 = url('tin-tuc/' . App\Models\CatBlog::where('id', '=', $blog->cat_sub_id)->first()->slug);
-                            }
-                        @endphp
-                        <a
-                            href="{{ $slug }}">{{ App\Models\CatBlog::where('id', '=', $blog->cat_id)->first()->name }}</a>
-                        @if ($blog->cat_sub_id != null)
-                            <a href="{{ $slug_2 }}">,
-                                {{ App\Models\CatBlog::where('id', '=', $blog->cat_sub_id)->first()->name }}</a>
-                        @endif
-                    </span>
-                    <span data-url="{{ url()->current() }}" class="d-block ml-3">
-                        <div class="fb-share-button" data-href="{{ url()->current() }}" data-layout="button_count">
-                        </div>
-                    </span>
-                </div>
-            </div>
-            <div class="blog__detail--content w-100">
-                {!! $blog->content !!}
-            </div>
-            <div class="blog__detail--involve mt-5">
-                <h1 class="mb-4">Bài Viết Liên Quan</h1>
-                <div class="row mx-0">
-                    @foreach ($involve as $invo)
-                        <div class="col-md-4 col-sm-6 col-12 w-100 va-fix-padding">
-                            <x-blogsubitem :blog="$invo" />
-                        </div>
-                    @endforeach
-                </div>
-            </div>
+                    {!! $blog->content !!}
 
 
+
+
+                </div>
+                <div class="blog__detail--involve mt-5">
+                    <h1 class="mb-4">Bài Viết Liên Quan</h1>
+                    <div class="row mx-0">
+                        @foreach ($involve as $invo)
+                            <div class="col-md-4 col-sm-6 col-12 w-100 va-fix-padding">
+                                <x-blogsubitem :blog="$invo" />
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+
+
+            </div>
 
         </div>
+    @else
+        <x-pagebuilder.render :payload="$blog->pgbs->first()->pgb_data->data" />
+    @endif
 
-    </div>
 
 @endsection

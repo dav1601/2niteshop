@@ -21,12 +21,10 @@ class itemgrid extends Component
      */
     public $message;
     public $class;
-    public $type;
-    public function __construct($message, $class = "", $type)
+    public function __construct($message, $class = "")
     {
         $this->message = $message;
         $this->class = $class;
-        $this->type = $type;
     }
 
     /**

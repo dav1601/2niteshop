@@ -3,7 +3,7 @@
 @endphp
 
 <div id="biad__header--bot">
-    <div class="d-flex justify-content-between align-items-center container">
+    <div class="d-flex justify-content-between align-items-center container p-0">
         <div class="@if ($name != 'home') drop__show @endif bot bot__left">
             <a class="b1ad_menu">
                 <i class="fas fa-bars"></i>

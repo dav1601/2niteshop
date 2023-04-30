@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\Category;
+use Carbon\Carbon;
 use App\Models\Config;
+use App\Models\Category;
 use App\Models\Products;
 use App\Models\Insurance;
-use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -23,6 +24,23 @@ function price_product($product,  $ops = "", $options = ['qty' => 1])
         }
     }
     return (int)$price * $qty;
+}
+function getDescByHtml($content = "", $length = 240)
+{
+    $content = preg_replace('/\s+/', ' ', strip_tags($content));
+    // $content = ltrim(Str::limit($content, $length, '..'), ' &nbsp;');
+    return ltrim(Str::limit($content, $length, '..'), ' &nbsp;');
+}
+
+function isJson($string)
+{
+    json_decode($string);
+    return json_last_error() === JSON_ERROR_NONE;
+}
+function get_drive_id_from_url($url)
+{
+    preg_match('~/d/\K[^/]+(?=/)~', $url, $result);
+    return $result[0];
 }
 function price_product_cost($cart)
 {
@@ -65,6 +83,11 @@ function is_product_new($created_at)
     $date2 = Carbon::now()->subDays(7);
     return $date1->gt($date2);
 }
+function getRelationship($rela = "")
+{
+    $relationship = config('Relationship.' . $rela);
+    return $relationship;
+}
 function handle_rela($request, $rela, $relaId = 0, $resever = false, $isEdit = false)
 {
     $arrela = explode('-', $rela);
@@ -77,30 +100,11 @@ function handle_rela($request, $rela, $relaId = 0, $resever = false, $isEdit = f
     $qN = $name . "_id";
     $rK = "rela__" . $key;
     $model = '\\App\Models\\';
-    switch ($rela) {
-        case 'product-products':
-            $model  .= "RelatedProducts";
-            break;
-        case 'products-blogs':
-            $model  .= "PrdRelaBlog";
-            break;
-        case 'products-block':
-            $model  .= "PrdRelaBlock";
-            break;
-        case 'products-ins':
-            $model  .= "ProductIns";
-            break;
-
-        case 'products-plc':
-            $model  .= "ProductPlc";
-            break;
-        case 'products-category':
-            $model .= "ProductCategories";
-            break;
-        default:
-            return false;
-            break;
+    $relationship = getRelationship($rela);
+    if (!$relationship) {
+        return;
     }
+    $model .= $relationship['modelRela'];
     if (!$request->has($rK)) {
         return;
     }

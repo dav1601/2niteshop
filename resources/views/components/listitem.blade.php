@@ -9,11 +9,11 @@
 @endphp
 <div class="product__item--list d-flex reval-item flex-wrap" data-id="{{ $message->id }}">
     <div class="image position-relative" data-id="{{ $message->id }}">
-        <a href="{{ $route_product }}" class="image__main">
-            <img src="{{ $file->ver_img($message->main_img) }}" alt="{{ $message->name }}" class="img-fluid lazy">
+        <a href="{{ $route_product }}" class="img_show">
+            <img data-src="{{ $file->ver_img($message->main_img) }}" alt="{{ $message->name }}" class="lazyload">
         </a>
-        <a href="{{ $route_product }}" class="image__sub">
-            <img src="{{ $file->ver_img($message->sub_img) }}" alt="{{ $message->name }}" class="img-fluid lazy">
+        <a href="{{ $route_product }}" class="img_hide">
+            <img data-src="{{ $file->ver_img($message->sub_img) }}" alt="{{ $message->name }}" class="lazyload">
         </a>
         <div class="quick__view qv__{{ $message->id }}" data-toggle="tooltip" data-placement="top" title="Xem Nhanh"
             class="open__modal--qview" data-id="{{ $message->id }}">
@@ -24,13 +24,13 @@
     <div class="info__product">
         <div class="prdcer">
             <span>Nhà sản xuất: <a
-                    href="{{ route('producer', ['slug' => $message->producer_slug]) }}">{{ App\Models\Producer::where('id', '=', $message->producer_id)->first()->name }}</a></span>
+                    href="{{ route('producer', ['slug' => $message->producer->slug]) }}">{{ $message->producer->name }}</a></span>
         </div>
         <div class="name">
             <a href="{{ $route_product }}" class="d-block">{{ $message->name }}</a>
         </div>
         <div class="des">
-            <p>{!! ltrim(Str::limit(strip_tags($message->content), 400, '...'), '&nbsp; ') !!}</p>
+            <p>{!! ltrim(Str::limit(strip_tags($message->content), 240, '..'), '&nbsp;') !!}</p>
         </div>
         <div class="price">
             @if ($message->price != 0)

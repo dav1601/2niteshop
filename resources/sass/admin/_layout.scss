@@ -2,6 +2,18 @@
 #wrapper {
     display: flex;
 }
+
+.hover-action {
+    &:hover {
+        color: $blue !important;
+    }
+}
+.modal-open .modal {
+    overflow: hidden;
+}
+.custom-control-label {
+    margin-bottom: 20px;
+}
 .c-pointer {
     cursor: pointer;
 }
@@ -10,6 +22,15 @@
 }
 .trans-025-all {
     transition: all 0.2s ease;
+}
+.tox {
+    height: 800px !important;
+}
+.tox-tinymce-aux {
+    z-index: 20000 !important;
+}
+.modal {
+    z-index: 10000;
 }
 #page__loading {
     position: fixed;
@@ -85,14 +106,16 @@ hr {
     background: $vadark !important;
     color: rgb(255, 255, 255);
 }
+.pgb-actions {
+    left: $width-sidebar;
+}
 #content {
-    flex: 1;
+    flex: 0 0 calc(100vw - $width-sidebar);
+    max-width: calc(100vw - $width-sidebar);
     margin-left: $width-sidebar;
-    max-width: 100%;
     transition: width 0.5s;
     margin-bottom: 50px;
     .content__body {
-        width: auto;
         max-width: 100vw;
         padding: 3rem 3rem 1.5rem;
         &--name {

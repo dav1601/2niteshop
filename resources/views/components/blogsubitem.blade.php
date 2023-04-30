@@ -9,7 +9,7 @@
             <i>{{ $carbon->create($blog->created_at)->format('M') }}</i>
         </span>
         <a href="{{ $href }}" class="d-block">
-            <img src="{{ $file->ver_img($blog->img) }}" alt="{{ $blog->title }}" class="img-fluid lazy">
+            <img src="{{ $file->ver_img($blog->img) }}" alt="{{ $blog->title }}" width="100%">
         </a>
     </div>
     <div class="bis__stats">
@@ -31,7 +31,16 @@
     </div>
 
 
-    <div class="bis__desc">
-        <span class="d-block">{!! ltrim(Str::limit(strip_tags($blog->content), 200, '..'), '&nbsp;') !!}</span>
-    </div>
+    {{-- <div class="bis__desc">
+
+        @if ($blog->type_content === 'text-editor')
+            {!! getDescByHtml($blog->content) !!}
+        @else
+            @php
+                $html = '';
+                $html .= view('components.pagebuilder.render', ['payload' => $blog->pgbs->first()->pgb_data->data]);
+            @endphp
+            {!! getDescByHtml($html, 200) !!}
+        @endif
+    </div> --}}
 </div>

@@ -8,10 +8,16 @@
                 <?php
                     $attr = 'id=' . $data_column['id'];
                 ?>
-                <li class="col-<?php echo e($c); ?> px-2">
+                <li class="col-<?php echo e($c); ?> position-relative pgb-column px-2">
+                    <div class="pgb-column-act">
+                        <div class="item edit" cid="<?php echo e($data_column['id']); ?>">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </div>
+                        
+                    </div>
                     <div class="pgb-section-col">
-                        <ul class="pgb-sort-connect-package pgb-sort-package pgb-wp-package pgb-wp-package-<?php echo e($data_column['id']); ?> trans-025-all"
-                            data-type="package">
+                        <ul class="pgb-sort-connect-package pgb-sort-package pgb-wp-package trans-025-all"
+                            data-type="package" id="<?php echo e($data_column['id']); ?>">
                             <?php if(isset($data_column['package'])): ?>
                                 <?php $__currentLoopData = $data_column['package']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indexPack => $packItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <?php if (isset($component)) { $__componentOriginalf8f5f0d6b901c11946bd3b3447071fc11b7014b7 = $component; } ?>
@@ -32,8 +38,6 @@
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
                         </ul>
-
-
                         <?php if (isset($component)) { $__componentOriginal8895df377ce551d31cc3894729bab76138508615 = $component; } ?>
 <?php $component = App\View\Components\Admin\Pagebuilder\Component\Button\Add::resolve(['class' => 'render-modal-package ui-disabled','t' => 'render-package','customAttr' => $attr] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.pagebuilder.component.button.add'); ?>

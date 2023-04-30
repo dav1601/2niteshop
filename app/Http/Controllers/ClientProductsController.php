@@ -70,9 +70,8 @@ class ClientProductsController extends Controller
         $ord = $request->has('ord') && $request->ord ? strtolower($request->ord) : "desc";
         $orderBy[] = $sort;
         $orderBy[] = $ord;
+        $products = $products->with(['producer']);
         $products = $vam->pagination($products, $orderBy, $page, 16, null);
-
-
         if ($request->has('isAjax')) {
             $data = array();
             $pagination = 0;

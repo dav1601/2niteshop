@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', '2NITE SHOP'),
     'website' => env('https://vachill.com'),
+    'app_storage' => env('APP_STORAGE', env("APP_URL") . "/storage"),
+    'icon_loading' => public_path("app/images/loading.gif"),
+    "app_images" => env("APP_URL") . "/app/images/",
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -53,7 +56,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL' , null),
+    'url' => env('APP_URL', null),
     'asset_url' => env('ASSET_URL', null),
 
     /*

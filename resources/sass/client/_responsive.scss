@@ -1,3 +1,4 @@
+@import "_variables";
 $breakpoints-v: (
     iphone5-se: 320px,
     iphone6-7-8-x: 375px,
@@ -105,18 +106,30 @@ $breakpoints-h: (
 }
 .mobile__menu {
     height: 100vh;
-    width: 375px;
-    overflow: auto;
-    @include responsive_v(iphone6-7-8-x, down) {
-        width: 310px;
-        overflow: auto;
-        left: -310px;
+    width: 100vw;
+    background: transparent;
+    &--category {
+        width: 400px;
+        background: white;
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        @include responsive_v(iphone6-7-8plus, down) {
+            width: 100%;
+        }
     }
-    background: rgba(255, 255, 255, 1);
+    &--cart {
+        width: 100%;
+        background: white;
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+    // background: rgba(255, 255, 255, 1);
     box-shadow: 0 15px 90px -10px rgb(0 0 0 / 20%);
-    z-index: 2000;
+    z-index: $idx-mobile-menu;
     position: fixed;
-    left: -375px;
+    left: -100vw;
     top: 0;
     transition: all 0.4s;
     &--content {
@@ -191,13 +204,12 @@ $breakpoints-h: (
     &--item {
         .wp__iconName {
             a {
-                flex:  1;
+                flex: 1;
             }
         }
         margin-bottom: 10px;
         .icon-toggle {
             cursor: pointer;
-
         }
         .icon-name {
             display: flex;
@@ -243,5 +255,5 @@ $breakpoints-h: (
 #menu__mini--user {
     @include responsive_h(iphoneX, down) {
         display: block !important;
-   }
+    }
 }

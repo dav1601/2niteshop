@@ -7,10 +7,18 @@
 <script src="{{ $file->ver('plugin/bootstrap/js/jquery-3.5.1.min.js') }}"></script>
 <script src="{{ $file->ver('plugin/bootstrap/js/popper.min.js') }}"></script>
 <script src="{{ $file->ver('plugin/bootstrap/js/bootstrap.min.js') }}"></script>
+{{-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"> --}}
+{{-- </script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+    integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @routes
+<script src="{{ $file->ver('app/common.js') }}"></script>
 <script src="{{ $file->import_js('helper.js') }}"></script>
 <script src="{{ $file->import_js('global.js') }}"></script>
 <script src="{{ $file->import_js('app.js') }}"></script>
+
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"
     integrity="sha512-XdUZ5nrNkVySQBnnM5vzDqHai823Spoq1W3pJoQwomQja+o4Nw0Ew1ppxo5bhF2vMug6sfibhKWcNJsG8Vj9tg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}

@@ -21,10 +21,21 @@ class Blogs extends Model
         'views',
         'author',
         'active',
+        'type_content'
     ];
+
+
+    public function scopeExclude($query, $value = [])
+    {
+        return $query->select(array_diff($this->fillable, (array) $value));
+    }
     public function author()
     {
         return $this->belongsTo("App\Models\User", 'users_id');
+    }
+    public function pgbs()
+    {
+        return $this->hasMany("App\Models\PgbBlog", "blogs_id", "id");
     }
     public function category()
     {

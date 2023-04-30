@@ -12,9 +12,13 @@ class option extends Component
      * @return void
      */
     public $categories;
-    public function __construct($categories)
+    public $selected;
+    public $key;
+    public function __construct($categories, $selected = "none", $key = "id")
     {
         $this->categories = $categories;
+        $this->selected = $selected;
+        $this->key = $key;
     }
 
     /**

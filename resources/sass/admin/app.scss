@@ -1,11 +1,13 @@
 @import "_variables";
-@import "_naviteam";
+@import "../common/global";
 @import "_responsive";
 @import "_layout";
 @import "_component";
+@import "../client/component";
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 body {
     font-family: $font-family-sans-serif;
@@ -333,6 +335,7 @@ i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
 
 // ////////////////////////////////
 #content {
+    overflow: hidden;
     .prd__s {
         &--item {
             .card {
@@ -642,4 +645,3 @@ i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
         border-radius: 8px;
     }
 }
-

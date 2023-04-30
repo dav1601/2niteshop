@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Ads;
 use App\Models\User;
 use App\Models\Blogs;
@@ -14,7 +13,9 @@ use App\Models\Category;
 use App\Models\Products;
 use App\Models\showHome;
 use App\Models\gllProducts;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class UploadFileFromLocalToCloudinary extends Command
@@ -131,14 +132,24 @@ class UploadFileFromLocalToCloudinary extends Command
     }
     public function handleFile($path)
     {
-        if ($path && File::exists(public_path($path))) {
-            $folder = pathinfo($path)['dirname'];
-            $upload =  Cloudinary::upload(public_path($path), ["folder" => $folder]);
-            $save = [];
-            $save["id"] = $upload->getPublicId();
-            $save["path"] = $upload->getSecurePath();
-            return json_encode($save);
+        if ($path) {
+            $file = json_decode($path);
+            $folder = str_contains($file->path, 'admin') ? "admin" : "client";
+            $folder = $folder . "/";
+            $arr = explode($folder, $file->path);
+            $folPut = $folder . $arr[1];
+            $content = file_get_contents($file->path);
+            Storage::disk('public')->put($folPut, $content);
+            return $folPut;
         }
+        // if ($path && File::exists(public_path($path))) {
+        //     $folder = pathinfo($path)['dirname'];
+        //     $upload =  Cloudinary::upload(public_path($path), ["folder" => $folder]);
+        //     $save = [];
+        //     $save["id"] = $upload->getPublicId();
+        //     $save["path"] = $upload->getSecurePath();
+        //     return json_encode($save);
+        // }
         return null;
     }
 }

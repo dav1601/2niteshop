@@ -2,6 +2,18 @@
   display: flex;
 }
 
+.hover-action:hover {
+  color: #3490dc !important;
+}
+
+.modal-open .modal {
+  overflow: hidden;
+}
+
+.custom-control-label {
+  margin-bottom: 20px;
+}
+
 .c-pointer {
   cursor: pointer;
 }
@@ -12,6 +24,18 @@
 
 .trans-025-all {
   transition: all 0.2s ease;
+}
+
+.tox {
+  height: 800px !important;
+}
+
+.tox-tinymce-aux {
+  z-index: 20000 !important;
+}
+
+.modal {
+  z-index: 10000;
 }
 
 #page__loading {
@@ -40,9 +64,9 @@
 
 #sidebar {
   transition: all 0.5s;
-  flex: 0 0 310px;
-  width: 310px;
-  max-width: 310px;
+  flex: 0 0 300px;
+  width: 300px;
+  max-width: 300px;
   position: fixed;
   left: 0;
   top: 0;
@@ -68,7 +92,7 @@
 }
 
 .hide-sidebar {
-  left: -310px !important;
+  left: -300px !important;
 }
 
 .card-header h2 {
@@ -90,15 +114,18 @@ hr {
   color: white;
 }
 
+.pgb-actions {
+  left: 300px;
+}
+
 #content {
-  flex: 1;
-  margin-left: 310px;
-  max-width: 100%;
+  flex: 0 0 calc(100vw - 300px);
+  max-width: calc(100vw - 300px);
+  margin-left: 300px;
   transition: width 0.5s;
   margin-bottom: 50px;
 }
 #content .content__body {
-  width: auto;
   max-width: 100vw;
   padding: 3rem 3rem 1.5rem;
 }

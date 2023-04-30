@@ -48,14 +48,14 @@
     "autoload": {
         "files": [
             "app/helpers/helpers.php",
-            "app/helpers/fomat.php"
+            "app/helpers/fomat.php",
+            "app/helpers/pgb/helpers.php"
         ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
-
     },
     "autoload-dev": {
         "psr-4": {

@@ -1,5 +1,4 @@
 $(function () {
-    
     var currentPage = $(".page-item.active .page-link").attr("data-page");
     var prefix = "#user_filter--";
     var url = route("show_user_ajax");
@@ -82,32 +81,36 @@ $(function () {
         return false;
     });
     $(document).on("change", "#dvsAvatar", function () {
-        var formData = new FormData();
-        formData.append("avatar", $(this)[0].files[0]);
-        $.ajax({
-            type: "post",
-            url: route("ajax__avatar"),
-            data: formData,
-            dataType: "json",
-            contentType: false,
-            processData: false,
-            beforeSend: function () {
-                var loading = $("#ajax__avatar--loading").val();
-                $("#davishop__avatar--edit").attr("src", loading);
-            },
-            success: function (data) {
-                if (data.ok == 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: `${data.errors.avatar[0]}`,
-                    });
-                } else {
-                    $("#davishop__avatar--edit").attr("src", data.img);
-                    $(".davishop__avatar img").attr("src", data.img);
-                    deleteAjaxImage(data.unlink);
-                }
-            },
-        });
+        const file = $(this)[0].files[0];
+        $(".davishop__avatar img").attr("src", URL.createObjectURL(file));
+        $("#davishop__avatar--edit").attr("src", URL.createObjectURL(file));
+        console.log(URL.createObjectURL(file));
+        // var formData = new FormData();
+        // formData.append("avatar", $(this)[0].files[0]);
+        // $.ajax({
+        //     type: "post",
+        //     url: route("ajax__avatar"),
+        //     data: formData,
+        //     dataType: "json",
+        //     contentType: false,
+        //     processData: false,
+        //     beforeSend: function () {
+        //         var loading = $("#ajax__avatar--loading").val();
+        //         $("#davishop__avatar--edit").attr("src", loading);
+        //     },
+        //     success: function (data) {
+        //         if (data.ok == 0) {
+        //             Swal.fire({
+        //                 icon: "error",
+        //                 title: `${data.errors.avatar[0]}`,
+        //             });
+        //         } else {
+        //             $("#davishop__avatar--edit").attr("src", data.img);
+        //             $(".davishop__avatar img").attr("src", data.img);
+        //             deleteAjaxImage(data.unlink);
+        //         }
+        //     },
+        // });
     });
     function deleteAjaxImage($path = "") {
         var url = route("ajax__avatar__delete");

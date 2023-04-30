@@ -4,6 +4,9 @@
 .va-radius-fb {
     border-radius: 8px;
 }
+.bb-g-1 {
+    border-bottom: 1px solid gray;
+}
 .cursor-pointer {
     cursor: pointer !important;
 }
@@ -51,51 +54,7 @@
         border: none;
     }
 }
-.buttons {
-    .all {
-        border: 1px solid white;
-        border-radius: 50px;
-        cursor: pointer;
-        display: inline-block;
-    }
-    .button-admin {
-        .admin {
-            padding: 0 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-        }
-    }
-    .button-vip-2 {
-        background-color: #81cb92;
-        &:hover {
-            border: 1px solid white;
-            background-color: #81cb92;
-        }
-    }
-    .button-vip-1 {
-        background-color: #d76fb4;
-        &:hover {
-            border: 1px solid white;
-            background-color: #d76fb4;
-        }
-    }
-    .button-vip-3 {
-        background-color: #0984e3;
-        &:hover {
-            border: 1px solid white;
-            background-color: #0984e3;
-        }
-    }
-    .button-vip-4 {
-        background-color: #ff3333;
-        &:hover {
-            border: 1px solid white;
-            background-color: #ff3333;
-        }
-    }
-}
+
 @for $i from 1 through 10 {
     .mb-#{calc($i * 10)} {
         margin-bottom: calc($i * 10px);

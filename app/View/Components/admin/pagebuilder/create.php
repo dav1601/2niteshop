@@ -11,9 +11,12 @@ class create extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $type;
+    public $page;
+    public function __construct($type = "create", $page = [])
     {
-        //
+        $this->type = $type;
+        $this->page = $page;
     }
 
     /**

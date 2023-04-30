@@ -191,6 +191,7 @@ class AdminCategoryController extends Controller
             $category = Category::where('id', $request->id)->firstOrFail();
             $data['name'] = $request->name;
             $data['title'] = $request->title;
+            $data['active'] = $request->has("active-category") ? true : false;
             if ($request->slug == null) {
                 $data['slug'] = Str::slug($request->name);
             } else {
@@ -218,6 +219,7 @@ class AdminCategoryController extends Controller
                 $res['s'] = false;
             }
         }
+        $res['all'] = $request->all();
         return response()->json($res);
     }
 

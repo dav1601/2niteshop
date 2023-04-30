@@ -72,6 +72,15 @@
 <?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
 <?php endif; ?>
 <div class="my-4">
+    <label class="mb-4">Active:</label>
+    <div class="switch">
+        <input type="checkbox" id="<?php echo e('switch-category-' . $category->id); ?>" name="active-category"
+            data-id="<?php echo e($category->id); ?>" class="switch-category"
+            <?php if($category->active == 1): ?> checked <?php endif; ?> /><label
+            for="<?php echo e('switch-category-' . $category->id); ?>">Toggle</label>
+    </div>
+</div>
+<div class="my-4">
     <?php if(empty($category->icon)): ?>
         <span>Chưa Có Hình Ảnh Icon</span>
     <?php else: ?>

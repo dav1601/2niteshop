@@ -42,11 +42,8 @@ class FileRepository implements FileInterface
     {
         switch ($this->driver) {
             case 'local':
-                if (!public_path($link)) {
-                    return "";
-                }
-                $link =  asset($link) . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
-                break;
+                $link =  config('app.url') . "/storage" . "/" . $link . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
+                return $link;
             case 'cloudinary':
                 $data = json_decode($link);
                 $path = "";
@@ -56,7 +53,6 @@ class FileRepository implements FileInterface
                 return $path;
             default:
                 return "";
-                break;
         }
     }
     public function ver_img_local($link = "")
@@ -70,9 +66,20 @@ class FileRepository implements FileInterface
     }
     public function storeFileImg($file, $path)
     {
+        if (!$path) {
+            return "";
+        }
+        $last_path = substr($path, -1);
+        $first_path = $path[0];
+        if ($last_path !== "/") {
+            $path = $path . "/";
+        }
+        if ($first_path !== "/") {
+            $path = "/" . $path;
+        }
         switch ($this->driver) {
             case 'local':
-                $path_public = "" . $path;
+                $path_public = config('app.url') . "/storage" . "/" . $path;
                 $name = $file->getClientOriginalName();
                 if (file_exists($path_public .  $name)) {
                     $file_name = pathinfo($name, PATHINFO_FILENAME);
@@ -85,8 +92,13 @@ class FileRepository implements FileInterface
                     }
                 }
                 $save = $path . $name;
-                if ($file->move($path_public, $name))
-                    return $save;
+                if (Storage::disk('public')->putFileAs(
+                    $path,
+                    $file,
+                    $name
+                )) {
+                    return "storage" . $save;
+                }
                 break;
             case 'cloudinary':
                 $upload =  $file->storeOnCloudinary($path);
@@ -100,17 +112,17 @@ class FileRepository implements FileInterface
                 }
                 break;
             default:
-                return NULL;
                 break;
         }
-        return NULL;
+        return "";
     }
     public function deleteFile($path)
     {
         switch ($this->driver) {
             case 'local':
-                if (File::exists(public_path($path))) {
-                    return unlink(public_path($path));
+                $path = config("app.url" . "/storage" . "/" . $path);
+                if (File::exists($path)) {
+                    return unlink($path);
                 }
                 break;
             case 'cloudinary':

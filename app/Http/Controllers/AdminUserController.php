@@ -251,7 +251,7 @@ class AdminUserController extends Controller
     // /////////////////////////////////
     //////////////////////////////////////
 
-    public function ajax__avatar(Request $request)
+    public function ajax__avatar(Request $request, FileInterface $file)
     {
         $data = array();
         $pagination = '';
@@ -280,22 +280,24 @@ class AdminUserController extends Controller
             return response()->json($data);
         } else {
             $main_img = $request->avatar;
-            $n_main = $main_img->getClientOriginalName();
-            if (file_exists($path_public . $n_main)) {
-                $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                $ext = $main_img->getClientOriginalExtension();
-                $n_main = $filename . '(1)' . '.' . $ext;
-                $i = 1;
-                while (file_exists($path_public . $n_main)) {
-                    $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                    $i++;
-                }
-            }
-            $save_main = url($path_public . $n_main);
-            $main_img->move($path_public, $n_main);
+            $path = "client/avatar";
+            $save_main = $file->storeFileImg($main_img, $path);
+            // $n_main = $main_img->getClientOriginalName();
+            // if (file_exists($path_public . $n_main)) {
+            //     $filename = pathinfo($n_main, PATHINFO_FILENAME);
+            //     $ext = $main_img->getClientOriginalExtension();
+            //     $n_main = $filename . '(1)' . '.' . $ext;
+            //     $i = 1;
+            //     while (file_exists($path_public . $n_main)) {
+            //         $n_main = $filename . '(' . $i . ')' . '.' . $ext;
+            //         $i++;
+            //     }
+            // }
+            // $save_main = url($path_public . $n_main);
+            // $main_img->move($path_public, $n_main);
             $data['img'] = $save_main;
             $data['ok'] = 1;
-            $data['unlink'] = $path_public . $n_main;
+            $data['unlink'] = $save_main;
             return response()->json($data);
         }
     }

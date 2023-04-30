@@ -104,59 +104,35 @@
                             <i class="fas fa-angle-right"></i>
                         </button>
                     </div>
+                    <div id="bannerBottom" style="margin-top:5px">
+                        <?php $__currentLoopData = $banners['b']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bn): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <a href="<?php echo e(url($bn->link)); ?>" class="d-inline-block w-100">
+                                <img src="<?php echo e($file->ver_img($bn->img)); ?>" alt="<?php echo e($bn->name); ?>" width="100%"
+                                    height="auto" alt="<?php echo e($bn->name); ?>">
+                            </a>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
                 </div>
                 <div class="home__right--banner">
-                    <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bn): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php if($bn->position == 'Phải'): ?>
-                            <a href="<?php echo e(url($bn->link)); ?>" class="d-block">
-                                <img src="<?php echo e($file->ver_img($bn->img)); ?>" class="lazy" alt="<?php echo e($bn->name); ?>"
-                                    width="100%" height="auto" alt="<?php echo e($bn->name); ?>">
-                            </a>
-                        <?php endif; ?>
+                    <?php $__currentLoopData = $banners['r']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $bn): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(url($bn->link)); ?>" class="d-inline-block r-item">
+                            <img src="<?php echo e($file->ver_img($bn->img)); ?>" alt="<?php echo e($bn->name); ?>"
+                                style="border:1px solid orange" width="100%" height="auto" height="auto"
+                                alt="<?php echo e($bn->name); ?>">
+                        </a>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 </div>
             </div>
         </div>
+
         
-        <div class="w-100 bot__banner owl-carousel owl-theme">
-            <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php if($bt->position == 'Dưới'): ?>
-                    <div class="item bot__banner--item">
-                        <a href="<?php echo e(url($bt->link)); ?>" class="d-block w-100">
-                            <img src="<?php echo e($file->ver_img($bt->img)); ?>" class="img-fluid lazy" alt="<?php echo e($bt->name); ?>">
-                        </a>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </div>
+
         
-        <div class="w-100 owl-carousel owl-theme mb-4">
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="<?php echo e($file->ver_img_local('client/images/plc-1.png')); ?>" class="img-fluid lazy" alt="plc-1">
-                </a>
-            </div>
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="<?php echo e($file->ver_img_local('client/images/plc-2.png')); ?>" class="img-fluid lazy" alt="policy">
-                </a>
-            </div>
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="<?php echo e($file->ver_img_local('client/images/plc-3.png')); ?>" class="img-fluid lazy" alt="policy">
-                </a>
-            </div>
-            <div class="item">
-                <a class="d-block w-100">
-                    <img src="<?php echo e($file->ver_img_local('client/images/plc-4.png')); ?>" class="img-fluid lazy" alt="policy">
-                </a>
-            </div>
-        </div>
-        
-        <div class="w-100 show__home">
-            <?php $__currentLoopData = $show_home; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php if (isset($component)) { $__componentOriginal7cd869684c8c577e02b917a6c15734287e61bdfc = $component; } ?>
+        <div id="home_content">
+            <div class="w-100 show__home">
+                <?php $__currentLoopData = $show_home; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if (isset($component)) { $__componentOriginal7cd869684c8c577e02b917a6c15734287e61bdfc = $component; } ?>
 <?php $component = App\View\Components\Client\Home\Section::resolve(['item' => $item] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('client.home.section'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -171,7 +147,8 @@
 <?php $component = $__componentOriginal7cd869684c8c577e02b917a6c15734287e61bdfc; ?>
 <?php unset($__componentOriginal7cd869684c8c577e02b917a6c15734287e61bdfc); ?>
 <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
         </div>
     </div>
 
@@ -180,7 +157,7 @@
         <div id="home__blogs--content" class="container">
             <a href="<?php echo e(url('tin-tuc')); ?>" id="home__blogs--title">
                 <img src="<?php echo e($file->ver_img_local('client/images/bang-tin-home-banner-1280x80.jpg')); ?>" alt="Bảng Tin"
-                    class="img-fluid lazy">
+                    class="">
             </a>
             <div id="area__blogs">
                 <div class="tab-content" id="myTabContent__blogs">

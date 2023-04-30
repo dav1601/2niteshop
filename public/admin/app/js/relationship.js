@@ -278,16 +278,17 @@ $(function () {
         $("#modal__select").modal("hide");
     });
     $(document).on("click", "#modal__select--save", function () {
-        const type = $(this).attr("type-save");
-        if (type == "temp") {
+        const pid = $(this).attr("pack-id");
+        if (pid) {
             const pid = $(this).attr("pack-id");
             const el = $(".pgb-package-" + pid);
             let save = saveInitAdd(el);
             $.updateContentPackage(pid, save);
-            resetParams();
-            $("#modal__select").modal("hide");
+        } else {
+            saveInitAdd();
         }
-
+        resetParams();
+        $("#modal__select").modal("hide");
         // if (relaId == 0) {
         //     saveInitAdd();
         // } else {

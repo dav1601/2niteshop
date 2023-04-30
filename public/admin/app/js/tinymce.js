@@ -1,19 +1,14 @@
 $(function () {
     jQuery.create_editor = function create_editor(id = "", height = 400) {
-        let editor = {
+        let setting = {
             path_absolute: path_ab,
             selector: "#" + id,
-            relative_urls: false,
-            height: height,
-            external_plugins: {
-                grid: path_ab + "/plugin/grid/plugin.min.js",
-            },
-
+            height: 500,
             plugins:
-                "print preview importcss tinydrive searchreplace autolink autosave save directionality  visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists  wordcount  textpattern noneditable help charmap  quickbars emoticons grid",
+                "lists advlist anchor autolink autoresize autosave charmap code codesample directionality emoticons fullscreen help image importcss insertdatetime link lists media nonbreaking pagebreak preview quickbars save  table  visualblocks visualchars wordcount",
             toolbar:
-                "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist  | forecolor backcolor  removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample |  ltr rtl | showcomments addcomment grid_insert",
-            grid_preset: "Bootstrap4",
+                "aligncenter alignjustify alignleft alignnone alignright blockquote backcolor bold italic indent copy cut fontselect fontsizeselect forecolor formatselect outdent underline superscript subscript	styleselect strikethrough  undo  anchor restoredraft charmap code codesample  emoticons fullscreen  image insertdatetime link numlist bullist media nonbreaking pagebreak preview save  table  | ltr rtl visualblocks visualchars wordcount tabledelete tableprops tablerowprops tablecellprops  tableinsertrowbefore tableinsertrowafter tabledeleterow  tableinsertcolbefore tableinsertcolafter tabledeletecol ",
+
             file_picker_callback: function (callback, value, meta) {
                 var x =
                     window.innerWidth ||
@@ -45,8 +40,10 @@ $(function () {
                 });
             },
         };
-        return tinymce.init(editor);
+        tinymce.remove("#" + id);
+        tinymce.init(setting);
     };
+
     $.create_editor("plc__tiny", 400);
     $.create_editor("info__tiny", 400);
     $.create_editor("content__tiny", 1000);

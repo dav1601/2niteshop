@@ -4,6 +4,12 @@
 .va-radius-fb {
     border-radius: 8px;
 }
+.bb-g-1 {
+    border-bottom: 1px solid gray;
+}
+.cursor-pointer {
+    cursor: pointer !important;
+}
 .font-14 {
     font-size: 14px !important;
 }
@@ -52,17 +58,30 @@
     }
 }
 
-@function column-width($col) {
-    @return percentage($col/100);
-}
-@for $i from 1 through 100 {
-    .va-fix-#{$i}{
-        flex: 0 0 column-width($i);
-        max-width: column-width($i)  ;
+
+@for $i from 1 through 10 {
+    .va-fix-#{$i * 10} {
+        flex: 0 0 percentage($i * 10);
+        max-width: percentage($i * 10);
     }
 }
+@for $i from 1 through 10 {
+    .mb-#{calc($i * 10)} {
+        margin-bottom: calc($i * 10px);
+    }
+    .mt-#{calc($i * 10)} {
+        margin-top: calc($i * 10px);
+    }
+    .ml-#{calc($i * 10)} {
+        margin-left: calc($i * 10px);
+    }
+    .mr-#{calc($i * 10)} {
+        margin-right: calc($i * 10px);
+    }
+}
+
 .va-fix-cont-1000 {
-max-width: 1030px !important;
+    max-width: 1030px !important;
 }
 .va-fix-padding {
     padding: 0 10px !important;

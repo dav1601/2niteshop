@@ -1,4 +1,4 @@
-<li class="pgb-section mb-4 init-sort" data-id="<?php echo e($section->id); ?>" id="pgb-section-<?php echo e($section->id); ?>"
+<li class="pgb-section init-sort mb-4" data-id="<?php echo e($section->id); ?>" id="pgb-section-<?php echo e($section->id); ?>"
     data-ord="<?php echo e(isset($section->ord) ? $section->ord : 'none'); ?>" data-type="section-item">
     <div class="pgb-section-act">
         <div class="item move" sid="<?php echo e($section->id); ?>" data-ord="<?php echo e(isset($section->ord) ? $section->ord : 'none'); ?>">

@@ -2,7 +2,7 @@
     <div class="box__banner">
         <div class="box__banner--main">
             <a href="<?php echo e(url($homeItem->main_link)); ?>" class="d-block px-2">
-                <img src="<?php echo e($file->ver_img($homeItem->main_img)); ?>" alt="<?php echo e($homeItem->name); ?>" class="img-fluid lazy">
+                <img src="<?php echo e($file->ver_img($homeItem->main_img)); ?>" alt="<?php echo e($homeItem->name); ?>" class="w-100">
             </a>
         </div>
         <div class="box__banner--sub swiper mySwiper">
@@ -11,7 +11,7 @@
                     <div class="swiper-slide">
                         <a href="<?php echo e($homeItem->use_link); ?>" class="d-block pl-2">
                             <img src="<?php echo e($file->ver_img($homeItem->use_img)); ?>" alt="<?php echo e($homeItem->name); ?>"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 <?php endif; ?>
@@ -19,7 +19,7 @@
                     <div class="swiper-slide">
                         <a href="<?php echo e($homeItem->instruct_link); ?>" class="d-block">
                             <img src="<?php echo e($file->ver_img($homeItem->instruct_img)); ?>" alt="<?php echo e($homeItem->name); ?>"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 <?php endif; ?>
@@ -27,7 +27,7 @@
                     <div class="swiper-slide">
                         <a href="<?php echo e($homeItem->access_link); ?>" class="d-block">
                             <img src="<?php echo e($file->ver_img($homeItem->access_img)); ?>" alt="<?php echo e($homeItem->name); ?>"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 <?php endif; ?>
@@ -35,7 +35,7 @@
                     <div class="swiper-slide">
                         <a href="<?php echo e($homeItem->fix_link); ?>" class="d-block">
                             <img src="<?php echo e($file->ver_img($homeItem->fix_img)); ?>" alt="<?php echo e($homeItem->name); ?>"
-                                class="img-fluid lazy">
+                                class="w-100">
                         </a>
                     </div>
                 <?php endif; ?>
@@ -50,7 +50,6 @@
 
 <?php $__currentLoopData = $sections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <?php
-
         $id = 'section-' . $homeItem->id . $key;
     ?>
     <div class="box__cat pl-1">

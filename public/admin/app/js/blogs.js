@@ -1,23 +1,40 @@
 $(function () {
-  
-
     $(document).on("change", "#img", function () {
         var file = $(this)[0].files;
         $("#forImg").html(file[0].name);
     });
-    $("#dateprev input").datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss",
-    });
-    $("#datenext input").datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss",
-    });
-    $(document).on("click", "#show_date_1", function () {
-        $("#dateprev input").datetimepicker("toggle");
-        $("#datenext input").val("");
-    });
-    $(document).on("click", "#show_date_2", function () {
-        $("#datenext input").datetimepicker("toggle");
-        $("#dateprev input").val("");
+    // $("#dateprev input").datetimepicker({
+    //     format: "YYYY-MM-DD HH:mm:ss",
+    // });
+    // $("#datenext input").datetimepicker({
+    //     format: "YYYY-MM-DD HH:mm:ss",
+    // });
+    // $(document).on("click", "#show_date_1", function () {
+    //     $("#dateprev input").datetimepicker("toggle");
+    //     $("#datenext input").val("");
+    // });
+    // $(document).on("click", "#show_date_2", function () {
+    //     $("#datenext input").datetimepicker("toggle");
+    //     $("#dateprev input").val("");
+    // });
+    $(document).on("change", "#blog_seclect_content", function () {
+        const val = $(this).val();
+        console.log(val);
+        let pgb = $("#blog_pgb");
+        let def = $("#blog_editor");
+        switch (val) {
+            case "pgb":
+                def.addClass("d-none");
+                pgb.removeClass("d-none");
+                break;
+            case "def":
+                def.removeClass("d-none");
+                pgb.addClass("d-none");
+            default:
+                def.addClass("d-none");
+                pgb.addClass("d-none");
+                break;
+        }
     });
     $("#dateprev input")
         .datetimepicker()

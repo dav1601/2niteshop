@@ -10,7 +10,7 @@
             <i><?php echo e($carbon->create($blog->created_at)->format('M')); ?></i>
         </span>
         <a href="<?php echo e($href); ?>" class="d-block">
-            <img src="<?php echo e($file->ver_img($blog->img)); ?>" alt="<?php echo e($blog->title); ?>" class="img-fluid lazy">
+            <img src="<?php echo e($file->ver_img($blog->img)); ?>" alt="<?php echo e($blog->title); ?>" width="100%">
         </a>
     </div>
     <div class="bis__stats">
@@ -32,8 +32,6 @@
     </div>
 
 
-    <div class="bis__desc">
-        <span class="d-block"><?php echo ltrim(Str::limit(strip_tags($blog->content), 200, '..'), '&nbsp;'); ?></span>
-    </div>
+    
 </div>
 <?php /**PATH E:\xampp\htdocs\2niteshop\home\u217861923\domains\vachill.com\public_html\resources\views/components/blogsubitem.blade.php ENDPATH**/ ?>

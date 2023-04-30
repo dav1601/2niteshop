@@ -12,6 +12,9 @@
             @if ($m === 'Policy')
                 <th scope="col" class="text-center">Position</th>
             @endif
+            @if ($m === 'PageBuilder')
+                <th scope="col" class="text-center">Type</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -41,10 +44,16 @@
                         Giá: {{ crf($item->price) }}
                     </td>
                 @endif
+
                 @if ($m === 'BlockProduct')
                     <td class="text-center">
                         <button type="button" data-content=" {{ $item->text }}"
                             class="btn btn-primary content__block"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                @endif
+                @if ($m === 'PageBuilder')
+                    <td class="text-center">
+                        {{ $item->type }}
                     </td>
                 @endif
                 @if ($m === 'Policy')

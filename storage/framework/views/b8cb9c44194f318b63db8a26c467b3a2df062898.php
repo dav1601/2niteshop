@@ -9,11 +9,11 @@
 ?>
 <div class="product__item--list d-flex reval-item flex-wrap" data-id="<?php echo e($message->id); ?>">
     <div class="image position-relative" data-id="<?php echo e($message->id); ?>">
-        <a href="<?php echo e($route_product); ?>" class="image__main">
-            <img src="<?php echo e($file->ver_img($message->main_img)); ?>" alt="<?php echo e($message->name); ?>" class="img-fluid lazy">
+        <a href="<?php echo e($route_product); ?>" class="img_show">
+            <img data-src="<?php echo e($file->ver_img($message->main_img)); ?>" alt="<?php echo e($message->name); ?>" class="lazyload">
         </a>
-        <a href="<?php echo e($route_product); ?>" class="image__sub">
-            <img src="<?php echo e($file->ver_img($message->sub_img)); ?>" alt="<?php echo e($message->name); ?>" class="img-fluid lazy">
+        <a href="<?php echo e($route_product); ?>" class="img_hide">
+            <img data-src="<?php echo e($file->ver_img($message->sub_img)); ?>" alt="<?php echo e($message->name); ?>" class="lazyload">
         </a>
         <div class="quick__view qv__<?php echo e($message->id); ?>" data-toggle="tooltip" data-placement="top" title="Xem Nhanh"
             class="open__modal--qview" data-id="<?php echo e($message->id); ?>">
@@ -38,13 +38,13 @@
     <div class="info__product">
         <div class="prdcer">
             <span>Nhà sản xuất: <a
-                    href="<?php echo e(route('producer', ['slug' => $message->producer_slug])); ?>"><?php echo e(App\Models\Producer::where('id', '=', $message->producer_id)->first()->name); ?></a></span>
+                    href="<?php echo e(route('producer', ['slug' => $message->producer->slug])); ?>"><?php echo e($message->producer->name); ?></a></span>
         </div>
         <div class="name">
             <a href="<?php echo e($route_product); ?>" class="d-block"><?php echo e($message->name); ?></a>
         </div>
         <div class="des">
-            <p><?php echo ltrim(Str::limit(strip_tags($message->content), 400, '...'), '&nbsp; '); ?></p>
+            <p><?php echo ltrim(Str::limit(strip_tags($message->content), 240, '..'), '&nbsp;'); ?></p>
         </div>
         <div class="price">
             <?php if($message->price != 0): ?>

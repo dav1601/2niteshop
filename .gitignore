@@ -4,6 +4,10 @@
 /public/client/avatar
 /public/storage
 /storage/*.key
+/storage/app
+/storage/debugbar
+/storage/framework
+/storage/backup
 /vendor
 .env
 .env.backup

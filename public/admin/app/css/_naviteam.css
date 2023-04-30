@@ -6,6 +6,10 @@
   border-radius: 8px;
 }
 
+.bb-g-1 {
+  border-bottom: 1px solid gray;
+}
+
 .cursor-pointer {
   cursor: pointer !important;
 }
@@ -53,48 +57,6 @@
 .va-checkbox input:checked + label::before {
   background: #ee5253;
   border: none;
-}
-
-.buttons .all {
-  border: 1px solid white;
-  border-radius: 50px;
-  cursor: pointer;
-  display: inline-block;
-}
-.buttons .button-admin .admin {
-  padding: 0 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
-.buttons .button-vip-2 {
-  background-color: #81cb92;
-}
-.buttons .button-vip-2:hover {
-  border: 1px solid white;
-  background-color: #81cb92;
-}
-.buttons .button-vip-1 {
-  background-color: #d76fb4;
-}
-.buttons .button-vip-1:hover {
-  border: 1px solid white;
-  background-color: #d76fb4;
-}
-.buttons .button-vip-3 {
-  background-color: #0984e3;
-}
-.buttons .button-vip-3:hover {
-  border: 1px solid white;
-  background-color: #0984e3;
-}
-.buttons .button-vip-4 {
-  background-color: #ff3333;
-}
-.buttons .button-vip-4:hover {
-  border: 1px solid white;
-  background-color: #ff3333;
 }
 
 .mb-10 {

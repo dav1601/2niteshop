@@ -82,11 +82,10 @@ class CartController extends Controller
         }
         if ($id != 0) {
             $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, ['type' => $type], $realTimeUpdate);
-                $item = $res['product'];
-                $add_ok .= view('components.addcart', compact('item'));
-                $data['add_ok'] = $add_ok;
-                $data['new'] = true;
-
+            $item = $res['product'];
+            $add_ok .= view('components.addcart', compact('item'));
+            $data['add_ok'] = $add_ok;
+            $data['new'] = true;
         }
 
         if ($request->type == "delete") {
@@ -105,7 +104,7 @@ class CartController extends Controller
         $total = $this->handle_cart->total();
         $output .= view('components.client.cart.show', ['cart' => $cart]);
         $output_items = '
-        ' . Cart::instance('shopping')->count() . ' Sản Phẩm -- Gọi -- ' . getVal('switchboard')->value . '
+        ' . Cart::instance('shopping')->count() . ' Sản Phẩm -- Gọi -- ' . getVal("switchboard")->value . '
         ';
         $output_2 .= view('components.client.cart.drop', ['cart' => $cart]);
         $checkout .= view('components.client.cart.checkout', ['cart' => $cart]);

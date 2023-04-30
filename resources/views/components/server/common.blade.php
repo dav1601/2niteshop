@@ -5,19 +5,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        var swiper = new Swiper(".mySwiper", {
-            slidesPerView: 4,
-            slidesPerGroup: 4,
-            spaceBetween: 10,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-        });
+
         // $("#home-swiper-product-116").html("test");
         function getComponentProduct(id, type = "list") {
             const el = $("#home-swiper-product-" + id);

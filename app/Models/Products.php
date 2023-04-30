@@ -45,7 +45,10 @@ class Products extends Model
     {
         return $this->hasMany('App\Models\gllProducts')->orderBy('index', 'ASC');
     }
-
+    public function scopeExclude($query, $value = [])
+    {
+        return $query->select(array_diff($this->fillable, (array) $value));
+    }
     public function related_products()
     {
         return $this->hasMany('App\Models\RelatedProducts', 'product_id');

@@ -58,10 +58,6 @@
             </ol>
         </div>
     </div>
-    <?php
-        $b = \App\Models\BlockCategory::where('id', 1)->first();
-    ?>
-    <?php echo $b->content; ?>
 
     <div class="container">
         <div class="row mx-0">

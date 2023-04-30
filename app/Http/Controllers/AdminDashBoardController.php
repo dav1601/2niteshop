@@ -15,6 +15,7 @@ use App\Models\showHome;
 use App\Models\Statistics;
 use App\Models\SectionHome;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -138,30 +139,30 @@ class AdminDashBoardController extends Controller
         $data['color'] = $request->color;
         $folder = "admin/images/show_home/";
         // main img
-        $path_main = $folder . $request->name . "/" . "main/";
+        $path_main = $folder . Str::slug($request->name) . "/" . "main/";
         $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
         // end main img
         // use img
         if ($request->has('use_img')) {
-            $path_use = $folder . $request->name . "/" . "use/";
+            $path_use = $folder . Str::slug($request->name) . "/" . "use/";
             $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
         }
         // end use img
         // instruct img
         if ($request->has('instruct_img')) {
-            $path_instruct = $folder . $request->name . "/" . "instruct/";
+            $path_instruct = $folder . Str::slug($request->name) . "/" . "instruct/";
             $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
         }
         // end instruct img
         // fix img
         if ($request->has('fix_img')) {
-            $path_fix = $folder . $request->name . "/" . "fix/";
+            $path_fix = $folder . Str::slug($request->name) . "/" . "fix/";
             $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
         }
         // end fix img
         // access img
         if ($request->has('access_img')) {
-            $path_access = $folder . $request->name . "/" . "access/";
+            $path_access = $folder . Str::slug($request->name) . "/" . "access/";
             $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
         }
         if ($request->has("category__digital")) {
@@ -222,7 +223,7 @@ class AdminDashBoardController extends Controller
         if ($request->has('main_img')) {
             if ($conf->main_img != NULL)
                 $this->file->deleteFile($conf->main_img);
-            $path_main = "admin/images/show_home/" . $request->name . "/" . "main/";
+            $path_main = "admin/images/show_home/" . Str::slug($request->name) . "/" . "main/";
             $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
         }
         // end main img
@@ -230,7 +231,7 @@ class AdminDashBoardController extends Controller
         if ($request->has('use_img')) {
             if ($conf->use_img != NULL)
                 $this->file->deleteFile($conf->use_img);
-            $path_use = "admin/images/show_home/" . $request->name . "/" . "use/";
+            $path_use = "admin/images/show_home/" . Str::slug($request->name) . "/" . "use/";
             $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
         }
         // end use img
@@ -238,7 +239,7 @@ class AdminDashBoardController extends Controller
         if ($request->has('instruct_img')) {
             if ($conf->instruct_img != NULL)
                 $this->file->deleteFile($conf->instruct_img);
-            $path_instruct = "admin/images/show_home/" . $request->name . "/" . "instruct/";
+            $path_instruct = "admin/images/show_home/" . Str::slug($request->name) . "/" . "instruct/";
             $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
         }
         // end instruct img
@@ -246,7 +247,7 @@ class AdminDashBoardController extends Controller
         if ($request->has('fix_img')) {
             if ($conf->fix_img != NULL)
                 $this->file->deleteFile($conf->fix_img);
-            $path_fix = "admin/images/show_home/" . $request->name . "/" . "fix/";
+            $path_fix = "admin/images/show_home/" . Str::slug($request->name) . "/" . "fix/";
             $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
         }
         // end fix img
@@ -254,7 +255,7 @@ class AdminDashBoardController extends Controller
         if ($request->has('access_img')) {
             if ($conf->access_img != NULL)
                 $this->file->deleteFile($conf->access_img);
-            $path_access = "admin/images/show_home/" . $request->name . "/" . "access/";
+            $path_access = "admin/images/show_home/" . Str::slug($request->name) . "/" . "access/";
             $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
         }
         // end access img

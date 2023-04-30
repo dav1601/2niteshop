@@ -84,5 +84,5 @@ class AppServiceProvider extends ServiceProvider
         View::share('daviUser', $daviUser);
         View::share('file', $file);
         View::share('myCart', $myCart);
-    }
+}
 }

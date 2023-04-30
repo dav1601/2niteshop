@@ -12,6 +12,9 @@
             <?php if($m === 'Policy'): ?>
                 <th scope="col" class="text-center">Position</th>
             <?php endif; ?>
+            <?php if($m === 'PageBuilder'): ?>
+                <th scope="col" class="text-center">Type</th>
+            <?php endif; ?>
         </tr>
     </thead>
     <tbody>
@@ -43,10 +46,17 @@
 
                     </td>
                 <?php endif; ?>
+
                 <?php if($m === 'BlockProduct'): ?>
                     <td class="text-center">
                         <button type="button" data-content=" <?php echo e($item->text); ?>"
                             class="btn btn-primary content__block"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                <?php endif; ?>
+                <?php if($m === 'PageBuilder'): ?>
+                    <td class="text-center">
+                        <?php echo e($item->type); ?>
+
                     </td>
                 <?php endif; ?>
                 <?php if($m === 'Policy'): ?>

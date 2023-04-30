@@ -21,10 +21,17 @@
 <script src="<?php echo e($file->ver('plugin/bootstrap/js/jquery-3.5.1.min.js')); ?>"></script>
 <script src="<?php echo e($file->ver('plugin/bootstrap/js/popper.min.js')); ?>"></script>
 <script src="<?php echo e($file->ver('plugin/bootstrap/js/bootstrap.min.js')); ?>"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+    integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php echo app('Tightenco\Ziggy\BladeRouteGenerator')->generate(); ?>
+<script src="<?php echo e($file->ver('app/common.js')); ?>"></script>
 <script src="<?php echo e($file->import_js('helper.js')); ?>"></script>
 <script src="<?php echo e($file->import_js('global.js')); ?>"></script>
 <script src="<?php echo e($file->import_js('app.js')); ?>"></script>
+
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"

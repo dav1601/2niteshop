@@ -112,11 +112,12 @@ Route::prefix('auth/api/')->group(function () {
 Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::prefix('admin/')->group(function () {
         Route::prefix('page_builder/')->group(function () {
-            Route::get('create', 'AdminPageBuilder@create')->name('pgb.create');
+            Route::get('create_or_edit/{type?}', 'AdminPageBuilder@create_or_edit')->name('pgb.create.or.edit');
             Route::get('edit', 'AdminPageBuilder@edit')->name('pgb.edit');
             Route::get('index', 'AdminPageBuilder@index')->name('pgb.index');
             Route::post('handle', 'AdminPageBuilder@handle')->name('pgb.handle');
             Route::post('render/package', 'AdminPageBuilder@render_package')->name('pgb.render.package');
+            Route::post('render/package/component', 'AdminPageBuilder@render_package_component')->name('pgb.render.package.component');
         });
         //  //////////////////////////////////////// endfunction
         Route::get('fullcalender', 'FullCalenderController@index')->name('fullcalender');

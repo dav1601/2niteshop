@@ -1,4 +1,5 @@
 // Body
+
 $body-bg: #19222c;
 $avatar-radius: 6px;
 $fb-radius: 8px;
@@ -24,6 +25,8 @@ $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $main: #48dbfb;
 $btn_bg_1: #3a4754;
+$inx-fixed-header-top: 5000;
+$idx-mobile-menu: 5001;
 // navbar vad
 $width-nav: 5.6rem;
 $color-primary: #0c5df4;
@@ -87,9 +90,9 @@ $width-cart: 80%;
             transform: translateX(0px);
         }
     }
-    animation: show_cart  ease-in-out;
+    animation: show_cart ease-in-out;
 }
-@mixin  davi_btn($width , $mt , $py , $px) {
+@mixin davi_btn($width, $mt, $py, $px) {
     align-items: center;
     color: #ffffff;
     display: flex;
@@ -109,12 +112,12 @@ $width-cart: 80%;
     outline: none;
     border: none;
     &:hover {
-       @include bg_hover;
-       text-decoration: none;
-       color: white;
+        @include bg_hover;
+        text-decoration: none;
+        color: white;
     }
 }
-@mixin  davj__btn($width , $bg , $color , $bg_hover)  {
+@mixin davj__btn($width, $bg, $color, $bg_hover) {
     align-items: center;
     background: $bg;
     color: $color;
@@ -128,18 +131,17 @@ $width-cart: 80%;
     text-transform: uppercase;
     cursor: pointer;
     transition: background 0.25s;
-    width:$width;
+    width: $width;
     text-decoration: none;
-     i {
+    i {
         margin-right: 10px;
         margin-bottom: 2px;
-     }
-     &:hover {
-         background: $bg_hover;
-     }
-
+    }
+    &:hover {
+        background: $bg_hover;
+    }
 }
-@mixin _2x5SvJ($bg , $color , $text , $bg-hover , $color-hover) {
+@mixin _2x5SvJ($bg, $color, $text, $bg-hover, $color-hover) {
     min-width: 150px;
     min-height: 40px;
     padding: 8px 20px;
@@ -152,9 +154,9 @@ $width-cart: 80%;
     background-color: $bg;
     border: 1px solid $color;
     color: $text;
-    transition: all  0.25s ;
+    transition: all 0.25s;
     &:hover {
-    background:  $bg-hover;
-    color: $color-hover;
+        background: $bg-hover;
+        color: $color-hover;
     }
 }

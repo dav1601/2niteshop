@@ -176,13 +176,13 @@ class AdminBlogController extends Controller
     ////////////////////////////////////////
     public function edit($id, Request $request)
     {
-        $blog = Blogs::where('id', '=', $id)->firstOrFail();
-        if (Gate::allows('group-4')) {
-        } else {
+        $blog = Blogs::with(['pgbs', 'pgbs.pgb_data'])->where('id', '=', $id)->firstOrFail();
+        if (!Gate::allows('group-4')) {
             $this->authorize('edit-blog', $blog);
         }
         $category_blog = CatBlog::all();
-        return view('admin.blogs.edit', compact('blog', 'category_blog'));
+        $rela_pgbs = implode(",", $blog->pgbs->pluck("pgb_id")->toArray());
+        return view('admin.blogs.edit', compact('blog', 'category_blog', 'rela_pgbs'));
     }
     ////////////////////////////////////////
 
@@ -233,24 +233,14 @@ class AdminBlogController extends Controller
     ////////////////////////////////////////
     public function handle_add_blog(Request $request, FileInterface $file)
     {
+
         $validator = Validator::make(
             $request->all(),
             [
                 'title' => 'required|unique:blogs',
-                'content' => 'required',
                 'img' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'cat' => 'required'
-            ],
-            [
-                'title.required' => "Không được để trống tên blog",
-                'cat.required' => "Không được để trống danh muc blog",
-                'content.required' => "Không được để trống content blog",
-                'desc.required' => "Không được để trống mô tả ngắn blog",
-                'title.required' => "Blog này đã tồn tại",
-                'img.required' => "Không được để trống hình ảnh chính",
-                'img.image' => "File không phải là file ảnh",
-                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'img.max' => "File ảnh không vượt quá 500kb",
+                'cat' => 'required',
+                'type_content' => 'required'
             ]
         );
         if ($validator->fails()) {
@@ -260,7 +250,10 @@ class AdminBlogController extends Controller
             $cat_name = CatBlog::where('id', '=', $request->cat)->first()->name;
             $data['title'] = $request->title;
             $data['slug'] = Str::slug($request->title);
-            $data['content'] = $request->content;
+            if ($request->type_content === "def") {
+                $data['content'] = $request->content;
+            }
+
             $data['desc'] = $request->desc;
             $path_img = $path . Str::slug($cat_name) . "/"  . "main/";
             $data['img'] = $file->storeFileImg($request->img, $path_img);
@@ -271,30 +264,25 @@ class AdminBlogController extends Controller
             $data['views'] = 0;
             $data['author'] = Auth::user()->name;
             $data['active'] = 1;
-            Blogs::create($data);
+            $data['type_content'] = $request->type_content;
+            $created = Blogs::create($data);
+            if ($request->type_content === "pgb") {
+                handle_rela($request, "blogs-pgb", $created->id);
+            }
             return redirect()->back()->with('ok', 1);
         }
     }
     // ///////////////////////////
-    public function handle_edit_blog($id, Request $request , FileInterface $file)
+    public function handle_edit_blog($id, Request $request, FileInterface $file)
     {
         $blog = Blogs::where('id', '=', $id)->firstOrFail();
         $validator = Validator::make(
             $request->all(),
             [
                 'title' => 'required',
-                'content' => 'required',
                 'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'cat' => 'required'
-            ],
-            [
-                'title.required' => "Không được để trống tên blog",
-                'cat.required' => "Không được để trống danh muc blog",
-                'content.required' => "Không được để trống content blog",
-                'desc.required' => "Không được để trống mô tả ngắn blog",
-                'img.image' => "File không phải là file ảnh",
-                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'img.max' => "File ảnh không vượt quá 500kb",
+                'cat' => 'required',
+                'type_content' => 'required'
             ]
         );
         if ($validator->fails()) {
@@ -304,13 +292,15 @@ class AdminBlogController extends Controller
             $cat_name = CatBlog::where('id', '=', $request->cat)->first()->name;
             $data['title'] = $request->title;
             $data['slug'] = Str::slug($request->title);
-            $data['content'] = $request->content;
             $data['desc'] = $request->desc;
             if ($request->has('img')) {
                 if ($blog->img != NULL)
                     $file->deleteFile('' . $blog->img);
                 $path_img = $path . Str::slug($cat_name) . "/"  . "main/";
                 $data['img'] = $file->storeFileImg($request->img, $path_img);
+            }
+            if ($request->type_content === "def") {
+                $data['content'] = $request->content;
             }
             $data['cat_id'] = $request->cat;
             $data['cat_sub_id'] = $request->cat_2;
@@ -319,6 +309,9 @@ class AdminBlogController extends Controller
             $data['author'] = Auth::user()->name;
             $data['active'] = 1;
             Blogs::where('id', '=', $id)->update($data);
+            if ($request->type_content === "pgb") {
+                handle_rela($request, "blogs-pgb", $id, false, true);
+            }
             return redirect()->back()->with('ok', 1);
         }
     }

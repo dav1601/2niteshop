@@ -7,8 +7,7 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('import_js'); ?>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script
-        src="<?php echo e(asset('admin/app/js/products.js')); ?>?ver=<?php echo filemtime('admin/app/js/products.js') ?>">
+    <script src="<?php echo e(asset('admin/app/js/products.js')); ?>?ver=<?php echo filemtime('admin/app/js/products.js') ?>">
     </script>
     <script src="<?php echo e(asset('admin/app/js/tinymce.js')); ?>?ver=<?php echo filemtime('admin/app/js/tinymce.js') ?>">
     </script>
@@ -18,17 +17,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-    <?php if(session('succes') == 1): ?>
-        <script>
-            toastr.success("Thêm Block Sản Phẩm Thành Công");
-        </script>
-    <?php elseif(session('success') == 2): ?>
-        <script>
-            toastr.success("Thêm Block Sản Phẩm Thất Bại");
-        </script>
-    <?php endif; ?>
-
-
+    
     <div id="block__product" class="row mx-0">
         <div class="col-12 mt-4 p-0">
             <div class="w-100">
