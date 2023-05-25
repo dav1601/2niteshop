@@ -8,6 +8,17 @@ use App\Models\Insurance;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Validation\Rules\Exists;
+
+function isPreOrder($date_sold)
+{
+    return strtotime($date_sold) >= strtotime(Carbon::now());
+}
+function statusProduct($date_sold, $qty)
+{
+    $status = $qty <= 0 ? 2 : 1;
+    return isPreOrder($date_sold) ? 3 : $status;
+}
 
 function price_product($product,  $ops = "", $options = ['qty' => 1])
 {
@@ -24,6 +35,39 @@ function price_product($product,  $ops = "", $options = ['qty' => 1])
         }
     }
     return (int)$price * $qty;
+}
+function badges($array, $key = null, $type = "primary")
+{
+    $html = "";
+    if (count($array) > 0) {
+        foreach ($array as $item) {
+            if ($key) {
+                $html .= '<span class="badge m-1 badge-' . $type . '">' . $item[$key] . '</span>';
+            } else {
+                $html .= '<span class="badge m-1 badge-' . $type . '">' . $item . '</span>';
+            }
+        }
+    }
+    return $html;
+}
+
+function renderROP($r_o_p = [])
+{
+    $html = "";
+    if (count($r_o_p) > 0) {
+        foreach ($r_o_p as $item) {
+            if (isset($item->name)) {
+                $html .= '<span class="badge m-1 badge-primary">' . $item->name . '</span>';
+            } else {
+                if ($item) {
+                    $html .= '<span class="badge m-1 badge-primary">' . $item . '</span>';
+                }
+            }
+        }
+    } else {
+        $html .= '<span class="badge m-1 badge-primary">User</span>';
+    }
+    return $html;
 }
 function getDescByHtml($content = "", $length = 240)
 {
@@ -321,7 +365,7 @@ function highlight_stt($stt)
 function usage_stt($stt)
 {
     if ($stt == 1) {
-        $output = "Chưa qua sử dụng";
+        $output = "Hàng mới";
     } else {
         $output = "Đã qua sử dụng";
     }

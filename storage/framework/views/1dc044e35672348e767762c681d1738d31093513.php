@@ -1,27 +1,28 @@
 <div class="w-100">
     <div class="card">
         <div class="card-header text-center">
-            <?php echo e($title); ?>
-
+            <h6> <?php echo e($title); ?></h6>
         </div>
         <div class="card-body d-flex justify-content-center">
             <input type="hidden" id="<?php echo e($id); ?>" name="<?php echo e($name); ?>" value="<?php echo e($selected); ?>">
             <?php if($onlymodel): ?>
-                <button type="button" class="btn btn-primary btn-lg init__select" data-model="<?php echo e($onlymodel); ?>"
+                <button type="button" class="btn btn-primary init__select" data-model="<?php echo e($onlymodel); ?>"
                     relaName="null" relaKey="null" relaId="null" relaModel="null">
-                    <?php echo e($text); ?>
+                    
 
-                    <span class="btn btn-outline-light"><?php echo e($selected ? count(explode(',', $selected)) : 0); ?> Item</span>
+                    <span class=""><?php echo e($selected ? count(explode(',', $selected)) : 0); ?>
+
+                        Items</span>
                 </button>
             <?php else: ?>
-                <button type="button" class="btn btn-primary btn-lg init__select" data-model="<?php echo e($model); ?>"
+                <button type="button" class="btn btn-primary init__select" data-model="<?php echo e($model); ?>"
                     relaName="<?php echo e($rela[0]); ?>" relaKey="<?php echo e($rela[1]); ?>" relaId="<?php echo e($relaId); ?>"
                     relaModel="<?php echo e($modelRela); ?>">
-                    <?php echo e($text); ?>
+                    
 
-                    <span class="btn btn-outline-light"><?php echo e($selected ? count(explode(',', $selected)) : 0); ?>
+                    <span class=""><?php echo e($selected ? count(explode(',', $selected)) : 0); ?>
 
-                        Item</span>
+                        Items</span>
                 </button>
             <?php endif; ?>
 

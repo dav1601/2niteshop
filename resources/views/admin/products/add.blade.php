@@ -11,51 +11,45 @@
 @endsection
 
 @section('name')
-    Thêm Sản Phẩm
+    Create Product
 @endsection
 
 @section('content')
-    @if (Session::has('ok'))
-        <script>
-            toastr.success("Thêm Sản Phẩm Thành Công");
-        </script>
-    @endif
+    <div id="product__add">
+        <x-admin.layout.card class="mb-5">
+            <x-slot name="heading" class="text-center">
+                Crawl Data From Halo Shop
+            </x-slot>
+            <x-slot name="content" class="test">
+                {!! Form::open(['url' => route('crawler'), 'method' => 'post']) !!}
+                <div class="form-group">
+                    <x-admin.layout.input.text required name="url" value="" placeholder="Nhập Url...">
+                        <x-slot name="append">
+                            <input type="submit" value="Crawl Data" class="btn navi_btn">
+                        </x-slot>
+                    </x-admin.layout.input.text>
 
-    <div class="row mx-0">
-        <div class="col-12 mt-4 p-0">
-            <div class="w-100">
-                <div class="card">
-                    <div class="card-header text-center">
-                        Thêm Sản Phẩm
-                    </div>
+                </div>
 
-                    <div class="card-body" id="product__add">
-                        {!! Form::open(['url' => route('crawler'), 'method' => 'post']) !!}
-                        <div class="form-group d-flex mb-5">
-                            <input type="text" class="form-control" required name="url" value=""
-                                placeholder="Nhập Url để tự động crawl dữ liệu">
-                            <input type="submit" value="Crawl Data" class="btn navi_btn mb-5 ml-2">
+                {!! Form::close() !!}
+
+            </x-slot>
+
+        </x-admin.layout.card>
+
+        {{-- ----------- --}}
+        {!! Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]) !!}
+        <div class="w-100 row no-gutters">
+            <div class="col-8 row no-gutters pr-4">
+                <x-admin.layout.card class="col-12 mb-5">
+                    <x-slot name="content" class="row w-100">
+                        <div class="form-group col-6">
+                            <x-admin.layout.input.text required="true" :value="get_crawler('page_title')" name="name" label="name" />
                         </div>
-
-                        {!! Form::close() !!}
-
-                        {{-- ----------- --}}
-                        {!! Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]) !!}
-                        <div class="form-group mb-5">
-                            <label for="">Tên sản phẩm</label>
-                            <input type="text" class="form-control" name="name" id=""
-                                value="{{ old('name') }}{{ get_crawler('page_title') }}" placeholder="">
-                            @error('name')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
+                        <div class="form-group col-6">
+                            <x-admin.layout.input.text label="slug" value="" disabled="true" name="slug" />
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Mô tả ngắn</label>
+                        <div class="form-group col-6">
                             @php
                                 $desc = '';
                                 $kws = '';
@@ -65,30 +59,29 @@
                                     $kws = $meta['kws'];
                                 }
                             @endphp
+
+                            <x-admin.layout.input.text label="meta keywords" :value="$kws" name="keywords"
+                                placeholder="Type keyword and Enter" data-role="tagsinput" />
+                        </div>
+                        <div class="form-group col-6">
+
+                            <x-admin.layout.input.text label="model" name="model" :value="get_crawler('model')" />
+                        </div>
+                        <div class="form-group col-12">
+                            <x-admin.layout.form.label text="meta desc" />
                             <textarea class="form-control" name="des" id="" rows="4">{{ $desc }}{{ old('des') }}</textarea>
-                            @error('des')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
+                            <x-admin.layout.form.error name="des" />
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Keywords</label>
-                            <input type="text" data-role="tagsinput" class="form-control" name="keywords"
-                                value="{{ $kws }}{{ old('keywords') }}">
-                            @error('keywords')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-5">
+
+                    </x-slot>
+                </x-admin.layout.card>
+                {{-- end general product --}}
+                <x-admin.layout.card class="col-12 mb-5">
+                    <x-slot name="heading" class="">
+                        <h6 class="font-weight-bold d-flex">Giá và kho</h6>
+                    </x-slot>
+                    <x-slot name="content" class="row w-100">
+                        <div class="form-group col-6">
                             @php
                                 $price = 0;
                                 $price_cost = 0;
@@ -98,313 +91,255 @@
                                 }
 
                             @endphp
-                            <label for="">Giá Sản Phẩm</label>
-                            <input type="text" class="form-control" name="price"
-                                value="{{ old('price') }}{{ $price }}" id="prd_price" placeholder="">
-                            <div class="box_output mt-3">
-                                <span>Bạn Đang Nhập:<strong class="output_price pl-2">0đ</strong></span>
+                            <x-admin.layout.input.text label="giá bán" required="true" name="price" class="input-price"
+                                :value="$price" id="prd_price" placeholder="..." />
+                        </div>
+                        <div class="form-group col-6">
+
+                            <x-admin.layout.input.text label="giá gốc" required="true" name="historical_cost"
+                                class="input-price" :value="$price_cost" id="historical_cost" placeholder="..." />
+
+                        </div>
+                        <div class="form-group col-6">
+
+                            <x-admin.layout.input.text label="số lượng" required="true" type="number" min="1"
+                                name="quantity" id="quantity" value="0" />
+                        </div>
+                        <div class="form-group col-6">
+
+                            <x-admin.layout.input.text label="giá giảm" name="discount" id="discount" value="0"
+                                class="input-price" />
+                        </div>
+
+                    </x-slot>
+                </x-admin.layout.card>
+
+                <x-admin.layout.card class="col-12 mb-5">
+                    <x-slot name="heading" class="">
+                        <h6 class="font-weight-bold d-flex">Thông số và thông tin chi tiết</h6>
+                    </x-slot>
+                    <x-slot name="content" class="row w-100">
+                        <div class="form-group col-6">
+                            <x-admin.layout.form.label text="Thông số" />
+                            <div class="w-100">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#mInfoProduct">
+                                    <i class="fa-solid fa-pen-to-square mr-2"></i>Editor
+                                </button>
                             </div>
-                            @error('price')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
+                            <x-admin.layout.form.error name="info" />
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Giá gốc Sản Phẩm</label>
-                            <input type="text" class="form-control" name="historical_cost"
-                                value="{{ old('historical_cost') }}{{ $price_cost }} " id="historical_cost"
-                                placeholder="">
-                            <div class="box_output mt-3">
-                                <span>Bạn Đang Nhập:<strong class="output_price--cost pl-2">0đ</strong></span>
+                        <div class="form-group col-6">
+                            <x-admin.layout.form.label text="Thông tin chi tiết" />
+                            <div class="w-100">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#mContentProduct">
+                                    <i class="fa-solid fa-pen-to-square mr-2"></i>Editor
+                                </button>
                             </div>
-                            @error('historical_cost')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
+                            <x-admin.layout.form.error name="content" />
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Discount</label>
-                            <input type="text" class="form-control" name="discount" value="{{ old('discount') }}"
-                                id="discount" placeholder="">
-                            <div class="box_output mt-3">
-                                <span>Bạn Đang Nhập:<strong class="pl-2">0đ</strong></span>
+
+                    </x-slot>
+                </x-admin.layout.card>
+                {{-- -------------- --}}
+                <x-admin.layout.card class="col-12 mb-5">
+                    <x-slot name="heading" class="">
+                        <h6 class="font-weight-bold d-flex">Hình ảnh</h6>
+                    </x-slot>
+                    <x-slot name="content" class="">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <x-admin.ui.form.image width="305px" height="305px" name='main_img' :required="true"
+                                    id="imgProductMain" label="Hình ảnh chính" />
                             </div>
-                            @error('discount')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Model</label>
-                            <input type="text" class="form-control" name="model"
-                                value="{{ old('model') }}{{ get_crawler('model') }}" id="" placeholder="">
-                            @error('model')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Option 1: Video </label>
-                            <input type="text" class="form-control" name="video" value="{{ old('video') }}"
-                                id="" placeholder="Điền mã nhúng Youtube vào đây">
-                            @error('video')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Thông Tin</label>
-                            <textarea name="info" id="info__tiny" class="form-control my-editor">{!! old('info') !!}{!! get_crawler('spec') !!}</textarea>
-                            @error('info')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Content</label>
-                            <textarea name="content" id="content__tiny" class="form-control my-editor">{!! old('content') !!}</textarea>
-                            @error('content')
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @enderror
-                        </div>
-                        <x-admin.form.file name='main_img' id="imgProductMain" :custom="[
-                            'plh' => 'Hình Ảnh Chính
-                                                                                                                                                            305x305',
-                        ]" />
-                        <x-admin.form.file name='sub_img' id="imgProductSub" :custom="[
-                            'plh' => 'Hình Ảnh Phụ
-                                                                                                                                    305x305',
-                        ]" />
-
-                        <x-admin.form.file name='bg' id="imgProductBg" :custom="[
-                            'plh' => 'Hình Ảnh Backgroud
-                                                                                                                                                                                                                                                                                                    (Không có bỏ
-                                                                                                                                                                                                                                                                                                    qua)',
-                        ]" />
-
-                        <x-admin.form.file name='gll700' id="imgProduct700" :multiple="true" :custom="[
-                            'plh' => 'Hình Ảnh Chi Tiết
-                                                                                                                                                                                                                                                                                    700x700',
-                        ]" />
-
-                        <x-admin.form.file name='gll80' id="imgProduct80" :multiple="true" :custom="[
-                            'plh' => 'Hình Ảnh Chi Tiết
-                                                                                                                                                                                                                                                                                    80x80',
-                        ]" />
-
-                        <div class="row mx-0">
-                            <x-admin.form.file class="col-6 pl-0" name='banner' id="bannerProduct" :custom="[
-                                'plh' => 'Option 2: Banner
-                                                                                                                                                                                                                                            Đi
-                                                                                                                                                                                                                                            kèm',
-                            ]" />
-                            {{-- <div class="form-group col-6 mb-5 pl-0">
-                                <div class="custom-file">
-                                    <input type="file" name="banner" class="custom-file-input" id="banner_prd">
-                                    <label class="custom-file-label" for="banner_prd" id="forBannerPrd">Option 2: Banner
-                                        Đi
-                                        kèm</label>
-                                </div>
-                                @error('banner')
-                                    <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                        {{ $message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @enderror
-                            </div> --}}
-                            <div class="form-group col-6 mb-5 pr-0">
-                                <input type="text" class="form-control" name="banner_link" id=""
-                                    placeholder="Option 2: Link Banner">
-                                @error('banner_link')
-                                    <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                        {{ $message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @enderror
+                            <div class="col-6 mb-3">
+                                <x-admin.ui.form.image width="305px" height="305px" name='sub_img' id="imgProductMain"
+                                    label="hình ảnh phụ" />
+                            </div>
+                            <div class="col-6">
+                                <x-admin.ui.form.image width="305px" height="305px" name='bg' id="imgProductBg"
+                                    label="hình ảnh background" />
                             </div>
                         </div>
 
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
+                    </x-slot>
 
-                                <div class="col-12">
-                                    <x-admin.product.categories :show="true" />
-                                </div>
-                                {{-- end danh muc khac --}}
+                </x-admin.layout.card>
+                {{-- --------------- --}}
+                <x-admin.layout.card class="col-12 mb-5">
+                    <x-slot name="heading" class="">
+                        <h6 class="font-weight-bold d-flex">Hình ảnh chi tiết</h6>
+                    </x-slot>
+                    <x-slot name="content" class="">
+                        <x-admin.form.file required="true" label="Hình Ảnh Chi Tiết 700x700" class="mb-5"
+                            name='gll700' id="imgProduct700" :multiple="true" />
+
+                        <x-admin.form.file label="Hình Ảnh thu nhỏ 80x80" name='gll80' id="imgProduct80"
+                            :multiple="true" />
+                    </x-slot>
+
+                </x-admin.layout.card>
+                {{-- ---------------- --}}
+                <x-admin.layout.card class="col-12 mb-5">
+                    <x-slot name="heading" class="">
+                        <h6 class="font-weight-bold d-flex">Các liên kết của sản phẩm</h6>
+                    </x-slot>
+                    <x-slot name="content" class="">
+                        <div class="row">
+                            {{-- --}}
+                            <div class="col-4 mb-3">
+                                <x-admin.relation.rela rl="products-ins" />
+                            </div>
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-4 mb-3">
+                                <x-admin.relation.rela rl="products-plc" />
+                            </div>
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-4 mb-3">
+                                <x-admin.relation.rela rl="product-products" />
 
                             </div>
+                            {{-- --}}
+                            <div class="col-4 mb-3">
+                                <x-admin.relation.rela rl="products-blogs" />
+                            </div>
+                            {{-- --}}
+                            {{-- --}}
+                            <div class="col-4 mb-3">
+                                <x-admin.relation.rela rl="products-block" />
+                            </div>
+                            {{-- --}}
                         </div>
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
-                                <div class="col-4 pl-0">
-                                    <label for="">Kho</label>
-                                    <select class="custom-select" name="stock">
-                                        @foreach (Config::get('product.stock', '1') as $stock)
-                                            <option value="{{ $stock }}">{{ stock_stt($stock) }}</option>
-                                        @endforeach
-                                    </select>
+                    </x-slot>
+
+                </x-admin.layout.card>
+                <x-admin.layout.form.submit />
+            </div>
+
+            {{-- end-left --}}
+            {{-- ----------- --}}
+            <div class="col-4">
+                <div class="row w-100 no-gutters">
+                    <div class="col-12 mb-4">
+                        <x-admin.product.categories :show="true" col="col-12">
+                            <x-slot name="cusAttrInput" class="category_create_product"></x-slot>
+                        </x-admin.product.categories>
+                    </div>
+                    <x-admin.layout.card class="col-12">
+                        <x-slot name="heading" class="">
+                            Associations
+                        </x-slot>
+                        <x-slot name="content" class="">
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <x-admin.layout.input.text label="Ngày mở bán" id="date_sold" name="date_sold"
+                                        required="true" disabled>
+                                        <x-slot name="append">
+                                            <button type="button" class="btn btn-primary date-picker"
+                                                data-target="#date_sold">
+                                                <i class="fa-solid fa-calendar"></i>
+                                            </button>
+                                        </x-slot>
+                                    </x-admin.layout.input.text>
                                 </div>
-                                <div class="col-4">
-                                    <label for="">Tình Trạng Sử Dụng</label>
+                                <div class="col-6 mb-4">
+                                    <x-admin.layout.form.label text="Tình trạng sản phẩm" />
                                     <select class="custom-select" name="usage_stt">
                                         @foreach (Config::get('product.usage_stt', '1') as $us)
                                             <option value="{{ $us }}">{{ usage_stt($us) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-4 pr-0">
-                                    <label for="">Highlight</label>
+                                <div class="col-6 mb-4">
+                                    <x-admin.layout.form.label text="sản phẩm nổi bật" />
                                     <select class="custom-select" name="highlight">
-                                        @foreach (Config::get('product.highlight', '2') as $hl)
+                                        @foreach (Config::get('product.highlight', '1') as $hl)
                                             <option value="{{ $hl }}">{{ highlight_stt($hl) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
-                                <div class="col-12 p-0">
-                                    <label for="">Nhà Sản Xuất</label>
-                                    <div class="form-group row mx-0 mt-4">
-                                        <input type="text" id="producer" name="producer"
-                                            value="{{ get_crawler('producer') }}" class="form-control"
-                                            placeholder="Nhập Tên Nhà sản xuất">
 
-                                    </div>
-                                    @error('producer')
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            {{ $message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @enderror
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
-                                <div class="col-4 pl-0">
-                                    <label for="">Danh Mục Game</label>
+                                {{--  --}}
+                                <div class="col-6 mb-4">
+                                    <x-admin.layout.form.label text="danh mục game" />
                                     <select class="custom-select" name="cat_game" id="">
-                                        <option value="0">Không Có</option>
+                                        <option value="0">Select Category Game</option>
                                         @foreach ($cat_game as $cg)
                                             <option value="{{ $cg->id }}">{{ $cg->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('cat_game')
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            {{ $message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @enderror
+                                    <x-admin.layout.form.error name="cat_game" />
                                 </div>
-                                <div class="col-4">
-                                    <label for="">Loại sản phẩm</label>
+                                <div class="col-6 mb-4">
+                                    <x-admin.layout.form.label text="phân loại sản phẩm" />
                                     <select class="custom-select" name="type" id="type">
-                                        <option value="">Chọn</option>
+                                        <option value="">Select Type Product</option>
                                         @foreach ($type as $t)
                                             <option value="{{ $t->id }}">{{ $t->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('type')
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            {{ $message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @enderror
+                                    <x-admin.layout.form.error name="type" />
                                 </div>
-                                <div class="col-4">
-                                    <label for="">Loại Phụ</label>
-                                    <select class="custom-select" name="sub_type" id="sub_type">
-                                        <option value="0">Bạn chưa chọn loại sản phẩm</option>
-                                    </select>
-                                    @error('sub_type')
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            {{ $message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @enderror
+                                {{-- -------- --}}
+                                <div class="col-12">
+                                    <x-admin.layout.input.text label="Nhà Sản Xuất" name="producer" id="producer"
+                                        :value="get_crawler('producer')" aria-describedby="producerHelp"
+                                        placeholder="Nhập Tên Nhà sản xuất" />
+                                    <small id="producerHelp" class="form-text text-muted mt-2">Nếu nhà sản xuất không có
+                                        trong
+                                        dánh sách gợi ý thì hệ thống sẽ tự động thêm vào.</small>
                                 </div>
-                            </div>
-                        </div>
-                        {{-- area related --}}
-                        <div class="row">
-                            {{-- --}}
-                            <div class="col-6 my-4 p-0">
-                                <x-admin.relation.rela rl="products-ins" />
-                            </div>
 
-                            {{-- --}}
-                            {{-- --}}
-                            <div class="col-6 my-4 p-0">
-                                <x-admin.relation.rela rl="products-plc" />
+                                {{-- end --}}
                             </div>
-                            {{-- --}}
-                            {{-- --}}
-                            <div class="col-6 my-4 p-0">
-                                <x-admin.relation.rela rl="product-products" />
+                        </x-slot>
 
-                            </div>
-                            {{-- --}}
-                            <div class="col-6 my-4 p-0">
-                                <x-admin.relation.rela rl="products-blogs" />
-                            </div>
-                            {{-- --}}
-                            {{-- --}}
-                            <div class="col-6 my-4 p-0">
-                                <x-admin.relation.rela rl="products-block" />
-                            </div>
-                            {{-- --}}
-                        </div>
-                        <div class="form-group mb-5">
-                            <input type="submit" value="Thêm Sản Phẩm" class="btn navi_btn w-100">
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
+                    </x-admin.layout.card>
                 </div>
+
+
+
+
+
             </div>
+            {{-- end-right --}}
+
         </div>
+        {!! Form::close() !!}
     </div>
+    {{-- card body --}}
+    <x-admin.layout.modal title="thông tin chi tiết">
+        <x-slot name="modal" id="mContentProduct">
+        </x-slot>
+        <x-slot name="dialog" class="modal-xl modal-dialog-scrollable">
+        </x-slot>
+        <x-slot name="body">
+            <div class="form-group col-12">
+                <textarea name="content" id="content__tiny" class="form-control my-editor">{!! old('content') !!}</textarea>
+                <x-admin.layout.form.error name="content" />
+            </div>
+
+        </x-slot>
+        <x-slot name="footer" class="">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        </x-slot>
+    </x-admin.layout.modal>
+    <x-admin.layout.modal title="Thông số">
+        <x-slot name="modal" id="mInfoProduct">
+        </x-slot>
+        <x-slot name="dialog" class="modal-xl">
+        </x-slot>
+        <x-slot name="body">
+            <div class="form-group col-12">
+                <textarea name="info" id="info__tiny" class="form-control my-editor">{!! old('info') !!}{!! get_crawler('spec') !!}</textarea>
+            </div>
+
+        </x-slot>
+        <x-slot name="footer" class="">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        </x-slot>
+    </x-admin.layout.modal>
 @endsection

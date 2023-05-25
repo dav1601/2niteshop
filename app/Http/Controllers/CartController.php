@@ -70,9 +70,7 @@ class CartController extends Controller
         $data['message'] = "Giỏ hàng đã được cập nhật";
         $data['new'] = false;
         $arrayOps = explode(',', $op_actives);
-        if ($realTimeUpdate) {
-            $qty = 0;
-        }
+        $data['status'] = "load";
         // return response()->json(['q' => $qty, 'id' => $id, 'ops' => $op_actives, 'rowId' => $rowId]);
         if ($request->type == "load") {
             if (Auth::check()) {
@@ -82,24 +80,33 @@ class CartController extends Controller
         }
         if ($id != 0) {
             $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, ['type' => $type], $realTimeUpdate);
-            $item = $res['product'];
-            $add_ok .= view('components.addcart', compact('item'));
-            $data['add_ok'] = $add_ok;
-            $data['new'] = true;
+            $data['status'] = $res['act'];
+            if ($data['status'] === "add") {
+                $item = $res['product'];
+                $add_ok .= view('components.addcart', compact('item'));
+                $data['add_ok'] = $add_ok;
+            } else {
+                $data['cartItem'] = $res['item'];
+                $data['fm_sub_total'] = crf($res['item']->options->sub_total);
+            }
         }
-
+       
         if ($request->type == "delete") {
             $rowId = $request->rowId;
             Cart::instance('shopping')->remove($rowId);
+            $data['status'] = "delete";
+        }
+        if ($realTimeUpdate) {
+            $current_cart = Cart::instance('shopping')->content();
+            if (count($current_cart) > 0) {
+                foreach ($current_cart as $item) {
+                    $this->handle_cart->add__or_update($item->id, $item->qty, $item->options->ins, ['type' => ['update']], true);
+                }
+            }
+            $data['new'] = true;
+            $data['status'] = "update_all";
         }
         $cart = Cart::instance('shopping')->content()->sortBy('id');
-        // foreach ($cart as $item) {
-        //     $this->handle_cart->add__or_update($item->id, $qty, $op_actives, [], true);
-        // }
-        if ($realTimeUpdate) {
-            $this->handle_cart->add__or_update($id, 0, $op_actives, ['type' => $type], true);
-            $data['new'] = true;
-        }
         $this->handle_cart->store_cart();
         $total = $this->handle_cart->total();
         $output .= view('components.client.cart.show', ['cart' => $cart]);
@@ -150,7 +157,7 @@ class CartController extends Controller
     ////////////////////////////////////////
     ////////////////////////////////////////
 
-    public function handle_checkout(Request $request)
+    public function handle_checkout(Request $request, MailOrderInterface $mail_order)
     {
         $validator = Validator::make(
             $request->all(),
@@ -200,21 +207,16 @@ class CartController extends Controller
             $data['y'] = Carbon::now('Asia/Ho_Chi_Minh')->year;
             $ordered = Orders::create($data);
             if ($ordered) {
-                $data_mail = [
-                    'order' => $ordered,
-                    'type' => 1,
-                    'time' => $ordered->created_at,
-                    'text' => "Chúng tôi sẽ gửi cho bạn 1 email khi đơn hàng được vận chuyển"
-                ];
-                $subject = "Thông tin đơn hàng quý khách vừa đặt từ 2NITE SHOP GAME";
-                $to = $ordered->email;
-                $template = 'client.mail.order';
-                event(new Order($to, $subject, $template, $data_mail));
+
                 Cart::instance('shopping')->destroy();
                 $this->handle_cart->store_cart();
+                if (!$mail_order->send_mail_order($ordered)) {
+                    return redirect()->back()->with('error', 'Gửi email đơn hàng thất bại. Chúng tôi xin lỗi vì sự bất tiện này, quý khách vui lòng liên hệ với đội ngũ hỗ trợ khách hàng');
+                }
                 $request->session()->put('last_orderd', $ordered->id);
                 return redirect()->route('checkout_s');
             }
+            return redirect()->back()->with('error', 'Tạo đƠn hàng thất bại');
         }
     }
     ////////////////////////////////////////

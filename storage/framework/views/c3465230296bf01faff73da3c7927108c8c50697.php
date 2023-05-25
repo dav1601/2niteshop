@@ -12,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <link rel="shortcut icon" href="<?php echo e($file->ver_img(config('setting-2nite.icon'))); ?>" type="image/x-icon">
-    <title><?php echo $__env->yieldContent('title', '2NITE SHOP'); ?></title>
+    <title><?php echo $__env->yieldContent('title', 'Dashboard'); ?></title>
     <link rel="stylesheet" href="<?php echo e(asset('plugin/reset.css')); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="<?php echo e($file->ver('admin/app/css/app.css')); ?>">
     <?php
         file_put_contents(public_path('pgb/pgb.css'), '');
     ?>
@@ -39,7 +38,12 @@
     <link rel="stylesheet" href="<?php echo e(asset('admin/plugin/tags/tagsinput.css')); ?>">
     <link rel="stylesheet" href="<?php echo e($file->ver('plugin/color-picker/color.min.css')); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+        integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <?php echo $__env->yieldContent('import_css'); ?>
+    <link rel="stylesheet" href="<?php echo e($file->ver('admin/app/css/app.css')); ?>">
     <?php if (isset($component)) { $__componentOriginal9636b50d9f0a3581b759498e9135550b36d917c2 = $component; } ?>
 <?php $component = App\View\Components\App\Plugin\Debug::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('app.plugin.debug'); ?>
@@ -96,13 +100,30 @@
     <script src="<?php echo e($file->ver('admin/app/js/relationship.js')); ?>"></script>
     <script src="<?php echo e($file->ver('plugin/color-picker/color.min.js')); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    <script src="<?php echo e($file->ver('admin/app/js/app.js')); ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+        integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <?php echo $__env->yieldContent('import_js'); ?>
+    <script src="<?php echo e($file->ver('admin/app/js/app.js')); ?>"></script>
+
 
 </head>
 
 
 <body>
+
+    <?php if(Session::has('success')): ?>
+        <script>
+            let message = '<?php echo e(Session::get('success')); ?>';
+            toastr.success(message);
+        </script>
+    <?php endif; ?>
+    <?php if(Session::has('error')): ?>
+        <script>
+            let message = '<?php echo e(Session::get('error')); ?>';
+            toastr.error(message);
+        </script>
+    <?php endif; ?>
     <?php if (isset($component)) { $__componentOriginal78455ba16b5a14b6a2e98bc3b8a09f0ca8d12fb9 = $component; } ?>
 <?php $component = App\View\Components\Layout\Pageloading::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('layout.pageloading'); ?>
@@ -151,7 +172,7 @@
                         <?php endif; ?>
                         <div class="text">
                             <span class="d-block"><?php echo e(Auth::user()->name); ?></span>
-                            <span><?php echo e(App\Models\Role::where('id', '=', Auth::user()->role_id)->first()->name); ?></span>
+                            
                         </div>
                     </div>
                 </div>
@@ -338,6 +359,21 @@
                                                 <span>Danh Sách Người Dùng</span>
                                             </a>
                                         </li>
+                                        <li class="item">
+                                            <a href="<?php echo e(route('add_roles')); ?>"
+                                                class="<?php echo e($route == 'add_roles' ? 'route_active' : ''); ?>">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Tạo Role User</span>
+                                            </a>
+                                        </li>
+                                        <li class="item">
+                                            <a href="<?php echo e(route('add_permissions')); ?>"
+                                                class="<?php echo e($route == 'add_permissions' ? 'route_active' : ''); ?>">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Tạo Quyền User</span>
+                                            </a>
+                                        </li>
+
                                         <li class="item">
                                             <a href="<?php echo e(route('admin_profile', ['id' => Auth::id()])); ?>"
                                                 class="<?php echo e($route == 'admin_profile' ? 'route_active' : ''); ?>">

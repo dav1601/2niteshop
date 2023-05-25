@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Dompdf\Dompdf;
+
 use App\Models\Ward;
 use App\Events\Order;
 use App\Models\Orders;
@@ -14,13 +14,14 @@ use App\Events\UpdateOrder;
 use Illuminate\Http\Request;
 use Laravel\Ui\Presets\React;
 use Illuminate\Support\Carbon;
+use App\Repositories\VaEventRepo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use App\Repositories\OrderInterface;
+use App\Repositories\VaEventInterface;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Repositories\CustomerInterface;
 use App\Repositories\MailOrderInterface;
-use App\Repositories\VaEventInterface;
-use App\Repositories\VaEventRepo;
 use Illuminate\Support\Facades\Validator;
 
 class AdminOrderController extends Controller
@@ -67,7 +68,7 @@ class AdminOrderController extends Controller
     }
     // //////////////////////////////////////////
 
-    public function handle_ajax(Request $request, VaEventInterface $vaev)
+    public function handle_ajax(Request $request, VaEventInterface $vaev, MailOrderInterface $mail_order)
     {
         $data = array();
         $pagination = '';
@@ -103,31 +104,15 @@ class AdminOrderController extends Controller
             } else {
                 Orders::where('id', '=', $id)->update(['status' => $request->val]);
             }
+            $ordered = Orders::where('id', '=', $id)->firstOrFail();
             if ($request->val == 2) {
                 Orders::where('id', '=', $id)->update(['date_ship' => Carbon::now('Asia/Ho_Chi_Minh')]);
-                $text = "Chúng tôi sẽ gửi cho bạn 1 email khi đơn hàng được vận chuyển thành công";
-                $subject = "Đơn hàng của quý khách đã được vận chuyển đi";
-            } elseif ($request->val == 3) {
-                $text = "Đơn Hàng từ 2NITE SHOP GAME của bạn đã được Giao thành công";
-                $subject = "Đơn Hàng từ 2NITE SHOP GAME của bạn đã được Giao thành công";
-            } elseif ($request->val == 4) {
-                $text = "Đơn Hàng từ 2NITE SHOP GAME của bạn đã được Huỷ thành công";
-                $subject = "Đơn Hàng từ 2NITE SHOP GAME của bạn đã được Huỷ thành công";
             }
-            $data_mail = [
-                'order' => Orders::where('id', '=', $id)->firstOrFail(),
-                'type' => $request->val,
-                'time' => $ordered->updated_at,
-                'text' => $text
-            ];
-            $to = $ordered->email;
-            $template = 'client.mail.order';
-            event(new Order($to, $subject, $template, $data_mail));
+            $mail_order->send_mail_order($ordered);
             if ($ordered->users_id) {
                 event(new UpdateOrder($ordered->users_id));
                 $vaev->admin_update_order($ordered->id);
             }
-            $ordered = Orders::where('id', '=', $id)->first();
             $html_detail_order .= view('components.admin.order.select', compact('ordered'));
         }
 
@@ -392,7 +377,10 @@ class AdminOrderController extends Controller
         $ordered = Orders::where('id', $id)->firstOrFail();
         $cart = unserialize($ordered->cart);
         $nameFilePdf = 'hoá đơn đơn hàng số ' . $id . ' của ' . $ordered->name . '.pdf';
-        $pdf = PDF::loadView('admin.orders.invoice', compact('ordered', 'cart'));
+        $html = "";
+        $html .= view("admin.orders.invoice", compact('ordered', 'cart'));
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($html);
         return $pdf->download($nameFilePdf);
     }
 

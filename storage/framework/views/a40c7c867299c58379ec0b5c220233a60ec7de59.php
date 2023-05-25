@@ -15,7 +15,7 @@
     <script src="<?php echo e($file->ver('admin/app/js/page_builder.js')); ?>"></script>
     <?php if($type === 'edit'): ?>
         <?php
-            $page->data = json_decode($page->data);
+            $page->data = json_decode($page->data , true);
         ?>
         <script>
             var page = <?php echo e(Js::from($page)); ?>;
@@ -61,7 +61,6 @@
     
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
-    
         <input type="hidden" name="" id="pgb-handle" value="<?php echo e($type); ?>">
         <div id="create-page-builder">
             <?php

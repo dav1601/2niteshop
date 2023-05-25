@@ -3,9 +3,10 @@
 @endphp
 {{-- @dump($p) --}}
 @if ($p['options']['href'])
-    <a href="{{ $p['options']['href'] }}" target="_blank"
-        class="pgb-module-image w-100 {{ renderAdvanced($package['advanced']) }}" id="{{ $package['id'] }}">
-        <img src="{{ $p['content'] }}" class="{{ rC($p['class']) }} w-100" alt="{{ $p['content'] }}">
+    <a href="{{ url($p['options']['href']) }}" target="_blank"
+        class="pgb-module-image w-100 {{ renderAdvanced($package['advanced']) }} {{ rC($p['class']) }} overflow-hidden"
+        id="{{ $package['id'] }}">
+        <img src="{{ $p['content'] }}" class="w-100" alt="{{ $p['content'] }}">
     </a>
 @else
     <img src="{{ $p['content'] }}" class="{{ rC($p['class']) }} pgb-module-image w-100" id="{{ $package['id'] }}"

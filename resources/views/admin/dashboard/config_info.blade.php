@@ -4,9 +4,9 @@
 @section('import_js')
     <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
     </script>
-    <script
+    {{-- <script
         src="{{ asset('admin/app/js/dashboard.js') }}?ver=@php echo filemtime('admin/app/js/dashboard.js') @endphp">
-    </script>
+    </script> --}}
 @endsection
 @section('name')
     Dashboard
@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group mb-5">
                             <label for="">Tên</label>
-                            <select class="custom-select" name="type" id="type">
+                            <select class="custom-select" name="type" id="type_config_info">
                                 <option value="">Chọn loại cho config </option>
                                 @foreach (config('orders.type') as $key => $val)
                                     <option value="{{ $val }}">{{ $val }}</option>

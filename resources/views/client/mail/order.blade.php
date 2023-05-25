@@ -1,5 +1,6 @@
 <head>
-    @php $cart = unserialize($order->cart); @endphp
+    @php $cart = unserialize($ordered->cart); @endphp
+
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="x-apple-disable-message-reformatting" />
@@ -370,7 +371,7 @@
     <!--[if !mso 9]><!-->
     <div
         style="display: none; overflow: hidden; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; mso-hide: all;">
-        {{ $text }},{{ $subject }}
+        {!! $options['text'] !!},{{ $subject }}
     </div>
     <!--<![endif]-->
     <!-- BEGIN: CONTAINER -->
@@ -406,7 +407,8 @@
                                                                         <!-- Logo : BEGIN -->
                                                                         <a href="{{ url('') }}" target="_blank"
                                                                             style="color: #c3c3c3; text-decoration: none !important; text-underline: none;">
-                                                                            <img src="{{ $file->ver_img_local('client/images/email-logo.png') }} "
+
+                                                                            <img src="{{ $file->a_storage('client/images/email-logo.png') }} "
                                                                                 class="logo" width="200"
                                                                                 border="0"
                                                                                 style="width: 200px; height: auto !important; display: block; text-align: center; margin: auto;" />
@@ -470,13 +472,13 @@
                                                                                                                             cellpadding="0"
                                                                                                                             cellspacing="0"
                                                                                                                             width="100%"
-                                                                                                                            bgcolor="@if ($order->status == 1) #f6e6cb @else #efefef @endif"
-                                                                                                                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0px; background-color: @if ($order->status == 1) #f6e6cb @else #efefef @endif;"
+                                                                                                                            bgcolor="@if ($ordered->status == 1) #f6e6cb @else #efefef @endif"
+                                                                                                                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0px; background-color: @if ($ordered->status == 1) #f6e6cb @else #efefef @endif;"
                                                                                                                             role="presentation">
                                                                                                                             <tbody
                                                                                                                                 style="height: 117px;">
                                                                                                                                 <tr>
-                                                                                                                                    @if ($order->status >= 1)
+                                                                                                                                    @if ($ordered->status >= 1)
                                                                                                                                         <td align="center"
                                                                                                                                             style="padding: 0; margin: 0; padding-top: 10px; padding-left: 15px; padding-right: 15px; font-size: 0px;">
                                                                                                                                             <a target="_blank"
@@ -510,7 +512,7 @@
                                                                                                                                             Đã
                                                                                                                                             đặt
                                                                                                                                             hàng<br />
-                                                                                                                                            {{ $order->created_at }}
+                                                                                                                                            {{ $ordered->created_at }}
                                                                                                                                         </p>
                                                                                                                                     </td>
                                                                                                                                 </tr>
@@ -541,13 +543,13 @@
                                                                                                                             cellpadding="0"
                                                                                                                             cellspacing="0"
                                                                                                                             width="100%"
-                                                                                                                            bgcolor="@if ($order->status == 2) #f6e6cb @else #efefef @endif"
-                                                                                                                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0px; background-color: @if ($order->status == 2) #f6e6cb @else #efefef @endif;"
+                                                                                                                            bgcolor="@if ($ordered->status == 2) #f6e6cb @else #efefef @endif"
+                                                                                                                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0px; background-color: @if ($ordered->status == 2) #f6e6cb @else #efefef @endif;"
                                                                                                                             role="presentation">
                                                                                                                             <tbody
                                                                                                                                 style="height: 117px;">
                                                                                                                                 <tr>
-                                                                                                                                    @if ($order->status >= 2)
+                                                                                                                                    @if ($ordered->status >= 2)
                                                                                                                                         <td align="center"
                                                                                                                                             style="padding: 0; margin: 0; padding-top: 10px; padding-left: 15px; padding-right: 15px; font-size: 0px;">
                                                                                                                                             <a target="_blank"
@@ -581,9 +583,9 @@
                                                                                                                                             Đã
                                                                                                                                             Vận
                                                                                                                                             Chuyển
-                                                                                                                                            @if ($order->status >= 2)
+                                                                                                                                            @if ($ordered->status >= 2)
                                                                                                                                                 <br />
-                                                                                                                                                {{ $order->date_ship }}
+                                                                                                                                                {{ $ordered->date_ship }}
                                                                                                                                             @endif
                                                                                                                                         </p>
                                                                                                                                     </td>
@@ -615,13 +617,13 @@
                                                                                                                             cellpadding="0"
                                                                                                                             cellspacing="0"
                                                                                                                             width="100%"
-                                                                                                                            bgcolor="@if ($order->status == 3) #f6e6cb @else #efefef @endif"
-                                                                                                                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0px; background-color: @if ($order->status == 3) #f6e6cb @else #efefef @endif;"
+                                                                                                                            bgcolor="@if ($ordered->status == 3) #f6e6cb @else #efefef @endif"
+                                                                                                                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0px; background-color: @if ($ordered->status == 3) #f6e6cb @else #efefef @endif;"
                                                                                                                             role="presentation">
                                                                                                                             <tbody
                                                                                                                                 style="height: 117px;">
                                                                                                                                 <tr>
-                                                                                                                                    @if ($order->status == 3)
+                                                                                                                                    @if ($ordered->status == 3)
                                                                                                                                         <td align="center"
                                                                                                                                             style="padding: 0; margin: 0; padding-top: 10px; padding-left: 15px; padding-right: 15px; font-size: 0px;">
                                                                                                                                             <a target="_blank"
@@ -655,9 +657,9 @@
                                                                                                                                             Hàng
                                                                                                                                             Thành
                                                                                                                                             Công
-                                                                                                                                            @if ($order->status == 3)
+                                                                                                                                            @if ($ordered->status == 3)
                                                                                                                                                 <br />
-                                                                                                                                                {{ $order->date_s }}
+                                                                                                                                                {{ $ordered->date_s }}
                                                                                                                                             @endif
                                                                                                                                         </p>
                                                                                                                                     </td>
@@ -689,7 +691,7 @@
                                                                                 style="text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363;">
                                                                                 Hey
                                                                             </span>
-                                                                            {{ $order->name }},
+                                                                            {{ $ordered->name }},
                                                                         </p>
                                                                         <p data-key="1468267_introduction_text"
                                                                             class="text"
@@ -697,17 +699,17 @@
                                                                             align="center"></p>
                                                                         <p style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 13px 0;"
                                                                             align="center">
-                                                                            @if ($type != 4)
-                                                                                {{ $subject }}, Chuẩn bị chiến thôi
-                                                                                giáo sư!
+
+                                                                            @if ($ordered->status != 4)
+                                                                                {{ $subject }}
                                                                             @else
                                                                                 Thật đáng tiếc khi đơn hàng của quý
-                                                                                khách đã bị huỷ :(( , Mong quý khách vẫn
-                                                                                ủng hộ 2NITE SHOP
+                                                                                khách đã bị huỷ 😟 , Mong quý khách vẫn
+                                                                                ủng hộ 2NITE SHOP 🤗
                                                                             @endif
                                                                         </p>
                                                                         <p style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 13px 0;"
-                                                                            align="center">{{ $text }}</p>
+                                                                            align="center"> {!! $options['text'] !!} </p>
                                                                     </th>
                                                                 </tr>
                                                                 <tr id="section-1468270"
@@ -717,12 +719,12 @@
                                                                         <h2 style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; color: #4b4b4b; font-size: 20px; line-height: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0;"
                                                                             align="center">
                                                                             <span data-key="1468270_order_number">ID
-                                                                                đơn hàng: </span>{{ $order->id }}
+                                                                                đơn hàng: </span>{{ $ordered->id }}
                                                                         </h2>
                                                                         <p class="muted"
                                                                             style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 14px; line-height: 26px; font-weight: normal; color: #bdbdbd; margin: 0;"
                                                                             align="center">
-                                                                            {{ $time }}
+                                                                            {{ $ordered->updated_at }}
                                                                         </p>
                                                                     </th>
                                                                 </tr>
@@ -755,18 +757,18 @@
                                                                                                         valign="top">
                                                                                                         <h3 data-key="1468271_item"
                                                                                                             style="
-                                                                                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                                  color: #bdbdbd;
-                                                                                  font-size: 16px;
-                                                                                  line-height: 52px;
-                                                                                  font-weight: 700;
-                                                                                  text-transform: uppercase;
-                                                                                  border-bottom-width: 2px;
-                                                                                  border-bottom-color: #dadada;
-                                                                                  border-bottom-style: solid;
-                                                                                  letter-spacing: 1px;
-                                                                                  margin: 0;
-                                                                                  "
+                                                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                                        color: #bdbdbd;
+                                                        font-size: 16px;
+                                                        line-height: 52px;
+                                                        font-weight: 700;
+                                                        text-transform: uppercase;
+                                                        border-bottom-width: 2px;
+                                                        border-bottom-color: #dadada;
+                                                        border-bottom-style: solid;
+                                                        letter-spacing: 1px;
+                                                        margin: 0;
+                                                        "
                                                                                                             align="left">
                                                                                                             Sản Phẩm Đã
                                                                                                             Đặt
@@ -821,7 +823,7 @@
                                                                                                                                     @endphp
                                                                                                                                     @foreach ($arrOps as $op)
                                                                                                                                         @php
-                                                                                                                                            $ins = App\Models\bun::where('id', '=', $op)->first();
+                                                                                                                                            $ins = App\Models\bundled_product::where('id', '=', $op)->first();
                                                                                                                                         @endphp
                                                                                                                                         @if ($ins)
                                                                                                                                             <span
@@ -907,7 +909,7 @@
                                                                                                         align="right"
                                                                                                         bgcolor="#ffffff"
                                                                                                         valign="middle">
-                                                                                                        {{ crf($order->total) }}
+                                                                                                        {{ crf($ordered->total) }}
                                                                                                     </th>
                                                                                                 </tr>
                                                                                             </tbody>
@@ -935,18 +937,18 @@
                                                                                         valign="top">
                                                                                         <h3 data-key="1468272_payment_info"
                                                                                             style="
-                                                                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                      color: #bdbdbd;
-                                                                      font-size: 16px;
-                                                                      line-height: 52px;
-                                                                      font-weight: 700;
-                                                                      text-transform: uppercase;
-                                                                      border-bottom-width: 0;
-                                                                      border-bottom-color: #dadada;
-                                                                      border-bottom-style: solid;
-                                                                      letter-spacing: 1px;
-                                                                      margin: 0;
-                                                                      "
+                                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                                color: #bdbdbd;
+                                                font-size: 16px;
+                                                line-height: 52px;
+                                                font-weight: 700;
+                                                text-transform: uppercase;
+                                                border-bottom-width: 0;
+                                                border-bottom-color: #dadada;
+                                                border-bottom-style: solid;
+                                                letter-spacing: 1px;
+                                                margin: 0;
+                                                "
                                                                                             align="left">
                                                                                             Hình thức thanh toán
                                                                                         </h3>
@@ -965,7 +967,7 @@
                                                                                             style="min-width: 100%; font-weight: bold;"
                                                                                             role="presentation">
                                                                                             <tbody>
-                                                                                                @if ($order->payment == 'cod')
+                                                                                                @if ($ordered->payment == 'cod')
                                                                                                     <tr
                                                                                                         style="font-weight: bold;">
                                                                                                         <th width="40"
@@ -1016,7 +1018,7 @@
                                                                                         align="right"
                                                                                         bgcolor="#ffffff"
                                                                                         valign="middle">
-                                                                                        {{ crf($order->total) }}
+                                                                                        {{ crf($ordered->total) }}
                                                                                     </th>
                                                                                 </tr>
                                                                             </tbody>
@@ -1072,16 +1074,16 @@
                                                                                                         valign="top">
                                                                                                         <p style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 0;"
                                                                                                             align="left">
-                                                                                                            {{ $order->name }}<br />
-                                                                                                            {{ $order->phone }}
+                                                                                                            {{ $ordered->name }}<br />
+                                                                                                            {{ $ordered->phone }}
                                                                                                             <br />
-                                                                                                            @if ($order->note != null)
-                                                                                                                {{ $order->note }}
+                                                                                                            @if ($ordered->note != null)
+                                                                                                                {{ $ordered->note }}
                                                                                                                 <br />
                                                                                                             @endif
                                                                                                             <a href="mailto:"
                                                                                                                 style="color: #ecba78; text-decoration: none !important; text-underline: none; word-wrap: break-word;"
-                                                                                                                target="_blank">{{ $order->email }}</a>
+                                                                                                                target="_blank">{{ $ordered->email }}</a>
                                                                                                         </p>
                                                                                                     </th>
                                                                                                 </tr>
@@ -1125,10 +1127,10 @@
                                                                                                         valign="top">
                                                                                                         <p style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 0;"
                                                                                                             align="right">
-                                                                                                            {{ $order->prov }}<br />
-                                                                                                            {{ $order->dist }}<br />
-                                                                                                            {{ $order->ward }}<br />
-                                                                                                            {{ $order->address }}<br />
+                                                                                                            {{ $ordered->prov }}<br />
+                                                                                                            {{ $ordered->dist }}<br />
+                                                                                                            {{ $ordered->ward }}<br />
+                                                                                                            {{ $ordered->address }}<br />
                                                                                                         </p>
                                                                                                     </th>
                                                                                                 </tr>
@@ -1166,11 +1168,13 @@
                                                                     <th data-key="1468276_closing_text" class="text"
                                                                         style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; padding: 13px 52px 52px;"
                                                                         align="center" bgcolor="#ffffff">
-                                                                        <p style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 0;"
+                                                                        <p style="mso-line-height-rule: exactly; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 0; "
                                                                             align="center">
                                                                             Nếu khách hàng cần sự giúp đỡ hãy liên hệ
-                                                                            với email: vaone6v2@gmail.com hoặc GỌI:
-                                                                            {{ getVal('hotline')->value }} :)
+                                                                            với email:
+                                                                            <strong>{{ getVal('email')->value }}</strong>
+                                                                            hoặc GỌI:
+                                                                            <strong>{{ getVal('hotline')->value }}</strong>
                                                                         </p>
                                                                     </th>
                                                                 </tr>
@@ -1186,112 +1190,112 @@
                                                                                 <tr>
                                                                                     <th class="menu_bar_item first"
                                                                                         style="
-                                                                   width: 33%;
-                                                                   mso-line-height-rule: exactly;
-                                                                   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                   font-size: 16px;
-                                                                   font-weight: 400;
-                                                                   line-height: 26px;
-                                                                   text-transform: uppercase;
-                                                                   color: #bdbdbd;
-                                                                   border-right-color: #dadada;
-                                                                   border-right-style: solid;
-                                                                   border-left-color: #dadada;
-                                                                   border-left-style: none;
-                                                                   letter-spacing: 1px;
-                                                                   border: 0;
-                                                                   "
+                                              width: 33%;
+                                              mso-line-height-rule: exactly;
+                                              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                              font-size: 16px;
+                                              font-weight: 400;
+                                              line-height: 26px;
+                                              text-transform: uppercase;
+                                              color: #bdbdbd;
+                                              border-right-color: #dadada;
+                                              border-right-style: solid;
+                                              border-left-color: #dadada;
+                                              border-left-style: none;
+                                              letter-spacing: 1px;
+                                              border: 0;
+                                              "
                                                                                         align="center"
                                                                                         bgcolor="#ffffff">
                                                                                         <a href="https://vachill.com"
                                                                                             target="_blank"
                                                                                             style="
-                                                                      color: #bdbdbd;
-                                                                      text-decoration: none !important;
-                                                                      text-underline: none;
-                                                                      word-wrap: break-word;
-                                                                      text-align: center !important;
-                                                                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                      font-size: 16px;
-                                                                      font-weight: 400;
-                                                                      line-height: 26px;
-                                                                      text-transform: uppercase;
-                                                                      letter-spacing: 1px;
-                                                                      ">
+                                                color: #bdbdbd;
+                                                text-decoration: none !important;
+                                                text-underline: none;
+                                                word-wrap: break-word;
+                                                text-align: center !important;
+                                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                                font-size: 16px;
+                                                font-weight: 400;
+                                                line-height: 26px;
+                                                text-transform: uppercase;
+                                                letter-spacing: 1px;
+                                                ">
                                                                                             Shop
                                                                                         </a>
                                                                                     </th>
                                                                                     <th class="menu_bar_item"
                                                                                         style="
-                                                                   width: 33%;
-                                                                   mso-line-height-rule: exactly;
-                                                                   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                   font-size: 16px;
-                                                                   font-weight: 400;
-                                                                   line-height: 26px;
-                                                                   text-transform: uppercase;
-                                                                   color: #bdbdbd;
-                                                                   border-right-color: #dadada;
-                                                                   border-right-style: solid;
-                                                                   border-left-color: #dadada;
-                                                                   border-left-style: solid;
-                                                                   letter-spacing: 1px;
-                                                                   border: 0;
-                                                                   "
+                                              width: 33%;
+                                              mso-line-height-rule: exactly;
+                                              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                              font-size: 16px;
+                                              font-weight: 400;
+                                              line-height: 26px;
+                                              text-transform: uppercase;
+                                              color: #bdbdbd;
+                                              border-right-color: #dadada;
+                                              border-right-style: solid;
+                                              border-left-color: #dadada;
+                                              border-left-style: solid;
+                                              letter-spacing: 1px;
+                                              border: 0;
+                                              "
                                                                                         align="center"
                                                                                         bgcolor="#ffffff">
                                                                                         <a href="https://vachill.com/pages/quy-dinh-chung"
                                                                                             target="_blank"
                                                                                             style="
-                                                                      color: #bdbdbd;
-                                                                      text-decoration: none !important;
-                                                                      text-underline: none;
-                                                                      word-wrap: break-word;
-                                                                      text-align: center !important;
-                                                                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                      font-size: 16px;
-                                                                      font-weight: 400;
-                                                                      line-height: 26px;
-                                                                      text-transform: uppercase;
-                                                                      letter-spacing: 1px;
-                                                                      ">
+                                                color: #bdbdbd;
+                                                text-decoration: none !important;
+                                                text-underline: none;
+                                                word-wrap: break-word;
+                                                text-align: center !important;
+                                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                                font-size: 16px;
+                                                font-weight: 400;
+                                                line-height: 26px;
+                                                text-transform: uppercase;
+                                                letter-spacing: 1px;
+                                                ">
                                                                                             Quy Định Chung
                                                                                         </a>
                                                                                     </th>
                                                                                     <th class="menu_bar_item last"
                                                                                         style="
-                                                                   width: 33%;
-                                                                   mso-line-height-rule: exactly;
-                                                                   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                   font-size: 16px;
-                                                                   font-weight: 400;
-                                                                   line-height: 26px;
-                                                                   text-transform: uppercase;
-                                                                   color: #bdbdbd;
-                                                                   border-right-color: #dadada;
-                                                                   border-right-style: none;
-                                                                   border-left-color: #dadada;
-                                                                   border-left-style: solid;
-                                                                   letter-spacing: 1px;
-                                                                   border: 0;
-                                                                   "
+                                              width: 33%;
+                                              mso-line-height-rule: exactly;
+                                              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                              font-size: 16px;
+                                              font-weight: 400;
+                                              line-height: 26px;
+                                              text-transform: uppercase;
+                                              color: #bdbdbd;
+                                              border-right-color: #dadada;
+                                              border-right-style: none;
+                                              border-left-color: #dadada;
+                                              border-left-style: solid;
+                                              letter-spacing: 1px;
+                                              border: 0;
+                                              "
                                                                                         align="center"
                                                                                         bgcolor="#ffffff">
                                                                                         <a href="https://vachill.com/contact"
                                                                                             target="_blank"
                                                                                             style="
-                                                                      color: #bdbdbd;
-                                                                      text-decoration: none !important;
-                                                                      text-underline: none;
-                                                                      word-wrap: break-word;
-                                                                      text-align: center !important;
-                                                                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                      font-size: 16px;
-                                                                      font-weight: 400;
-                                                                      line-height: 26px;
-                                                                      text-transform: uppercase;
-                                                                      letter-spacing: 1px;
-                                                                      ">
+                                                color: #bdbdbd;
+                                                text-decoration: none !important;
+                                                text-underline: none;
+                                                word-wrap: break-word;
+                                                text-align: center !important;
+                                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                                font-size: 16px;
+                                                font-weight: 400;
+                                                line-height: 26px;
+                                                text-transform: uppercase;
+                                                letter-spacing: 1px;
+                                                ">
                                                                                             Liên Hệ
                                                                                         </a>
                                                                                     </th>
@@ -1335,19 +1339,19 @@
                                                                                     <th width="50%"
                                                                                         class="column_1_of_2 column_social_block"
                                                                                         style="
-                                                                   mso-line-height-rule: exactly;
-                                                                   padding-top: 26px;
-                                                                   padding-bottom: 26px;
-                                                                   border-top-width: 2px;
-                                                                   border-top-color: #dadada;
-                                                                   border-top-style: solid;
-                                                                   border-bottom-width: 2px;
-                                                                   border-bottom-color: #dadada;
-                                                                   border-bottom-style: solid;
-                                                                   border-right-width: 2px;
-                                                                   border-right-color: #dadada;
-                                                                   border-right-style: solid;
-                                                                   "
+                                              mso-line-height-rule: exactly;
+                                              padding-top: 26px;
+                                              padding-bottom: 26px;
+                                              border-top-width: 2px;
+                                              border-top-color: #dadada;
+                                              border-top-style: solid;
+                                              border-bottom-width: 2px;
+                                              border-bottom-color: #dadada;
+                                              border-bottom-style: solid;
+                                              border-right-width: 2px;
+                                              border-right-color: #dadada;
+                                              border-right-style: solid;
+                                              "
                                                                                         align="center"
                                                                                         bgcolor="#ffffff"
                                                                                         valign="top">
@@ -1387,7 +1391,7 @@
                                                                                                         bgcolor="#ffffff"
                                                                                                         valign="top">
                                                                                                         <a class="social-link"
-                                                                                                            href="https://www.facebook.com/awang1601/"
+                                                                                                            href="https://www.facebook.com/dav1six/"
                                                                                                             target="_blank"
                                                                                                             title="Facebook"
                                                                                                             style="color: #ecba78; text-decoration: none !important; text-underline: none; font-size: 14px; text-align: center;">
@@ -1461,16 +1465,17 @@
                                                                                                         align="center"
                                                                                                         bgcolor="#ffffff"
                                                                                                         valign="top">
-                                                                                                        dAv1<br
+                                                                                                        dav1six<br
                                                                                                             style="text-align: center;" />
-                                                                                                        151/60 Trần
-                                                                                                        Hoàng Na<br
+                                                                                                        92 Pasteur,
+                                                                                                        P.Bến Nghé,
+                                                                                                        Q.1<br
                                                                                                             style="text-align: center;" />
-                                                                                                        Cần Thơ<br
+                                                                                                        TP.HCM<br
                                                                                                             style="text-align: center;" />
                                                                                                         <br
                                                                                                             style="text-align: center;" />
-                                                                                                        Copyright © 2021
+                                                                                                        Copyright © 2023
                                                                                                     </th>
                                                                                                 </tr>
                                                                                                 <!-- Store Address : END -->
@@ -1497,16 +1502,16 @@
                                                                                     <th class="column_shop_block1"
                                                                                         width="100%"
                                                                                         style="
-                                                                   mso-line-height-rule: exactly;
-                                                                   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
-                                                                   font-size: 14px;
-                                                                   line-height: 24px;
-                                                                   font-weight: 400;
-                                                                   color: #a3a1a1;
-                                                                   text-transform: none;
-                                                                   padding-bottom: 13px;
-                                                                   padding-top: 26px;
-                                                                   "
+                                              mso-line-height-rule: exactly;
+                                              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Karla';
+                                              font-size: 14px;
+                                              line-height: 24px;
+                                              font-weight: 400;
+                                              color: #a3a1a1;
+                                              text-transform: none;
+                                              padding-bottom: 13px;
+                                              padding-top: 26px;
+                                              "
                                                                                         align="center"
                                                                                         bgcolor="#ffffff">
                                                                                         <a href="https://vachill.com"

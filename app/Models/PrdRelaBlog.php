@@ -5,6 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\PrdRelaBlog
+ *
+ * @property int $products_id
+ * @property int $blogs_id
+ * @property-read \App\Models\Blogs $blogs
+ * @property-read \App\Models\Products $products
+ * @method static \Illuminate\Database\Eloquent\Builder|PrdRelaBlog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PrdRelaBlog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PrdRelaBlog query()
+ * @mixin \Eloquent
+ */
 class PrdRelaBlog extends Model
 {
     use HasFactory;

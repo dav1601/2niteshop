@@ -19,6 +19,10 @@ class Order
      *
      * @return void
      */
+    public $to;
+    public $data;
+    public $subject;
+    public $template;
     public function __construct($to, $subject, $template, $data)
     {
         $this->data = $data;

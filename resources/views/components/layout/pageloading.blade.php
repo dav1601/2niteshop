@@ -1,6 +1,6 @@
-<div id="page__loading" class="page__loading--hidden">
-    <div>
-
-    </div>
-    <img src="{{ $file->ver_img_local('admin/images/layout/loading-unscreen.gif') }}" alt="Loading......." width="200">
+<div class="fp-loading">
+<div class="position-relative w-100 h-100">
+    <div class="fp-loading-bg"></div>
+    <x-layout.loading :center="true" />
+</div>
 </div>

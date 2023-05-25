@@ -34,10 +34,9 @@ class OrdersFactory extends Factory
         $prov = Province::inRandomOrder()->first();
         $dist = District::where("_province_id", $prov->id)->inRandomOrder()->first();
         $ward = Ward::where("_province_id", $prov->id)->where('_district_id', $dist->id)->inRandomOrder()->first();
-        Cart::instance('shopping')->destroy();
         foreach ($products as  $product) {
-            $sub_total = price_product($product, "", ['qty' => 1]);
-            Cart::instance('shopping')->add(
+            $sub_total = price_product($product, "", ['qty' => rand(1, 5)]);
+            Cart::instance('fake_shopping')->add(
                 [
                     'id' => $product->id,
                     'name' => $product->name,
@@ -56,16 +55,21 @@ class OrdersFactory extends Factory
                 ]
             );
         }
-        Cart::instance('shopping')->store($user->id);
-        Cart::instance('shopping')->restore($user->id);
         $total = 0;
-        foreach (Cart::instance('shopping')->content() as $cart) {
-            $total += $cart->price;
+        $cart_content = Cart::instance('fake_shopping')->content();
+        foreach ($cart_content as $cart) {
+            $total += $cart->price * $cart->qty;
         }
+        $status = array_rand(config('orders.status'), 1);
+        $paid = 1;
+        if ($status === 3) {
+            $paid = 2;
+        }
+        Cart::instance('fake_shopping')->destroy();
         // lam prov dist ward
         return [
             'name' => $user->name,
-            'cart' => serialize(Cart::instance('shopping')->content()),
+            'cart' => serialize($cart_content),
             'users_id' => $user->id,
             'total' => $total,
             'email' => "niteshopreport@gmail.com",
@@ -76,8 +80,8 @@ class OrdersFactory extends Factory
             'payment' => 'cod',
             'note' => $user->name . " note",
             'phone' => $this->faker->numerify('0' . rand(8, 9) . '########'),
-            'status' => 1,
-            'paid' => 1,
+            'status' => $status,
+            'paid' => $paid,
             'd' => Carbon::now('Asia/Ho_Chi_Minh')->day,
             'm' => Carbon::now('Asia/Ho_Chi_Minh')->month,
             'y' => Carbon::now('Asia/Ho_Chi_Minh')->year,

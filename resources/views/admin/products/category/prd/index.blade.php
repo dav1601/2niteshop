@@ -137,9 +137,7 @@
                             <x-admin.form.file name='img' id="imgCategory" :custom="['plh' => 'Banner']" />
 
                             <x-admin.form.file name='icon' id="iconCategory" :custom="[
-                                'plh' => 'Icon Danh Mục (!Chỉ
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dành cho
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        danh mục CHÍNH)',
+                                'plh' => 'Icon Danh Mục (!Chỉ dành cho danh mục CHÍNH)',
                             ]" />
 
 
@@ -160,7 +158,6 @@
                             <h2>Danh Sách Danh Mục</h2>
                         </div>
                         <div class="card-body">
-
                             <ul class="admin-cate admin-cate-connect row no-gutters lv-0" id="admin-cate-0"
                                 data-lv="0">
                                 <x-admin.category.dd.item :categories="$categories" />

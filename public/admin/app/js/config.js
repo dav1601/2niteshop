@@ -1,7 +1,10 @@
 $(function () {
-    jQuery.loading = function loading() {
-        $("#page__loading").removeClass("d-none");
-    };
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
     const renderErrForm = (text = "") => {
         return `<span class="invalid-feedback d-block" role="alert">
         <strong>${text}</strong></span>`;
@@ -34,26 +37,24 @@ $(function () {
         if (!btnSubmit) {
             return;
         }
-
-        // let isLoading = btnSubmit.attr("is-loading");
-        // if (isLoading !== undefined) {
-        //     if (isLoading) {
-        //         return;
-        //     }
-        // }
-        let currentHtml = $(btnSubmit).html();
+        if (!btnSubmit.attr("data-original")) {
+            let currentHtml = $(btnSubmit).html();
+            $(btnSubmit).attr("data-original", currentHtml);
+        }
+        // let currentHtml = $(btnSubmit).html();
+        // $(btnSubmit).attr("data-original", currentHtml);
         $(btnSubmit).prop("disabled", loading);
         if (loading) {
-            $(btnSubmit).attr("data-old", currentHtml);
             $(btnSubmit).attr("is-loading", true);
             $(btnSubmit)
                 .html(`<span class="spinner-border spinner-border-sm"  role="status" aria-hidden="true"></span>
                 Loading...`);
         } else {
-            const old = $(btnSubmit).attr("data-old");
+            const old = $(btnSubmit).attr("data-original");
             $(btnSubmit).html(old);
             $(btnSubmit).attr("is-loading", false);
         }
+
         return;
     };
     jQuery.errForm = function errForm(clear = false, form = [], errors = []) {
@@ -89,22 +90,27 @@ $(function () {
     };
     jQuery.render_img = function render_img(array, el) {
         const id = el.getAttribute("id");
+        const previewClass = "preview-" + id;
         let html = "";
-        if (array.length <= 1) {
-            html += `<div class="preview_img text-center my-3 preview-${id}">
+        if (array.length === 1) {
+            html += `<label class="a-form-label ${previewClass}"><span>Preview</span></label>`;
+            html += `<div class="preview_img text-center my-3 ${previewClass}">
             <img src="${array[0]}" style="max-width:100%; max-height:600px;" alt="preview" class="preview_item">
         </div>`;
-        } else {
-            html += `<div class="d-flex flex-wrap preview_img justify-content-center  --mul  my-3 preview-${id}">`;
+        } else if (array.length > 1) {
+            html += `<label class="a-form-label ${previewClass}"><span>Preview</span></label>`;
+            html += `<div class="d-flex flex-wrap preview_img justify-content-center  --mul  my-3 ${previewClass}">`;
             for (let j = 0; j < array.length; j++) {
                 html += ` <div class="mb-4">
                 <img src="${array[j]}" style="max-width:350px ; max-height: 600px; height:auto"  alt="preview" class="preview_item mx-2 border-preview  shadow-1-strong rounded mb-4">
             </div>`;
             }
             html += `</div>`;
+        } else {
+            return "";
         }
         html += `<div class="w-100 d-flex justify-content-center align-items-center my-3">
-        <button type="button" class="btn btn-primary clear-images" data-id="${id}">Clear</button>
+        <button type="button" class="btn btn-primary clear-images" data-clear="${previewClass}" data-id="${id}">Clear</button>
     </div>`;
         return html;
     };

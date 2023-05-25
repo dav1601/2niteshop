@@ -44,6 +44,7 @@ class ClientBlogController extends Controller
             $blogs = $blogs->where('title', 'LIKE', '%' . $kw . '%');
         }
         $blogs = $blogs->with(['pgbs', 'pgbs.pgb_data'])->orderBy('id', 'DESC')->Paginate(10);
+        // dd($blogs);
         return view('client.blog.index', compact('blogs', 'bc', 'cat', 'cat_blog', 'kw', 'backLink'));
     }
     ////////////////////////////////////////

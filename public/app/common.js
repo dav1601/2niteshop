@@ -1,4 +1,9 @@
 $(function () {
+    jQuery.page_loading = function page_loading(loading = true) {
+        return !loading
+            ? $(".fp-loading").addClass("d-none")
+            : $(".fp-loading").removeClass("d-none");
+    };
     jQuery.iconLoading = function iconLoading(center = false) {
         let html = "";
         if (center)

@@ -2,11 +2,9 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('import_js'); ?>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script
-        src="<?php echo e(asset('admin/app/js/products.js')); ?>?ver=<?php echo filemtime('admin/app/js/category.js') ?>">
+    <script src="<?php echo e(asset('admin/app/js/products.js')); ?>?ver=<?php echo filemtime('admin/app/js/category.js') ?>">
     </script>
-    <script src="<?php echo e(asset('admin/app/js/tinymce.js')); ?>?ver=<?php echo filemtime('admin/app/js/tinymce.js') ?>">
-    </script>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php $__env->stopSection(); ?>
 
@@ -107,7 +105,7 @@
                                     aria-describedby="helpId" placeholder="Nhập model">
                             </div>
                         </div>
-                        <div class="col-12  pl-0">
+                        <div class="col-12 pl-0">
                             <?php if (isset($component)) { $__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5 = $component; } ?>
 <?php $component = App\View\Components\Admin\Product\Categories::resolve(['show' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.product.categories'); ?>

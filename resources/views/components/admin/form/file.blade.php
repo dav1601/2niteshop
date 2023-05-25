@@ -1,9 +1,16 @@
+@props(['label', 'class', 'required' => false])
 @php
     $idFor = 'for' . $id;
 @endphp
-<div class="form-group {{ $class }} mb-5">
+
+<div class="form-group {{ $class }}">
+    @isset($label)
+        <x-admin.layout.form.label :text="$label" :required="$required" />
+    @endisset
     <div class="custom-file">
-        <input type="file" name="{{ $multiple ? $name . '[]' : $name }}" class="custom-file-input dav-input-file"
+        jpeg,png,jpg,tiff,svg
+        <input type="file" name="{{ $multiple ? $name . '[]' : $name }}"
+            accept="image/png, image/jpeg, image/svg, image/tiff, image/jpg " class="custom-file-input dav-input-file"
             @if ($multiple) multiple @endif id="{{ $id }}">
         <label class="custom-file-label" for="{{ $id }}" id="{{ $idFor }}"> {{ $custom['plh'] }} </label>
     </div>

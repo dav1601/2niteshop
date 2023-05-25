@@ -315,7 +315,9 @@ $(function () {
     });
     // ////// start delete gll images in edit product
     $(document).on("click", ".delete_gll", function () {
-        var id = $(this).attr("data-id");
+        let id = $(this).attr("data-id");
+        let index = $(this).attr("data-index");
+
         Swal.fire({
             title: "Bạn Chắc Chắn Xoá Chứ?",
             text: "Hình ảnh không thể khôi phục chỉ có thể thêm lại!",
@@ -326,17 +328,15 @@ $(function () {
             confirmButtonText: "Vẫn Xoá",
         }).then((result) => {
             if (result.isConfirmed) {
+                delete gll80[index];
+                delete gll700[index];
                 $.ajax({
                     type: "post",
                     url: url_delete_gll,
-                    data: { id: id },
+                    data: { gll80: gll80, gll700: gll700 },
                     dataType: "json",
                     success: function (data) {
-                        $(".op_700").html(data.html1);
-                        $(".op_80").html(data.html2);
-                        if (data.error == 0) {
-                            toastr.success("Xoá Hình Ảnh Thành Công");
-                        }
+                        console.log(data);
                     },
                 });
             } else {
@@ -437,4 +437,199 @@ $(function () {
     $("#producer").autocomplete({
         source: producer,
     });
+    const handle_gallery = (act = "load", dataAjax = {}) => {
+        const ajax = {
+            gallery: JSON.stringify(galleries),
+            act: act,
+        };
+        const data = Object.assign(ajax, dataAjax);
+        let form = new FormData();
+        for (var key in data) {
+            form.append(key, data[key]);
+        }
+
+        return $.ajax({
+            type: "post",
+            url: route("handle_gallery"),
+            data: form,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+        });
+    };
+
+    $(document).on("change", ".gallery-input", function () {
+        const id = productId;
+        const elid = $(this).attr("id");
+        const index = parseInt($(this).attr("data-index"));
+        const size = $(this).attr("data-size");
+        const target = "#" + elid;
+        const file = $(this).prop("files")[0];
+        handle_gallery("upload-image", {
+            index: index,
+            id: id,
+            size: size,
+            file: file,
+        }).then((res) => {
+            if (res.image) {
+                const image = $("img[data-target='" + target + "']");
+                image.attr("src", res.image);
+                $("#clear-" + elid).removeClass("d-none");
+                $("#clear-" + elid).addClass("d-block");
+                toastr.success("Upload hình ảnh thành công");
+            }
+        });
+    });
+    // ///////////////////////////////////////////////////
+    $(document).on("click", ".a-product-gallery-add", function () {
+        const id = isEdit ? productId : null;
+        const item = {
+            id: null,
+            image_700: "",
+            image_80: "",
+            products_id: productId,
+        };
+        const index = galleries.length;
+        galleries.push(item);
+        handle_gallery("add-gallery", {
+            isEdit: isEdit,
+            item: JSON.stringify(item),
+            index: index,
+            id: id,
+        }).then((res) => {
+            $("#product-galleries").append(res.html);
+        });
+    });
+    // //////////////////////////////////////////////////
+    $(document).on("click", ".gallery-upload", function () {
+        const target = $(this).attr("data-target");
+        Swal.fire({
+            title: "Bạn chắc chắn thay đổi hình ảnh?",
+            text: "Hình ảnh hiện tại sẽ bị xoá và thay thế bằng ảnh mới",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Upload",
+        }).then((result) => {
+            $(target).click();
+        });
+    });
+    $(document).on("click", ".gallery-clear", function () {
+        const id = productId;
+        const index = parseInt($(this).attr("data-index"));
+        const size = $(this).attr("data-size");
+
+        Swal.fire({
+            title: "Bạn Chắc Chắn Xoá Chứ?",
+            text: "Hình ảnh không thể khôi phục chỉ có thể thêm lại!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Delete",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handle_gallery("delete-image", {
+                    index: index,
+                    id: id,
+                    size: size,
+                }).then((res) => {
+                    const target = $(this).attr("data-target");
+                    const image = $("img[data-target='" + target + "']");
+                    image.attr("src", res.image);
+                    $(this).removeClass("d-block");
+                    $(this).addClass("d-none");
+                    toastr.success("Xoá hình ảnh thành công");
+                });
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    text: "Cẩn Thận Hơn Nhé!",
+                });
+            }
+        });
+    });
+    initSortGallery();
+    function sortGallery() {
+        let sort = [];
+        const els = $("#product-galleries").find(".a-product-gallery-item");
+
+        $.each(els, function (index, el) {
+            sort.push($(el).attr("data-id"));
+        });
+        handle_gallery("sort", {
+            sort: sort,
+        }).then((res) => {
+            console.log(res);
+            toastr.success("Sắp xếp gallery thành công");
+        });
+    }
+    $(document).on("click", ".gallery-delete", function () {
+        if (isEdit) {
+            Swal.fire({
+                title: "Bạn Chắc Chắn Xoá Gallery Chứ?",
+                text: "Hình ảnh không thể khôi phục chỉ có thể thêm lại!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Delete",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (isEdit) {
+                        handle_gallery("delete-gallery", {
+                            id: productId,
+                            index: $(this).attr("data-key"),
+                        }).then((res) => {
+                            if (res.deleted) {
+                                $(this)
+                                    .closest(".a-product-gallery-item")
+                                    .remove();
+                                sortGallery();
+                            }
+                        });
+                    } else {
+                        $(this).closest(".a-product-gallery-item").remove();
+                    }
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        text: "Cẩn Thận Hơn Nhé!",
+                    });
+                }
+            });
+        }
+    });
+    function initSortGallery() {
+        $("#product-galleries").sortable({
+            items: ".a-product-gallery-item",
+            forcePlaceholderSize: true,
+            cursor: "move",
+            scroll: false,
+            tolerance: "pointer",
+            cursorAt: { bottom: 10, right: 10 },
+            axis: "y",
+            update: function (event, ui) {
+                if (isEdit) {
+                    sortGallery();
+                }
+            },
+            sort: function (event, ui) {
+                $(ui.item[0]).css({
+                    "border-style": "solid",
+                    "border-color": "#ED4C67",
+                });
+            },
+            stop: function (event, ui) {
+                $(ui.item[0]).css({
+                    "border-style": "dashed",
+                    "border-color": "grey",
+                });
+            },
+        });
+    }
+    var prefix_single_image = "single-image-product-upload-";
+    // /////////////////////
 });

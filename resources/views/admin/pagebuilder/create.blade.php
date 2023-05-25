@@ -16,7 +16,7 @@
     <script src="{{ $file->ver('admin/app/js/page_builder.js') }}"></script>
     @if ($type === 'edit')
         @php
-            $page->data = json_decode($page->data);
+            $page->data = json_decode($page->data , true);
         @endphp
         <script>
             var page = {{ Js::from($page) }};
@@ -60,7 +60,6 @@
     {{-- -------- --}}
 @endsection
 @section('content')
-    
         <input type="hidden" name="" id="pgb-handle" value="{{ $type }}">
         <div id="create-page-builder">
             @php

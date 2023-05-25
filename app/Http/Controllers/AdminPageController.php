@@ -67,9 +67,7 @@ class AdminPageController extends Controller
     public function edit($id, Request $request)
     {
         $page = Pages::where('id', '=', $id)->firstOrFail();
-        if (!Gate::allows('admin-action')) {
-            $this->authorize('edit-page', $page);
-        }
+
         return view('admin.pages.edit', compact('page' , 'id'));
     }
 
@@ -79,9 +77,7 @@ class AdminPageController extends Controller
     public function handle_edit($id, Request $request)
     {
         $check = Pages::where('id', '=', $id)->firstOrFail();
-        if (!Gate::allows('admin-action')) {
-            $this->authorize('edit-page', $check);
-        }
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -115,9 +111,7 @@ class AdminPageController extends Controller
     public function delete($id, Request $request)
     {
         $check = Pages::where('id', '=', $id)->firstOrFail();
-        if (!Gate::allows('admin-action')) {
-            $this->authorize('edit-page', $check);
-        }
+       
         $delete = Pages::where('id', '=', $id)->delete();
         if ($delete) {
             return redirect()->back()->with('delete-ok', 1);

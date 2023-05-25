@@ -38,16 +38,27 @@ class FileRepository implements FileInterface
         $link = asset($link) . '?ver=' . filemtime('' . $link);
         return $link;
     }
+    public function a_storage($link)
+    {
+        return config('app.app_storage') . "/" . $link . "?a_ver=" . Carbon::now()->timestamp;
+    }
     public function ver_img($link = "")
     {
+        if (!$link) {
+            return "";
+        }
         switch ($this->driver) {
             case 'local':
+                $json = json_decode($link, true);
+                if ($json !== null) {
+                    $link = "admin" . explode("admin", $json['path'])[1];
+                }
                 $link =  config('app.url') . "/storage" . "/" . $link . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
                 return $link;
             case 'cloudinary':
                 $data = json_decode($link);
-                $path = "";
-                if ($data) {
+                $path = $link;
+                if ($data !== null) {
                     $path = $data->path ? $data->path . "?now=" . Carbon::now('Asia/Ho_Chi_Minh')->timestamp : "";
                 }
                 return $path;
@@ -70,13 +81,11 @@ class FileRepository implements FileInterface
             return "";
         }
         $last_path = substr($path, -1);
-        $first_path = $path[0];
+
         if ($last_path !== "/") {
             $path = $path . "/";
         }
-        if ($first_path !== "/") {
-            $path = "/" . $path;
-        }
+
         switch ($this->driver) {
             case 'local':
                 $path_public = config('app.url') . "/storage" . "/" . $path;
@@ -97,7 +106,7 @@ class FileRepository implements FileInterface
                     $file,
                     $name
                 )) {
-                    return "storage" . $save;
+                    return $save;
                 }
                 break;
             case 'cloudinary':
@@ -118,20 +127,30 @@ class FileRepository implements FileInterface
     }
     public function deleteFile($path)
     {
-        switch ($this->driver) {
-            case 'local':
-                $path = config("app.url" . "/storage" . "/" . $path);
-                if (File::exists($path)) {
-                    return unlink($path);
-                }
-                break;
-            case 'cloudinary':
-                $data = json_decode($path);
-                return Cloudinary::destroy($data->id);
-                break;
-            default:
-                break;
+        if ($path) {
+            switch ($this->driver) {
+                case 'local':
+                    $first_path = $path[0];
+                    if ($first_path === "/") {
+                        $path = substr($path, 1);
+                    }
+                    $path = "storage/" . $path;
+                    if (File::exists($path)) {
+                        return unlink($path);
+                    }
+                    break;
+                case 'cloudinary':
+                    $data = json_decode($path);
+                    return Cloudinary::destroy($data->id);
+                    break;
+                default:
+                    break;
+            }
         }
-        return;
+        return false;
+    }
+    public function noImage()
+    {
+        return "https://res.cloudinary.com/vanh-tech/image/upload/v1684495435/logo/360_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb-removebg-preview_jxhtqz.png";
     }
 }

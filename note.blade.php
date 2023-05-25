@@ -91,4 +91,6 @@ tạo full width cho column section
 lam packages banner (max , min item responsive)
 setting column
 {{-- ----- --}}
-làm package video slide + build home build banners category + connection 2 cái đó + làm api (làm nốt phần tabs(remove) với render gallery video)
+làm package video slide + build home build banners category + connection 2 cái đó + làm api (làm nốt phần tabs(remove)
+với render gallery video)
+{{-- =================== --}}

@@ -12,4 +12,5 @@ interface FileInterface
     public function main_banner();
     public function storeFileImg($file, $path);
     public function deleteFile($path);
+    public function noImage();
 }

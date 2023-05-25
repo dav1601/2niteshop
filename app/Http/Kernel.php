@@ -70,5 +70,8 @@ class Kernel extends HttpKernel
         'auth.api.admin' => \App\Http\Middleware\Api\AdminAuth::class,
         'auth.api.docs' => \App\Http\Middleware\Api\DocsApi::class,
         'cors' => \App\Http\Middleware\Cors::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'r_o_p' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 }

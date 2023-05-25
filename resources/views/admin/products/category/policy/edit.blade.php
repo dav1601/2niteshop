@@ -61,7 +61,7 @@ Chinh sách của shop
                         <label for="">Vị trí</label>
                         <select class="custom-select" name="position" id="">
                             <option value="{{ $policy->position }}">{{ $policy->position }}</option>
-                           @foreach (Config::get('product.position'); as $p )
+                           @foreach (Config::get('product.position') as $p )
                            @if ($policy->position != $p )
                            <option value="{{ $p }}">{{ $p }}</option>
                            @endif

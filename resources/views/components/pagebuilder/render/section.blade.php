@@ -1,11 +1,11 @@
 {{-- {{ renderVsb($section['advanced']['visible']) }} --}}
-
-<div class="pgb-render-section-wp {{ renderVsb($section['advanced']['visible']) }}" s id="{{ $section['id'] }}">
+<div class="pgb-render-section-wp @if (isset($section['advanced'])) {{ renderVsb($section['advanced']['visible']) }} @endif"
+    sid="{{ $section['id'] }}">
     {{-- ---- --}}
-    <div class="@if ($section['container'] === 'true') container @endif pgb-render-section">
+    <div class="@if ((bool) $section['container']) container @endif pgb-render-section">
         {{-- ---- --}}
         <div
-            class="row no-gutters align-items-start justify-content-start {{ renderSpacing($section['advanced']['spacing']) }} {{ rC($section['payload']['class']) }}">
+            class="row no-gutters align-items-start justify-content-start {{ rC($section['payload']['class']) }} @if (isset($section['advanced'])) {{ renderSpacing($section['advanced']['spacing']) }} @endif">
             @foreach ($section['layout'] as $key => $col)
                 @php
                     $column = $section['column'][$key];

@@ -51,7 +51,7 @@ class ClientProductsController extends Controller
         $genre = [];
         if ($category->is_game) {
             $genre = $products->with(['product', 'product.cat_game'])->get();
-            $genre = collect($genre)->groupBy(function ($item, $key) {
+            $genre = collect($genre)->groupBy(function ($item) {
                 return $item->product->cat_game;
             })->all();
             $newArr = [];
@@ -118,8 +118,21 @@ class ClientProductsController extends Controller
         $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('products/'), '', url()->current())));
         $slug = collect($bc)->last();
         $product = $rprd->product($slug);
-        // dd($product);
-        return view('client.product.detail', compact('product'));
+        $categories = $product->categories->pluck('id');
+        $related_products = [];
+        $is_game = collect($product->categories)->filter(function ($category) {
+            return $category->is_game;
+        })->pluck('id');
+        if (count($is_game) > 0) {
+            $related_products = Products::whereHas('categories', function ($q) use ($is_game) {
+                $q->whereIn("category_id", $is_game);
+            })->exclude(['content', 'info'])->where('id', '!=', $product->id)->orderBy('id', 'desc')->take(8)->get();
+        } else {
+            $related_products = Products::whereHas('categories', function ($q) use ($categories) {
+                $q->whereIn("category_id", $categories)->where('is_game', "!=", 1)->where("level", "!=", 0);
+            })->exclude(['content', 'info'])->where('id', '!=', $product->id)->orderBy('id', 'desc')->take(8)->get();
+        }
+        return view('client.product.detail', compact('product', 'related_products'));
     }
 
     ////////////////////////////////////////

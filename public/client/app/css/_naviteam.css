@@ -62,6 +62,10 @@
   background: #ee5253;
   border: none;
 }
+.va-checkbox input:disabled + label::before {
+  background: #ebebe4 !important;
+  border: none;
+}
 
 .va-fix-10 {
   flex: 0 0 1000%;

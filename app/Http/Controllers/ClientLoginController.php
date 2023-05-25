@@ -55,10 +55,8 @@ class ClientLoginController extends Controller
                     $data['s'] = true;
                     return response()->json($data);
                 }
-                if (Auth::user()->role_id <= 3) {
-                    return redirect()->route('dashboard');
-                }
-                return redirect()->route('home');
+                $route = Auth::user()->hasRole('super-admin') || Auth::user()->hasPermissionTo('Manager') ? "dashboard" : "home";
+                return redirect()->route($route);
             } else {
                 if ($isAjax) {
                     $data['errors']['login'] = "Sai tên tài khoản hoặc mật khẩu";

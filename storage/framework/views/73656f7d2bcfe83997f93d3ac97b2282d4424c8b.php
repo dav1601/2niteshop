@@ -50,7 +50,7 @@
     </div>
     <div class="cart__item--action d-flex flex-column justify-content-end cia-<?php echo e($cart->id); ?>">
         <span class="sub_total d-block">
-            Thành Tiền: <strong><?php echo e(crf($cart->options->sub_total)); ?></strong>
+            Thành Tiền: <strong id="cart-sub-total-<?php echo e($cart->id); ?>"><?php echo e(crf($cart->options->sub_total)); ?></strong>
         </span>
         <button class="delete__cart d-inline-block" data-rowId="<?php echo e($cart->rowId); ?>">
             <i class="fas fa-trash"></i> Xoá

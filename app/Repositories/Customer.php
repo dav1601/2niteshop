@@ -81,8 +81,6 @@ class Customer implements CustomerInterface
     public function updateNameAuthor()
     {
         $user = User::where('id', '=', Auth::id())->firstOrFail();
-        Products::where('author_id', '=', Auth::id())->update(['author' => $user->name]);
-        Blogs::where('users_id', '=', Auth::id())->update(['author' => $user->name]);
         return;
     }
 }

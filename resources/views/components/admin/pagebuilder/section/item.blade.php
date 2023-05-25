@@ -18,5 +18,4 @@
         <x-admin.pagebuilder.column :isCreate="true" :section="$section" />
     </div>
 
-
 </li>

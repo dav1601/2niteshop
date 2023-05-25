@@ -9,62 +9,110 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('name'); ?>
-    Thêm Sản Phẩm
+    Create Product
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-    <?php if(Session::has('ok')): ?>
-        <script>
-            toastr.success("Thêm Sản Phẩm Thành Công");
-        </script>
-    <?php endif; ?>
+    <div id="product__add">
+        <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'mb-5']); ?>
+             <?php $__env->slot('heading', null, ['class' => 'text-center']); ?> 
+                Crawl Data From Halo Shop
+             <?php $__env->endSlot(); ?>
+             <?php $__env->slot('content', null, ['class' => 'test']); ?> 
+                <?php echo Form::open(['url' => route('crawler'), 'method' => 'post']); ?>
 
-    <div class="row mx-0">
-        <div class="col-12 mt-4 p-0">
-            <div class="w-100">
-                <div class="card">
-                    <div class="card-header text-center">
-                        Thêm Sản Phẩm
-                    </div>
+                <div class="form-group">
+                    <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['required' => true,'name' => 'url','value' => '','placeholder' => 'Nhập Url...']); ?>
+                         <?php $__env->slot('append', null, []); ?> 
+                            <input type="submit" value="Crawl Data" class="btn navi_btn">
+                         <?php $__env->endSlot(); ?>
+                     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
 
-                    <div class="card-body" id="product__add">
-                        <?php echo Form::open(['url' => route('crawler'), 'method' => 'post']); ?>
+                </div>
 
-                        <div class="form-group d-flex mb-5">
-                            <input type="text" class="form-control" required name="url" value=""
-                                placeholder="Nhập Url để tự động crawl dữ liệu">
-                            <input type="submit" value="Crawl Data" class="btn navi_btn mb-5 ml-2">
+                <?php echo Form::close(); ?>
+
+
+             <?php $__env->endSlot(); ?>
+
+         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+
+        
+        <?php echo Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]); ?>
+
+        <div class="w-100 row no-gutters">
+            <div class="col-8 row no-gutters pr-4">
+                <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'col-12 mb-5']); ?>
+                     <?php $__env->slot('content', null, ['class' => 'row w-100']); ?> 
+                        <div class="form-group col-6">
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['required' => 'true','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(get_crawler('page_title')),'name' => 'name','label' => 'name']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
                         </div>
-
-                        <?php echo Form::close(); ?>
-
-
-                        
-                        <?php echo Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]); ?>
-
-                        <div class="form-group mb-5">
-                            <label for="">Tên sản phẩm</label>
-                            <input type="text" class="form-control" name="name" id=""
-                                value="<?php echo e(old('name')); ?><?php echo e(get_crawler('page_title')); ?>" placeholder="">
-                            <?php $__errorArgs = ['name'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                        <div class="form-group col-6">
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'slug','value' => '','disabled' => 'true','name' => 'slug']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Mô tả ngắn</label>
+                        <div class="form-group col-6">
                             <?php
                                 $desc = '';
                                 $kws = '';
@@ -74,46 +122,97 @@ unset($__errorArgs, $__bag); ?>
                                     $kws = $meta['kws'];
                                 }
                             ?>
+
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'meta keywords','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($kws),'name' => 'keywords','placeholder' => 'Type keyword and Enter','data-role' => 'tagsinput']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+                        </div>
+                        <div class="form-group col-6">
+
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'model','name' => 'model','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(get_crawler('model'))]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+                        </div>
+                        <div class="form-group col-12">
+                            <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'meta desc']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
+<?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
+<?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
+<?php endif; ?>
                             <textarea class="form-control" name="des" id="" rows="4"><?php echo e($desc); ?><?php echo e(old('des')); ?></textarea>
-                            <?php $__errorArgs = ['des'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                            <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Error::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['name' => 'des']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40)): ?>
+<?php $component = $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40; ?>
+<?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
+<?php endif; ?>
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Keywords</label>
-                            <input type="text" data-role="tagsinput" class="form-control" name="keywords"
-                                value="<?php echo e($kws); ?><?php echo e(old('keywords')); ?>">
-                            <?php $__errorArgs = ['keywords'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
 
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
-                        <div class="form-group mb-5">
+                     <?php $__env->endSlot(); ?>
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+                
+                <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'col-12 mb-5']); ?>
+                     <?php $__env->slot('heading', null, ['class' => '']); ?> 
+                        <h6 class="font-weight-bold d-flex">Giá và kho</h6>
+                     <?php $__env->endSlot(); ?>
+                     <?php $__env->slot('content', null, ['class' => 'row w-100']); ?> 
+                        <div class="form-group col-6">
                             <?php
                                 $price = 0;
                                 $price_cost = 0;
@@ -123,190 +222,282 @@ unset($__errorArgs, $__bag); ?>
                                 }
 
                             ?>
-                            <label for="">Giá Sản Phẩm</label>
-                            <input type="text" class="form-control" name="price"
-                                value="<?php echo e(old('price')); ?><?php echo e($price); ?>" id="prd_price" placeholder="">
-                            <div class="box_output mt-3">
-                                <span>Bạn Đang Nhập:<strong class="output_price pl-2">0đ</strong></span>
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'giá bán','required' => 'true','name' => 'price','class' => 'input-price','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($price),'id' => 'prd_price','placeholder' => '...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+                        </div>
+                        <div class="form-group col-6">
+
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'giá gốc','required' => 'true','name' => 'historical_cost','class' => 'input-price','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($price_cost),'id' => 'historical_cost','placeholder' => '...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+
+                        </div>
+                        <div class="form-group col-6">
+
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'số lượng','required' => 'true','type' => 'number','min' => '1','name' => 'quantity','id' => 'quantity','value' => '0']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+                        </div>
+                        <div class="form-group col-6">
+
+                            <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'giá giảm','name' => 'discount','id' => 'discount','value' => '0','class' => 'input-price']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+                        </div>
+
+                     <?php $__env->endSlot(); ?>
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+
+                <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'col-12 mb-5']); ?>
+                     <?php $__env->slot('heading', null, ['class' => '']); ?> 
+                        <h6 class="font-weight-bold d-flex">Thông số và thông tin chi tiết</h6>
+                     <?php $__env->endSlot(); ?>
+                     <?php $__env->slot('content', null, ['class' => 'row w-100']); ?> 
+                        <div class="form-group col-6">
+                            <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'Thông số']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
+<?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
+<?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
+<?php endif; ?>
+                            <div class="w-100">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#mInfoProduct">
+                                    <i class="fa-solid fa-pen-to-square mr-2"></i>Editor
+                                </button>
                             </div>
-                            <?php $__errorArgs = ['price'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                            <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Error::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['name' => 'info']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40)): ?>
+<?php $component = $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40; ?>
+<?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
+<?php endif; ?>
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Giá gốc Sản Phẩm</label>
-                            <input type="text" class="form-control" name="historical_cost"
-                                value="<?php echo e(old('historical_cost')); ?><?php echo e($price_cost); ?> " id="historical_cost"
-                                placeholder="">
-                            <div class="box_output mt-3">
-                                <span>Bạn Đang Nhập:<strong class="output_price--cost pl-2">0đ</strong></span>
+                        <div class="form-group col-6">
+                            <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'Thông tin chi tiết']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
+<?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
+<?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
+<?php endif; ?>
+                            <div class="w-100">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#mContentProduct">
+                                    <i class="fa-solid fa-pen-to-square mr-2"></i>Editor
+                                </button>
                             </div>
-                            <?php $__errorArgs = ['historical_cost'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                            <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Error::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['name' => 'content']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40)): ?>
+<?php $component = $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40; ?>
+<?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
+<?php endif; ?>
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Discount</label>
-                            <input type="text" class="form-control" name="discount" value="<?php echo e(old('discount')); ?>"
-                                id="discount" placeholder="">
-                            <div class="box_output mt-3">
-                                <span>Bạn Đang Nhập:<strong class="pl-2">0đ</strong></span>
+
+                     <?php $__env->endSlot(); ?>
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+                
+                <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'col-12 mb-5']); ?>
+                     <?php $__env->slot('heading', null, ['class' => '']); ?> 
+                        <h6 class="font-weight-bold d-flex">Hình ảnh</h6>
+                     <?php $__env->endSlot(); ?>
+                     <?php $__env->slot('content', null, ['class' => '']); ?> 
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','height' => '305px','name' => 'main_img','required' => true,'id' => 'imgProductMain','label' => 'Hình ảnh chính']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.ui.form.image'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['width' => '305px','height' => '305px','name' => 'main_img','required' => true,'id' => 'imgProductMain','label' => 'Hình ảnh chính']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                             </div>
-                            <?php $__errorArgs = ['discount'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                            <div class="col-6 mb-3">
+                                <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','height' => '305px','name' => 'sub_img','id' => 'imgProductMain','label' => 'hình ảnh phụ']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.ui.form.image'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['width' => '305px','height' => '305px','name' => 'sub_img','id' => 'imgProductMain','label' => 'hình ảnh phụ']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                            </div>
+                            <div class="col-6">
+                                <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','height' => '305px','name' => 'bg','id' => 'imgProductBg','label' => 'hình ảnh background']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.ui.form.image'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['width' => '305px','height' => '305px','name' => 'bg','id' => 'imgProductBg','label' => 'hình ảnh background']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                            </div>
                         </div>
-                        <div class="form-group mb-5">
-                            <label for="">Model</label>
-                            <input type="text" class="form-control" name="model"
-                                value="<?php echo e(old('model')); ?><?php echo e(get_crawler('model')); ?>" id="" placeholder="">
-                            <?php $__errorArgs = ['model'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
 
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Option 1: Video </label>
-                            <input type="text" class="form-control" name="video" value="<?php echo e(old('video')); ?>"
-                                id="" placeholder="Điền mã nhúng Youtube vào đây">
-                            <?php $__errorArgs = ['video'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
+                     <?php $__env->endSlot(); ?>
 
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Thông Tin</label>
-                            <textarea name="info" id="info__tiny" class="form-control my-editor"><?php echo old('info'); ?><?php echo get_crawler('spec'); ?></textarea>
-                            <?php $__errorArgs = ['info'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="">Content</label>
-                            <textarea name="content" id="content__tiny" class="form-control my-editor"><?php echo old('content'); ?></textarea>
-                            <?php $__errorArgs = ['content'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <?php echo e($message); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+                
+                <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'col-12 mb-5']); ?>
+                     <?php $__env->slot('heading', null, ['class' => '']); ?> 
+                        <h6 class="font-weight-bold d-flex">Hình ảnh chi tiết</h6>
+                     <?php $__env->endSlot(); ?>
+                     <?php $__env->slot('content', null, ['class' => '']); ?> 
                         <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'main_img','id' => 'imgProductMain','custom' => [
-                            'plh' => 'Hình Ảnh Chính
-                                                                                                                                                            305x305',
-                        ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = App\View\Components\Admin\Form\File::resolve(['class' => 'mb-5','name' => 'gll700','id' => 'imgProduct700','multiple' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.form.file'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
-<?php $component = $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5; ?>
-<?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
-<?php endif; ?>
-                        <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'sub_img','id' => 'imgProductSub','custom' => [
-                            'plh' => 'Hình Ảnh Phụ
-                                                                                                                                    305x305',
-                        ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('admin.form.file'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
+<?php $component->withAttributes(['required' => 'true','label' => 'Hình Ảnh Chi Tiết 700x700']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
@@ -315,268 +506,45 @@ unset($__errorArgs, $__bag); ?>
 <?php endif; ?>
 
                         <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'bg','id' => 'imgProductBg','custom' => [
-                            'plh' => 'Hình Ảnh Backgroud
-                                                                                                                                                                                                                                                                                                    (Không có bỏ
-                                                                                                                                                                                                                                                                                                    qua)',
-                        ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'gll80','id' => 'imgProduct80','multiple' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.form.file'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
+<?php $component->withAttributes(['label' => 'Hình Ảnh thu nhỏ 80x80']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
 <?php $component = $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5; ?>
 <?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
 <?php endif; ?>
+                     <?php $__env->endSlot(); ?>
 
-                        <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'gll700','id' => 'imgProduct700','multiple' => true,'custom' => [
-                            'plh' => 'Hình Ảnh Chi Tiết
-                                                                                                                                                                                                                                                                                    700x700',
-                        ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('admin.form.file'); ?>
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+                
+                <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
-<?php $component = $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5; ?>
-<?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
-<?php endif; ?>
-
-                        <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'gll80','id' => 'imgProduct80','multiple' => true,'custom' => [
-                            'plh' => 'Hình Ảnh Chi Tiết
-                                                                                                                                                                                                                                                                                    80x80',
-                        ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('admin.form.file'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
-<?php $component = $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5; ?>
-<?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
-<?php endif; ?>
-
-                        <div class="row mx-0">
-                            <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['class' => 'col-6 pl-0','name' => 'banner','id' => 'bannerProduct','custom' => [
-                                'plh' => 'Option 2: Banner
-                                                                                                                                                                                                                                            Đi
-                                                                                                                                                                                                                                            kèm',
-                            ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('admin.form.file'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
-<?php $component = $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5; ?>
-<?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
-<?php endif; ?>
-                            
-                            <div class="form-group col-6 mb-5 pr-0">
-                                <input type="text" class="form-control" name="banner_link" id=""
-                                    placeholder="Option 2: Link Banner">
-                                <?php $__errorArgs = ['banner_link'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                        <?php echo e($message); ?>
-
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
-
-                                <div class="col-12">
-                                    <?php if (isset($component)) { $__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Product\Categories::resolve(['show' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('admin.product.categories'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Product\Categories::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5)): ?>
-<?php $component = $__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5; ?>
-<?php unset($__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5); ?>
-<?php endif; ?>
-                                </div>
-                                
-
-                            </div>
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
-                                <div class="col-4 pl-0">
-                                    <label for="">Kho</label>
-                                    <select class="custom-select" name="stock">
-                                        <?php $__currentLoopData = Config::get('product.stock', '1'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stock): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($stock); ?>"><?php echo e(stock_stt($stock)); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <label for="">Tình Trạng Sử Dụng</label>
-                                    <select class="custom-select" name="usage_stt">
-                                        <?php $__currentLoopData = Config::get('product.usage_stt', '1'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $us): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($us); ?>"><?php echo e(usage_stt($us)); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
-                                <div class="col-4 pr-0">
-                                    <label for="">Highlight</label>
-                                    <select class="custom-select" name="highlight">
-                                        <?php $__currentLoopData = Config::get('product.highlight', '2'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($hl); ?>"><?php echo e(highlight_stt($hl)); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
-                                <div class="col-12 p-0">
-                                    <label for="">Nhà Sản Xuất</label>
-                                    <div class="form-group row mx-0 mt-4">
-                                        <input type="text" id="producer" name="producer"
-                                            value="<?php echo e(get_crawler('producer')); ?>" class="form-control"
-                                            placeholder="Nhập Tên Nhà sản xuất">
-
-                                    </div>
-                                    <?php $__errorArgs = ['producer'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            <?php echo e($message); ?>
-
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-5">
-                            <div class="row mx-0">
-                                <div class="col-4 pl-0">
-                                    <label for="">Danh Mục Game</label>
-                                    <select class="custom-select" name="cat_game" id="">
-                                        <option value="0">Không Có</option>
-                                        <?php $__currentLoopData = $cat_game; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cg): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($cg->id); ?>"><?php echo e($cg->name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                    <?php $__errorArgs = ['cat_game'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            <?php echo e($message); ?>
-
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                </div>
-                                <div class="col-4">
-                                    <label for="">Loại sản phẩm</label>
-                                    <select class="custom-select" name="type" id="type">
-                                        <option value="">Chọn</option>
-                                        <?php $__currentLoopData = $type; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $t): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($t->id); ?>"><?php echo e($t->name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                    <?php $__errorArgs = ['type'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            <?php echo e($message); ?>
-
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                </div>
-                                <div class="col-4">
-                                    <label for="">Loại Phụ</label>
-                                    <select class="custom-select" name="sub_type" id="sub_type">
-                                        <option value="0">Bạn chưa chọn loại sản phẩm</option>
-                                    </select>
-                                    <?php $__errorArgs = ['sub_type'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                            <?php echo e($message); ?>
-
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                </div>
-                            </div>
-                        </div>
-                        
+<?php $component->withAttributes(['class' => 'col-12 mb-5']); ?>
+                     <?php $__env->slot('heading', null, ['class' => '']); ?> 
+                        <h6 class="font-weight-bold d-flex">Các liên kết của sản phẩm</h6>
+                     <?php $__env->endSlot(); ?>
+                     <?php $__env->slot('content', null, ['class' => '']); ?> 
                         <div class="row">
                             
-                            <div class="col-6 my-4 p-0">
+                            <div class="col-4 mb-3">
                                 <?php if (isset($component)) { $__componentOriginal26c694d0de26a602022c55bcf67683cd2823b619 = $component; } ?>
 <?php $component = App\View\Components\Admin\Relation\Rela::resolve(['rl' => 'products-ins'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.relation.rela'); ?>
@@ -593,10 +561,9 @@ unset($__errorArgs, $__bag); ?>
 <?php unset($__componentOriginal26c694d0de26a602022c55bcf67683cd2823b619); ?>
 <?php endif; ?>
                             </div>
-
                             
                             
-                            <div class="col-6 my-4 p-0">
+                            <div class="col-4 mb-3">
                                 <?php if (isset($component)) { $__componentOriginal26c694d0de26a602022c55bcf67683cd2823b619 = $component; } ?>
 <?php $component = App\View\Components\Admin\Relation\Rela::resolve(['rl' => 'products-plc'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.relation.rela'); ?>
@@ -615,7 +582,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                             
                             
-                            <div class="col-6 my-4 p-0">
+                            <div class="col-4 mb-3">
                                 <?php if (isset($component)) { $__componentOriginal26c694d0de26a602022c55bcf67683cd2823b619 = $component; } ?>
 <?php $component = App\View\Components\Admin\Relation\Rela::resolve(['rl' => 'product-products'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.relation.rela'); ?>
@@ -634,7 +601,7 @@ unset($__errorArgs, $__bag); ?>
 
                             </div>
                             
-                            <div class="col-6 my-4 p-0">
+                            <div class="col-4 mb-3">
                                 <?php if (isset($component)) { $__componentOriginal26c694d0de26a602022c55bcf67683cd2823b619 = $component; } ?>
 <?php $component = App\View\Components\Admin\Relation\Rela::resolve(['rl' => 'products-blogs'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.relation.rela'); ?>
@@ -653,7 +620,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                             
                             
-                            <div class="col-6 my-4 p-0">
+                            <div class="col-4 mb-3">
                                 <?php if (isset($component)) { $__componentOriginal26c694d0de26a602022c55bcf67683cd2823b619 = $component; } ?>
 <?php $component = App\View\Components\Admin\Relation\Rela::resolve(['rl' => 'products-block'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.relation.rela'); ?>
@@ -672,16 +639,329 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                             
                         </div>
-                        <div class="form-group mb-5">
-                            <input type="submit" value="Thêm Sản Phẩm" class="btn navi_btn w-100">
-                        </div>
-                        <?php echo Form::close(); ?>
+                     <?php $__env->endSlot(); ?>
 
-                    </div>
-                </div>
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+                <?php if (isset($component)) { $__componentOriginald7fc8f80a6c60591340d5a5c1c4ec20d3dbfdcd7 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Submit::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.submit'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Submit::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald7fc8f80a6c60591340d5a5c1c4ec20d3dbfdcd7)): ?>
+<?php $component = $__componentOriginald7fc8f80a6c60591340d5a5c1c4ec20d3dbfdcd7; ?>
+<?php unset($__componentOriginald7fc8f80a6c60591340d5a5c1c4ec20d3dbfdcd7); ?>
+<?php endif; ?>
             </div>
+
+            
+            
+            <div class="col-4">
+                <div class="row w-100 no-gutters">
+                    <div class="col-12 mb-4">
+                        <?php if (isset($component)) { $__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5 = $component; } ?>
+<?php $component = App\View\Components\Admin\Product\Categories::resolve(['show' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.product.categories'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Product\Categories::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['col' => 'col-12']); ?>
+                             <?php $__env->slot('cusAttrInput', null, ['class' => 'category_create_product']); ?>  <?php $__env->endSlot(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5)): ?>
+<?php $component = $__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5; ?>
+<?php unset($__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5); ?>
+<?php endif; ?>
+                    </div>
+                    <?php if (isset($component)) { $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Card::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Card::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'col-12']); ?>
+                         <?php $__env->slot('heading', null, ['class' => '']); ?> 
+                            Associations
+                         <?php $__env->endSlot(); ?>
+                         <?php $__env->slot('content', null, ['class' => '']); ?> 
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Ngày mở bán','id' => 'date_sold','name' => 'date_sold','required' => 'true','disabled' => true]); ?>
+                                         <?php $__env->slot('append', null, []); ?> 
+                                            <button type="button" class="btn btn-primary date-picker"
+                                                data-target="#date_sold">
+                                                <i class="fa-solid fa-calendar"></i>
+                                            </button>
+                                         <?php $__env->endSlot(); ?>
+                                     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+                                </div>
+                                <div class="col-6 mb-4">
+                                    <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'Tình trạng sản phẩm']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
+<?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
+<?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
+<?php endif; ?>
+                                    <select class="custom-select" name="usage_stt">
+                                        <?php $__currentLoopData = Config::get('product.usage_stt', '1'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $us): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($us); ?>"><?php echo e(usage_stt($us)); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                                <div class="col-6 mb-4">
+                                    <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'sản phẩm nổi bật']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
+<?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
+<?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
+<?php endif; ?>
+                                    <select class="custom-select" name="highlight">
+                                        <?php $__currentLoopData = Config::get('product.highlight', '1'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($hl); ?>"><?php echo e(highlight_stt($hl)); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+
+                                
+                                <div class="col-6 mb-4">
+                                    <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'danh mục game']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
+<?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
+<?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
+<?php endif; ?>
+                                    <select class="custom-select" name="cat_game" id="">
+                                        <option value="0">Select Category Game</option>
+                                        <?php $__currentLoopData = $cat_game; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cg): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($cg->id); ?>"><?php echo e($cg->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                    <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Error::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['name' => 'cat_game']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40)): ?>
+<?php $component = $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40; ?>
+<?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
+<?php endif; ?>
+                                </div>
+                                <div class="col-6 mb-4">
+                                    <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'phân loại sản phẩm']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
+<?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
+<?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
+<?php endif; ?>
+                                    <select class="custom-select" name="type" id="type">
+                                        <option value="">Select Type Product</option>
+                                        <?php $__currentLoopData = $type; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $t): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($t->id); ?>"><?php echo e($t->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                    <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Error::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['name' => 'type']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40)): ?>
+<?php $component = $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40; ?>
+<?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
+<?php endif; ?>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.input.text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Nhà Sản Xuất','name' => 'producer','id' => 'producer','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(get_crawler('producer')),'aria-describedby' => 'producerHelp','placeholder' => 'Nhập Tên Nhà sản xuất']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
+<?php $component = $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84; ?>
+<?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
+<?php endif; ?>
+                                    <small id="producerHelp" class="form-text text-muted mt-2">Nếu nhà sản xuất không có
+                                        trong
+                                        dánh sách gợi ý thì hệ thống sẽ tự động thêm vào.</small>
+                                </div>
+
+                                
+                            </div>
+                         <?php $__env->endSlot(); ?>
+
+                     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2)): ?>
+<?php $component = $__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2; ?>
+<?php unset($__componentOriginala9d28b94f5c7a99ddb7dde582e11a907cec58dc2); ?>
+<?php endif; ?>
+                </div>
+
+
+
+
+
+            </div>
+            
+
         </div>
+        <?php echo Form::close(); ?>
+
     </div>
+    
+    <?php if (isset($component)) { $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Modal::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.modal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Modal::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'thông tin chi tiết']); ?>
+         <?php $__env->slot('modal', null, ['id' => 'mContentProduct']); ?> 
+         <?php $__env->endSlot(); ?>
+         <?php $__env->slot('dialog', null, ['class' => 'modal-xl modal-dialog-scrollable']); ?> 
+         <?php $__env->endSlot(); ?>
+         <?php $__env->slot('body', null, []); ?> 
+            <div class="form-group col-12">
+                <textarea name="content" id="content__tiny" class="form-control my-editor"><?php echo old('content'); ?></textarea>
+                <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.form.error'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Error::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['name' => 'content']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40)): ?>
+<?php $component = $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40; ?>
+<?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
+<?php endif; ?>
+            </div>
+
+         <?php $__env->endSlot(); ?>
+         <?php $__env->slot('footer', null, ['class' => '']); ?> 
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+         <?php $__env->endSlot(); ?>
+     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9)): ?>
+<?php $component = $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9; ?>
+<?php unset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9); ?>
+<?php endif; ?>
+    <?php if (isset($component)) { $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9 = $component; } ?>
+<?php $component = App\View\Components\Admin\Layout\Modal::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.layout.modal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Modal::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Thông số']); ?>
+         <?php $__env->slot('modal', null, ['id' => 'mInfoProduct']); ?> 
+         <?php $__env->endSlot(); ?>
+         <?php $__env->slot('dialog', null, ['class' => 'modal-xl']); ?> 
+         <?php $__env->endSlot(); ?>
+         <?php $__env->slot('body', null, []); ?> 
+            <div class="form-group col-12">
+                <textarea name="info" id="info__tiny" class="form-control my-editor"><?php echo old('info'); ?><?php echo get_crawler('spec'); ?></textarea>
+            </div>
+
+         <?php $__env->endSlot(); ?>
+         <?php $__env->slot('footer', null, ['class' => '']); ?> 
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+         <?php $__env->endSlot(); ?>
+     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9)): ?>
+<?php $component = $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9; ?>
+<?php unset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9); ?>
+<?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('admin.layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\xampp\htdocs\2niteshop\home\u217861923\domains\vachill.com\public_html\resources\views/admin/products/add.blade.php ENDPATH**/ ?>

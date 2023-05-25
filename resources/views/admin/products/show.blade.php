@@ -3,11 +3,9 @@
 @endsection
 @section('import_js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script
-        src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/category.js') @endphp">
+    <script src="{{ asset('admin/app/js/products.js') }}?ver=@php echo filemtime('admin/app/js/category.js') @endphp">
     </script>
-    <script src="{{ asset('admin/app/js/tinymce.js') }}?ver=@php echo filemtime('admin/app/js/tinymce.js') @endphp">
-    </script>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 
@@ -108,7 +106,7 @@
                                     aria-describedby="helpId" placeholder="Nhập model">
                             </div>
                         </div>
-                        <div class="col-12  pl-0">
+                        <div class="col-12 pl-0">
                             <x-admin.product.categories :show="true" />
                         </div>
                     </div>

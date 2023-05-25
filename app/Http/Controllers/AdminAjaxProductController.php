@@ -23,6 +23,8 @@ use App\Repositories\AdminPrdRepo;
 use App\Repositories\ModelInterface;
 use App\Models\bundled_accessory_cat;
 use App\Repositories\AdminPrdInterface;
+use App\Repositories\FileInterface;
+use Mockery\Expectation;
 
 class AdminAjaxProductController extends Controller
 {
@@ -31,6 +33,7 @@ class AdminAjaxProductController extends Controller
     private $data = array();
     private $html = '';
     public $repoPrd;
+    public $resCode = 200;
     public function __construct(AdminPrdInterface $repo_prd)
     {
         $this->repoPrd = $repo_prd;
@@ -302,62 +305,86 @@ class AdminAjaxProductController extends Controller
     // ////////////////////////////////////// end load product
     //////////////////////////////////////
 
-    public function handle_delete_gll(Request $request)
+    public function handle_gallery(Request $request, FileInterface $file)
     {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $output_2 = '';
-        $data_create = array();
-        $data_update = array();
-        $error = 0;
-        $id = $request->id;
-        $prd_id = gllProducts::where('id', '=', $id)->first()->products_id;
-        $gll = gllProducts::where('index', '=', gllProducts::where('id', '=', $id)->first()->index)->where('products_id', '=', $prd_id)->get();
-        foreach ($gll as $g) {
-            unlink("" . $g->link);
+        $res = [];
+        $res['image'] = "";
+        $act = $request->act;
+        $galleries = json_decode($request->gallery);
+        switch ($act) {
+            case 'upload-image':
+                $id = (int) $request->id;
+                $index =  (int) $request->index;
+                $size =   $request->size;
+                $image = gllProducts::where('products_id', $id)->where('index', $index)->first();
+                $type = Products::select("type")->where('id', $id)->first()->type;
+                $path = config('app.image_products') . "/"  . $type . "/gallery" . "/" . $size;
+                if ($image) {
+                    try {
+                        $file->deleteFile($image['image_' . $size]);
+                        $save = $file->storeFileImg($request->file, $path);
+                        $image->update(['image_' . $size =>  $save]);
+                        $res['image'] = $file->ver_img($save);
+                    } catch (\Expectation $e) {
+                        $this->resCode = 500;
+                    }
+                }
+                break;
+            case "delete-image":
+                try {
+                    $id = (int) $request->id;
+                    $index = (int) $request->index;
+                    $size = $request->size;
+                    $image = gllProducts::where('products_id', $id)->where('index', $index)->first();
+                    if ($image) {
+                        $file->deleteFile($image['image_' . $size]);
+                        $image->update(['image_' . $size => null]);
+                        $res['image'] = config('app.no_image', "");
+                    }
+                } catch (\Exception $e) {
+                    $this->resCode = 500;
+                }
+                break;
+            case 'delete-gallery':
+                try {
+                    gllProducts::where('index', $request->index)->where('products_id', $request->id)->delete();
+                    $res['deleted'] = true;
+                } catch (\Exception $e) {
+                    $this->resCode = 500;
+                }
+                break;
+            case 'add-gallery':
+                $item = collect(json_decode($request->item))->toArray();
+                $index = (int) $request->index;
+                $id = (int) $request->id;
+                $isEdit = $request->isEdit;
+                if ($isEdit) {
+                    $created = gllProducts::create(['products_id' => $id, "image_80" => null, 'image_700' => null, 'index' => $index]);
+                    $item['id'] = $created->id;
+                }
+                $res['html'] = "";
+                $props["item"] = $item;
+                $props['key'] = $index;
+                $props["productact"] = $isEdit ? "edit"  : 'add';
+                $res['html'] .= view('components.admin.product.gallery.item', $props);
+                break;
+            case 'sort':
+                foreach (explode(",", $request->sort) as $index => $id) {
+                    gllProducts::where('id', (int) $id)->update(['index' => $index]);
+                }
+                break;
+            case "single-image-delete":
+
+                break;
+            case "single-image-upload":
+
+                break;
+            default:
+                # code...
+                break;
         }
-        gllProducts::where('index', '=', gllProducts::where('id', '=', $id)->first()->index)->where('products_id', '=', $prd_id)->delete();
-        $gall = Products::find($prd_id)->gll()->orderBy('index', 'ASC')->get();
-        foreach ($gall as $gl) {
-            if ($gl->size == 700) {
-                $output .= '
-                <tr>
-    <th scope="row">' . $gl->id . '</th>
-    <td>
-        <img src="' . asset($gl->link) . '" width="200" class=" va-radius-fb "
-            alt="">
-    </td>
-    <td>' . Products::where('id', '=', $gl->products_id)->first()->cat_name . '</td>
-    <td>' . $gl->size . '</td>
-    <td>' . $gl->index . '</td>
-    <td>
-        <i class="fas fa-trash delete_gll" data-id="' . $gl->id . '"></i>
-    </td>
-</tr>
-                ';
-            } else {
-                $output_2 .= '
-                <tr>
-    <th scope="row">' . $gl->id . '</th>
-    <td>
-        <img src="' . asset($gl->link) . '" width="" class=" va-radius-fb "
-            alt="">
-    </td>
-    <td>' . Products::where('id', '=', $gl->products_id)->first()->cat_name . '</td>
-    <td>' . $gl->size . '</td>
-    <td>' . $gl->index . '</td>
-    <td>
-        <i class="fas fa-trash delete_gll" data-id="' . $gl->id . '"></i>
-    </td>
-</tr>
-                ';
-            }
-        }
-        $data['html1'] = $output;
-        $data['html2'] = $output_2;
-        $data['error'] = $error;
-        return response()->json($data);
+
+        return response()->json($res, $this->resCode);
     }
 
     ////////////////////////////////////////

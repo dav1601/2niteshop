@@ -22,6 +22,7 @@ use MatthiasMullie\Minify\JS;
 use Illuminate\Support\Carbon;
 use MatthiasMullie\Minify\CSS;
 use App\Models\bundled_skin_cat;
+use App\Models\PgbRelaHome;
 use App\Models\ProductCategories;
 use MatthiasMullie\Minify\Minify;
 use Illuminate\Support\Facades\DB;
@@ -39,18 +40,12 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // Cart::instance('shopping')->destroy();
-        // Cart::instance('shopping')->store(Auth::id());
-        // dd(Cart::instance('shopping')->content());
-        $show_home = showHome::where('active', '=', 1)->with(['sections', 'sections.category'])->orderBy('position', 'asc')->get();
-        $company = Config::all();
-        $banners = Banners::where('index', '!=', 0)->get();
+
+        $show_home = PgbRelaHome::with('pgb_data')->get();
         $menu_fix = FixMenu::all();
         $banner = Banners::where('index', '=', 0)->first();
-        $slides = Slides::where('status', '=', 1)->orderBy('index', 'ASC')->get();
-        $blogs = Blogs::with(['author', 'category' , 'pgbs' , 'pgbs.pgb_data'])->where('active', '=', 1)->orderBy('id', 'DESC')->limit(8)->get();
-        $banners = collect($banners)->groupBy("position");
-        return view('home', compact('show_home', 'company', 'banner',  'slides', 'banners', 'blogs'));
+        $blogs = Blogs::with(['author', 'category', 'pgbs', 'pgbs.pgb_data'])->where('active', '=', 1)->orderBy('id', 'DESC')->limit(8)->get();
+        return view('home', compact('show_home',  'blogs'));
     }
     //////////////////////////////////////
     ////////////////////////////////////////

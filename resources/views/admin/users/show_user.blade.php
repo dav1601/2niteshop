@@ -3,8 +3,7 @@
 @endsection
 @section('import_js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="{{ asset('admin/app/js/user.js') }}?ver=@php echo filemtime('admin/app/js/user.js') @endphp">
-    </script>
+    <script src="{{ asset('admin/app/js/user.js') }}?ver=@php echo filemtime('admin/app/js/user.js') @endphp"></script>
 @endsection
 @section('name')
     Danh Sách Sản Phẩm
@@ -42,40 +41,34 @@
                                 <label for="">Role</label>
                                 <select class="custom-select" name="" id="user_filter--role">
                                     <option value="0">Tất Cả</option>
-                                    @foreach (App\Models\Role::all() as $role)
-                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="col-4 mb-4">
+                        <div class="col-3 mb-4">
                             <div class="form-group">
-                                <label for="">Tên hoặc ID User</label>
+                                <label for="">Tên , id , email user</label>
                                 <input type="text" class="form-control" name="" id="user_filter--nameId"
-                                    placeholder="Tìm tên hoặc id sản phẩm">
+                                    placeholder="Tìm tên, id, email user">
                             </div>
                         </div>
-                        <div class="col-4 mb-4 pl-0">
+                        <div class="col-3 mb-4 pl-0">
                             <div class="form-group">
                                 <label for="">Số điện thoại</label>
                                 <input type="text" class="form-control" name="" id="user_filter--phone"
                                     aria-describedby="helpId" placeholder="Nhập số điện thoại">
                             </div>
                         </div>
-                        <div class="col-3 mb-4 pl-0">
+                        <div class="col-2 mb-4 pl-0">
                             <div class="form-group">
                                 <label for="">Provider</label>
                                 <input type="text" class="form-control" name="" id="user_filter--provider"
                                     aria-describedby="helpId" placeholder="Nhập nền tảng login">
                             </div>
                         </div>
-                        <div class="col-3 mb-4">
-                            <div class="form-group">
-                                <label for="">Provider ID</label>
-                                <input type="text" class="form-control" name="" id="user_filter--providerID"
-                                    aria-describedby="helpId" placeholder="Nhập ID USER nền tảng login">
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>

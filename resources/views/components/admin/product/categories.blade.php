@@ -1,3 +1,16 @@
+@props(['col' => 'col-3'])
+{{-- @isset($attr)
+    @dd($attr->attributes)
+@endisset --}}
+@php
+    $attrInput = [];
+    if (isset($cusAttrInput)) {
+        foreach ($cusAttrInput->attributes as $key => $value) {
+            $attrInput[$key] = $value;
+        }
+    }
+    $categories = App\Models\Category::tree();
+@endphp
 <div id="{{ $idard }}">
     @php
         $idcoll = 'collapse-' . $idard;
@@ -14,34 +27,44 @@
                 </button>
             </h2>
         </div>
-        <div id="{{ $idcoll }}" class="{{ $show ? 'show' : '' }} collapse {{ $classcoll }}" {{ $customattr }}>
-            <div class="card-body row w-100">
-                @foreach (App\Models\Category::tree() as $cate)
-                    <div class="col-3 mb-4">
-                        <div class="va-checkbox d-flex align-items-center w-100"
-                            style="margin-left: calc({{ $cate->level }} * 25px);">
-                            <input type="checkbox" name="{{ $name }}" id="{{ $id . $cate->id }}"
-                                value="{{ $cate->id }}" class="{{ $class }}" {{ $customattr }}
-                                @checked(in_array($cate->id, $selected))>
-                            <label for="{{ $id . $cate->id }}">
+        <div id="{{ $idcoll }}" class="{{ $show ? 'show' : '' }} {{ $classcoll }} collapse">
+            <div class="card-body w-100" style="max-height: 500px; overflow-y: auto ; overflow-x:hidden">
+                @foreach ($categories as $cate)
+                    @php
+                        $margin = 'margin-left:' . $cate->level * 30 . 'px';
+                    @endphp
+                    <div class="{{ $col }} mb-2 pb-2" style="border-bottom:1px solid grey">
+                        <x-admin.layout.form.acheckbox :customattr="$attrInput" :id="$id . $cate->id">
+                            <x-slot name="input" :name="$name" :value="$cate->id">
+                            </x-slot>
+                            <x-slot name="label">
                                 {{ $cate->name }}
-                            </label>
-                        </div>
+                            </x-slot>
+                            <x-slot name="main" :style="$margin">
+
+                            </x-slot>
+                        </x-admin.layout.form.acheckbox>
                         @while (count($cate->children) > 0)
                             @foreach ($cate->children as $cate)
-                                <div class="va-checkbox d-flex align-items-center w-100"
-                                    style="margin-left: calc({{ $cate->level }} * 25px);">
-                                    <input type="checkbox" name="{{ $name }}" id="{{ $id . $cate->id }}"
-                                        value="{{ $cate->id }}" class="{{ $class }}" {{ $customattr }}
-                                        @checked(in_array($cate->id, $selected))>
-                                    <label for="{{ $id . $cate->id }}">
+                                @php
+                                    $margin = 'margin-left:' . $cate->level * 30 . 'px';
+                                @endphp
+                                <x-admin.layout.form.acheckbox :customattr="$attrInput" :id="$id . $cate->id">
+                                    <x-slot name="input" :name="$name" :value="$cate->id">
+                                    </x-slot>
+                                    <x-slot name="label">
                                         {{ $cate->name }}
-                                    </label>
-                                </div>
+                                    </x-slot>
+                                    <x-slot name="main" :style="$margin" class="" id="">
+
+                                    </x-slot>
+                                </x-admin.layout.form.acheckbox>
                             @endforeach
                         @endwhile
                     </div>
                 @endforeach
+
+
             </div>
         </div>
     </div>

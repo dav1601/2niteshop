@@ -88,27 +88,19 @@ class AdminProductController extends Controller
     public function product_view_edit($id, Request $request)
     {
         $product = $this->repoPrd->product($id);
-        if (!Gate::allows('group-4')) {
-            $this->authorize('edit-product', $product);
-        }
         $producer = Producer::all()->pluck("name")->toArray();
         $cat_game = CatGame::all();
         $type = typeProduct::where('parent', '=', 0)->get();
         $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
         $product_categories = ProductCategories::where('products_id', $id)->get()->pluck('category_id')->toArray();
         $rela_blogs = implode(",", $product->related_blogs->pluck("id")->toArray());
-        $rela_products =  implode(",", $product->related_products->pluck("id")->toArray());
+        $rela_products =  implode(",", $product->bundled_products->pluck("id")->toArray());
         $policies = implode(",", $product->policies->pluck("id")->toArray());
         $ins =  implode(",", $product->ins->pluck("id")->toArray());
         $blocks =  implode(",", $product->blocks->pluck("id")->toArray());
-        $gll700 = collect($product->gll)->filter(function ($value) {
-            return $value->size == 700;
-        });
-        $gll80 = collect($product->gll)->filter(function ($value) {
-            return $value->size == 80;
-        });
+        $gallery = collect($product->gll)->toArray();
         $url = route('product_view_edit', ['id' => $id]);
-        return view('admin.products.edit', compact('id',   'producer', 'cat_game', 'type',  'product', 'sub_type',  'url', 'product_categories', 'rela_blogs', 'rela_products', 'policies', 'ins', 'blocks', 'gll700', 'gll80'));
+        return view('admin.products.edit', compact('id',   'producer', 'cat_game', 'type',  'product', 'sub_type',  'url', 'product_categories', 'rela_blogs', 'rela_products', 'policies', 'ins', 'blocks', 'gallery'));
     }
     public function validateProduct($request, $id = null)
     {
@@ -131,7 +123,8 @@ class AdminProductController extends Controller
                 'gll700.*' => $img,
                 'gll80.*' => $img,
                 'producer' => 'required',
-                'category' => 'required'
+                'category' => 'required',
+                'date_sold' => "required"
             ],
             [
                 'name.required' => "Bạn chưa nhập tên sản phẩm",
@@ -171,8 +164,9 @@ class AdminProductController extends Controller
     // //////////////////////////////////////// end view edit
     public function product_handle_add(Request $request)
     {
+        dd($request->all());
         $data_create = array();
-        $path = "admin/images/products/";
+        $path = config('app.image_products');
         $validator = $this->validateProduct($request);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -186,6 +180,10 @@ class AdminProductController extends Controller
         $data_create['content'] = $request->content;
         $data_create['info'] = $request->info;
         $data_create['model'] = $request->model;
+        $data_create['date_sold'] = $request->date_sold;
+        $data_create['qty'] = $request->qty;
+        $data_create['discount'] = $request->discount;
+        $data_create['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
         if ($request->sub_type != 0) {
             $data_create['sub_type'] = typeProduct::where('id', '=', $request->sub_type)->first()->name;
         }
@@ -197,39 +195,30 @@ class AdminProductController extends Controller
             ]);
         }
         $data_create['producer_id'] = $producer->id;
-        $data_create['producer_slug'] = $producer->slug;
         if ($request->cat_game != 0) {
             $data_create['cat_game_id'] = CatGame::where('id', '=', $request->cat_game)->first()->name;
         } else {
             $data_create['cat_game_id'] = NULL;
         }
-        $data_create['stock'] = $request->stock;
         $data_create['usage_stt'] = $request->usage_stt;
         $data_create['highlight'] = $request->highlight;
-        $data_create['author'] = Auth::user()->name;
-        $data_create['author_id'] = Auth::id();
-        $data_create['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
-        $data_create['video'] = $request->video;
+        $data_create['status'] = statusProduct($request->date_sold, $request->qty);
+        $path = $path  . "/" . $data_create['type'] . "/";
         // /////////////////////////////////
-        if ($request->has('banner')) {
-            $path_banner = $path . Str::slug($data_create['slug']) . "/"  . "banner/";
-            $data_create['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
-            $data_create['banner_link'] = $request->banner_link;
-        }
+
         // //////////// background img
 
         // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
-        $path_main_img = $path . Str::slug($data_create['slug']) . "/"  . "main/";
+        $path_main_img = $path  . "main/";
         $data_create['main_img'] = $this->handle_file->storeFileImg($request->main_img, $path_main_img);
         // //////////////// end main
         if ($request->has('sub_img')) {
-            $path_sub_img = $path .  Str::slug($data_create['slug']) . "/"  . "sub/";
+            $path_sub_img = $path  . "sub/";;
             $data_create['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
         }
-        // end subbbbbbbbbbbbbb
-        // start backgroud
+
         if ($request->has('bg')) {
-            $path_bg =  $path . Str::slug($data_create['slug']) . "/"  . "backgroud/";
+            $path_bg =  $path  .  "backgroud/";
             $data_create['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
         }
         // end backgroud
@@ -237,46 +226,15 @@ class AdminProductController extends Controller
         $request->request->add(['rela__category' => implode(',', $request->category)]);
         // createdd end
         if ($created) {
-            handle_rela($request, "products-category", $created->id, false);
-            if ($request->has('gll700')) {
-                $index = 0;
-                foreach ($request->gll700 as $g7) {
-                    $index++;
-                    $path_g7 = $path . Str::slug($created->slug) . "/"  . "images_700x700/";
-                    $save_7 =  $this->handle_file->storeFileImg($g7, $path_g7);
-                    gllProducts::create([
-                        'link' => $save_7,
-                        'products_id' => $created->id,
-                        'size' => 700,
-                        'index' => $index
-                    ]);
-                    unset($g7);
-                }
-            }
-            // end 750x750 img
-            if ($request->has('gll80')) {
-                $index = 0;
-                foreach ($request->gll80 as $g8) {
-                    $index++;
-                    $path_g8 = $path . Str::slug($created->slug) . "/"  . "images_80x80/";
-                    $save_8 = $this->handle_file->storeFileImg($g8, $path_g8);
-                    gllProducts::create([
-                        'link' => $save_8,
-                        'products_id' => $created->id,
-                        'size' => 80,
-                        'index' => $index
-                    ]);
-                    unset($g8);
-                }
-            }
             // end 80x80 img
             handle_rela($request, 'products-ins', $created->id, false);
             handle_rela($request, 'products-plc', $created->id, false);
             handle_rela($request, 'product-products', $created->id, false);
             handle_rela($request, 'products-block', $created->id, false);
             handle_rela($request, 'products-blogs', $created->id, false);
+            return redirect()->back()->with('success', 'Create Product Success');
         }
-        return redirect()->back()->with('ok', '1');
+        return redirect()->back()->with('error', 'Create Product Failed');
         // end else
 
     }
@@ -284,9 +242,7 @@ class AdminProductController extends Controller
     //////////////////////////////////////// end add product
     public function product_handle_edit($id, FileInterface $handle_file, Request $request)
     {
-        $data_create = array();
-        $product = Products::where('id', '=', $id)->firstOrFail();
-        $path = "admin/images/products/";
+        dd($request->all());
         $validator = $this->validateProduct($request, $id);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -300,12 +256,17 @@ class AdminProductController extends Controller
         $data_update['slug'] = Str::slug($request->name);
         $data_update['info'] = $request->info;
         $data_update['model'] = $request->model;
+        $data_update['date_sold'] = $request->date_sold;
+        $data_update['qty'] = $request->qty;
+        $data_update['discount'] = $request->discount;
+        $data_update['usage_stt'] = $request->usage_stt;
+        $data_update['highlight'] = $request->highlight;
+        $data_update['status'] = statusProduct($request->date_sold, $request->qty);
+        // /////////////
         $request->request->add(['rela__category' => implode(',', $request->category)]);
-        if ($request->sub_type != 0) {
-            $data_update['sub_type'] = typeProduct::where('id', '=', $request->sub_type)->first()->name;
-        } else {
-            $data_update['sub_type'] = NULL;
-        }
+        $data_update['sub_type'] = $request->sub_type != 0 ? typeProduct::where('id', '=', $request->sub_type)->first()->name : NULL;
+        $data_update['cat_game_id'] = $request->cat_game != 0 ? CatGame::where('id', '=', $request->cat_game)->first()->name : NULL;
+        ////////////////
         $producer = Producer::where('name', $request->producer)->first();
         if (!$producer) {
             $producer = Producer::create([
@@ -314,122 +275,41 @@ class AdminProductController extends Controller
             ]);
         }
         $data_update['producer_id'] = $producer->id;
-        $data_update['producer_slug'] = $producer->slug;
-        if ($request->cat_game != 0) {
-            $data_update['cat_game_id'] = CatGame::where('id', '=', $request->cat_game)->first()->name;
-        } else {
-            $data_update['cat_game_id'] = NULL;
-        }
-        $data_update['stock'] = $request->stock;
-        $data_update['usage_stt'] = $request->usage_stt;
-        $data_update['highlight'] = $request->highlight;
-        $data_update['author'] = Auth::user()->name;
-        $data_update['author_id'] = Auth::id();
         $data_update['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
-        $data_update['video'] = $request->video;
         // /////////////////////////////////
-        if ($request->has('banner')) {
-            if ($product->banner) {
-                $this->handle_file->deleteFile($product->banner);
-            }
-            $path_banner = $path . Str::slug($data_update['slug']) . "/"  . "banner/";
-            $data_update['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
-            $data_update['banner_link'] = $request->banner_link;
-        }
-
         // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
-        if ($request->has('main_img')) {
-            if ($product->main_img) {
-                $this->handle_file->deleteFile($product->main_img);
-            }
-            $main_path = $path . Str::slug($data_update['slug']) . "/"  . "main/";
-            $data_update['main_img'] = $this->handle_file->storeFileImg($request->main_img, $main_path);
-        }
-
-        // //////////////// end main
-        if ($request->has('sub_img')) {
-            if ($product->sub_img) {
-                $this->handle_file->deleteFile($product->sub_img);
-            }
-            $path_sub_img = $path .  Str::slug($data_update['slug']) . "/"  . "sub/";
-            $data_update['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
-        }
-        // end subbbbbbbbbbbbbb
-        // start backgroup img
-        if ($request->has('bg')) {
-            if ($product->bg) {
-                $this->handle_file->deleteFile($product->bg);
-            }
-            $path_bg =  $path . Str::slug($data_update['slug']) . "/"  . "backgroud/";
-            $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
-        }
         // update product
         $updated =  Products::where('id', $id)->update($data_update);
-        if ($updated) {
-            event(new UpdateProduct($id));
+        if (!$updated) {
+            return redirect()->back()->with('error', 'Updated Product Failed');
         }
-        // handle rela categories
+        event(new UpdateProduct($id));
         handle_rela($request, "products-category", $id, false, true);
         // ///////// update pre order product
-        if ($request->stock == 1) {
-            PreOrder::where('products_id', '=', $id)->update([
-                'status_product' => 1,
-                'price' => $request->price
-            ]);
-        } else {
+        if (isPreOrder($request->date_sold)) {
             PreOrder::where('products_id', '=', $id)->update([
                 'status_product' => 0,
                 'price' => NULL
             ]);
-        }
-        // handle related products
-
-        // end handle related products
-
-        // end handle related blogs
-        if ($request->has('gll700')) {
-            foreach ($request->gll700 as $g7) {
-                $index = 1;
-                while (gllProducts::where('products_id', '=', $id)->where('index', '=', $index)->where('size', '=', 700)->first()) {
-                    $index++;
-                }
-                $path_g7 = $path . Str::slug($product->slug) . "/"  . "images_700x700/";
-                $save_7 =  $this->handle_file->storeFileImg($g7, $path_g7);
-                gllProducts::create([
-                    'link' => $save_7,
-                    'products_id' => $id,
-                    'size' => 700,
-                    'index' => $index
+        } else {
+            if ($request->qty > 0) {
+                PreOrder::where('products_id', '=', $id)->update([
+                    'status_product' => 1,
+                    'price' => $request->price
                 ]);
-                unset($g7);
+            } else {
+                PreOrder::where('products_id', '=', $id)->update([
+                    'status_product' => 0,
+                    'price' => NULL
+                ]);
             }
         }
-        // end 70000000000000000000000000
-        if ($request->has('gll80')) {
-            foreach ($request->gll80 as $g8) {
-                $index = 1;
-                while (gllProducts::where('products_id', '=', $id)->where('index', '=', $index)->where('size', '=', 80)->first()) {
-                    $index++;
-                }
-                $path_g8 = $path . Str::slug($product->slug) . "/"  . "images_80x80/";
-                $save_8 = $this->handle_file->storeFileImg($g8, $path_g8);
-                gllProducts::create([
-                    'link' => $save_8,
-                    'products_id' => $id,
-                    'size' => 80,
-                    'index' => $index
-                ]);
-                unset($g8);
-            }
-        }
-
         handle_rela($request, 'products-ins', $id, false, true);
         handle_rela($request, 'products-plc', $id, false, true);
         handle_rela($request, 'product-products', $id, false, true);
         handle_rela($request, 'products-block', $id, false, true);
         handle_rela($request, 'products-blogs', $id, false, true);
-        // end 80000000000000000000000000000000
-        return redirect()->back()->with('ok', '1');
+        return redirect()->back()->with('success', 'Updated Product Success');
     }
 
     //////////////////////////////////////// end edit product

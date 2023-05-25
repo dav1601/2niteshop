@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('title')
+    Thông tin giỏ hàng
+@endsection
 @section('import_js')
     <script src="{{ $file->ver('client/app/js/cart.js') }}"></script>
 @endsection
@@ -26,8 +29,7 @@
         <div class="container" id="cart__show">
             {{-- <x-client.cart.show /> --}}
             <div class="d-flex justify-content-center">
-                <img src="https://res.cloudinary.com/vanh-tech/image/upload/v1676041175/Ellipsis-1s-200px_hpwekn.gif"
-                    alt="loading-cart" width="100">
+                <x-layout.loading :center="true" />
             </div>
         </div>
     </div>

@@ -18,8 +18,9 @@ class AdminPrdRepo implements AdminPrdInterface
     }
     public function product($id)
     {
-        return Products::with(['gll', 'policies', 'categories', 'ins', 'cat_game', 'blocks', 'related_products', 'related_blogs', 'related_products.products', 'producer'])->where('id', $id)->orWhere('slug', $id)->firstOrFail();
+        return Products::with(['gll', 'policies', 'user', 'categories', 'ins', 'cat_game', 'blocks', 'bundled_products', 'related_blogs', 'producer'])->where('id', $id)->orWhere('slug', $id)->firstOrFail();
     }
+    
     public function pagination($model, $orderBy = [], $page = 1, $item_page)
     {
         try {

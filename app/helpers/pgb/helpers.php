@@ -4,6 +4,16 @@ function getIdYt($url)
     parse_str(parse_url($url, PHP_URL_QUERY), $arrayYt);
     return $arrayYt['v'] ?? "";
 }
+function get_youtube_title($video_id)
+{
+    $html = 'https://www.googleapis.com/youtube/v3/videos?id=' . $video_id . '&key=AIzaSyBODHKck8H54eqn_QwakWRt4kweWpeLw_Y&part=snippet';
+    $response = file_get_contents($html);
+    $decoded = json_decode($response, true);
+    foreach ($decoded['items'] as $items) {
+        $title = $items['snippet']['title'];
+        return $title;
+    }
+}
 function renderVsb($bp)
 {
     $class = [];
@@ -27,7 +37,9 @@ function renderSpacing($spacing)
     $class = " ";
     foreach ($spacing as $bp => $items) {
         foreach ($items as $pos => $item) {
-            $class .= " a-" . $pos . "-" . $bp . "-" . $item;
+            if ((int)$item != 0) {
+                $class .= " a-" . $pos . "-" . $bp . "-" . $item;
+            }
         }
     }
     return $class;
@@ -56,7 +68,6 @@ function unitCss($val, $unit = "px")
 function setPptValueCss($arrStyle, $id, $preview = false, $customs = [])
 {
     $style = [];
-    $id = $id;
     if ($preview) {
         $id = "#pgb-preview  " . $id;
     }
@@ -160,6 +171,9 @@ function renderColFW($devices)
 
 function renderAdvanced($advanced)
 {
+    if (count($advanced) <= 0) {
+        return "";
+    }
     $spacing = $advanced['spacing'];
     return renderVsb($advanced['visible']) . " " . renderSpacing($spacing);
 }

@@ -47,7 +47,7 @@
     </div>
     <div class="cart__item--action d-flex flex-column justify-content-end cia-{{ $cart->id }}">
         <span class="sub_total d-block">
-            Thành Tiền: <strong>{{ crf($cart->options->sub_total) }}</strong>
+            Thành Tiền: <strong id="cart-sub-total-{{ $cart->id }}">{{ crf($cart->options->sub_total) }}</strong>
         </span>
         <button class="delete__cart d-inline-block" data-rowId="{{ $cart->rowId }}">
             <i class="fas fa-trash"></i> Xoá

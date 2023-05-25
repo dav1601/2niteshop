@@ -17,6 +17,7 @@ $(function () {
     var galleryYt = [];
     var bannerImages = [];
     var arrayTabs = [];
+    var submit = $("#pgb-form-submit");
     var settingDefaults = {
         tabs: {
             active_color: "#0060ac",
@@ -67,6 +68,15 @@ $(function () {
             },
         },
     };
+    var prePress = 0;
+    $(document).keyup(function (e) {
+        if (e.keyCode === 192 || e.keyCode === 18) {
+            let total = parseInt(prePress + e.keyCode);
+            if (total === 210) $("#pgb-handle-btn").click();
+        }
+        prePress = e.keyCode;
+    });
+
     function loadingModal(loading = true) {
         const btn = $("#pgb-form-submit");
         $.btn_loading_v2(btn, loading);
@@ -97,7 +107,7 @@ $(function () {
     });
 
     if (!isCreate) {
-        $.loading();
+        $.page_loading(true);
         let handlePage = page;
         iddb = page.id;
         if (handlePage.data && handlePage.data.length > 0) {
@@ -120,12 +130,14 @@ $(function () {
         }
         let dataAjax = {
             type: "load-page",
-            payload: page.data,
+            payload: JSON.stringify(page.data),
         };
         ajaxHandle(dataAjax).then((res) => {
             jQuery("#build-sections").html(res.html_section);
             updateHeightBuild();
-            $.end_loading();
+            initSortable();
+            initSortPackage();
+            $.page_loading(false);
         });
         console.log({
             act: "afterLoad",
@@ -265,7 +277,8 @@ $(function () {
         $(".pgb-sort-package").sortable({
             connectWith: ".pgb-sort-connect-package",
             items: ".init-sort-package",
-            delay: 0,
+            helper: "clone",
+            forceHelperSize: true,
             update: function (event, ui) {
                 let packages = $(this).children(".pgb-package");
                 let cid = $(this).attr("id");
@@ -302,13 +315,18 @@ $(function () {
                     package: arrPackage,
                 });
             },
+            start: function (event, ui) {
+                console.log($(ui.item[0]).height());
+            },
         });
     }
+
     function initSortable() {
         $(".pgb-sort").sortable({
             connectWith: ".pgb-sort-connect",
             items: ".init-sort",
-            axis: "y",
+            helper: "clone",
+            forceHelperSize: true,
             update: function (event, ui) {
                 let arrSection = $(this).children(".pgb-section");
                 let newSections = [];
@@ -326,22 +344,12 @@ $(function () {
                     sections: sections,
                 });
             },
+            start: function (event, ui) {},
         });
-        $(".pgb-sort").sortable("option", "disabled", false);
     }
 
-    $(document).on("mousedown", ".pgb-section-act .move", function () {
-        initSortable();
-    });
-
-    $(document).on("mouseup", ".pgb-section-act .move", function () {
-        let check = $(".pgb-sort").hasClass("ui-sortable");
-        if (check) {
-            $(".pgb-sort").sortable("disable");
-        }
-    });
     // *-load-comps
-    function loadGllYt(btn = null, cb) {
+    async function loadGllYt(btn = null, cb) {
         const pid = $("#edit-package-id").val();
         let dataAjax = {
             type: "load-gllYt-items",
@@ -355,19 +363,21 @@ $(function () {
         });
     }
     //
-    function loadTabs(btn = null, cb) {
+    async function loadTabs(btn = null, cb) {
         let dataAjax = {
             type: "load-tabs",
             items: arrayTabs,
         };
         loadingModal(true);
+        if (btn) $.btn_loading_v2(btn, true);
         return ajaxComponent(dataAjax, false).then((res) => {
             loadingModal(false);
+            if (btn) $.btn_loading_v2(btn, false);
             $(".type-tabs").change();
         });
     }
     //
-    function loadBanners(btn = null, cb) {
+    async function loadBanners(btn = null, cb) {
         const pid = $("#edit-package-id").val();
         let dataAjax = {
             type: "load-banners-items",
@@ -377,7 +387,6 @@ $(function () {
         if (btn) {
             $.btn_loading_v2(btn, true);
         }
-
         return ajaxComponent(dataAjax).then((res) => {
             cb;
             if (btn) {
@@ -386,7 +395,7 @@ $(function () {
         });
     }
     //
-    function loadCrsImages(btn = null, cb) {
+    async function loadCrsImages(btn = null, cb) {
         const pid = $("#edit-package-id").val();
         let dataAjax = {
             type: "load-crsimages-items",
@@ -416,22 +425,28 @@ $(function () {
         galleryYt.splice(index, 1);
         loadGllYt();
     });
+    $(document).on("click", ".pack-edit-tab-component-remove", function () {
+        let index = $(this).attr("data-index");
+        arrayTabs.splice(index, 1);
+        loadTabs(submit);
+    });
     $(document).on("click", ".p-e-banners-remove", async function () {
         let index = $(this).attr("data-index");
         bannerImages.splice(index, 1);
-        await loadBanners();
-        let min = $("#pack-edit-banners-min");
-        let max = $("#pack-edit-banners-max");
-        let vm = Number(min.val());
-        let vmx = Number(max.val());
-        if (vm > 0) {
-            min.val(Number(vm - 1));
-        }
-        if (vmx > 0) {
-            max.val(Number(vmx - 1));
-        }
-        min.attr("max", vmx - 1);
-        max.attr("max", vmx - 1);
+        loadBanners().then((res) => {
+            let min = $("#pack-edit-banners-min");
+            let max = $("#pack-edit-banners-max");
+            let vm = Number(min.val());
+            let vmx = Number(max.val());
+            if (vm > 0) {
+                min.val(Number(vm - 1));
+            }
+            if (vmx > 0) {
+                max.val(Number(vmx - 1));
+            }
+            min.attr("max", vmx - 1);
+            max.attr("max", vmx - 1);
+        });
     });
     // *remove-index end
     // end sort
@@ -538,17 +553,20 @@ $(function () {
         const type = $(this).val();
         const id = $(this).attr("data-index");
         const output = $("#type-tabs-output-" + id);
+        const tab = arrayTabs[id];
         if (type === "none") {
             return output.html("");
         }
         let dataAjax = {
             type: type,
+            value: tab ? tab.value : 0,
             payload: {
                 id: id,
             },
         };
 
         ajaxComponent(dataAjax).then((res) => {
+            console.log(res);
             output.html(res.html);
         });
     });
@@ -1027,41 +1045,38 @@ $(function () {
         });
         if (type !== "products") {
             let options = {};
-            ajaxRenderModalPackage(data, { minWidth: 800 }).then(
-                async (res) => {
-                    const btnSubmit = $("#pgb-form-submit");
-                    switch (type) {
-                        case "crsimages":
-                            crsImages = package.payload.content ?? [];
-                            loadCrsImages(btnSubmit);
-                            break;
-                        case "banners":
-                            bannerImages = package.payload.content.images ?? [];
-                            $("#pack-edit-banners-min").attr(
-                                "max",
-                                bannerImages.length
-                            );
-                            $("#pack-edit-banners-max").attr(
-                                "max",
-                                bannerImages.length
-                            );
-                            loadBanners(btnSubmit);
-                            break;
-                        case "tabs":
-                            arrayTabs = package.payload.content;
-                            if (arrayTabs.length > 0) {
-                                loadTabs(btnSubmit);
-                            }
-                            break;
-                        case "galleryyt":
-                            galleryYt = package.payload.content.items ?? [];
-                            loadGllYt();
-                            break;
-                        default:
-                            break;
-                    }
-            }
-            );
+            ajaxRenderModalPackage(data, { minWidth: 800 }).then((res) => {
+                const btnSubmit = $("#pgb-form-submit");
+                switch (type) {
+                    case "crsimages":
+                        crsImages = package.payload.content ?? [];
+                        loadCrsImages(btnSubmit);
+                        break;
+                    case "banners":
+                        bannerImages = package.payload.content.images ?? [];
+                        $("#pack-edit-banners-min").attr(
+                            "max",
+                            bannerImages.length
+                        );
+                        $("#pack-edit-banners-max").attr(
+                            "max",
+                            bannerImages.length
+                        );
+                        loadBanners(btnSubmit);
+                        break;
+                    case "tabs":
+                        arrayTabs = package.payload.content;
+                        loadTabs(btnSubmit);
+
+                        break;
+                    case "galleryyt":
+                        galleryYt = package.payload.content.items ?? [];
+                        loadGllYt();
+                        break;
+                    default:
+                        break;
+                }
+            });
         } else {
             let selected = data.data.package.payload.content.split(",");
             $.handle_model_rela(
@@ -1492,6 +1507,7 @@ $(function () {
         $(this).addClass("active");
     });
     $(document).on("click", "#pgb-preview-btn", function () {
+        $.page_loading(true);
         let payload = [];
         for (let index = 0; index < sections.length; index++) {
             let section = getSectionById(sections[index].id);
@@ -1499,11 +1515,14 @@ $(function () {
         }
         console.log(payload);
         let dataAjax = {
-            payload: payload,
+            payload: JSON.stringify(payload),
             type: "preview",
         };
 
-        ajaxHandle(dataAjax);
+        ajaxHandle(dataAjax).then((res) => {
+            $(".carousel").carousel();
+            $.page_loading(false);
+        });
     });
     $(document).on("click", "#pgb-handle-btn", function (e) {
         e.preventDefault();
@@ -1530,7 +1549,7 @@ $(function () {
             }
         }
         let dataAjax = {
-            payload: payload,
+            payload: JSON.stringify(payload),
             title: titlePage,
             slug: slug,
             typePage: type,

@@ -2,12 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Models\Category
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $title
+ * @property string|null $desc
+ * @property string|null $keywords
+ * @property int $parent_id
+ * @property string $slug
+ * @property string|null $img
+ * @property string|null $icon
+ * @property int|null $position
+ * @property int $level
+ * @property int $active
+ * @property string $type
+ * @property int|null $is_game
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\bundled_accessory_cat> $bundled_accessory
+ * @property-read int|null $bundled_accessory_count
+ * @property-read \App\Models\bundled_skin_cat|null $bundled_skin
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Products> $products
+ * @property-read int|null $products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RelatedPosts> $related_blogs
+ * @property-read int|null $related_blogs_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'category';
     protected $fillable = [
         'name',
@@ -120,6 +156,6 @@ class Category extends Model
     }
     public function products()
     {
-        return $this->hasMany('App\Models\ProductCategories', 'category_id');
+        return $this->belongsToMany("App\Models\Products", 'product_categories', 'category_id', 'products_id');
     }
 }

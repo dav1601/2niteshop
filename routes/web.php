@@ -109,9 +109,9 @@ Route::prefix('auth/api/')->group(function () {
     Route::get('confirmation', 'AdminUserController@identity_confirmation')->name('identity_confirmation');
     Route::post('confirmation', 'AdminUserController@handle_identity_confirmation')->name('handle_identity_confirmation');
 });
-Route::middleware(['auth', 'checkRole'])->group(function () {
+Route::middleware(['auth', 'r_o_p:super-admin|Manager'])->group(function () {
     Route::prefix('admin/')->group(function () {
-        Route::prefix('page_builder/')->group(function () {
+        Route::prefix('page_builder/')->middleware('r_o_p:super-admin|Design Mode')->group(function () {
             Route::get('create_or_edit/{type?}', 'AdminPageBuilder@create_or_edit')->name('pgb.create.or.edit');
             Route::get('edit', 'AdminPageBuilder@edit')->name('pgb.edit');
             Route::get('index', 'AdminPageBuilder@index')->name('pgb.index');
@@ -139,8 +139,17 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
             Route::post('ci/handle/edit/{id}', 'AdminDashBoardController@edit_info_handle')->name('edit_info_handle')->where('id', '^[0-9]+$');
             Route::get('config_info/delete/{id}', 'AdminDashBoardController@delete_cofinfo_handle')->name('delete_cofinfor_handle')->where('id', '^[0-9]+$');
         });
+        // /////////// role_permissions
+        Route::middleware(['role:super-admin'])->group(function () {
+            Route::get('add_permissions', 'AdminUserController@add_permissions')->name('add_permissions');
+            Route::get('add_roles', 'AdminUserController@add_roles')->name('add_roles');
+            Route::get('edit_roles/{id}', 'AdminUserController@edit_roles')->name('edit_roles');
+            Route::match(array('get', 'post'), 'handle_permissions/{type}', 'AdminUserController@handle_permissions')->name('handle_permissions');
+            Route::match(array('get', 'post'), 'handle_roles/{type}', 'AdminUserController@handle_roles')->name('handle_roles');
+        });
+        // //////////////
         Route::prefix('users/')->group(function () {
-            Route::middleware('superAdmin')->group(function () {
+            Route::middleware('role:Store Administrator|super-admin')->group(function () {
                 Route::get('add', 'AdminUserController@add')->name('add_user');
                 Route::post('handle_add_user', 'AdminUserController@handle_add')->name('hanle_add_user');
                 Route::get('edit/{id}', 'AdminUserController@edit')->name('edit_user')->where('id', '^[0-9]+$');
@@ -150,23 +159,27 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
                     Route::get('admin', 'AdminUserController@show_admin')->name('show_admin');
                     Route::get('user', 'AdminUserController@show_user')->name('show_user');
                 });
+                Route::post('show_user_ajax', 'AdminUserController@show_user_ajax')->name('show_user_ajax');
             });
             Route::get('profile/{id}', 'AdminUserController@profile')->name('admin_profile')->where('id', '^[0-9]+$');
             Route::post('profile/ajax', 'AdminUserController@profile_ajax')->name('admin_profile_ajax');
             Route::get('setting-profile/{id}', 'AdminUserController@setting_profile')->name('setting_profile')->where('id', '^[0-9]+$');
             Route::post('setting-profile/save/{id}', 'AdminUserController@save_setting_profile')->name('save_setting_profile')->where('id', '^[0-9]+$');
-            Route::post('show_user_ajax', 'AdminUserController@show_user_ajax')->name('show_user_ajax');
         });
         Route::prefix('orders/')->group(function () {
-            Route::get('show', 'AdminOrderController@index')->name('show_orders');
-            Route::get('customers', 'AdminOrderController@customers')->name('customers');
-            Route::get('detail/{id}', 'AdminOrderController@detail')->name('detail_order')->where('id', '^[0-9]+$');
-            Route::get('export/invoice/{id}', 'AdminOrderController@export_invoice')->name('export_invoice')->where('id', '^[0-9]+$');
-            Route::prefix('pre_orders/')->group(function () {
-                Route::get('show_preOrders', 'AdminOrderController@show_preOrders')->name('show_preOrders');
-                Route::get('update_preOrders/{id}', 'AdminOrderController@update_preOrders')->name('update_preOrders')->where('id', '^[0-9]+$');
-                Route::post('ajax_preOrders', 'AdminOrderController@ajax_preOrders')->name('ajax_preOrders');
-                Route::post('handle_update/{id}', 'AdminOrderController@handle_update')->name('handle_update')->where('id', '^[0-9]+$');
+            Route::middleware("r_o_p:super-admin|Manage Orders")->group(function () {
+                Route::get('show', 'AdminOrderController@index')->name('show_orders');
+                Route::get('customers', 'AdminOrderController@customers')->name('customers');
+                Route::get('detail/{id}', 'AdminOrderController@detail')->name('detail_order')->where('id', '^[0-9]+$');
+                Route::get('export/invoice/{id}', 'AdminOrderController@export_invoice')->name('export_invoice')->where('id', '^[0-9]+$');
+            });
+            Route::middleware("r_o_p:super-admin|Manage PreOrders")->group(function () {
+                Route::prefix('pre_orders/')->group(function () {
+                    Route::get('show_preOrders', 'AdminOrderController@show_preOrders')->name('show_preOrders');
+                    Route::get('update_preOrders/{id}', 'AdminOrderController@update_preOrders')->name('update_preOrders')->where('id', '^[0-9]+$');
+                    Route::post('ajax_preOrders', 'AdminOrderController@ajax_preOrders')->name('ajax_preOrders');
+                    Route::post('handle_update/{id}', 'AdminOrderController@handle_update')->name('handle_update')->where('id', '^[0-9]+$');
+                });
             });
         });
         Route::prefix('ajax/')->group(function () {
@@ -186,6 +199,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
                 Route::post('handle_cat', 'AdminAjaxProductController@handle_cat')->name('handle_cat');
                 Route::post('handle_load', 'AdminAjaxProductController@handle_load')->name('handle_load');
                 Route::post('handle_delete_gll', 'AdminAjaxProductController@handle_delete_gll')->name('handle_delete_gll');
+                Route::post('handle_gallery', 'AdminAjaxProductController@handle_gallery')->name('handle_gallery');
             });
             Route::prefix('orders/')->group(function () {
                 Route::post('handle_ajax_orders', 'AdminOrderController@handle_ajax')->name('handle_ajax_orders');

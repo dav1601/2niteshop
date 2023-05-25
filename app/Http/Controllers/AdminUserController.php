@@ -2,28 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Api\ApiAdmin;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Blogs;
 use App\Models\Products;
 use App\Models\infoAdmin;
 use Illuminate\Support\Str;
+use App\Models\Api\ApiAdmin;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Repositories\FileInterface;
 use App\Repositories\UserInterface;
+use App\Repositories\ModelInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use App\Repositories\CustomerInterface;
-use App\Repositories\FileInterface;
 use App\Repositories\MailOrderInterface;
-use App\Repositories\ModelInterface;
-use Carbon\Carbon;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
 class AdminUserController extends Controller
 {
     public $handle_file;
+    public $statusResSuccess;
+    public $statusResErr;
+    public $statusMessage;
+    public $roles;
     public function __construct(FileInterface $handle_file)
     {
         $this->middleware(function ($request, $next) {
@@ -31,20 +37,27 @@ class AdminUserController extends Controller
             return $next($request);
         });
         $this->handle_file = $handle_file;
+        $this->statusResSuccess = "success";
+        $this->statusResErr = "error";
+        $this->statusMessage = "";
+        $this->roles = Role::where('id', "!=", 1)->get();
     }
     // ///////////////////
     public function add(UserInterface $user)
     {
-        $this->authorize('admin-action');
-        return view('admin.users.add');
+        $roles = $this->roles;
+        return view('admin.users.add', compact('roles'));
     }
     // /////////
     // ///////////////////
     public function edit($id)
     {
-        $this->authorize('admin-action');
-        $user = User::where('id', '=', $id)->firstOrFail();
-        return view('admin.users.edit', compact('user', 'id'));
+
+        $user = User::with('roles')->where('id', '=', $id)->firstOrFail();
+        $roles = $this->roles;
+        $userRole = $user->roles ? collect($user->roles)->pluck('name')->toArray() : [];
+
+        return view('admin.users.edit', compact('user', 'id', 'roles', 'userRole'));
     }
     // /////////////////////////////////////
     ////////////////////////////////////////
@@ -52,11 +65,8 @@ class AdminUserController extends Controller
     public function profile($id, Request $request, UserInterface $daviUser, ModelInterface $repom)
     {
         $output = "";
-        if (!Gate::allows('admin-action')) {
-            $this->authorize('setting-profile', $id);
-        }
         $page = $request->has('page') ? $request->page : 1;
-        $user = User::where('id', '=', $id)->firstOrFail();
+        $user = User::with('roles')->where('id', '=', $id)->firstOrFail();
         $profile = infoAdmin::where('user_id', '=', $id)->firstOrFail();
         $item_page = config('product.item_page') / 2;
         $blogs = $repom->pagination(Blogs::where('users_id', '=', $id), ['created_at', 'DESC'], $page, $item_page, []);
@@ -83,36 +93,38 @@ class AdminUserController extends Controller
     // ///////////////////
     public function show_user(ModelInterface $repom)
     {
-        $this->authorize('group-4');
-        $users = $repom->pagination(User::where('id', '!=', Auth::id()), null, null, null, []);
-        return view('admin.users.show_user', compact('users'));
+        $users = $repom->pagination(User::with('roles')->where('id', '!=', Auth::id()), null, null, null, []);
+        $roles = $this->roles;
+        return view('admin.users.show_user', compact('users', 'roles'));
     }
     // /////////
     public function show_user_ajax(Request $request, ModelInterface $repom)
     {
         $output = '';
         $sort = $request->sort;
-        $role = $request->role;
+        $role = $request->role == 0 ? null : (string) $request->role;
         $user = new User();
         $user->where('id', '!=', Auth::id());
-        if ($role != 0) {
-            $user = $user->where('role_id', '=', $role);
+        if ($role) {
+            $user = $user->whereHas('roles', function ($query) use ($role) {
+                $query->where('name', '=', $role);
+            });
+        } else {
+            $user = $user->with("roles");
         }
-        if ($request->phone != null) {
+        if ($request->phone) {
             $user = $user->where('phone', 'LIKE', '%' . $request->phone . '%');
         }
-        if ($request->nameId != null) {
+        if ($request->nameId) {
             $nameId = $request->nameId;
             $user = $user->where(function ($query) use ($nameId) {
                 $query->where('name', 'LIKE', '%' . $nameId . '%')
-                    ->orWhere('id', '=', $nameId);
+                    ->orWhere('id', '=', $nameId)
+                    ->orWhere('email', 'LIKE', '%' . $nameId . '%');
             });;
         }
-        if ($request->prov != null) {
+        if ($request->prov) {
             $user = $user->where('provider', 'LIKE', '%' . $request->prov . '%');
-        }
-        if ($request->provId != null) {
-            $user = $user->where('provider_id', 'LIKE', '%' . $request->provId . '%');
         }
         $page = $request->page;
         $repoRes = $repom->pagination($user, ['id', $sort], $page, null, []);
@@ -124,6 +136,7 @@ class AdminUserController extends Controller
             $output .= view('components.empty.nodata');
         }
         $data['html'] = $output;
+        $data['data'] = $users;
         return response()->json($data);
     }
     ////////////////////////////////////////
@@ -137,46 +150,30 @@ class AdminUserController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string'],
                 'phone' => ['required', 'string', 'min:6', 'unique:users', 'numeric'],
-
+                'role' => 'required'
             ],
-            [
-                'name.required' => "Bạn chưa nhập tên",
-                'name.string' => "Tên phải là 1 chuỗi kí tự",
-                'name.max' => "Độ dài tối đa 255 ký tự",
-                'email.required' => "Không được để trống email",
-                'email.string' => "Email phải là 1 chuỗi kí tự",
-                'email.string' => "Độ dài email tối đa 255 ký tự",
-                'email.unique' => "Email đã tồn tại",
-                'password.min' => "Ít nhất 8 ký tự",
-                'phone.numeric' => "Số điện thoại phải là SỐ",
-                'phone.unique' => "Số điện thoại này đã tồn tại"
 
-            ]
         );
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-        } else {
-            $user =  User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role_id' => $request->role,
-                'phone' => $request->phone
-            ]);
-            if ($user) {
-                infoAdmin::create(['user_id' => $user->id]);
-                if ($user->role_id <= 2) {
-                    $token = $dvi_user->createApiToken($user->id);
-                    $created_auth_api = ApiAdmin::create([
-                        'users_id' => $user->id,
-                        'token_api' => $token
-                    ]);
-                }
-                return redirect()->back()->with('ok', 1);
-            } else {
-                return redirect()->back()->with('not-ok', 1);
-            }
         }
+        $user =  User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone
+        ]);
+        if ($user) {
+            $user->assignRole($request->role);
+            infoAdmin::create(['user_id' => $user->id]);
+            $token = $dvi_user->createApiToken($user->id);
+            ApiAdmin::create([
+                'users_id' => $user->id,
+                'token_api' => $token
+            ]);
+            return redirect()->back()->with('success', "Thêm manager thành công");
+        }
+        return redirect()->back()->with('error', "Thêm manager thất bại");
     }
 
     ////////////////////////////////////////
@@ -188,36 +185,28 @@ class AdminUserController extends Controller
                 'name' => 'required', 'string', 'max:255',
                 'email' => 'required|string|email|unique:users,email,' . $id,
                 'phone' => 'required|string|numeric|unique:users,phone,' . $id,
+                'role' => 'required'
             ],
-            [
-                'name.required' => "Bạn chưa nhập tên",
-                'name.string' => "Tên phải là 1 chuỗi kí tự",
-                'name.max' => "Độ dài tối đa 255 ký tự",
-                'email.required' => "Không được để trống email",
-                'email.string' => "Email phải là 1 chuỗi kí tự",
-                'email.string' => "Độ dài email tối đa 255 ký tự",
-                'email.unique' => "Email đã tồn tại",
-                'phone.numeric' => "Số điện thoại phải là số",
-                'phone.unique' => "Số điện thoại này đã tồn tại",
-                'phone.unique' => "Số điện thoại này đã tồn tại",
-            ]
+
         );
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
             $data['name'] = $request->name;
             $data['email'] = $request->email;
-            $data['role_id'] = $request->role;
             $data['phone'] = $request->phone;
             if ($request->has('password')) {
-                $data['password'] = Hash::make($request->password);
+                if ($request->get('password')) {
+                    $data['password'] = Hash::make($request->password);
+                }
             }
             $user =  User::where('id', '=', $id)->update($data);;
             if ($user) {
-                return redirect()->back()->with('ok', 1);
-            } else {
-                return redirect()->back()->with('not-ok', 1);
+                $user = User::where('id',  $id)->first();
+                $user->syncRoles($request->role);
+                return redirect()->back()->with('success', "Edit manager thành công");
             }
+            return redirect()->back()->with('error', "Edit manager thất bại");
         }
     }
 
@@ -239,11 +228,7 @@ class AdminUserController extends Controller
     ////////////////////////////////////////
     public function setting_profile($id, Request $request)
     {
-        if (!Gate::allows('admin-action')) {
-            $this->authorize('setting-profile', $id);
-        }
-        $user = User::where('id', '=', $id)->firstOrFail();
-        $profile = infoAdmin::where('user_id', '=', $id)->firstOrFail();
+        $profile = infoAdmin::where('user_id', '=', Auth::id())->firstOrFail();
         return view('admin.users.setting-profile', compact('user', 'profile', 'id'));
     }
 
@@ -500,4 +485,104 @@ class AdminUserController extends Controller
     }
 
     ////////////////////////////////////////
+    ////////////////////////////////////////
+
+    public function add_permissions(Request $request)
+    {
+        $permissions = Permission::with('roles')->get();
+        return view('admin.users.decentralization.add_permissons', compact('permissions'));
+    }
+
+    ////////////////////////////////////////
+    public function add_roles(Request $request)
+    {
+        $roles = Role::with('permissions')->where('id', '!=', 1)->get();
+        $permissions = Permission::where('name', "!=", "root")->get();
+        return view('admin.users.decentralization.add_roles', compact('roles', 'permissions'));
+    }
+    ////////////////////////////////////////
+    public function edit_roles($id, Request $request)
+    {
+        $roles = Role::with('permissions')->whereNotIn('id', [1, $id])->get();
+        $currRole = Role::with('permissions')->where('id', $id)->first();
+        $permissions = Permission::where('name', "!=", "root")->get();
+        $selected = collect($currRole->permissions)->pluck("name")->toArray();
+        return view('admin.users.decentralization.edit_roles', compact('roles', 'permissions', 'currRole', 'selected'));
+    }
+    public function handle_permissions(Request $request)
+    {
+        $type = $request->type;
+        switch ($type) {
+            case 'create':
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'permissons' => 'required',
+                    ],
+
+                );
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator);
+                }
+                $permissions = explode(',', $request->permissons);
+                foreach ($permissions as $permission) {
+                    Permission::firstOrCreate(['name' => trim($permission)]);
+                }
+                return redirect()->back()->with($this->statusResSuccess, "Tạo quyền thành công");
+            case "delete":
+                $id = (int) $request->id;
+                $deleted = Permission::where('id', $id)->delete();
+                return redirect()->back()->with($deleted ? $this->statusResSuccess : $this->statusResErr, $deleted ? "Xoa quyen thành công" : "Xoa quyen that bai");
+
+
+            default:
+                return redirect()->back();
+                break;
+        }
+    }
+
+    ////////////////////////////////////////
+    public function handle_roles(Request $request)
+    {
+        $type = $request->type;
+        switch ($type) {
+            case 'create':
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'role' => 'required|unique:roles,name',
+                    ],
+
+                );
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator);
+                }
+                $permissions = $request->permissions;
+                $role = Role::create(['name' => trim($request->role)]);
+                $role->syncPermissions($permissions);
+                return redirect()->back()->with($this->statusResSuccess, "Tạo quyền thành công");
+
+            case "edit":
+                $permissions = $request->permissions;
+                $role = Role::where('id', $request->id)->first();
+                $role->syncPermissions($permissions);
+                return redirect()->back()->with($this->statusResSuccess, "Success Updated Permissions For Role");
+                break;
+            case "delete":
+                $id = (int) $request->id;
+                $deleted = Role::where('id', $id)->delete();
+                return redirect()->back()->with($deleted ? $this->statusResSuccess : $this->statusResErr, $deleted ? "Xoa role thành công" : "Xoa role that bai");
+            case "ajax-include-permissions":
+                $renderPermissions = "";
+                $permissions = Permission::where('name', "!=", "root")->get();
+                $selected = $request->has('selected') ? $request->get('selected') : [];
+                $renderPermissions .= view('components.admin.users.permissions', ['selected' => $selected, 'permissions' => $permissions]);
+                $data['rPerm'] = $renderPermissions;
+                return response()->json(['data' => $data], 200);
+            default:
+                return redirect()->back();
+                break;
+        }
+    }
+    ///////////////////////////////////////
 }

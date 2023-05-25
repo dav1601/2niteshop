@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/css/lg-zoom.min.css"
         integrity="sha512-vIrTyLijDDcUJrQGs1jduUCSVa3+A2DaWpVfNyj4lmXkqURVQJ8LL62nebC388QV3P4yFBSt/ViDX8LRW0U6uw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        
+
 @endsection
 @section('import_js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.0/lightgallery.min.js"
@@ -176,9 +176,9 @@
 
                             <div class="prd__dtl--price">
                                 <span
-                                    class="d-block {{ 'price-' . $product->id }} @if ($product->stock == 2) call @endif"
+                                    class="d-block {{ 'price-' . $product->id }} @if ($product->status !== 1) call @endif"
                                     data-price="{{ $price }}" prd-price="{{ $product->price }}">
-                                    @if ($product->stock != 2)
+                                    @if ($product->status === 1)
                                         {{ crf($price) }}
                                     @else
                                         CALL-{{ getVal('switchboard')->value }}
@@ -364,6 +364,20 @@
 
         </div>
         {{-- blog lien quan --}}
+        <div id="bundled-related-products" class="container my-4">
+            <h2 class="d-inline-block font-weight-bold pb-2"
+                style="border-bottom: 1px solid rgba(0, 96, 172, 1); color:rgba(0, 96, 172, 1);">
+                {{ count($product->bundled_products) > 0 ? 'Sản phẩm mua kèm' : 'Sản phẩm liên quan' }}
+            </h2>
+            <div class="w-100 mt-4">
+                @if (count($product->bundled_products) > 0)
+                    <x-client.products.slides :products="$product->bundled_products" />
+                @else
+                    <x-client.products.slides :products="$related_products" />
+                @endif
+            </div>
+
+        </div>
         @if (count($product->related_blogs) > 0)
             <div id="home__blogs">
                 <div id="home__blogs--content" class="container">
@@ -387,6 +401,7 @@
             </div>
         @endif
     </div>
+
     <script type="text/javascript">
         lightGallery(document.getElementById('vertical'), {
             exThumbImage: 'data-external-thumb-image',

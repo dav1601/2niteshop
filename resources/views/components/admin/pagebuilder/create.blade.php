@@ -103,6 +103,11 @@
             </div>
         </div>
     </div>
+@else
+    <x-admin.pagebuilder.section />
+    <div class="card-footer">
+        <x-admin.pagebuilder.component.button.add class="pgb-add-section" t="add-section" />
+    </div>
 @endif
 
 

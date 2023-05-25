@@ -12,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
-    <title>@yield('title', '2NITE SHOP')</title>
+    <title>@yield('title', 'Dashboard')</title>
     <link rel="stylesheet" href="{{ asset('plugin/reset.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ $file->ver('admin/app/css/app.css') }}">
     @php
         file_put_contents(public_path('pgb/pgb.css'), '');
     @endphp
@@ -39,7 +38,12 @@
     <link rel="stylesheet" href="{{ asset('admin/plugin/tags/tagsinput.css') }}">
     <link rel="stylesheet" href="{{ $file->ver('plugin/color-picker/color.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+        integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('import_css')
+    <link rel="stylesheet" href="{{ $file->ver('admin/app/css/app.css') }}">
     <x-app.plugin.debug />
     @routes
     <script type="text/javascript">
@@ -82,13 +86,30 @@
     <script src="{{ $file->ver('admin/app/js/relationship.js') }}"></script>
     <script src="{{ $file->ver('plugin/color-picker/color.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    <script src="{{ $file->ver('admin/app/js/app.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+        integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @yield('import_js')
+    <script src="{{ $file->ver('admin/app/js/app.js') }}"></script>
+
 
 </head>
 
 
 <body>
+
+    @if (Session::has('success'))
+        <script>
+            let message = '{{ Session::get('success') }}';
+            toastr.success(message);
+        </script>
+    @endif
+    @if (Session::has('error'))
+        <script>
+            let message = '{{ Session::get('error') }}';
+            toastr.error(message);
+        </script>
+    @endif
     <x-layout.pageloading />
     <x-admin.layout.response />
     <div id="wrapper">
@@ -109,7 +130,7 @@
                         @endif
                         <div class="text">
                             <span class="d-block">{{ Auth::user()->name }}</span>
-                            <span>{{ App\Models\Role::where('id', '=', Auth::user()->role_id)->first()->name }}</span>
+                            {{-- <span>{{ App\Models\Role::where('id', '=', Auth::user()->role_id)->first()->name }}</span> --}}
                         </div>
                     </div>
                 </div>
@@ -296,6 +317,21 @@
                                                 <span>Danh Sách Người Dùng</span>
                                             </a>
                                         </li>
+                                        <li class="item">
+                                            <a href="{{ route('add_roles') }}"
+                                                class="{{ $route == 'add_roles' ? 'route_active' : '' }}">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Tạo Role User</span>
+                                            </a>
+                                        </li>
+                                        <li class="item">
+                                            <a href="{{ route('add_permissions') }}"
+                                                class="{{ $route == 'add_permissions' ? 'route_active' : '' }}">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                                <span>Tạo Quyền User</span>
+                                            </a>
+                                        </li>
+
                                         <li class="item">
                                             <a href="{{ route('admin_profile', ['id' => Auth::id()]) }}"
                                                 class="{{ $route == 'admin_profile' ? 'route_active' : '' }}">

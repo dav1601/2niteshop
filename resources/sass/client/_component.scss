@@ -1169,19 +1169,17 @@
 .bis {
     margin-bottom: 25px;
     &__desc {
-        span {
-            color: #333333;
-            font-size: 15px;
-            line-height: 26.5px;
-            margin: 0px 0px 10px;
-            text-align: justify;
-            height: 100%;
-            width: 100%;
-            -webkit-line-clamp: 5;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            display: -webkit-box !important;
-        }
+        color: #333333;
+        font-size: 15px;
+        line-height: 26.5px;
+        margin: 0px 0px 10px;
+        text-align: justify;
+        height: 100%;
+        width: 100%;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        display: -webkit-box !important;
     }
     &__title {
         margin: 12px 0;

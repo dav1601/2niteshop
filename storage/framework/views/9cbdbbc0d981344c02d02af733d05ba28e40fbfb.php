@@ -13,12 +13,13 @@
 
 <?php $__env->startSection('twitter-title', $category->title); ?>
 
+
 <?php $__env->startSection('import_js'); ?>
     <script src="<?php echo e($file->ver('client/zoom-master/jquery.zoom.min.js')); ?>"></script>
     <script src="<?php echo e($file->import_js('scrollReval.js')); ?>"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script>
-        var category = <?php echo e(Js::from($category)); ?>;
+        var category = <?php echo e(Js::from($category->toArray())); ?>;
     </script>
 <?php $__env->stopSection(); ?>
 
@@ -129,14 +130,14 @@
                                     <?php $__currentLoopData = $products->data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div class="col-lg-3 col-md-4 col-12 col-sm-6 item w-100">
                                             <?php if (isset($component)) { $__componentOriginal58ee110754c547cdf765a6d10246c95d9c380967 = $component; } ?>
-<?php $component = App\View\Components\Product\Itemgrid::resolve(['type' => '2','class' => 'prdcat','message' => $prd] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = App\View\Components\Product\Itemgrid::resolve(['class' => 'prdcat','message' => $prd] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('product.itemgrid'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Product\Itemgrid::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
+<?php $component->withAttributes(['type' => '2']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal58ee110754c547cdf765a6d10246c95d9c380967)): ?>

@@ -19,12 +19,15 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use App\Repositories\FileInterface;
 use App\Repositories\UserInterface;
 use Symfony\Polyfill\Intl\Idn\Info;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Repositories\CustomerInterface;
+use App\Repositories\ModelInterface;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
 class AdminDashBoardController extends Controller
@@ -41,16 +44,16 @@ class AdminDashBoardController extends Controller
         });
         $this->file = $file;
     }
-    public function index(UserInterface $daviUser)
+    public function index(UserInterface $daviUser, ModelInterface $model)
     {
-        $count = Todos::count();
-        $page = 1;
-        $item_page = 6;
-        $start = ($page - 1) * $item_page;
-        $number_page = ceil($count / $item_page);
-        $tasks = User::find(Auth::id())->todos()->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();;
-        $now = Carbon::now('Asia/Ho_Chi_Minh');
-        $stats_users = User::where('role_id', '>', '3')->count();
+        $tasks = $model->pagination(User::find(Auth::id())->todos(), ['id', 'DESC'], 1, 6, null);
+        $users = $model->pagination(new User(), ['id', 'DESC'], 1, 8, []);
+        $blogs = $model->pagination(Blogs::exclude(['content']), ['id', 'DESC'], 1, 8, []);
+        $products = $model->pagination(Products::exclude(['content', 'info'])->with(['producer', 'categories' => function ($q) {
+            $q->select("name");
+        }]), ['id', 'DESC'], 1, 8, null);
+        $now = Carbon::now();
+        $stats_users = User::count();
         $stats_order = Orders::count();
         $stats_product = Products::count();
         $stats_blog = Blogs::count();
@@ -76,9 +79,8 @@ class AdminDashBoardController extends Controller
             $stats_revenueMonth = 0;
             $stats_proFMonth = 0;
         }
-        $blogs = Blogs::orderBy('id', 'DESC')->limit(8)->get();
-        $products = Products::orderBy('id', 'DESC')->limit(8)->get();
-        return view('admin.dashboard.index', compact('tasks', 'now', 'number_page', 'page', 'stats_comment', 'stats_product', 'stats_order', 'stats_users', 'stats_blog', 'stats_revenueMonth', 'stats_proFMonth', 'stats_revenueToday', 'stats_proFToday', 'daviUser', 'blogs', 'products'));
+
+        return view('admin.dashboard.index', compact('tasks', 'now', 'stats_comment', 'stats_product', 'stats_order', 'stats_users', 'stats_blog', 'stats_revenueMonth', 'stats_proFMonth', 'stats_revenueToday', 'stats_proFToday', 'daviUser', 'blogs', 'products', 'users'));
     }
     ////////////////////////////////////////
 

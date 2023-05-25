@@ -1,10 +1,10 @@
 <?php
 return [
     'status' => array(
-        '1' => "Đang xử lý",
-        '2' => "Đang giao",
-        '3' => "Đã giao",
-        '4' => "Đã huỷ"
+        '1' => "Đơn hàng đang xử lý",
+        '2' => "Đơn hàng đang vận chuyển",
+        '3' => "Đơn hàng đã giao hàng thành công",
+        '4' => "Đơn hàng đã huỷ"
     ),
     'pre_orders' => array(
         'status' => array(

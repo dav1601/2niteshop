@@ -7,12 +7,14 @@
             <th scope="col">Phone</th>
             <th scope="col">Avatar</th>
             <th scope="col">Provider</th>
-            <th scope="col">Provider ID</th>
             <th scope="col">Role</th>
             <th scope="col">Ngày Gia Nhập</th>
             <th scope="col">Edit</th>
             <th scope="col">Profile</th>
-            <th scope="col">Ban</th>
+            @can('Ban User')
+                <th scope="col">Ban</th>
+            @endcan
+
         </tr>
     </thead>
     <tbody>
@@ -27,22 +29,11 @@
                         width="80" alt="" style="border-radius: 5px;">
                 </td>
                 <td>
-                    @if ($user->provider != null)
-                        {{ $user->provider }}
-                    @else
-                        Trống
-                    @endif
+                    {{ $user->provider ?? 'No' }}
                 </td>
-                <td>
-                    @if ($user->provider_id != null)
-                        {{ $user->provider_id }}
-                    @else
-                        Trống
-                    @endif
 
-                </td>
                 <td>
-                    {{ App\Models\Role::where('id', '=', $user->role_id)->first()->name }}
+                    {!! renderROP($user->roles) !!}
                 </td>
                 <td>
                     {{ $carbon->create($user->created_at)->diffForHumans($carbon->now()) }}
@@ -53,27 +44,31 @@
                     </a>
                 </td>
                 <td class="d-flex justify-content-center align-items-center">
-                    @if ($user->role_id <= 3)
+                    @if ($user->hasPermissionTo('Manager'))
                         <a href="{{ route('admin_profile', ['id' => $user->id]) }}" class="d-block">
                             <i class="fa-solid fa-id-card-clip"></i>
                         </a>
                     @else
                         User
                     @endif
+
                 </td>
-                <td>
-                    @if ($user->ban == 1)
-                        <a href="{{ route('handle_delete_user', ['id' => $user->id, 'action' => ' unban']) }}"
-                            class="unban__user" data-id="{{ $user->id }}">
-                            <i class="fa-solid fa-user-slash"></i>
-                        </a>
-                    @else
-                        <a href="{{ route('handle_delete_user', ['id' => $user->id, 'action' => ' ban']) }}"
-                            class="ban__user" data-id="{{ $user->id }}">
-                            <i class="fa-solid fa-ban"></i>
-                        </a>
-                    @endif
-                </td>
+                @can('Ban User')
+                    <td>
+                        @if ($user->ban == 1)
+                            <a href="{{ route('handle_delete_user', ['id' => $user->id, 'action' => ' unban']) }}"
+                                class="unban__user" data-id="{{ $user->id }}">
+                                <i class="fa-solid fa-user-slash"></i>
+                            </a>
+                        @else
+                            <a href="{{ route('handle_delete_user', ['id' => $user->id, 'action' => ' ban']) }}"
+                                class="ban__user" data-id="{{ $user->id }}">
+                                <i class="fa-solid fa-ban"></i>
+                            </a>
+                        @endif
+                    </td>
+                @endcan
+
             </tr>
         @endforeach
     </tbody>

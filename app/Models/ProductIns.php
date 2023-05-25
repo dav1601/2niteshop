@@ -5,6 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\ProductIns
+ *
+ * @property int $id
+ * @property int $products_id
+ * @property int $ins_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Insurance $ins
+ * @property-read \App\Models\Products|null $products
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductIns newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductIns newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductIns query()
+ * @mixin \Eloquent
+ */
 class ProductIns extends Model
 {
     use HasFactory;

@@ -30,8 +30,18 @@
     <div class="bis__title">
         <a href="<?php echo e($href); ?>" class="d-block"><?php echo e($blog->title); ?></a>
     </div>
+    <div class="bis__desc">
+        <?php if($blog->type_content === 'text-editor'): ?>
+            <?php echo getDescByHtml($blog->content); ?>
 
+        <?php else: ?>
+            <?php
+                $html = '';
+                $html .= count($blog->pgbs) > 0 ? view('components.pagebuilder.render', ['payload' => $blog->pgbs->first()->pgb_data->data]) : '';
+            ?>
+            <?php echo getDescByHtml($html, 200); ?>
 
-    
+        <?php endif; ?>
+    </div>
 </div>
 <?php /**PATH E:\xampp\htdocs\2niteshop\home\u217861923\domains\vachill.com\public_html\resources\views/components/blogsubitem.blade.php ENDPATH**/ ?>

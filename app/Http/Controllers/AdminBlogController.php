@@ -177,9 +177,6 @@ class AdminBlogController extends Controller
     public function edit($id, Request $request)
     {
         $blog = Blogs::with(['pgbs', 'pgbs.pgb_data'])->where('id', '=', $id)->firstOrFail();
-        if (!Gate::allows('group-4')) {
-            $this->authorize('edit-blog', $blog);
-        }
         $category_blog = CatBlog::all();
         $rela_pgbs = implode(",", $blog->pgbs->pluck("pgb_id")->toArray());
         return view('admin.blogs.edit', compact('blog', 'category_blog', 'rela_pgbs'));

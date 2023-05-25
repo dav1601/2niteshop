@@ -10,13 +10,14 @@
         <div class="col-12 col-lg-4 pr-0" id="wp_cartShow_right">
             <div class="w-100 cartShow--right">
                 <span class="d-block plus_cart">cộng giỏ hàng</span>
-                <div class="box-total bt-qty d-flex justify-content-between align-items-center">
+                {{-- <div class="box-total bt-qty d-flex justify-content-between align-items-center">
                     <span>Số Lượng sản phẩm</span>
-                    <strong>{{ count($cart) }}</strong>
-                </div>
+
+                    <strong> {{ $cart->count() }} </strong>
+                </div> --}}
                 <div class="box-total bt-price d-flex justify-content-between align-items-center">
-                    <span>Tổng giỏ hàng</span>
-                    <strong> {{ crf($myCart->total()) }}</strong>
+                    <span>Tổng:</span>
+                    <strong class="cart-total">{{ crf($myCart->total()) }}</strong>
                 </div>
                 <div class="box-total">
                     <a href="{{ route('checkout') }}" class="davi_btn w-100">Thanh toán</a>

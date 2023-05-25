@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (config('app.env') == "local") {
+        if (config('app.env') === "local") {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
         $this->app->bind(
@@ -55,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(DaviUser $daviUser, FileRepository $file, DavjCart $myCart)
     {
-        if (config('app.env') == "local") {
+        if (config('app.env') === "local") {
             \Debugbar::enable();
         } else {
             \Debugbar::disable();
@@ -84,5 +84,5 @@ class AppServiceProvider extends ServiceProvider
         View::share('daviUser', $daviUser);
         View::share('file', $file);
         View::share('myCart', $myCart);
-}
+    }
 }

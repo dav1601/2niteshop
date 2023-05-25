@@ -4,7 +4,7 @@
     $s = $package['style'];
     $select = ['id', 'name', 'slug', 'price', 'main_img', 'sub_img', 'stock', 'highlight', 'usage_stt', 'created_at'];
 @endphp
-<div class="pgb-render-package-tabs w-100 {{ rC($p['class']) }} {{ renderAdvanced($package['advanced']) }}"
+<div class="pgb-render-package-tabs a-my-15 w-100 {{ rC($p['class']) }} {{ renderAdvanced($package['advanced']) }}"
     id="{{ $package['id'] }}">
     <ul class="nav pgb-render-nav-tab" id="tabs-nav-{{ $package['id'] }}" role="tablist">
         @if (count($content) > 0)

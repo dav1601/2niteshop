@@ -132,6 +132,39 @@
             </div>
         </div>
     </div>
+<?php else: ?>
+    <?php if (isset($component)) { $__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298 = $component; } ?>
+<?php $component = App\View\Components\Admin\Pagebuilder\Section::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.pagebuilder.section'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Pagebuilder\Section::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298)): ?>
+<?php $component = $__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298; ?>
+<?php unset($__componentOriginal5a3acc42e8fac0977142d06a5f62439bfd52d298); ?>
+<?php endif; ?>
+    <div class="card-footer">
+        <?php if (isset($component)) { $__componentOriginal8895df377ce551d31cc3894729bab76138508615 = $component; } ?>
+<?php $component = App\View\Components\Admin\Pagebuilder\Component\Button\Add::resolve(['class' => 'pgb-add-section','t' => 'add-section'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.pagebuilder.component.button.add'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Pagebuilder\Component\Button\Add::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8895df377ce551d31cc3894729bab76138508615)): ?>
+<?php $component = $__componentOriginal8895df377ce551d31cc3894729bab76138508615; ?>
+<?php unset($__componentOriginal8895df377ce551d31cc3894729bab76138508615); ?>
+<?php endif; ?>
+    </div>
 <?php endif; ?>
 
 

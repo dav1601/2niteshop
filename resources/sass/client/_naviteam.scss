@@ -38,6 +38,7 @@
         left: 2px;
         transform: rotate(-45deg);
     }
+
     input:checked + label::after {
         border: 2px solid #fff;
         border-width: 0 0 3px 3px;
@@ -56,8 +57,11 @@
         background: #ee5253;
         border: none;
     }
+    input:disabled + label::before {
+        background: #ebebe4 !important;
+        border: none;
+    }
 }
-
 
 @for $i from 1 through 10 {
     .va-fix-#{$i * 10} {

@@ -7,6 +7,7 @@ use App\Models\Todos;
 use App\Models\Statistics;
 use App\Models\SectionHome;
 use App\Models\showHome;
+use App\Repositories\ModelInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -17,96 +18,43 @@ use phpDocumentor\Reflection\Types\Boolean;
 class AdminAjaxDashBoardController extends Controller
 {
     //////////////////////////////////////
-
-    public function todos(Request $request)
+    public $resCode;
+    public $carbon;
+    public function __construct()
     {
-        $data = array();
-        $pagination = '';
+        $this->resCode = 200;
+        $this->carbon = new Carbon("Asia/Ho_Chi_Minh");
+    }
+
+    public function todos(Request $request, ModelInterface $model)
+    {
+
         $output = '';
-        $data_create = array();
-        $data_update = array();
-        $now = Carbon::now('Asia/Ho_Chi_Minh');
-        $error = 0;
-        $ok = 0;
-        $update = 0;
-        $load = 0;
-        if ($request->action == "add") {
-            $data_create['name'] = $request->name;
-            $data_create['user_id'] = Auth::id();
-            $data_create['time_add'] = $now;
-            if ($request->unit == "h") {
-                $data_create['time_end'] = $now->addHours($request->time);
-            } elseif ($request->unit == "min") {
-                $data_create['time_end'] = $now->addMinutes($request->time);
-            } elseif ($request->unit == "month") {
-                $data_create['time_end'] = $now->addMonths($request->time);
-            }
-            Todos::create($data_create);
-            $ok = 1;
-        }
-        if ($request->action == "load") {
-            $load = 1;
-        }
-        if ($request->action == "update") {
-            Todos::where('id', '=', $request->id)->update(['done' => $request->done]);
-            $update = 1;
-        }
-        $now1 = Carbon::now('Asia/Ho_Chi_Minh');
-        $count = Todos::count();
-        $page = $request->page;
-        $item_page = 6;
-        $start = ($page - 1) * $item_page;
-        $number_page = ceil($count / $item_page);
-        $tasks = User::find(Auth::id())->todos()->orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();
-        if (count($tasks) > 0) {
-            foreach ($tasks as $task) {
-                $output .= '
-            <div class="task__item task-' . $task->id . '
-            ';
-                if ($task->done == 1) {
-                    $output .= 'task__item--done  ';
+        $page = $request->page ?? 1;
+        $action = $request->action ?? "load";
+        switch ($action) {
+            case 'add-task':
+                $content = $request->payload['content'];
+                $time = $this->carbon->parse($request->payload['datetime'])->format("Y-m-d H:i:s");
+                $created = Todos::create(['name' => $content, 'user_id' => Auth::id(), 'deadline' => $time]);
+                if (!$created) {
+                    $this->resCode = 500;
                 }
-                if ($task->done == 0 && $task->time_end <= $now1) {
-                    $output .= 'task__item--fail ';
+                break;
+            case 'task-done':
+                $updated = Todos::where('id', (int) $request->id)->update(['done' => 1]);
+                if (!$updated) {
+                    $this->resCode = 500;
                 }
-                $output .= '
-            ">
-    <div class="va-checkbox">
-        <input type="checkbox" name="" id="tk-' . $task->id . '" class="task__item--check"
-            data-id="' . $task->id . '"';
-                if ($task->done == 1) {
-                    $output .= ' checked  >
-                <label for="tk-' . $task->id . '">' . $task->name . '
-                    ';
-                } else {
-                    $output .= '  >
-                <label for="tk-' . $task->id . '">' . $task->name . '
-                    ';
-                }
-                if ($task->done == 1) {
-                    $output .= '<span class="badge badge-success">Hoàn Thành</span>';
-                } else {
-                    if ($task->time_end > $now1) {
-                        $output .= '<span class="badge badge-warning">Còn ' . timeDiff($now1, $task->time_end) . '</span>';
-                    } else {
-                        $output .= '<span class="badge badge-danger">Chưa Hoàn Thành</span>';
-                    }
-                }
-                $output .= '
-            </label>
-        </div>
-    </div>';
-            }
-            $pagination = navi_ajax_page($number_page, $page,  'pagination-sm', 'justify-content-end', 'mt-2');
-        } else {
-            $output  = "<span>Chưa Có Công Việc Nào!</span>";
+                break;
+            default:
+
+                break;
         }
+        $tasks = $model->pagination(User::find(Auth::id())->todos(), ['id', 'DESC'], $page, 6, null);
+        $output .= view('components.admin.dashboard.todos', compact('tasks'));
         $data['html'] = $output;
-        $data['ok'] = $ok;
-        $data['update'] = $update;
-        $data['page'] = $pagination;
-        $data['load'] = $load;
-        return response()->json($data);
+        return response()->json($data, $this->resCode);
     }
 
     ////////////////////////////////////////

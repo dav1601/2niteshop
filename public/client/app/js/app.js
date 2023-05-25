@@ -5,28 +5,43 @@ $(function () {
         },
     });
 
-    jQuery.ajaxCart = function ajaxCart(data = {}, callback) {
+    jQuery.ajaxCart = function ajaxCart(data = {}) {
         const type = data.type;
         $.ajax({
             type: "post",
             url: route("add_cart"),
             data: data,
             dataType: "json",
-            success: function (data) {
-                $.end_loading();
-                callback;
-                $(".items").text(data.html_items);
-                $(".cart__drop").html(data.cart_drop);
-                $("#cart__show").html(data.cart);
-                $("#cart__checkout").html(data.checkout);
-                if (type == "add") {
-                    Swal.fire({
-                        position: "top-end",
-                        html: data.add_ok,
-                        showConfirmButton: false,
-                        timer: 6500,
-                    });
+            success: function (res) {
+                const status = res.status;
+                $(".items").text(res.html_items);
+                $(".cart__drop").html(res.cart_drop);
+                $("#cart__checkout").html(res.checkout);
+                switch (status) {
+                    case "add":
+                        Swal.fire({
+                            position: "top-end",
+                            html: res.add_ok,
+                            showConfirmButton: false,
+                            timer: 7000,
+                        });
+                        break;
+                    case "update":
+                        $("#cart-sub-total-" + res.cartItem.id).text(
+                            res.fm_sub_total
+                        );
+                        $(".cart-total").text(res.total_format);
+                        break;
+                    case "update_all":
+                        $("#cart__show").html(res.cart);
+                        break;
+                    case "load":
+                        $("#cart__show").html(res.cart);
+                        break;
+                    default:
+                        break;
                 }
+                $.end_loading();
             },
         });
     };
@@ -370,7 +385,7 @@ $(function () {
     var urlQv = route("loadDataQuickView");
     var offset = $("#biad__header--bot").offset().top;
     var height = $("#biad__header--bot").height();
-    var pointSroll = $("#home_content").offset().top;
+    var pointSroll = 500;
     var scroll = offset + height;
     function checkScrollTop() {
         var top = $(document).scrollTop();

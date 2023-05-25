@@ -65,7 +65,7 @@ Chinh sách của shop
                     <div class="form-group mb-5">
                         <label for="">Vị trí</label>
                         <select class="custom-select" name="position" id="">
-                           @foreach (Config::get('product.position'); as $p )
+                           @foreach (Config::get('product.position') as $p )
                                <option value="{{ $p }}">{{ $p }}</option>
                            @endforeach
 

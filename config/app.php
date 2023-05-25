@@ -14,7 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', '2NITE SHOP'),
-    'website' => env('https://vachill.com'),
+    'website' => env("APP_URL", 'https://vachill.com'),
     'app_storage' => env('APP_STORAGE', env("APP_URL") . "/storage"),
     'icon_loading' => public_path("app/images/loading.gif"),
     "app_images" => env("APP_URL") . "/app/images/",
@@ -58,7 +58,8 @@ return [
 
     'url' => env('APP_URL', null),
     'asset_url' => env('ASSET_URL', null),
-
+    'no_image' => "https://res.cloudinary.com/vanh-tech/image/upload/v1684567283/logo/blank-image_tgsc4d.svg",
+    'image_products' => "admin/images/cache/catalog/products",
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -185,7 +186,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+
 
     ],
 
@@ -244,7 +245,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         // or
-        'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+
         'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade',
         // ...
 

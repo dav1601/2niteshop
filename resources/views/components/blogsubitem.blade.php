@@ -29,18 +29,15 @@
     <div class="bis__title">
         <a href="{{ $href }}" class="d-block">{{ $blog->title }}</a>
     </div>
-
-
-    {{-- <div class="bis__desc">
-
+    <div class="bis__desc">
         @if ($blog->type_content === 'text-editor')
             {!! getDescByHtml($blog->content) !!}
         @else
             @php
                 $html = '';
-                $html .= view('components.pagebuilder.render', ['payload' => $blog->pgbs->first()->pgb_data->data]);
+                $html .= count($blog->pgbs) > 0 ? view('components.pagebuilder.render', ['payload' => $blog->pgbs->first()->pgb_data->data]) : '';
             @endphp
             {!! getDescByHtml($html, 200) !!}
         @endif
-    </div> --}}
+    </div>
 </div>

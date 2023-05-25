@@ -14,12 +14,13 @@
 
 @section('twitter-title', $category->title)
 {{-- end seo meta og twitt --}}
+
 @section('import_js')
     <script src="{{ $file->ver('client/zoom-master/jquery.zoom.min.js') }}"></script>
     <script src="{{ $file->import_js('scrollReval.js') }}"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script>
-        var category = {{ Js::from($category) }};
+        var category = {{ Js::from($category->toArray()) }};
     </script>
 @endsection
 {{-- end import js --}}

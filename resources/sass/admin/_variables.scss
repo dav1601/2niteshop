@@ -23,6 +23,11 @@ $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $main: #48dbfb;
 $vadark: #222e3c;
+$idx-modal: 5000;
+$idx-tox: 5001;
+$idx-loading: 50000;
+$idx-gallery: 5002;
+$max-idx: 2147483647;
 @mixin active {
     background: linear-gradient(
         90deg,

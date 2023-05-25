@@ -258,6 +258,23 @@ $(function () {
             },
         });
     });
+    // ////////////////////
+    $(document).on("change", "#select-role", function () {
+        let selected = $(this).val().split(",");
+        $.ajax({
+            type: "post",
+            url: route("handle_roles", {
+                type: "ajax-include-permissions",
+            }),
+            data: {
+                selected: selected,
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#list_permissions").html(data.data.rPerm);
+            },
+        });
+    });
 
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

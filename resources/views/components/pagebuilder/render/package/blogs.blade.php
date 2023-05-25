@@ -3,9 +3,10 @@
     $blogs = App\Models\Blogs::where('active', 1)
         ->orderBy('id', 'DESC')
         ->take((int) $p['content'])
-        ->exclude(['content', 'desc'])
+
         ->get();
 @endphp
+
 <div
     class="pgb-module-blog pgb-module-blog-{{ $package['id'] }} {{ rC($p['class']) }} {{ renderAdvanced($package['advanced']) }}">
     <div class="swiper mySwiper">

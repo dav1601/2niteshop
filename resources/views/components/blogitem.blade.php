@@ -48,8 +48,10 @@
                     @else
                         @php
                             $html = '';
-                            $html .= view('components.pagebuilder.render', ['payload' => $blog->pgbs->first()->pgb_data->data]);
-                            // $text = preg_replace('/\s+/', ' ', strip_tags($html));
+                            if (count($blog->pgbs) > 0) {
+                                $html .= view('components.pagebuilder.render', ['payload' => $blog->pgbs->first()->pgb_data->data]);
+                            }
+                            $text = preg_replace('/\s+/', ' ', strip_tags($html));
                         @endphp
                         {{-- {!! ltrim(Str::limit($text, 240, '..'), ' &nbsp;') !!} --}}
                         {!! getDescByHtml($html) !!}

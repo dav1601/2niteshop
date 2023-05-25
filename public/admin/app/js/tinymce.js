@@ -1,11 +1,11 @@
 $(function () {
-    jQuery.create_editor = function create_editor(id = "", height = 400) {
+    jQuery.create_editor = function create_editor(id = "", height = 500) {
         let setting = {
             path_absolute: path_ab,
             selector: "#" + id,
-            height: 500,
+            height: height,
             plugins:
-                "lists advlist anchor autolink autoresize autosave charmap code codesample directionality emoticons fullscreen help image importcss insertdatetime link lists media nonbreaking pagebreak preview quickbars save  table  visualblocks visualchars wordcount",
+                "lists advlist anchor autolink  autosave charmap code codesample directionality emoticons fullscreen help image importcss insertdatetime link lists media nonbreaking pagebreak preview quickbars save  table  visualblocks visualchars wordcount",
             toolbar:
                 "aligncenter alignjustify alignleft alignnone alignright blockquote backcolor bold italic indent copy cut fontselect fontsizeselect forecolor formatselect outdent underline superscript subscript	styleselect strikethrough  undo  anchor restoredraft charmap code codesample  emoticons fullscreen  image insertdatetime link numlist bullist media nonbreaking pagebreak preview save  table  | ltr rtl visualblocks visualchars wordcount tabledelete tableprops tablerowprops tablecellprops  tableinsertrowbefore tableinsertrowafter tabledeleterow  tableinsertcolbefore tableinsertcolafter tabledeletecol ",
 

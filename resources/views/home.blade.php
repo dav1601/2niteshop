@@ -2,13 +2,7 @@
 @section('import_js')
     <script src="{{ $file->import_js('home.js') }}"></script>
 @endsection
-@section('banner')
-    <div class="banner">
-        <a href="{{ url($banner->link) }}" class="d-block">
-            <img src="{{ $file->ver_img($banner->img) }}" alt="{{ $banner->name }}" class="w-100 lazy">
-        </a>
-    </div>
-@endsection
+
 @section('content')
     @if (getVal('background')->value != null)
         @php
@@ -47,7 +41,7 @@
             }
         </style>
     @endif
-    <div id="biad__content--home" class="container">
+    {{-- <div id="biad__content--home" class="container">
         <div class="w-100 home">
             <div class="home__left">
                 <x-client.menu.menu />
@@ -111,22 +105,22 @@
 
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        {{-- END BOTTOM BANNER --}}
-
-        {{-- --------------- --}}
-        <div id="home_content">
+    {{-- END BOTTOM BANNER --}}
+   
+    {{-- --------------- --}}
+    {{-- <div id="home_content">
             <div class="w-100 show__home">
                 @foreach ($show_home as $item)
                     <x-client.home.section :item="$item" />
                 @endforeach
             </div>
-        </div>
+        </div> --}}
     </div>
 
     {{-- start home__blogs --}}
-    <div id="home__blogs">
+    {{-- <div id="home__blogs">
         <div id="home__blogs--content" class="container">
             <a href="{{ url('tin-tuc') }}" id="home__blogs--title">
                 <img src="{{ $file->ver_img_local('client/images/bang-tin-home-banner-1280x80.jpg') }}" alt="Bảng Tin"
@@ -154,6 +148,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- end home__blogs --}}
 @endsection

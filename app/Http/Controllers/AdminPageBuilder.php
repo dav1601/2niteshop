@@ -62,7 +62,7 @@ class AdminPageBuilder extends Controller
                 $html_section .= view('components.admin.pagebuilder.column', ['section' => $section[0]]);
                 break;
             case 'preview':
-                $payload = $request->payload;
+                $payload = json_decode($request->payload, true);
                 handleStyle($payload, true);
                 $html_preview .= view("components.admin.pagebuilder.preview", ['payload' => $payload]);
                 break;
@@ -82,21 +82,19 @@ class AdminPageBuilder extends Controller
                 }
                 break;
             case 'load-page':
-                $sections = $request->payload;
+                $sections = json_decode($request->payload, true);
                 if ($sections && count($sections) > 0) {
                     foreach ($sections as  $section) {
                         $html_section .= view('components.admin.pagebuilder.section.item', ['section' => (object) $section]);
                     }
                 }
-
-
                 break;
             case 'save-db-section':
                 try {
                     $data_create['title'] = $request->title;
                     $data_create['slug'] = $request->slug;
                     $data_create['type'] = $request->typePage;
-                    $data_create['data'] = json_encode($request->payload);
+                    $data_create['data'] = $request->payload;
                     $id = $request->id;
                     PageBuilder::where('id', $id)->update($data_create);
                 } catch (\Exception $e) {
@@ -138,7 +136,7 @@ class AdminPageBuilder extends Controller
                 $class = "my-4";
                 $name = "";
                 $id = "pgb-tab-category-" . $payload['id'];
-                $selected = $request->has("value") ? $request->get("value") : 0;
+                $selected = $request->get("value");
                 $html .= view('components.admin.form.select.category', compact('class', 'name', 'id', 'selected'));
                 break;
             case 'products':
@@ -188,6 +186,8 @@ class AdminPageBuilder extends Controller
                     foreach ($items as $index => $payload) {
                         $html .= view('components.admin.pagebuilder.edit.component.tab', compact('index', 'payload'));
                     }
+                } else {
+                    $html .= "Hiện chưa có tab";
                 }
                 break;
             default:
