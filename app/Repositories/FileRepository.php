@@ -13,6 +13,7 @@ use App\Repositories\DavjCartInterface;
 use Illuminate\Support\Facades\Storage;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use PHPUnit\Framework\Constraint\FileExists;
 
 class FileRepository implements FileInterface
 {
@@ -53,8 +54,10 @@ class FileRepository implements FileInterface
                 if ($json !== null) {
                     $link = "admin" . explode("admin", $json['path'])[1];
                 }
-                $link =  config('app.url') . "/storage" . "/" . $link . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
-                return $link;
+                $path = "storage" . "/" . $link;
+                $link =  config('app.url') . "/" . $path . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
+
+                return File::exists($path) ? $link : $this->noImage();
             case 'cloudinary':
                 $data = json_decode($link);
                 $path = $link;
@@ -70,6 +73,13 @@ class FileRepository implements FileInterface
     {
         $link =  asset($link) . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
         return $link;
+    }
+    public function pathMedia($link)
+    {
+        if (!$link) {
+            return "";
+        }
+        return Storage::disk('media')->url($link);
     }
     public function main_banner()
     {
@@ -125,8 +135,9 @@ class FileRepository implements FileInterface
         }
         return "";
     }
-    public function deleteFile($path)
+    public function deleteFile($path): bool
     {
+
         if ($path) {
             switch ($this->driver) {
                 case 'local':
@@ -138,10 +149,6 @@ class FileRepository implements FileInterface
                     if (File::exists($path)) {
                         return unlink($path);
                     }
-                    break;
-                case 'cloudinary':
-                    $data = json_decode($path);
-                    return Cloudinary::destroy($data->id);
                     break;
                 default:
                     break;

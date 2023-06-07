@@ -25,8 +25,8 @@ class ModelRepo implements ModelInterface
                 $item_page = $this->item_page;
             }
             if (!$orderBy) {
-                $key = 'id';
-                $sort = 'DESC';
+                $key = "id";
+                $sort = "desc";
             } else {
                 $key = (string) $orderBy[0];
                 $sort = strtoupper((string) $orderBy[1]);

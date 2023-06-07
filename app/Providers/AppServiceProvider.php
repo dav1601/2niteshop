@@ -79,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
 
             return new \Illuminate\Filesystem\FilesystemAdapter($driver, $adapter);
         });
+
         Paginator::useTailwind();
         View::share('carbon', new Carbon());
         View::share('daviUser', $daviUser);

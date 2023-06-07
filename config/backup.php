@@ -8,7 +8,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => '',
+        'name' => "",
 
         'source' => [
 
@@ -29,7 +29,6 @@ return [
                 'exclude' => [
                     base_path('vendor'),
                     base_path('node_modules'),
-                    storage_path('backup')
                 ],
 
                 /*
@@ -86,7 +85,7 @@ return [
         ],
 
         /*
-         * The database dump can be compressed to decrease diskspace usage.
+         * The database dump can be compressed to decrease disk space usage.
          *
          * Out of the box Laravel-backup supplies
          * Spatie\DbDumper\Compressors\GzipCompressor::class.
@@ -98,18 +97,26 @@ return [
          */
         'database_dump_compressor' => null,
 
+        /*
+         * The file extension used for the database dump files.
+         *
+         * If not specified, the file extension will be .archive for MongoDB and .sql for all other databases
+         * The file extension should be specified without a leading .
+         */
+        'database_dump_file_extension' => '',
+
         'destination' => [
 
             /*
              * The filename prefix used for the backup zip file.
              */
-            'filename_prefix' => '',
+            'filename_prefix' => 'backup_vachill_local_',
 
             /*
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'backup_google'
+                'backup_google',
             ],
         ],
 
@@ -117,6 +124,21 @@ return [
          * The directory where the temporary files will be stored.
          */
         'temporary_directory' => storage_path('backup/temp'),
+
+        /*
+         * The password to be used for archive encryption.
+         * Set to `null` to disable encryption.
+         */
+        'password' => null,
+
+        /*
+         * The encryption algorithm to be used for archive encryption.
+         * You can set it to `null` or `false` to disable encryption.
+         *
+         * When set to 'default', we'll use ZipArchive::EM_AES_256 if it is
+         * available on your system.
+         */
+        'encryption' => 'default',
     ],
 
     /*
@@ -124,7 +146,7 @@ return [
      * For Slack you need to install laravel/slack-notification-channel.
      *
      * You can also use your own notification classes, just make sure the class is named after one of
-     * the `Spatie\Backup\Events` classes.
+     * the `Spatie\Backup\Notifications\Notifications` classes.
      */
     'notifications' => [
 
@@ -144,7 +166,8 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => 'allanshopgame@gmail.com',
+            'to' => 'allanshopgame@gmail.com
+            ',
 
             'from' => [
                 'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
@@ -165,6 +188,20 @@ return [
             'icon' => null,
 
         ],
+
+        'discord' => [
+            'webhook_url' => '',
+
+            /*
+             * If this is an empty string, the name field on the webhook will be used.
+             */
+            'username' => '',
+
+            /*
+             * If this is an empty string, the avatar on the webhook will be used.
+             */
+            'avatar_url' => '',
+        ],
     ],
 
     /*
@@ -174,11 +211,11 @@ return [
      */
     'monitor_backups' => [
         [
-            'name' => '',
+            'name' => env('APP_NAME', 'laravel-backup'),
             'disks' => ['backup_google'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 15000,
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
             ],
         ],
 
@@ -237,7 +274,7 @@ return [
              * After cleaning up the backups remove the oldest backup until
              * this amount of megabytes has been reached.
              */
-            'delete_oldest_backups_when_using_more_megabytes_than' => 8000,
+            'delete_oldest_backups_when_using_more_megabytes_than' => 5000,
         ],
     ],
 

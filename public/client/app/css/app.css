@@ -29547,6 +29547,181 @@ body::-webkit-scrollbar-thumb,
   padding: 5px 0px;
 }
 
+.mediabox {
+  position: relative;
+  display: block;
+  height: 0;
+  width: 100%;
+  padding-bottom: 66.6667%;
+}
+
+.mediabox-img.ls-blur-up-is-loading,
+.mediabox-img.lazyload:not([src]) {
+  visibility: hidden;
+}
+
+.ls-blur-up-img,
+.mediabox-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* only if you want to change the blur-up option from always to auto or want to use blur up effect without a lowsrc image. */
+  font-family: "blur-up: auto", "object-fit: cover";
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.ls-blur-up-img {
+  filter: blur(10px);
+  opacity: 1;
+  transition: opacity 1000ms, filter 1500ms;
+}
+
+.ls-blur-up-img.ls-inview.ls-original-loaded {
+  opacity: 0;
+  filter: blur(5px);
+}
+
+.slider-labels {
+  margin-top: 10px;
+}
+
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+.noUi-target,
+.noUi-target * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.noUi-target {
+  position: relative;
+  direction: ltr;
+}
+
+.noUi-base {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  /* Fix 401 */
+}
+
+.noUi-origin {
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.noUi-handle {
+  position: relative;
+  z-index: 1;
+}
+
+.noUi-stacking .noUi-handle {
+  /* This class is applied to the lower origin when
+  its values is > 50%. */
+  z-index: 10;
+}
+
+.noUi-state-tap .noUi-origin {
+  transition: left 0.3s, top 0.3s;
+}
+
+.noUi-state-drag * {
+  cursor: inherit !important;
+}
+
+/* Painting and performance;
+ * Browsers can paint handles in their own layer.
+ */
+.noUi-base,
+.noUi-handle {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Slider size and handle placement;
+ */
+.noUi-horizontal {
+  height: 4px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  left: -7px;
+  top: -7px;
+  background-color: #345dbb;
+}
+
+/* Styling;
+ */
+.noUi-background {
+  background: #d6d7d9;
+}
+
+.noUi-connect {
+  background: #345dbb;
+  transition: background 450ms;
+}
+
+.noUi-origin {
+  border-radius: 2px;
+}
+
+.noUi-target {
+  border-radius: 2px;
+}
+
+/* Handles and cursors;
+ */
+.noUi-draggable {
+  cursor: w-resize;
+}
+
+.noUi-vertical .noUi-draggable {
+  cursor: n-resize;
+}
+
+.noUi-handle {
+  cursor: default;
+  box-sizing: content-box !important;
+}
+
+.noUi-handle:active {
+  border: 8px solid #345dbb;
+  border: 8px solid rgba(53, 93, 187, 0.38);
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  left: -14px;
+  top: -14px;
+}
+
+/* Disabled state;
+ */
+[disabled].noUi-connect,
+[disabled] .noUi-connect {
+  background: #b8b8b8;
+}
+
+[disabled].noUi-origin,
+[disabled] .noUi-handle {
+  cursor: not-allowed;
+}
+
 @media (max-width: 1024px) {
   .mobile__header {
     display: block !important;
@@ -30338,6 +30513,264 @@ body::-webkit-scrollbar-thumb,
 }
 .a-product-gallery-action button {
   z-index: 100;
+}
+
+.bootstrap-tagsinput span {
+  white-space: unset !important;
+  word-wrap: break-word;
+}
+
+.a-media-item {
+  height: 150px;
+  width: 150px;
+  margin-bottom: 15px;
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #34495e;
+  position: relative;
+  transition: all 0.25s ease-in-out;
+}
+
+.image-checkbox {
+  overflow: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin-bottom: 0;
+  outline: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.image-checkbox img {
+  width: 100%;
+  height: 100%;
+}
+
+.image-auto {
+  width: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  height: auto !important;
+}
+
+.image-checkbox input[type=checkbox] {
+  display: none;
+}
+
+.image-checkbox-checked {
+  border: 1px solid gray;
+}
+
+.image-checkbox-checked.active {
+  border: 4px solid #4783b0;
+}
+
+.image-checkbox .fa {
+  position: absolute;
+  color: #4a79a3;
+  background-color: #fff;
+  padding: 5px;
+  top: 0;
+  right: 0;
+}
+
+.image-checkbox.active .fa {
+  background-color: #4a79a3 !important;
+  color: #fff !important;
+}
+
+.image-checkbox-checked .fa {
+  display: block !important;
+}
+
+.img-responsive {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 50% 50%;
+     object-position: 50% 50%;
+}
+
+#a-media-layout {
+  position: relative;
+}
+#a-media-layout-l #a-media-media-l {
+  padding-top: 20px;
+  height: 75vh;
+  border-right: 1px solid gray;
+}
+#a-media-layout-l #a-media-media-l #a-media {
+  height: calc(100% - 85px);
+  overflow-y: auto;
+}
+#a-media-layout-l #a-media-media-r {
+  height: 75vh;
+  overflow-y: auto;
+  padding: 10px;
+}
+#a-media-layout-l #a-media-media-r .attach-detail {
+  padding-bottom: 15px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid gray;
+}
+#a-media-layout-l #a-media-media-r .attach-detail-img {
+  width: 150px;
+}
+#a-media-layout-l #a-media-media-r .attach-detail-content strong {
+  margin: 10px 0;
+}
+#a-media-layout-l #a-media-media-r .attach-detail-content span {
+  display: block;
+  margin-bottom: 5px;
+  color: gray;
+}
+#a-media-layout-l #a-media-media-r .attach-detail-actions {
+  margin-top: 10px;
+}
+#a-media-layout-l .nav-tabs {
+  border-bottom: 1px solid var(--secondary);
+}
+#a-media-layout-l .nav-tabs .nav-item button {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.upload-files-container {
+  height: 75vh;
+  padding: 30px 60px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 10px 20px, rgba(0, 0, 0, 0.28) 0px 6px 6px;
+}
+
+.drag-file-area {
+  border: 2px dashed grey;
+  border-radius: 40px;
+  margin: 10px 0 15px;
+  padding: 30px 50px;
+  width: 350px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+}
+.drag-file-area:hover {
+  border-color: #7b2cbf;
+}
+
+.drag-file-area .upload-icon {
+  font-size: 50px;
+}
+
+.drag-file-area h3 {
+  font-size: 26px;
+  margin: 15px 0;
+}
+
+.drag-file-area .text-or {
+  font-size: 19px;
+}
+
+.drag-file-area .text-or .browse-text {
+  color: #7b2cbf;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.browse-files span {
+  position: relative;
+  top: -25px;
+}
+
+.default-file-input {
+  opacity: 0;
+}
+
+.cannot-upload-message {
+  background-color: #ffc6c4;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  padding: 5px 10px 5px 30px;
+  border-radius: 5px;
+  color: #bb0000;
+  display: none;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.cannot-upload-message span,
+.upload-button-icon {
+  padding-right: 10px;
+}
+
+.cannot-upload-message span:last-child {
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.file-block {
+  color: #f7fff7;
+  background-color: #7b2cbf;
+  transition: all 1s;
+  width: 390px;
+  position: relative;
+  display: none;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 15px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.file-icon {
+  margin-right: 10px;
+}
+
+#modal-popup-image::before {
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: -1;
 }
 
 html {

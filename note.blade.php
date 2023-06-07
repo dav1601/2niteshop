@@ -94,3 +94,7 @@ setting column
 làm package video slide + build home build banners category + connection 2 cái đó + làm api (làm nốt phần tabs(remove)
 với render gallery video)
 {{-- =================== --}}
+design upload
+tạo 1 table media và vào mục study xem video
+Model -> Collection
+->

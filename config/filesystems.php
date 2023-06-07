@@ -77,7 +77,16 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
-
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path('media'),
+            'url'    => env('APP_URL') . '/media',
+        ],
+        'a_media' => [
+            'driver' => 'local',
+            'root'   => public_path('a/media'),
+            'url'    => env('APP_URL') . '/a/media',
+        ],
     ],
 
     /*

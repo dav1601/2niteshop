@@ -13,4 +13,5 @@ interface FileInterface
     public function storeFileImg($file, $path);
     public function deleteFile($path);
     public function noImage();
+    public function pathMedia($path);
 }

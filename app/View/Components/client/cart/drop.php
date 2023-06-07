@@ -13,12 +13,10 @@ class drop extends Component
      * @return void
      */
     public $cart;
-    public function __construct($cart = null)
+    public function __construct($cart = [])
     {
-        if ($cart !== null) {
+        if (!$cart) {
             $cart =  Cart::instance('shopping')->content()->sortBy('id');
-        } else {
-            $cart = [];
         }
         $this->cart = $cart;
     }

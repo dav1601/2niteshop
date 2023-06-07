@@ -14,19 +14,29 @@
     <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
     <title>@yield('title', 'Dashboard')</title>
     <link rel="stylesheet" href="{{ asset('plugin/reset.css') }}">
+    {{-- reset --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css"
+        integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {{-- bootstrap --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ asset('plugin/bootstrap/css/bootstrap.min.css') }}">
+    {{-- font --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
         integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {{-- jq ui --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {{-- animate --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {{-- toastr --}}
     @php
         file_put_contents(public_path('pgb/pgb.css'), '');
     @endphp
@@ -42,53 +52,65 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
         integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     @yield('import_css')
     <link rel="stylesheet" href="{{ $file->ver('admin/app/css/app.css') }}">
     <x-app.plugin.debug />
     @routes
     <script type="text/javascript">
         const user = {!! json_encode(Auth::user()) !!};
-    </script>
-    <script type="text/javascript">
         const path_ab = {!! json_encode(env('PATH_TINYMCE')) !!};
     </script>
-
-    <script src="{{ asset('plugin/bootstrap/js/jquery-3.5.1.min.js') }}"></script>
-    <script src="{{ asset('plugin/bootstrap/js/popper.min.js') }}"></script>
-    <script src="{{ asset('plugin/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
-        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- ------------- --}}
+    <x-include.bootstrap />
+    {{-- bootstrap --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
         integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{ $file->ver('app/common.js') }}"></script>
-    <script src="{{ $file->ver('admin/app/js/config.js') }}"></script>
+    {{-- lazysize --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+        integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- form --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
         integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- moment --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
         integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- loadash --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- toastr --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+    {{-- sweetalert 2 --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"
         integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- underscorre --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.min.js"></script>
     <script src="{{ $file->ver('js/laravel-server/laravel-echo-server.js') }}"></script>
+    {{-- server --}}
     <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}"></script>
+    {{-- tags --}}
     <script src="https://cdn.tiny.cloud/1/bho6ckhdsdjmv2bmyaxmm2dn52w16ounvk9au2ys2oqo8gty/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
-    <script src="{{ $file->ver('admin/app/js/tinymce.js') }}"></script>
-    <script src="{{ $file->ver('admin/app/js/relationship.js') }}"></script>
-    <script src="{{ $file->ver('plugin/color-picker/color.min.js') }}"></script>
+    {{-- tinymce --}}
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    {{-- swiper slide --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
         integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- datetime picker --}}
+    {{-- ---- end plugin --}}
+    <script src="{{ $file->ver('app/common.js') }}"></script>
+    <script src="{{ $file->ver('admin/app/js/config.js') }}"></script>
+    <script src="{{ $file->ver('admin/app/js/tinymce.js') }}"></script>
+    <script src="{{ $file->ver('admin/app/js/relationship.js') }}"></script>
+    <script src="{{ $file->ver('plugin/color-picker/color.min.js') }}"></script>
+    <script src="{{ $file->ver('admin/app/js/a_media.js') }}"></script>
     @yield('import_js')
     <script src="{{ $file->ver('admin/app/js/app.js') }}"></script>
 
@@ -119,7 +141,6 @@
                     <div class="sidebar__head--logo d-flex align-items-center">
                         <img src="https://res.cloudinary.com/vanh-tech/image/upload/v1681081513/my_logo_dark_tfzcgj.png"
                             width="250" height="150" alt="">
-
                     </div>
                     <div class="sidebar__head--info d-flex align-items-center justify-content-center my-2">
                         @if (Auth::user()->avatar != null)
@@ -130,7 +151,7 @@
                         @endif
                         <div class="text">
                             <span class="d-block">{{ Auth::user()->name }}</span>
-                            {{-- <span>{{ App\Models\Role::where('id', '=', Auth::user()->role_id)->first()->name }}</span> --}}
+
                         </div>
                     </div>
                 </div>
@@ -476,7 +497,7 @@
                                     class="module_drop {{ $module == 'banner' ? 'show' : '' }} collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
-                                        <li class="item">
+                                        {{-- <li class="item">
                                             <a href="{{ route('banner_view_add') }}"
                                                 class="{{ $route == 'banner_view_add' ? 'route_active' : '' }} {{ $route == 'banner_view_edit' ? 'route_active' : '' }}">
                                                 <i class="fas fa-long-arrow-alt-right"></i>
@@ -496,7 +517,7 @@
                                                 <i class="fas fa-long-arrow-alt-right"></i>
                                                 <span>Quản Lý ADS</span>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </li>
@@ -554,8 +575,8 @@
                                 <img src="{{ asset(Auth::user()->avatar) }}" width="60" height="60"
                                     alt="">
                             @else
-                                <img src="{{ asset('client/images/user-large.png') }}" width="60"
-                                    height="60" alt="">
+                                <img src="{{ asset('client/images/user-large.png') }}" width="60" height="60"
+                                    alt="">
                             @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-right drop-content" aria-labelledby="avatar__drop">

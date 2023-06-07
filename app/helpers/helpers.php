@@ -7,35 +7,12 @@ use App\Models\Products;
 use App\Models\Insurance;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Exists;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
-function isPreOrder($date_sold)
-{
-    return strtotime($date_sold) >= strtotime(Carbon::now());
-}
-function statusProduct($date_sold, $qty)
-{
-    $status = $qty <= 0 ? 2 : 1;
-    return isPreOrder($date_sold) ? 3 : $status;
-}
 
-function price_product($product,  $ops = "", $options = ['qty' => 1])
-{
-    $qty = (int) $options['qty'];
-    $price = (int) ($product->price - $product->discount);
-    $arrIns = explode(",", $ops);
 
-    if (count($arrIns) > 0) {
-        foreach ($arrIns as  $ins_id) {
-            $item = Insurance::where('id', $ins_id)->first();
-            if ($item) {
-                $price += (int) $item->price;
-            }
-        }
-    }
-    return (int)$price * $qty;
-}
 function badges($array, $key = null, $type = "primary")
 {
     $html = "";
@@ -50,7 +27,23 @@ function badges($array, $key = null, $type = "primary")
     }
     return $html;
 }
-
+function getSizeMedia($path)
+{
+    $imageData = Storage::disk("media")->get($path);
+    $width = Image::make($imageData)->width(); // getting the image width
+    $height = Image::make($imageData)->height(); // getting the image height
+    return [
+        'width' => $width,
+        'height' => $height,
+    ];
+}
+function a_explode($s, $str)
+{
+    if (strlen($str)) {
+        return explode($s, $str);
+    }
+    return [];
+}
 function renderROP($r_o_p = [])
 {
     $html = "";
@@ -114,9 +107,9 @@ function array_search_key($needle_key, $array)
 }
 function get_crawler($key = null)
 {
-    $crawler = session()->has('crawler') ? session()->get('crawler') : [];
 
-    if (count($crawler) <= 0) {
+    $crawler =  session()->get('resCrawl');
+    if (!$crawler) {
         return "";
     }
     return array_search_key($key, $crawler);
@@ -127,66 +120,7 @@ function is_product_new($created_at)
     $date2 = Carbon::now()->subDays(7);
     return $date1->gt($date2);
 }
-function getRelationship($rela = "")
-{
-    $relationship = config('Relationship.' . $rela);
-    return $relationship;
-}
-function handle_rela($request, $rela, $relaId = 0, $resever = false, $isEdit = false)
-{
-    $arrela = explode('-', $rela);
-    if ($resever) {
-        $arrela = array_reverse($arrela);
-    }
-    $key = $arrela[1];
-    $name = $arrela[0];
-    $qK = $key . "_id";
-    $qN = $name . "_id";
-    $rK = "rela__" . $key;
-    $model = '\\App\Models\\';
-    $relationship = getRelationship($rela);
-    if (!$relationship) {
-        return;
-    }
-    $model .= $relationship['modelRela'];
-    if (!$request->has($rK)) {
-        return;
-    }
-    if ($request->get($rK)) {
-        $selected = explode(",", $request->get($rK));
-        try {
-            if (count($selected) > 0) {
-                foreach ($selected as $id) {
-                    if ($isEdit) {
-                        $model::whereNotIn($qK,  $selected)->where($qN, $relaId)->delete();
-                        $has = $model::where($qK,  $id)->where($qN, $relaId)->first();
-                        if (!$has) {
-                            $model::create([
-                                $qK => $id,
-                                $qN => $relaId
-                            ]);
-                        }
-                    } else {
-                        $model::create([
-                            $qK => $id,
-                            $qN => $relaId
-                        ]);
-                    }
-                }
-                unset($id);
-            }
-            return true;
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-    } else {
-        if ($isEdit) {
-            $model::where($qN, $relaId)->delete();
-        }
-    }
 
-    return;
-}
 if (!function_exists('va_get_meta')) {
     function va_get_meta($url)
     {
@@ -210,7 +144,6 @@ if (!function_exists('va_get_meta')) {
         $data['title'] = $nodes->item(0)->nodeValue;
         // Parse DOM to get meta data
         $metas = $dom->getElementsByTagName('meta');
-
         $data['desc'] = $data['kws'] = $data['ogimg'] = '';
         for ($i = 0; $i < $metas->length; $i++) {
             $meta = $metas->item($i);
@@ -285,47 +218,7 @@ if (!function_exists('timeDiff')) {
         return $timeString;
     }
 }
-if (!function_exists('navi_ajax_page')) {
-    function navi_ajax_page($number_pages, $page, $size = "", $position = "justify-content-center", $mt = "mt-4", $class = "")
-    {
-        $output = '';
-        $output .= " <nav aria-label='Page navigation example' class='$mt  mr-3'>";
-        $output .= "  <ul class='pagination  $position   $size '>";
-        if ($page > 1) {
-            $page_prev = $page - 1;
-            $output .= " <li class='page-item'>
-            <a class='page-link' data-page='" . $page_prev . "'><i class='fas fa-chevron-left'></i></a>
-        </li>";
-        }
-        if ($page > 3) {
-            $output .= " <li class='page-item '><a class='page-link' data-page='1'>1</a></li>";
-            $output .= " <li class='page-item '><a class='page-link' >...</a></li>";
-        }
-        for ($i = 1; $i <= $number_pages; $i++) {
-            if ($i < $page + 2 && $i > $page - 2) {
-                if ($i == $page) {
-                    $output .= "<li class='page-item active'><a class='page-link' data-page='" . $i . "'>" . $i . "</a></li>";
-                } else {
-                    $output .= " <li class='page-item '><a class='page-link' data-page='" . $i . "'>" . $i . "</a></li>";
-                }
-            }
-            unset($active);
-        }
-        if ($page < $number_pages - 2) {
-            $output .= " <li class='page-item'><a class='page-link' data-page='" . $number_pages . "' >...</a></li>";
-            $output .= " <li class='page-item'><a class='page-link' data-page='" . $number_pages . "'> " . $number_pages . "</a></li>";
-        }
-        if ($page <  $number_pages) {
-            $p_next = $page + 1;
-            $output .= "<li class='page-item'>
-            <a class='page-link' data-page='" . $p_next . "'><i class='fas fa-chevron-right'></i></a>
-        </li>";
-        }
-        $output .= "</ul>";
-        $output .= " </nav>";
-        return $output;
-    }
-}
+
 
 function new_stt($stt)
 {
@@ -338,14 +231,18 @@ function new_stt($stt)
 }
 function stock_stt($stt)
 {
-    if ($stt == 1) {
-        $output = "Còn hàng";
-    } elseif ($stt == 2) {
-        $output = "Sắp có hàng";
-    } elseif ($stt == 3) {
-        $output = "Tạm hết hàng";
+    switch ($stt) {
+        case 2:
+            $status = "Tạm hết hàng";
+            break;
+        case 3:
+            $status = "Hàng đang về";
+            break;
+        default:
+            $status = "Còn hàng";
+            break;
     }
-    return $output;
+    return $status;
 }
 function highlight_stt($stt)
 {
@@ -398,7 +295,6 @@ function total()
     }
     return $total;
 }
-
 function empty_cart()
 {
     if (Cart::instance('shopping')->count() > 0) {

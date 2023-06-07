@@ -4,20 +4,27 @@
     var nameRoute = {{ Js::from($name) }};
     var cookie_view = {{ Js::from(Cookie::has('view') ? Cookie::get('view') : 'grid') }};
 </script>
-<script src="{{ $file->ver('plugin/bootstrap/js/jquery-3.5.1.min.js') }}"></script>
-<script src="{{ $file->ver('plugin/bootstrap/js/popper.min.js') }}"></script>
-<script src="{{ $file->ver('plugin/bootstrap/js/bootstrap.min.js') }}"></script>
-{{-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"> --}}
-{{-- </script> --}}
+
+<x-include.bootstrap />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/object-fit/ls.object-fit.min.js"
+    integrity="sha512-uq8vhRSzhuN8xiniPi20LTGnDZs2UumLLjBHgwfAZnDtS4C/tNCqvr/ZZ4mzkt7BIKe1HB/O1o4zfiu5GX1S9g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/parent-fit/ls.parent-fit.min.js"
+    integrity="sha512-1oXBldvRhlG5dHYmpmBFccqjN+ncdNSs6uwLtxiOufvBQy4Or63PsXibQSuokBUcY8SN7eQ3uJ4SqPM+E4xcFQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/blur-up/ls.blur-up.min.js"
+    integrity="sha512-m2OFel/sfChYJK3Vokl0nOGYUko9mfJdUR4oHNQAI7Vz7T3vpfIvw3wDK6j5rxOpoKkLetgGwWTjbEoiSnriWA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
     integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 @routes
 <script src="{{ $file->ver('app/common.js') }}"></script>
 <script src="{{ $file->import_js('helper.js') }}"></script>
 <script src="{{ $file->import_js('global.js') }}"></script>
-<script src="{{ $file->import_js('app.js') }}"></script>
+
 
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"
     integrity="sha512-XdUZ5nrNkVySQBnnM5vzDqHai823Spoq1W3pJoQwomQja+o4Nw0Ew1ppxo5bhF2vMug6sfibhKWcNJsG8Vj9tg=="
@@ -38,3 +45,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.min.js"></script>
 <script src="{{ $file->ver('js/laravel-server/laravel-echo-server.js') }}"></script>
 @yield('import_js')
+<script src="{{ $file->import_js('app.js') }}"></script>

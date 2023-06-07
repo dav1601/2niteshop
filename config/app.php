@@ -60,6 +60,9 @@ return [
     'asset_url' => env('ASSET_URL', null),
     'no_image' => "https://res.cloudinary.com/vanh-tech/image/upload/v1684567283/logo/blank-image_tgsc4d.svg",
     'image_products' => "admin/images/cache/catalog/products",
+    'catalog' => "admin/images/cache/catalog/",
+    'allow_mimes' => "image/png, image/jpeg, image/svg, image/tiff, image/jpg, image/webp",
+    'allow_ext' => "png,jpeg,svg,tiff,jpg,webp",
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

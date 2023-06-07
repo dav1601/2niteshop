@@ -114,7 +114,7 @@ $(function () {
         riD = relaId,
         rName = relaName,
         act = "load",
-        _page = 1,
+        _page = page,
         _option = {},
         callback,
         _selected = selected
@@ -211,8 +211,7 @@ $(function () {
         $("#view__content__block").modal("show");
     });
     $(document).on("click", "#select__prd--page .page-link", function (e) {
-        e.preventDefault();
-        const page = $(this).attr("data-page");
+        const currentPage = $(this).attr("data-page");
         $.handle_model_rela(
             model,
             relaModel,
@@ -220,7 +219,10 @@ $(function () {
             relaId,
             relaName,
             "page",
-            page
+            currentPage,
+            {},
+            loading__select($(this), false),
+            selected
         );
     });
     function loading__select(el, load) {
@@ -289,19 +291,6 @@ $(function () {
         }
         resetParams();
         $("#modal__select").modal("hide");
-        // if (relaId == 0) {
-        //     saveInitAdd();
-        // } else {
-        //     handle_model_rela(
-        //         model,
-        //         relaModel,
-        //         relaKey,
-        //         relaId,
-        //         relaName,
-        //         "save",
-        //         page
-        //     );
-        // }
     });
     $(document).on("click", ".select__prd--check", function () {
         let id = $(this).val();

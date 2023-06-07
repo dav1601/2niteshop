@@ -56,30 +56,24 @@ $(function () {
     };
     initPlugin();
     $.page_loading(false);
-    $(document).ajaxSuccess(function () {
+    $(document).ajaxSuccess(function (event, request, settings, res) {
+        if (res.hasOwnProperty("message")) {
+            if (res.message) {
+                toastr.success(res.message);
+            }
+        }
         initPlugin();
         initGalleryVideo();
     });
-    $(".date-picker").datetimepicker({
-        minDate: true,
-        timepicker: false,
-        datepicker: true,
-        format: "Y-m-d H:i:s",
-        formatTime: "H:i:s",
-        formatDate: "Y-m-d",
-        defaultTime: "00:00:00",
-    });
-    $(document).on("change", ".date-picker", function () {
-        if (!$(this).is("input")) {
-            let value = $(this).attr("value");
-            let target = $(this).attr("data-target");
-
-            if (value && target) {
-                $(target).val(value);
+    // //////////////////////////////////
+    $(document).ajaxError((e, x, settings, exception) => {
+        if (x.responseJSON) {
+            if (x.responseJSON.hasOwnProperty("message")) {
+                return toastr.error(x.responseJSON.message, "Ajax Error", {
+                    timeOut: 10000,
+                });
             }
         }
-    });
-    $(document).ajaxError(function (e, x, settings, exception) {
         let message;
         let statusErrorMap = {
             400: "Server understood the request, but request content was invalid.",
@@ -88,6 +82,7 @@ $(function () {
             500: "Internal server error.",
             503: "Service unavailable.",
         };
+
         if (x.status) {
             message = statusErrorMap[x.status];
             if (!message) {
@@ -103,11 +98,27 @@ $(function () {
             message = "Unknown Error \n.";
         }
         toastr.error(message, "Ajax Error", { timeOut: 10000 });
-        let elLoading = $('[is-loading="true"]');
-        $.each(elLoading, function (i, el) {
-            $.btn_loading_v2($(el), false);
-        });
     });
+    // //////////////////////////////////////////////////////////////////
+    $(".date-picker").datetimepicker({
+        minDate: true,
+        timepicker: false,
+        datepicker: true,
+        format: "Y-m-d H:i:s",
+        formatTime: "H:i:s",
+        formatDate: "Y-m-d",
+        defaultTime: "00:00:00",
+    });
+    $(document).on("change", ".date-picker", function () {
+        if (!$(this).is("input")) {
+            const value = $(this).attr("value");
+            const target = $(this).attr("data-target");
+            if (value && target) {
+                $(target).attr("value", value);
+            }
+        }
+    });
+
     function initPlugin() {
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-role="tagsinput"]').tagsinput("items");

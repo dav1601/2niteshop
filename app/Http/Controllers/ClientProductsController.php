@@ -4,25 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\gllCat;
 use App\Models\Policy;
+use App\Models\CatGame;
 use App\Models\Category;
 use App\Models\Products;
 use App\Models\Insurance;
 use GuzzleHttp\Middleware;
 use App\Models\gllProducts;
+use App\Models\PrdRelaBlog;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\RelatedPosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\bundled_skin_cat;
-use App\Models\CatGame;
-use App\Models\PrdRelaBlog;
 use App\Models\ProductCategories;
-use App\Repositories\AdminPrdInterface;
-use App\Repositories\ModelInterface;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\ModelInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Repositories\AdminPrdInterface;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Validator;
 
 class ClientProductsController extends Controller
@@ -31,11 +32,14 @@ class ClientProductsController extends Controller
 
     public function index($slug, Request $request, ModelInterface $vam)
     {
+      
         if (!$request->has('isAjax')) {
             $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('category/'), '', url()->current())));
             $slug = collect($bc)->last();
         }
+
         $category =  Category::where('slug', 'LIKE', $slug)->firstOrFail();
+        $is_game = (bool) $category->is_game;
         $view = $request->cookie('view');
         $page = $request->has('page') ? $request->page : 1;
         $list_banner = gllCat::where('cate_id', '=', $category->id)->get();
@@ -74,38 +78,27 @@ class ClientProductsController extends Controller
         $products = $vam->pagination($products, $orderBy, $page, 16, null);
         if ($request->has('isAjax')) {
             $data = array();
-            $pagination = 0;
-            $output = '';
-            $output_2 = '';
-            if ($category->is_game == 1) {
-                $col = "col-lg-3 col-md-4 col-12 col-sm-6";
-            } else {
-                $col = "col-lg-3 col-md-4 col-12 col-sm-6";
-            }
+            $pagination = "";
+            $grid = '';
+            $list = '';
             if ($products->count > 0) {
                 foreach ($products->data as $product) {
-                    $type = 1;
-                    $class = "prdcat";
-                    $class = "prdcat";
-                    $output .= '<div class="' . $col . ' item w-100">';
-                    $output .= view('components.product.itemgrid', ['message' => $product, 'type' => $type, 'class' => $class]);
-                    $output .= '</div>';
-                    $output_2 .= ' <div class="item w-100">';
-                    $output_2 .= view('components.listitem', ['message' => $product]);
-                    $output_2 .= '</div>';
-                }
-                if ($products->number_page > 1) {
-                    $pagination = navi_ajax_page($products->number_page, $products->page,  "pagination-sm", "justify-content-center", "mt-4");
+                    $grid .= view('components.product.itemgrid', [
+                        'class' => "prdcat", "classWp" => "col-lg-3 col-md-4 col-12 col-sm-6 item",
+                        "message" => $product
+                    ]);
+                    $list .= view('components.listitem', ['classWp' => "item w-100", 'message' => $product]);
                 }
             }
+            $pagination .= view('components.pagination', ['number_page' => $products->number_page, 'page' => $products->page, 'classWp' => "pagination-sm justify-content-center mt-4"]);
 
-            $data['html'] = $output;
-            $data['html_2'] = $output_2;
-            $data['page'] = $pagination;
+            $data['grid'] = $grid;
+            $data['list'] = $list;
+            $data['pagination'] = $pagination;
             $data['view'] = $view;
             return response()->json($data);
         }
-        return view('client.product.index', compact('products',  'category', 'view', 'id', 'sort', 'ord', 'genres', 'list_banner', 'bc', 'genre'));
+        return view('client.product.index', compact('products',  'category', 'view', 'id', 'sort', 'ord', 'genres', 'list_banner', 'bc', 'genre', 'is_game'));
     }
     //////////////////////////////////////
 

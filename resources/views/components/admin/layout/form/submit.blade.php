@@ -1,6 +1,8 @@
-@props(['act' => 'Create', 'classAct', 'class'])
+@props(['act' => 'Create', 'classAct' => '', 'class' => '', 'id' => ''])
 <div class="form-group {{ $class ?? '' }}">
-    <input type="submit" value="{{ $act }}" class="btn btn-primary {{ $classAct ?? '' }}">
+    <button type="submit" id="{{ $id }}" class="btn btn-primary {{ $classAct ?? '' }}">
+        {{ $act }}
+    </button>
     @isset($btn)
         {{ $btn }}
     @endisset

@@ -152,6 +152,7 @@ class AdminCategoryController extends Controller
     {
         $res['errors'] = [];
         $res['s'] = true;
+        $res['update_categories'] = false;
         $validator = Validator::make(
             $request->all(),
             [
@@ -191,6 +192,7 @@ class AdminCategoryController extends Controller
             $category = Category::where('id', $request->id)->firstOrFail();
             $data['name'] = $request->name;
             $data['title'] = $request->title;
+            $data['parent_id'] = $request->parent;
             $data['active'] = $request->has("active-category") ? true : false;
             if ($request->slug == null) {
                 $data['slug'] = Str::slug($request->name);
@@ -214,12 +216,20 @@ class AdminCategoryController extends Controller
                 }
             }
             $updated =  Category::where('id', $request->id)->update($data);
+            if ($category->parent_id != $request->parent) {
+                $html_2 = "";
+                $html_2 .= '<ul class="admin-cate admin-cate-connect row no-gutters lv-0" id="admin-cate-0"
+                data-lv="0">';
+                $html_2 .= view('components.admin.category.dd.item', ['categories' => Category::tree()]);
+                $html_2 .= "</div>";
+                $res['categories_html'] = $html_2;
+                $res['update_categories'] = true;
+            }
             $res['name'] = $request->name;
             if (!$updated) {
                 $res['s'] = false;
             }
         }
-        $res['all'] = $request->all();
         return response()->json($res);
     }
 

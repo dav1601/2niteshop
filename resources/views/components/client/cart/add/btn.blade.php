@@ -20,7 +20,6 @@
                     data-field="qty[{{ $product->id }}]"><i class="fas fa-minus"></i></a>
             </div>
         </div>
-
         <a class="btn-cart col-11 p-0" data-id="{{ $product->id }}" id="{{ 'btn-add-cart-' . $product->id }}">
             <div class="btn-cart-add">
                 <i class="fas fa-shopping-bag"></i>

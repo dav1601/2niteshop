@@ -4,7 +4,7 @@
 
 ?>
 <div class="row w-100 cart-handler <?php echo e('cart-handler-' . $product->id); ?> mx-0">
-    <?php if($product->stock == 1 && $product->price != 0): ?>
+    <?php if($product->status === 1): ?>
         <div class="qty col-1 d-flex w-100 p-0">
             <input type="text" name="qty[<?php echo e($product->id); ?>]" data-id="<?php echo e($product->id); ?>" value="<?php echo e($qty); ?>"
                 id="<?php echo e('qty-product-' . $product->id); ?>" min="1" max="100" class="w-100 input-number">
@@ -20,7 +20,6 @@
                     data-field="qty[<?php echo e($product->id); ?>]"><i class="fas fa-minus"></i></a>
             </div>
         </div>
-
         <a class="btn-cart col-11 p-0" data-id="<?php echo e($product->id); ?>" id="<?php echo e('btn-add-cart-' . $product->id); ?>">
             <div class="btn-cart-add">
                 <i class="fas fa-shopping-bag"></i>
@@ -32,7 +31,7 @@
     <?php else: ?>
         <a class="col-12 btn-preOrder" data-id="<?php echo e($product->id); ?>" id="preOrder">
             <i class="fas fa-shopping-bag"></i>
-            <span>Đặt Hàng Ngay</span>
+            <span class="text-uppercase">đặt mua - preorder</span>
         </a>
     <?php endif; ?>
 </div>

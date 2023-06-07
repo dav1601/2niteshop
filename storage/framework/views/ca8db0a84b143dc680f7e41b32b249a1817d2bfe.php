@@ -16,9 +16,29 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
+    <?php if (isset($component)) { $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966 = $component; } ?>
+<?php $component = App\View\Components\Pagination::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('pagination'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Pagination::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['number_page' => 4,'page' => '2','classWp' => 'justify-content-center mt-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966)): ?>
+<?php $component = $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966; ?>
+<?php unset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966); ?>
+<?php endif; ?>
     <div id="product__edit">
         
-        <?php echo Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]); ?>
+        <?php echo Form::open([
+            'url' => route('product_handle_edit', ['id' => $id]),
+            'method' => 'POST',
+            'files' => true,
+            'id' => 'formProducts',
+        ]); ?>
 
         <div class="w-100 row no-gutters">
             <div class="col-8 row no-gutters pr-4">
@@ -195,7 +215,6 @@
 
                         </div>
                         <div class="form-group col-6">
-
                             <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.input.text'); ?>
@@ -204,7 +223,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'số lượng','required' => 'true','type' => 'number','min' => '1','name' => 'quantity','id' => 'quantity','value' => ''.e($product->qty).'']); ?>
+<?php $component->withAttributes(['label' => 'số lượng','type' => 'number','name' => 'qty','id' => 'qty','value' => ''.e($product->qty).'']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
@@ -354,14 +373,14 @@
                             <div class="w-100 col-6 mb-3">
                                 
                                 <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => '','classClear' => 'single-image-product','classInput' => 'single-input-product','name' => 'main_img','id' => 'imgProductMain','label' => 'Hình ảnh chính','image' => $file->ver_img($product->main_img),'required' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => 'single-image-product-upload','classClear' => 'single-image-product-delete d-none','classInput' => 'single-image-product-input','name' => 'main_img','id' => 'imgProductMain','label' => 'Hình ảnh chính','image' => $file->ver_img($product->main_img),'required' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.ui.form.image'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => '','classClear' => 'single-image-product','classInput' => 'single-input-product','name' => 'main_img','id' => 'imgProductMain','label' => 'Hình ảnh chính','image' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($file->ver_img($product->main_img)),'required' => true]); ?>
+<?php $component->withAttributes(['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => 'single-image-product-upload','classClear' => 'single-image-product-delete d-none','classInput' => 'single-image-product-input','name' => 'main_img','id' => 'imgProductMain','label' => 'Hình ảnh chính','image' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($file->ver_img($product->main_img)),'required' => true]); ?>
                                      <?php $__env->slot('btn_clear', null, ['data-type' => 'img_main']); ?>  <?php $__env->endSlot(); ?>
                                      <?php $__env->slot('btn_upload', null, ['data-type' => 'img_main']); ?>  <?php $__env->endSlot(); ?>
                                      <?php $__env->slot('input', null, ['data-type' => 'img_main']); ?>  <?php $__env->endSlot(); ?>
@@ -373,16 +392,15 @@
 <?php endif; ?>
                             </div>
                             <div class="w-100 col-6 mb-3">
-                                
                                 <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => 'single-image-product-upload','classClear' => 'single-image-product-upload-delete','classInput' => 'single-image-product-input','name' => 'sub_img','id' => 'imgProductSub','label' => 'Hình ảnh phụ','image' => $file->ver_img($product->sub_img)]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => 'single-image-product-upload','classClear' => 'single-image-product-delete','classInput' => 'single-image-product-input','name' => 'sub_img','id' => 'imgProductSub','label' => 'Hình ảnh phụ','image' => $file->ver_img($product->sub_img)]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.ui.form.image'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => 'single-image-product-upload','classClear' => 'single-image-product-upload-delete','classInput' => 'single-image-product-input','name' => 'sub_img','id' => 'imgProductSub','label' => 'Hình ảnh phụ','image' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($file->ver_img($product->sub_img))]); ?>
+<?php $component->withAttributes(['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => 'single-image-product-upload','classClear' => 'single-image-product-delete','classInput' => 'single-image-product-input','name' => 'sub_img','id' => 'imgProductSub','label' => 'Hình ảnh phụ','image' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($file->ver_img($product->sub_img))]); ?>
                                      <?php $__env->slot('btn_clear', null, ['data-type' => 'img_sub']); ?>  <?php $__env->endSlot(); ?>
                                      <?php $__env->slot('btn_upload', null, ['data-type' => 'img_sub']); ?>  <?php $__env->endSlot(); ?>
                                      <?php $__env->slot('input', null, ['data-type' => 'img_sub']); ?>  <?php $__env->endSlot(); ?>
@@ -394,7 +412,7 @@
 <?php endif; ?>
                             </div>
                             <div class="w-100 col-6">
-                                
+
                                 <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','blockEventDef' => 'true','height' => '305px','classUpload' => '','classClear' => 'single-image-product','classInput' => 'single-input-product','name' => 'bg','id' => 'imgProductBg','label' => 'Hình ảnh nền sản phẩm','image' => $file->ver_img($product->bg)]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.ui.form.image'); ?>
@@ -612,7 +630,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Submit::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
+<?php $component->withAttributes(['act' => 'Update','id' => 'submit-product']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginald7fc8f80a6c60591340d5a5c1c4ec20d3dbfdcd7)): ?>
@@ -627,7 +645,7 @@
                 <div class="row w-100 no-gutters">
                     <div class="col-12 mb-4">
                         <?php if (isset($component)) { $__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Product\Categories::resolve(['show' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = App\View\Components\Admin\Product\Categories::resolve(['selected' => $product_categories,'show' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.product.categories'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -666,7 +684,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'Ngày mở bán','id' => 'date_sold','value' => ''.e($product->date_sold).'','name' => 'date_sold','required' => 'true','disabled' => true]); ?>
+<?php $component->withAttributes(['label' => 'Ngày mở bán','id' => 'date_sold','value' => ''.e($product->date_sold).'','name' => 'date_sold','required' => 'true']); ?>
                                          <?php $__env->slot('append', null, []); ?> 
                                             <button type="button" class="btn btn-primary date-picker"
                                                 data-target="#date_sold">
@@ -698,7 +716,8 @@
 <?php endif; ?>
                                     <select class="custom-select" name="usage_stt">
                                         <?php $__currentLoopData = Config::get('product.usage_stt', '1'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $us): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($us); ?>"><?php echo e(usage_stt($us)); ?></option>
+                                            <option <?php if($us === $product->usage_stt): echo 'selected'; endif; ?> value="<?php echo e($us); ?>">
+                                                <?php echo e(usage_stt($us)); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
@@ -720,7 +739,8 @@
 <?php endif; ?>
                                     <select class="custom-select" name="highlight">
                                         <?php $__currentLoopData = Config::get('product.highlight', '1'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($hl); ?>"><?php echo e(highlight_stt($hl)); ?></option>
+                                            <option <?php if($hl === $product->highlight): echo 'selected'; endif; ?> value="<?php echo e($hl); ?>">
+                                                <?php echo e(highlight_stt($hl)); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
@@ -743,9 +763,10 @@
 <?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
 <?php endif; ?>
                                     <select class="custom-select" name="cat_game" id="">
-                                        <option value="0">Select Category Game</option>
+                                        <option value="0">No Category Game</option>
                                         <?php $__currentLoopData = $cat_game; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cg): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($cg->id); ?>"><?php echo e($cg->name); ?></option>
+                                            <option <?php if($product->cat_game_id === $cg->id): echo 'selected'; endif; ?> value="<?php echo e($cg->id); ?>">
+                                                <?php echo e($cg->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
@@ -773,7 +794,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Label::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['text' => 'phân loại sản phẩm']); ?>
+<?php $component->withAttributes(['required' => true,'text' => 'phân loại sản phẩm']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21)): ?>
@@ -781,9 +802,9 @@
 <?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
 <?php endif; ?>
                                     <select class="custom-select" name="type" id="type">
-                                        <option value="">Select Type Product</option>
                                         <?php $__currentLoopData = $type; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $t): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($t->id); ?>"><?php echo e($t->name); ?></option>
+                                            <option <?php if($product->type === $t->id): echo 'selected'; endif; ?> value="<?php echo e($t->id); ?>">
+                                                <?php echo e($t->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
@@ -812,7 +833,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'Nhà Sản Xuất','name' => 'producer','id' => 'producer','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(get_crawler('producer')),'aria-describedby' => 'producerHelp','placeholder' => 'Nhập Tên Nhà sản xuất']); ?>
+<?php $component->withAttributes(['label' => 'Nhà Sản Xuất','name' => 'producer','id' => 'producer','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($product->producer->name),'aria-describedby' => 'producerHelp','placeholder' => 'Nhập Tên Nhà sản xuất']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>

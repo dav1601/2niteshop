@@ -357,10 +357,14 @@ $(function () {
             items: galleryYt,
         };
         if (btn) $.btn_loading_v2(btn, true);
-        return ajaxComponent(dataAjax).then((res) => {
-            cb;
-            if (btn) $.btn_loading_v2(btn, false);
-        });
+        return ajaxComponent(dataAjax)
+            .then((res) => {
+                cb;
+                if (btn) $.btn_loading_v2(btn, false);
+            })
+            .catch((err) => {
+                if (btn) $.btn_loading_v2(btn, true);
+            });
     }
     //
     async function loadTabs(btn = null, cb) {
@@ -370,11 +374,15 @@ $(function () {
         };
         loadingModal(true);
         if (btn) $.btn_loading_v2(btn, true);
-        return ajaxComponent(dataAjax, false).then((res) => {
-            loadingModal(false);
-            if (btn) $.btn_loading_v2(btn, false);
-            $(".type-tabs").change();
-        });
+        return ajaxComponent(dataAjax, false)
+            .then((res) => {
+                loadingModal(false);
+                if (btn) $.btn_loading_v2(btn, false);
+                $(".type-tabs").change();
+            })
+            .catch((err) => {
+                if (btn) $.btn_loading_v2(btn, true);
+            });
     }
     //
     async function loadBanners(btn = null, cb) {
@@ -387,12 +395,16 @@ $(function () {
         if (btn) {
             $.btn_loading_v2(btn, true);
         }
-        return ajaxComponent(dataAjax).then((res) => {
-            cb;
-            if (btn) {
-                $.btn_loading_v2(btn, false);
-            }
-        });
+        return ajaxComponent(dataAjax)
+            .then((res) => {
+                cb;
+                if (btn) {
+                    $.btn_loading_v2(btn, false);
+                }
+            })
+            .catch((err) => {
+                if (btn) $.btn_loading_v2(btn, true);
+            });
     }
     //
     async function loadCrsImages(btn = null, cb) {
@@ -405,12 +417,16 @@ $(function () {
         if (btn) {
             $.btn_loading_v2(btn, true);
         }
-        return ajaxComponent(dataAjax).then((res) => {
-            cb;
-            if (btn) {
-                $.btn_loading_v2(btn, false);
-            }
-        });
+        return ajaxComponent(dataAjax)
+            .then((res) => {
+                cb;
+                if (btn) {
+                    $.btn_loading_v2(btn, false);
+                }
+            })
+            .catch((err) => {
+                if (btn) $.btn_loading_v2(btn, true);
+            });
     }
     // *-load-comps end
     // *-remove-index
@@ -755,255 +771,275 @@ $(function () {
 
     // *add-comp end
     // *form
-    $(document).on("submit", "#pgb-section-form", function (e) {
-        e.preventDefault();
-        const type = $("#pgb-modal-type").val();
-        $.btn_loading_v2($(this)[0], true, true);
-        let visible = [];
-        let spacing = {};
-        let classes = "";
-        switch (type) {
-            case "edit-package":
-                let typePackage = $("#edit-package-type").val();
-                let classesPack = $("#edit-package-class").val();
-                let packageId = $("#edit-package-id").val();
-                let indexPack = indexPackById(packageId);
-                let content;
-                let payloadPack = {
-                    type: typePackage,
-                    class: classesPack,
-                    options: {},
-                };
-                let stylePack = {};
-                switch (typePackage) {
-                    case "image":
-                        let image = $("#package-edit-image").val();
-                        let href = $("#pack-edit-href").val();
-                        stylePack = updateBorderStyle();
-                        payloadPack["content"] = image;
-                        payloadPack.options["href"] = href;
-                        payloadPack.options["typeUpload"] = $(
-                            "#pgb-edit-image-type-upload"
-                        ).val();
-                        break;
-                    case "video":
-                        payloadPack["content"] = $(
-                            "#pack-edit-video-source"
-                        ).val();
-                        payloadPack.options["pf"] = $(
-                            "#pgb-m-video-platform"
-                        ).val();
-                        break;
-                    case "texteditor":
-                        payloadPack["content"] = $(
-                            "#pgb-package-edit-tiny"
-                        ).val();
-                        break;
-                    case "category":
-                        payloadPack["content"] = $("#pack-edit-category").val();
-                        break;
-                    case "header":
-                        payloadPack["content"] = $("#pack-edit-header").val();
-                        break;
-                    case "googlemap":
-                        payloadPack["content"] = $("#pack-edit-ggmap").val();
-                        break;
-                    case "blogs":
-                        payloadPack["content"] = Number(
-                            $("#pack-edit-blogs").val()
-                        );
-                        break;
-                    case "tabs":
-                        const tabs = $(".pack-edit-tab-component");
-                        stylePack["activeColor"] =
-                            $("#color-active-tabs").val();
-                        content = [];
-                        $.each(tabs, function (index, el) {
-                            let title = $(el).find(".p-e-tab-comp-title").val();
-                            let type = $(el).find(".p-e-tab-comp-type").val();
-                            let value = "";
-                            switch (type) {
-                                case "category":
-                                    value = $(
-                                        "#pgb-tab-category-" + index
-                                    ).val();
-                                    break;
-                                case "products":
-                                    value = $(
-                                        "#pgb-tab-products-" + index
-                                    ).val();
-                                    break;
-                            }
-                            let tab = {
-                                type: type,
-                                title: title,
-                                value: value,
+    $(document)
+        .on("submit", "#pgb-section-form", function (e) {
+            e.preventDefault();
+            const type = $("#pgb-modal-type").val();
+            $.btn_loading_v2($(this)[0], true, true);
+            let visible = [];
+            let spacing = {};
+            let classes = "";
+            switch (type) {
+                case "edit-package":
+                    let typePackage = $("#edit-package-type").val();
+                    let classesPack = $("#edit-package-class").val();
+                    let packageId = $("#edit-package-id").val();
+                    let indexPack = indexPackById(packageId);
+                    let content;
+                    let payloadPack = {
+                        type: typePackage,
+                        class: classesPack,
+                        options: {},
+                    };
+                    let stylePack = {};
+                    switch (typePackage) {
+                        case "image":
+                            let image = $("#package-edit-image").val();
+                            let href = $("#pack-edit-href").val();
+                            stylePack = updateBorderStyle();
+                            payloadPack["content"] = image;
+                            payloadPack.options["href"] = href;
+                            payloadPack.options["typeUpload"] = $(
+                                "#pgb-edit-image-type-upload"
+                            ).val();
+                            break;
+                        case "video":
+                            payloadPack["content"] = $(
+                                "#pack-edit-video-source"
+                            ).val();
+                            payloadPack.options["pf"] = $(
+                                "#pgb-m-video-platform"
+                            ).val();
+                            break;
+                        case "texteditor":
+                            payloadPack["content"] = $(
+                                "#pgb-package-edit-tiny"
+                            ).val();
+                            break;
+                        case "category":
+                            payloadPack["content"] = $(
+                                "#pack-edit-category"
+                            ).val();
+                            break;
+                        case "header":
+                            payloadPack["content"] =
+                                $("#pack-edit-header").val();
+                            break;
+                        case "googlemap":
+                            payloadPack["content"] =
+                                $("#pack-edit-ggmap").val();
+                            break;
+                        case "blogs":
+                            payloadPack["content"] = Number(
+                                $("#pack-edit-blogs").val()
+                            );
+                            break;
+                        case "tabs":
+                            const tabs = $(".pack-edit-tab-component");
+                            stylePack["activeColor"] =
+                                $("#color-active-tabs").val();
+                            content = [];
+                            $.each(tabs, function (index, el) {
+                                let title = $(el)
+                                    .find(".p-e-tab-comp-title")
+                                    .val();
+                                let type = $(el)
+                                    .find(".p-e-tab-comp-type")
+                                    .val();
+                                let value = "";
+                                switch (type) {
+                                    case "category":
+                                        value = $(
+                                            "#pgb-tab-category-" + index
+                                        ).val();
+                                        break;
+                                    case "products":
+                                        value = $(
+                                            "#pgb-tab-products-" + index
+                                        ).val();
+                                        break;
+                                }
+                                let tab = {
+                                    type: type,
+                                    title: title,
+                                    value: value,
+                                };
+                                content.push(tab);
+                            });
+                            payloadPack["content"] = content;
+
+                            break;
+                        case "crsimages":
+                            let items = $(".p-e-component-crsimages");
+                            content = [];
+                            $.each(items, function (index, item) {
+                                let image = $(item)
+                                    .find(".p-e-crsimages-image")
+                                    .val();
+                                let link = $(item)
+                                    .find(".p-e-crsimages-link")
+                                    .val();
+                                console.log(link);
+                                content.push({
+                                    value: image,
+                                    link: link,
+                                });
+                            });
+                            payloadPack["content"] = content;
+                            break;
+                        case "banners":
+                            let bannerItems = $(".p-e-component-banner");
+                            payloadPack["content"] = {};
+                            content = [];
+                            $.each(bannerItems, function (index, item) {
+                                let image = $(item)
+                                    .find(".p-e-banners-image")
+                                    .val();
+                                let link = $(item)
+                                    .find(".p-e-banners-link")
+                                    .val();
+                                content.push({
+                                    value: image,
+                                    link: link,
+                                });
+                            });
+                            payloadPack["content"]["images"] = content;
+                            payloadPack["content"]["max"] = $(
+                                "#pack-edit-banners-max"
+                            ).val();
+                            payloadPack["content"]["min"] = $(
+                                "#pack-edit-banners-min"
+                            ).val();
+                            stylePack = {
+                                ...stylePack,
+                                ...updateBorderStyle(),
                             };
-                            content.push(tab);
-                        });
-                        payloadPack["content"] = content;
-
-                        break;
-                    case "crsimages":
-                        let items = $(".p-e-component-crsimages");
-                        content = [];
-                        $.each(items, function (index, item) {
-                            let image = $(item)
-                                .find(".p-e-crsimages-image")
-                                .val();
-                            let link = $(item)
-                                .find(".p-e-crsimages-link")
-                                .val();
-                            console.log(link);
-                            content.push({
-                                value: image,
-                                link: link,
+                            break;
+                        case "galleryyt":
+                            payloadPack["content"] = {};
+                            payloadPack["content"]["number_item"] = $(
+                                "#pack-edit-gll-yt-items"
+                            ).val();
+                            let itemsYt = $(".p-e-gllYt-link");
+                            payloadPack["content"]["items"] = [];
+                            $.each(itemsYt, function (index, item) {
+                                payloadPack["content"]["items"].push(
+                                    $(item).val()
+                                );
                             });
-                        });
-                        payloadPack["content"] = content;
-                        break;
-                    case "banners":
-                        let bannerItems = $(".p-e-component-banner");
-                        payloadPack["content"] = {};
-                        content = [];
-                        $.each(bannerItems, function (index, item) {
-                            let image = $(item)
-                                .find(".p-e-banners-image")
-                                .val();
-                            let link = $(item).find(".p-e-banners-link").val();
-                            content.push({
-                                value: image,
-                                link: link,
-                            });
-                        });
-                        payloadPack["content"]["images"] = content;
-                        payloadPack["content"]["max"] = $(
-                            "#pack-edit-banners-max"
-                        ).val();
-                        payloadPack["content"]["min"] = $(
-                            "#pack-edit-banners-min"
-                        ).val();
-                        stylePack = {
-                            ...stylePack,
-                            ...updateBorderStyle(),
-                        };
-                        break;
-                    case "galleryyt":
-                        payloadPack["content"] = {};
-                        payloadPack["content"]["number_item"] = $(
-                            "#pack-edit-gll-yt-items"
-                        ).val();
-                        let itemsYt = $(".p-e-gllYt-link");
-                        payloadPack["content"]["items"] = [];
-                        $.each(itemsYt, function (index, item) {
-                            payloadPack["content"]["items"].push($(item).val());
-                        });
 
-                        break;
-                    default:
-                        break;
-                }
-                if (indexPack > -1) {
-                    arrPackage[indexPack].payload = payloadPack;
-                    arrPackage[indexPack].advanced = updateAdvanced();
-                    arrPackage[indexPack].style = stylePack;
-                }
-                console.log({
-                    type: type,
-                    afterUpdatePackage: arrPackage[indexPack],
-                });
-                $.btn_loading_v2($(this)[0], false, true);
-                break;
-            case "change-layout":
-                const selected = $("#selected_layout");
-                const layout = selected.attr("data-layout");
-                const sid = selected.attr("sid");
-                let payload = {
-                    sid: sid,
-                    layout: layout,
-                };
-                handleSection(
-                    type,
-                    payload,
-                    $.btn_loading_v2($(this)[0], false, true)
-                );
-                break;
-            case "edit-section":
-                const bgWp = $("#pgb-section-bg-wp").val();
-                const bgSection = $("#pgb-section-bg").val();
-                const classes = $("#edit-section-class").val();
-                const container = $("#switch-section-cotainer").is(":checked");
-                $.each(
-                    $(".pgb-device-visible:checkbox:checked"),
-                    function (indexInArray, elVisible) {
-                        visible.push($(elVisible).val());
+                            break;
+                        default:
+                            break;
                     }
-                );
-                let ploadS = {
-                    class: classes,
-                };
-                let background = {
-                    background_section: bgWp,
-                    background_container: bgSection,
-                };
-                let sectionId = $("#edit-section-id").val();
-                let indexSection = indexSectionById(sectionId);
-                let spacing = handleSpacing("update");
-                if (indexSection > -1) {
-                    sections[indexSection].container = container;
-                    sections[indexSection].payload = ploadS;
-                    sections[indexSection].advanced = updateAdvanced();
-                    sections[indexSection].style = {
-                        ...background,
-                        ...updateBorderStyle(),
-                    };
-                }
-                console.log({
-                    afterUpdateSection: sections[indexSection],
-                });
-                $.btn_loading_v2($(this)[0], false, true);
-                break;
-            case "edit-column":
-                let fw_devices = getChecked("pgb-fw-devices");
-                let styleCol = {
-                    background: $("#pgb-col-bg").val(),
-                };
-                styleCol = {
-                    ...styleCol,
-                    ...updateBorderStyle(),
-                };
-                const cId = $("#edit-col-id").val();
-                const indexCol = indexColById(cId);
-                if (indexCol > -1) {
-                    arrColumn[indexCol].style = styleCol;
-                    arrColumn[indexCol].class = $("#edit-col-class").val();
-                    arrColumn[indexCol].advanced = updateAdvanced({
-                        fw_devices: fw_devices.toString(),
+                    if (indexPack > -1) {
+                        arrPackage[indexPack].payload = payloadPack;
+                        arrPackage[indexPack].advanced = updateAdvanced();
+                        arrPackage[indexPack].style = stylePack;
+                    }
+                    console.log({
+                        type: type,
+                        afterUpdatePackage: arrPackage[indexPack],
                     });
-                }
-                console.log({
-                    afterUpdateCol: arrColumn[indexCol],
-                });
-                $.btn_loading_v2($(this)[0], false, true);
-                break;
-            default:
-                const shortCode = $(".pgb-shortCode-item.active").attr("value");
-                const cid = $(".pgb-shortCode-item.active").attr("cid");
-                if (shortCode != 0) {
+                    $.btn_loading_v2($(this)[0], false, true);
+                    break;
+                case "change-layout":
+                    const selected = $("#selected_layout");
+                    const layout = selected.attr("data-layout");
+                    const sid = selected.attr("sid");
                     let payload = {
-                        cid: cid,
+                        sid: sid,
+                        layout: layout,
                     };
-                    handlePackage(
-                        "create",
-                        shortCode,
+                    handleSection(
+                        type,
                         payload,
                         $.btn_loading_v2($(this)[0], false, true)
                     );
-                }
-                break;
-        }
-        modal.modal("hide");
-    });
+                    break;
+                case "edit-section":
+                    const bgWp = $("#pgb-section-bg-wp").val();
+                    const bgSection = $("#pgb-section-bg").val();
+                    const classes = $("#edit-section-class").val();
+                    const container = $("#switch-section-cotainer").is(
+                        ":checked"
+                    );
+                    $.each(
+                        $(".pgb-device-visible:checkbox:checked"),
+                        function (indexInArray, elVisible) {
+                            visible.push($(elVisible).val());
+                        }
+                    );
+                    let ploadS = {
+                        class: classes,
+                    };
+                    let background = {
+                        background_section: bgWp,
+                        background_container: bgSection,
+                    };
+                    let sectionId = $("#edit-section-id").val();
+                    let indexSection = indexSectionById(sectionId);
+                    let spacing = handleSpacing("update");
+                    if (indexSection > -1) {
+                        sections[indexSection].container = container;
+                        sections[indexSection].payload = ploadS;
+                        sections[indexSection].advanced = updateAdvanced();
+                        sections[indexSection].style = {
+                            ...background,
+                            ...updateBorderStyle(),
+                        };
+                    }
+                    console.log({
+                        afterUpdateSection: sections[indexSection],
+                    });
+                    $.btn_loading_v2($(this)[0], false, true);
+                    break;
+                case "edit-column":
+                    let fw_devices = getChecked("pgb-fw-devices");
+                    let styleCol = {
+                        background: $("#pgb-col-bg").val(),
+                    };
+                    styleCol = {
+                        ...styleCol,
+                        ...updateBorderStyle(),
+                    };
+                    const cId = $("#edit-col-id").val();
+                    const indexCol = indexColById(cId);
+                    if (indexCol > -1) {
+                        arrColumn[indexCol].style = styleCol;
+                        arrColumn[indexCol].class = $("#edit-col-class").val();
+                        arrColumn[indexCol].advanced = updateAdvanced({
+                            fw_devices: fw_devices.toString(),
+                        });
+                    }
+                    console.log({
+                        afterUpdateCol: arrColumn[indexCol],
+                    });
+                    $.btn_loading_v2($(this)[0], false, true);
+                    break;
+                default:
+                    const shortCode = $(".pgb-shortCode-item.active").attr(
+                        "value"
+                    );
+                    const cid = $(".pgb-shortCode-item.active").attr("cid");
+                    if (shortCode != 0) {
+                        let payload = {
+                            cid: cid,
+                        };
+                        handlePackage(
+                            "create",
+                            shortCode,
+                            payload,
+                            $.btn_loading_v2($(this)[0], false, true)
+                        );
+                    }
+                    break;
+            }
+            modal.modal("hide");
+        })
+        .catch((err) => {
+            $.btn_loading_v2($(this)[0], false, true)
+        });
     $(document).on("click", ".select-layout", function () {
         let currActive = $(".select-layout.active");
         let layout = $(this).attr("data-layout");
@@ -1556,19 +1592,23 @@ $(function () {
             type: isCreate ? "create-db-section" : "save-db-section",
             id: isCreate ? null : page.id,
         };
-        ajaxHandle(dataAjax).then((res) => {
-            if (!res.error_create) {
-                $.vaToas(typeHandle + " Thành Thông");
-                if (isCreate) {
-                    if (res.redirect) {
-                        window.location.href = res.redirect;
+        ajaxHandle(dataAjax)
+            .then((res) => {
+                if (!res.error_create) {
+                    $.vaToas(typeHandle + " Thành Thông");
+                    if (isCreate) {
+                        if (res.redirect) {
+                            window.location.href = res.redirect;
+                        }
                     }
+                } else {
+                    $.vaToas(typeHandle + " Thất bại");
                 }
-            } else {
-                $.vaToas(typeHandle + " Thất bại");
-            }
-            $.btn_loading_v2($(this), false, false);
-        });
+                $.btn_loading_v2($(this), false, false);
+            })
+            .catch((err) => {
+                $.btn_loading_v2($(this), false, false);
+            });
     });
     $(document).on("change", "#pgb-edit-image-type-upload", function () {
         let type = $(this).val();

@@ -1,22 +1,5 @@
-<table class="table-dark table-bordered table">
-    <thead>
-        <tr>
-            <th>
-                Chọn
-            </th>
-            <th scope="col" class="text-center">ID</th>
-            <th scope="col">Tên Item</th>
-            @if ($m === 'BlockProduct' || $m === 'Policy' || $m === 'Insurance')
-                <th scope="col" class="text-center">Content</th>
-            @endif
-            @if ($m === 'Policy')
-                <th scope="col" class="text-center">Position</th>
-            @endif
-            @if ($m === 'PageBuilder')
-                <th scope="col" class="text-center">Type</th>
-            @endif
-        </tr>
-    </thead>
+<table class="table-dark table-bordered w-100 mb-0 table">
+
     <tbody>
         @foreach ($vadata->data as $item)
             @php
@@ -24,7 +7,7 @@
                 $name = collect($item)->get($p);
             @endphp
             <tr>
-                <td style="width:60px;">
+                <td style="width:30px">
                     @php
                         $id = 'select__prd--check-' . $item->id;
                     @endphp
@@ -37,7 +20,7 @@
                         </div>
                     </div>
                 </td>
-                <td style="width:160px;" class="text-center"> {{ $item->id }} </td>
+
                 <td> {{ $name }} </td>
                 @if ($m === 'Insurance')
                     <td class="text-center">
@@ -72,7 +55,7 @@
     </tbody>
 </table>
 <div class="card-footer" id="select__prd--page">
-    {!! navi_ajax_page($vadata->number_page, $page, '', 'justify-content-center', 'mt-2') !!}
+    <x-pagination :number_page="$vadata->number_page" :page="$page" classWp="justify-content-center mt-2" />
 </div>
 @if ($m === 'BlockProduct' || $m === 'Policy')
     <div class="modal fade" id="view__content__block" tabindex="-1" role="dialog"

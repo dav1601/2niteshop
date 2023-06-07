@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Traits\Product;
 use App\Models\Products;
 use App\Models\Insurance;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DavjCart implements DavjCartInterface
 {
+    use Product;
     public $file;
     public function __construct(FileInterface $handle_file)
     {
@@ -34,7 +36,7 @@ class DavjCart implements DavjCartInterface
             } else {
                 $qty = (int) ($item->qty + $qty);
             }
-            $sub_total = price_product($product, $op_actives, ['qty' => $qty]);
+            $sub_total = $this->price_product($product, $op_actives, ['qty' => $qty]);
             Cart::instance($instance)->update(
                 $item->rowId,
                 [
@@ -60,7 +62,7 @@ class DavjCart implements DavjCartInterface
             $res['act'] = "update";
         } elseif (!$item && !$realTimeUpdateProduct) {
             $res['act'] = "add";
-            $sub_total = price_product($product, $op_actives, ['qty' => $qty]);
+            $sub_total = $this->price_product($product, $op_actives, ['qty' => $qty]);
             Cart::instance($instance)->add(
                 [
                     'id' => $product->id,
@@ -118,7 +120,7 @@ class DavjCart implements DavjCartInterface
         }
         return $total;
     }
-   
+
     //
     public function store_cart()
     {

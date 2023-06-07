@@ -4,8 +4,8 @@ $(function () {
     var url_cat = route("handle_cat");
     var url_reload = route("handle_reload");
     var url_load = route("handle_load");
-    var url = route("price");
     var url_delete_gll = route("handle_delete_gll");
+    var btnSubmit = $("#submit-product");
     $(document).on("change", "#main_img", function () {
         var file = $(this)[0].files;
         $("#forMain").html(file[0].name);
@@ -33,6 +33,23 @@ $(function () {
     // //////////////////////
 
     // /////////////////////////////////////////
+
+    $("#formProducts").ajaxForm({
+        beforeSend: function () {
+            $.btn_loading_v2(btnSubmit, true, false);
+        },
+        success: function (res) {
+            const data = res.data;
+            $.btn_loading_v2(btnSubmit, false, false);
+            return (location.href = data.redirect_edit);
+        },
+        error: function (res) {
+            const data = res.responseJSON.data;
+            console.log(data);
+            $.validationFail(data);
+            $.btn_loading_v2(btnSubmit, false, false);
+        },
+    });
 
     // /////////////////////////////////////////
 
@@ -142,84 +159,84 @@ $(function () {
     });
 
     // /////////////////////////////////////////
-    function load_products(
-        action = "load",
-        type = 1,
-        page = 1,
-        id = 0,
-        val = 0
-    ) {
+    function currentPage() {
+        return $("#product__show--page .page-item.active .page-link").attr(
+            "data-page"
+        );
+    }
+    function load_products(action = "load", page = 1, dataAjax = {}) {
+        switch (action) {
+            case "delete-product":
+                $.btn_loading_v2(dataAjax.btn);
+                break;
+
+            default:
+                $("#product__show--ajax").html($.ioLoading());
+                break;
+        }
+        let form = new FormData();
         let sort = $(prefix__filter + "sort").val();
         let nameOrId = $(prefix__filter + "name").val();
-        let pF = $(prefix__filter + "priceF").val();
-        let pT = $(prefix__filter + "priceT").val();
+        let priceMin = $(prefix__filter + "min").val();
+        let priceMax = $(prefix__filter + "max").val();
         let pdc = $(prefix__filter + "prdcer").val();
-        let stock = $(prefix__filter + "stock").val();
         let author = $(prefix__filter + "author").val();
         let model = $(prefix__filter + "model").val();
+        let status = $(prefix__filter + "status").val();
+        let usage = $(prefix__filter + "usage").val();
         let val_sort = $(prefix__filter + "sort" + " option:selected").attr(
             "sort"
         );
-        let searchId = [];
-        let categories = $("#accordionCateogries input:checkbox:checked").map(
-            function () {
-                searchId.push($(this).val());
+        let categories = [];
+        let selectedCategories = $(".a-checkbox-input:checked");
+        $.each(selectedCategories, function (i, e) {
+            categories.push($(e).val());
+        });
+        form.append("act", action);
+        form.append("page", page);
+        if (!_.isEmpty(dataAjax)) {
+            for (const key in dataAjax) {
+                form.append(key, dataAjax[key]);
             }
-        );
-        categories = searchId;
-        $.ajax({
+        }
+
+        form.append("sort", val_sort);
+        form.append("field", sort);
+        form.append("name", nameOrId);
+        form.append("pMin", priceMin);
+        form.append("pMax", priceMax);
+        form.append("producer", pdc);
+        form.append("author", author);
+        form.append("model", model);
+        form.append("status", status);
+        form.append("usage", usage);
+        form.append("categories", categories);
+        return $.ajax({
             type: "post",
             url: url_load,
-            data: {
-                action: action,
-                type: type,
-                page: page,
-                id: id,
-                val: val,
-                sort: sort,
-                nameOrId: nameOrId,
-                pF: pF,
-                pT: pT,
-                pdc: pdc,
-                stock: stock,
-                author: author,
-                model: model,
-                val_sort: val_sort,
-                categories: categories,
-            },
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
             dataType: "json",
-            success: function (data) {
+            success: function (res) {
+                const data = res.data;
                 $("#product__show--ajax").html(data.html);
                 $("#product__show--page").html(data.page);
-                if (data.type == 1) {
-                    toastr.success("Load Dữ Liệu Thành Công");
-                }
-                if (data.type == 2) {
-                    toastr.success(
-                        "Cập Nhật trạng thái mới cho sản phẩm thành công"
-                    );
-                }
-                if (data.type == 3) {
-                    toastr.success(
-                        "Cập Nhật tình trạng kho cho sản phẩm thành công"
-                    );
-                }
-                if (data.type == 4) {
-                    toastr.success(
-                        "Cập Nhật hiển thị nổi bật cho sản phẩm thành công"
-                    );
-                }
             },
         });
     }
+    if (route().current("show_product")) {
+        load_products();
+    }
     // ////////////////////////////////////////
-
+    $(document).on("click", prefix__filter + "category", function () {
+        load_products();
+    });
     // //////////////////////////////// end filter cat main
 
     // ///////////////////////////// end filter cat sub 1
-    $(document).on("change", prefix__filter + "stock", function () {
-        load_products();
-    });
+
     $(document).on("change", prefix__filter + "sort", function () {
         load_products();
     });
@@ -247,71 +264,34 @@ $(function () {
             load_products();
         }, 300)
     );
-    var url_filter_price = route("price");
-    $(document).on("click", ".check_ins", function () {
-        load_products();
-    });
-    $(document).on(
-        "keyup",
-        "#prd__filter--priceT",
-        _.debounce(function () {
-            var price = $(this).val();
-            $.ajax({
-                type: "post",
-                url: url,
-                data: { price: price },
-                dataType: "json",
-                success: function (data) {
-                    $(".output_price_T").text(data.price);
-                },
-            });
-            load_products();
-        }, 300)
-    );
-    $(document).on(
-        "keyup",
-        "#prd__filter--priceF",
-        _.debounce(function () {
-            var price = $(this).val();
-            var url = route("price");
-            $.ajax({
-                type: "post",
-                url: url,
-                data: { price: price },
-                dataType: "json",
-                success: function (data) {
-                    $(".output_price").text(data.price);
-                },
-            });
-            load_products();
-        }, 300)
-    );
+
     // //////
     $(document).on("click", "#product__show--page .page-link", function () {
-        var page = $(this).attr("data-page");
-        load_products("load", 1, page);
-        window.scrollTo({
-            top: $("#pointScrollProduct").offset().top,
-            behavior: "smooth",
+        const page = $(this).attr("data-page");
+        load_products("load", page).then(() => {
+            window.scrollTo({
+                top: $("#pointScrollProduct").offset().top,
+                behavior: "smooth",
+            });
         });
     });
     // /////////////
 
-    $(document).on("change", "#product__show--stock", function () {
-        var page = $("#product__show--page .page-item.active .page-link").attr(
-            "data-page"
-        );
-        var id = $(this).attr("data-id");
-        var val = $(this).val();
-        load_products("update_stock", 3, page, id, val);
-    });
     $(document).on("change", "#product__show--hl", function () {
-        var page = $("#product__show--page .page-item.active .page-link").attr(
-            "data-page"
-        );
-        var id = $(this).attr("data-id");
-        var val = $(this).val();
-        load_products("update_hl", 4, page, id, val);
+        const dataAjax = {
+            id: $(this).attr("data-id"),
+            highlight: $(this).val(),
+        };
+        load_products("update_hl", currentPage(), dataAjax);
+    });
+    $(document).on("change", prefix__filter + "status", function () {
+        load_products();
+    });
+    $(document).on("change", prefix__filter + "usage", function () {
+        load_products();
+    });
+    $(document).on("change", "#triggerPriceChange", function () {
+        load_products();
     });
     // ////// start delete gll images in edit product
     $(document).on("click", ".delete_gll", function () {
@@ -410,7 +390,7 @@ $(function () {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Vẫn Xoá!",
+            confirmButtonText: "Delete",
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -434,9 +414,11 @@ $(function () {
             }
         });
     });
-    $("#producer").autocomplete({
-        source: producer,
-    });
+    if (typeof producer !== "undefined") {
+        $("#producer").autocomplete({
+            source: producer,
+        });
+    }
     const handle_gallery = (act = "load", dataAjax = {}) => {
         const ajax = {
             gallery: JSON.stringify(galleries),
@@ -471,15 +453,17 @@ $(function () {
             id: id,
             size: size,
             file: file,
-        }).then((res) => {
-            if (res.image) {
-                const image = $("img[data-target='" + target + "']");
-                image.attr("src", res.image);
-                $("#clear-" + elid).removeClass("d-none");
-                $("#clear-" + elid).addClass("d-block");
-                toastr.success("Upload hình ảnh thành công");
-            }
-        });
+        })
+            .then((res) => {
+                if (res.image) {
+                    const image = $("img[data-target='" + target + "']");
+                    image.attr("src", res.image);
+                    $("#clear-" + elid).removeClass("d-none");
+                    $("#clear-" + elid).addClass("d-block");
+                    toastr.success("Upload hình ảnh thành công");
+                }
+            })
+            .catch((res) => {});
     });
     // ///////////////////////////////////////////////////
     $(document).on("click", ".a-product-gallery-add", function () {
@@ -488,7 +472,7 @@ $(function () {
             id: null,
             image_700: "",
             image_80: "",
-            products_id: productId,
+            products_id: id,
         };
         const index = galleries.length;
         galleries.push(item);
@@ -513,7 +497,9 @@ $(function () {
             cancelButtonColor: "#d33",
             confirmButtonText: "Upload",
         }).then((result) => {
-            $(target).click();
+            if (result.isConfirmed) {
+                $(target).click();
+            }
         });
     });
     $(document).on("click", ".gallery-clear", function () {
@@ -567,40 +553,36 @@ $(function () {
         });
     }
     $(document).on("click", ".gallery-delete", function () {
-        if (isEdit) {
-            Swal.fire({
-                title: "Bạn Chắc Chắn Xoá Gallery Chứ?",
-                text: "Hình ảnh không thể khôi phục chỉ có thể thêm lại!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Delete",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    if (isEdit) {
-                        handle_gallery("delete-gallery", {
-                            id: productId,
-                            index: $(this).attr("data-key"),
-                        }).then((res) => {
-                            if (res.deleted) {
-                                $(this)
-                                    .closest(".a-product-gallery-item")
-                                    .remove();
-                                sortGallery();
-                            }
-                        });
-                    } else {
-                        $(this).closest(".a-product-gallery-item").remove();
-                    }
-                } else {
-                    Swal.fire({
-                        icon: "warning",
-                        text: "Cẩn Thận Hơn Nhé!",
+        Swal.fire({
+            title: "Bạn chắc chứ?",
+            text: "Hình ảnh không thể khôi phục chỉ có thể thêm lại!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Delete",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (isEdit) {
+                    handle_gallery("delete-gallery", {
+                        id: productId,
+                        index: $(this).attr("data-key"),
+                    }).then((res) => {
+                        if (res.deleted) {
+                            $(this).closest(".a-product-gallery-item").remove();
+                            sortGallery();
+                        }
                     });
+                } else {
+                    $(this).closest(".a-product-gallery-item").remove();
                 }
-            });
-        }
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    text: "Cẩn Thận Hơn Nhé!",
+                });
+            }
+        });
     });
     function initSortGallery() {
         $("#product-galleries").sortable({
@@ -630,6 +612,74 @@ $(function () {
             },
         });
     }
-    var prefix_single_image = "single-image-product-upload-";
+    // ----------------------------------------------------------------
+    $(document).on("change", ".single-image-product-input", function () {
+        const type = $(this).attr("data-type");
+        handle_gallery("single-image-upload", {
+            id: productId,
+            type: type,
+            image: $(this).prop("files")[0],
+        }).then((res) => {
+            if (res.uploaded) {
+                const target = $(this).attr("data-target");
+                const image = $("img[data-target='" + target + "']");
+                image.attr("src", res.image);
+                if (type !== "img_main") {
+                    $("#clear-" + $(this).attr("id")).removeClass("d-none");
+                }
+                toastr.success("Cập nhật hình ảnh thành công");
+            }
+        });
+    });
+    // ----------------------------------------------------------------
+    $(document).on("click", ".single-image-product-upload", function () {
+        Swal.fire({
+            title: "Bạn muốn tiếP tục upload?",
+            text: "Hình ảnh hiện tại sẽ bị xoá và thay thế bằng ảnh mới!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Upload",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const target = $(this).attr("data-target");
+                $(target).click();
+            }
+        });
+    });
+    // ----------------------------------------------------------------
+    $(document).on("click", ".single-image-product-delete", function () {
+        Swal.fire({
+            title: "Bạn chắc chắn xoá hình ảnh này?",
+            text: "Hình ảnh không thể khôi phục chỉ có thể upload lại!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Delete",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const type = $(this).attr("data-type");
+                handle_gallery("single-image-delete", {
+                    id: productId,
+                    type: type,
+                }).then((res) => {
+                    if (res.deleted) {
+                        console.log(res);
+                        const target = $(this).attr("data-target");
+                        const image = $("img[data-target='" + target + "']");
+                        image.attr("src", res.image);
+                        toastr.success("Xoá hình ảnh thành công");
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    text: "Cẩn Thận Hơn Nhé!",
+                });
+            }
+        });
+    });
     // /////////////////////
 });

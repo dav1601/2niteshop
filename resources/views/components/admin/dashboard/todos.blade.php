@@ -50,5 +50,5 @@
     @endif
 </div>
 <div class="task-pages">
-    {!! navi_ajax_page($tasks->number_page, $tasks->page, 'pagination-sm', 'justify-content-center', 'mt-4') !!}
+    <x-pagination :number_page='$tasks->number_page' :page="$tasks->page" classWp="pagination-sm mt-4 justify-content-center" />
 </div>

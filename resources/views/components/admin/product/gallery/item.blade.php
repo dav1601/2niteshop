@@ -6,14 +6,12 @@
 @endphp
 <div class="col-10 row a-product-gallery-item position-relative mx-auto mb-3 p-5"
     data-id="{{ $isEdit ? $item['id'] : null }}">
-    @if ($isEdit)
-        <div class="d-flex align-items-center justify-content-start a-product-gallery-action position-absolute">
-            {{-- <button type="button" data-key="{{ $key }}" class="btn btn-sm btn-outline-info gallery-move mr-2"><i
-                    class="fa-solid fa-up-down-left-right" style="color: #f4f7fa;"></i></button> --}}
-            <button data-key="{{ $key }}" type="button" class="btn btn-sm btn-outline-info gallery-delete"><i
-                    class="fa-solid fa-trash" style="color: #f4f7fa;"></i></button>
-        </div>
-    @endif
+
+    <div class="d-flex align-items-center justify-content-start a-product-gallery-action position-absolute">
+        <button data-key="{{ $key }}" type="button" class="btn btn-sm btn-outline-info gallery-delete"><i
+                class="fa-solid fa-trash" style="color: #f4f7fa;"></i></button>
+    </div>
+
     <div class="d-flex justify-content-start col-7">
         <x-admin.ui.form.image width="240px" blockEventDef="{{ $isEdit ? 'true' : 'false' }}" height="240px"
             data-size="700" classUpload="{{ $isEdit ? 'gallery-upload' : '' }}"

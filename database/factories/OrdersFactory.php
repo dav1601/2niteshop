@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Http\Traits\Product;
 use App\Models\District;
 use App\Models\User;
 use App\Models\Orders;
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class OrdersFactory extends Factory
 {
+    use Product;
     /**
      * Define the model's default state.
      *
@@ -35,7 +37,7 @@ class OrdersFactory extends Factory
         $dist = District::where("_province_id", $prov->id)->inRandomOrder()->first();
         $ward = Ward::where("_province_id", $prov->id)->where('_district_id', $dist->id)->inRandomOrder()->first();
         foreach ($products as  $product) {
-            $sub_total = price_product($product, "", ['qty' => rand(1, 5)]);
+            $sub_total = $this->price_product($product, "", ['qty' => rand(1, 5)]);
             Cart::instance('fake_shopping')->add(
                 [
                     'id' => $product->id,

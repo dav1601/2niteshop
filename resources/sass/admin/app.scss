@@ -379,26 +379,30 @@ i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
                     padding: 0px 10px;
                     font-size: 15px;
                 }
+                .info-item {
+                    i {
+                        padding-right: 5px !important;
+                        padding-left: 0;
+                        font-size: 16px !important;
+                        width: 30px;
+                        height: 16px;
+                    }
+                }
                 .name {
                     font-size: 16px;
                     font-weight: 600;
-                    padding-left: 10px;
                 }
                 .price {
                     color: $main;
-                    padding-left: 10px;
                 }
                 .usage {
                     color: #ff7979;
-                    padding-left: 10px;
                 }
                 .prdcer {
                     color: #c7ecee;
-                    padding-left: 10px;
                 }
                 .model {
                     color: #38ada9;
-                    padding-left: 10px;
                 }
                 .category {
                     @include active;
@@ -654,4 +658,8 @@ i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
         background: #ecf0f1;
         border-radius: 8px;
     }
+}
+#product__show {
+    height: 850px;
+    overflow-y: scroll;
 }

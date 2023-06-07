@@ -18,9 +18,15 @@
 @endsection
 
 @section('content')
+    <x-pagination :number_page="4" page="2" classWp="justify-content-center mt-2" />
     <div id="product__edit">
         {{-- ----------- --}}
-        {!! Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]) !!}
+        {!! Form::open([
+            'url' => route('product_handle_edit', ['id' => $id]),
+            'method' => 'POST',
+            'files' => true,
+            'id' => 'formProducts',
+        ]) !!}
         <div class="w-100 row no-gutters">
             <div class="col-8 row no-gutters pr-4">
                 <x-admin.layout.card class="col-12 mb-5">
@@ -66,9 +72,8 @@
 
                         </div>
                         <div class="form-group col-6">
-
-                            <x-admin.layout.input.text label="số lượng" required="true" type="number" min="1"
-                                name="quantity" id="quantity" value="{{ $product->qty }}" />
+                            <x-admin.layout.input.text label="số lượng" type="number" name="qty" id="qty"
+                                value="{{ $product->qty }}" />
                         </div>
                         <div class="form-group col-6">
 
@@ -117,20 +122,19 @@
                             <div class="w-100 col-6 mb-3">
                                 {{-- <x-admin.ui.form.image name='main_img' :required="true" id="imgProductMain"
                                     label="Hình ảnh chính" :image="$file->ver_img($product->main_img)" /> --}}
-                                <x-admin.ui.form.image width="305px" blockEventDef="true" height="305px" classUpload=""
-                                    classClear="single-image-product" classInput="single-input-product" name='main_img'
-                                    id="imgProductMain" label="Hình ảnh chính" :image="$file->ver_img($product->main_img)" :required="true">
+                                <x-admin.ui.form.image width="305px" blockEventDef="true" height="305px"
+                                    classUpload="single-image-product-upload"
+                                    classClear="single-image-product-delete d-none" classInput="single-image-product-input"
+                                    name='main_img' id="imgProductMain" label="Hình ảnh chính" :image="$file->ver_img($product->main_img)"
+                                    :required="true">
                                     <x-slot name="btn_clear" data-type="img_main"></x-slot>
                                     <x-slot name="btn_upload" data-type="img_main"></x-slot>
                                     <x-slot name="input" data-type="img_main"></x-slot>
                                 </x-admin.ui.form.image>
                             </div>
                             <div class="w-100 col-6 mb-3">
-                                {{-- <x-admin.ui.form.image name='sub_img' id="imgProductMain" label="hình ảnh phụ"
-                                    :image="$file->ver_img($product->sub_img)" /> --}}
                                 <x-admin.ui.form.image width="305px" blockEventDef="true" height="305px"
-                                    classUpload="single-image-product-upload"
-                                    classClear="single-image-product-upload-delete"
+                                    classUpload="single-image-product-upload" classClear="single-image-product-delete"
                                     classInput="single-image-product-input" name='sub_img' id="imgProductSub"
                                     label="Hình ảnh phụ" :image="$file->ver_img($product->sub_img)">
                                     <x-slot name="btn_clear" data-type="img_sub"></x-slot>
@@ -139,8 +143,7 @@
                                 </x-admin.ui.form.image>
                             </div>
                             <div class="w-100 col-6">
-                                {{-- <x-admin.ui.form.image width="305px" height="305px" name='bg' id="imgProductBg"
-                                    label="hình ảnh background" :image="$file->ver_img($product->bg)" /> --}}
+
                                 <x-admin.ui.form.image width="305px" blockEventDef="true" height="305px" classUpload=""
                                     classClear="single-image-product" classInput="single-input-product" name='bg'
                                     id="imgProductBg" label="Hình ảnh nền sản phẩm" :image="$file->ver_img($product->bg)">
@@ -211,7 +214,7 @@
                     </x-slot>
 
                 </x-admin.layout.card>
-                <x-admin.layout.form.submit />
+                <x-admin.layout.form.submit act="Update" id="submit-product" />
             </div>
 
             {{-- end-left --}}
@@ -219,7 +222,7 @@
             <div class="col-4">
                 <div class="row w-100 no-gutters">
                     <div class="col-12 mb-4">
-                        <x-admin.product.categories :show="true" col="col-12">
+                        <x-admin.product.categories :selected="$product_categories" :show="true" col="col-12">
                             <x-slot name="cusAttrInput" class="category_create_product"></x-slot>
                         </x-admin.product.categories>
                     </div>
@@ -231,7 +234,7 @@
                             <div class="row">
                                 <div class="col-12 mb-4">
                                     <x-admin.layout.input.text label="Ngày mở bán" id="date_sold"
-                                        value="{{ $product->date_sold }}" name="date_sold" required="true" disabled>
+                                        value="{{ $product->date_sold }}" name="date_sold" required="true">
                                         <x-slot name="append">
                                             <button type="button" class="btn btn-primary date-picker"
                                                 data-target="#date_sold">
@@ -244,7 +247,8 @@
                                     <x-admin.layout.form.label text="Tình trạng sản phẩm" />
                                     <select class="custom-select" name="usage_stt">
                                         @foreach (Config::get('product.usage_stt', '1') as $us)
-                                            <option value="{{ $us }}">{{ usage_stt($us) }}</option>
+                                            <option @selected($us === $product->usage_stt) value="{{ $us }}">
+                                                {{ usage_stt($us) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -252,7 +256,8 @@
                                     <x-admin.layout.form.label text="sản phẩm nổi bật" />
                                     <select class="custom-select" name="highlight">
                                         @foreach (Config::get('product.highlight', '1') as $hl)
-                                            <option value="{{ $hl }}">{{ highlight_stt($hl) }}</option>
+                                            <option @selected($hl === $product->highlight) value="{{ $hl }}">
+                                                {{ highlight_stt($hl) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -261,19 +266,20 @@
                                 <div class="col-6 mb-4">
                                     <x-admin.layout.form.label text="danh mục game" />
                                     <select class="custom-select" name="cat_game" id="">
-                                        <option value="0">Select Category Game</option>
+                                        <option value="0">No Category Game</option>
                                         @foreach ($cat_game as $cg)
-                                            <option value="{{ $cg->id }}">{{ $cg->name }}</option>
+                                            <option @selected($product->cat_game_id === $cg->id) value="{{ $cg->id }}">
+                                                {{ $cg->name }}</option>
                                         @endforeach
                                     </select>
                                     <x-admin.layout.form.error name="cat_game" />
                                 </div>
                                 <div class="col-6 mb-4">
-                                    <x-admin.layout.form.label text="phân loại sản phẩm" />
+                                    <x-admin.layout.form.label :required="true" text="phân loại sản phẩm" />
                                     <select class="custom-select" name="type" id="type">
-                                        <option value="">Select Type Product</option>
                                         @foreach ($type as $t)
-                                            <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                            <option @selected($product->type === $t->id) value="{{ $t->id }}">
+                                                {{ $t->name }}</option>
                                         @endforeach
                                     </select>
                                     <x-admin.layout.form.error name="type" />
@@ -281,7 +287,7 @@
                                 {{-- -------- --}}
                                 <div class="col-12">
                                     <x-admin.layout.input.text label="Nhà Sản Xuất" name="producer" id="producer"
-                                        :value="get_crawler('producer')" aria-describedby="producerHelp"
+                                        :value="$product->producer->name" aria-describedby="producerHelp"
                                         placeholder="Nhập Tên Nhà sản xuất" />
                                     <small id="producerHelp" class="form-text text-muted mt-2">Nếu nhà sản xuất không có
                                         trong

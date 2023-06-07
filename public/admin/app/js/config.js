@@ -4,11 +4,115 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+    jQuery.validationFail = (errors = []) => {
+        const validatorOld = $(".validator-error");
+        $.each(validatorOld, function (index, el) {
+            $(el).remove();
+        });
+        if (errors.length <= 0) {
+            return;
+        }
+        $.each(errors, function (field, arrayError) {
+            const el = $("[name=" + field + "]")[0];
+            if (field == "category") {
+                $("#product-category").append(alertErrorForm(arrayError[0]));
+            }
 
+            if (el) {
+                $(el)
+                    .closest(".form-group")
+                    .append(alertErrorForm(arrayError[0]));
+            }
+        });
+    };
+    function alertErrorForm(err = "") {
+        return `<div class="alert alert-danger alert-dismissible fade show mt-2 validator-error" role="alert">
+        <strong>${err}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`;
+    }
+    jQuery.ioLoading = (center = true) => {
+        let loading = "";
+        if (center) {
+            loading += `<div class="d-flex justify-content-center align-items-center w-100 h-100 a-loading">`;
+        }
+        loading += `<div class="loadingio-spinner-spinner-n9di4kxn1i">
+        <div class="ldio-5wn61nbeypm">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>`;
+        if (center) {
+            loading += ` </div>`;
+        }
+        return loading;
+    };
     const renderErrForm = (text = "") => {
         return `<span class="invalid-feedback d-block" role="alert">
         <strong>${text}</strong></span>`;
     };
+    jQuery.errorResponse = (errors) => {
+        if (x.responseJSON) {
+            if (x.responseJSON.hasOwnProperty("error")) {
+                return toastr.error(x.responseJSON.error, "Ajax Error", {
+                    timeOut: 10000,
+                });
+            }
+        }
+        let message;
+        let statusErrorMap = {
+            400: "Server understood the request, but request content was invalid.",
+            401: "Unauthorized access.",
+            403: "Forbidden resource can't be accessed.",
+            500: "Internal server error.",
+            503: "Service unavailable.",
+        };
+
+        if (x.status) {
+            message = statusErrorMap[x.status];
+            if (!message) {
+                message = "Unknown Error \n.";
+            }
+        } else if (exception == "parsererror") {
+            message = "Error.\nParsing JSON Request failed.";
+        } else if (exception == "timeout") {
+            message = "Request Time out.";
+        } else if (exception == "abort") {
+            message = "Request was aborted by the server";
+        } else {
+            message = "Unknown Error \n.";
+        }
+        toastr.error(message, "Ajax Error", { timeOut: 10000 });
+    };
+    jQuery.resClearImage = (target, image) => {
+        const img = $("img[data-target='" + target + "']");
+        img.attr("src", image);
+        const elid = target.substring(1);
+        $("#clear-" + elid).removeClass("d-block");
+        $("#clear-" + elid).addClass("d-none");
+        return toastr.success("Xoá hình ảnh thành công");
+    };
+    jQuery.resUploadImage = (target, image) => {
+        const img = $("img[data-target='" + target + "']");
+        img.attr("src", image);
+        const elid = target.substring(1);
+        $("#clear-" + elid).removeClass("d-none");
+        $("#clear-" + elid).addClass("d-block");
+        return toastr.success("Upload hình ảnh thành công");
+    };
+
     jQuery.isImage = function isImage(url) {
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
     };
@@ -29,11 +133,10 @@ $(function () {
         loading = true,
         submit = false
     ) {
-        let btnSubmit = el;
+        let btnSubmit = $(el);
         if (submit) {
-            btnSubmit = el.querySelectorAll('button[type="submit"]');
+            btnSubmit = $(el).find("[type='submit']");
         }
-        btnSubmit = $(btnSubmit);
         if (!btnSubmit) {
             return;
         }
@@ -41,8 +144,6 @@ $(function () {
             let currentHtml = $(btnSubmit).html();
             $(btnSubmit).attr("data-original", currentHtml);
         }
-        // let currentHtml = $(btnSubmit).html();
-        // $(btnSubmit).attr("data-original", currentHtml);
         $(btnSubmit).prop("disabled", loading);
         if (loading) {
             $(btnSubmit).attr("is-loading", true);

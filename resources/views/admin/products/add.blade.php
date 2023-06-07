@@ -6,6 +6,8 @@
     <script>
         // if (route('current'))
         var producer = {{ Js::from($producer) }};
+        var galleries = [];
+        var isEdit = false;
     </script>
     {{-- <script src="{{ asset('admin/app/js/related_all.js') }}"></script> --}}
 @endsection
@@ -38,23 +40,30 @@
         </x-admin.layout.card>
 
         {{-- ----------- --}}
-        {!! Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]) !!}
+        {!! Form::open([
+            'url' => route('product_handle_add'),
+            'method' => 'POST',
+            'files' => true,
+            'id' => 'formProducts',
+        ]) !!}
         <div class="w-100 row no-gutters">
             <div class="col-8 row no-gutters pr-4">
                 <x-admin.layout.card class="col-12 mb-5">
                     <x-slot name="content" class="row w-100">
-                        <div class="form-group col-6">
-                            <x-admin.layout.input.text required="true" :value="get_crawler('page_title')" name="name" label="name" />
+                        <div class="form-group col-8">
+                            {{-- :value="get_crawler('page_title')" --}}
+                            <x-admin.layout.input.text required="true" value="{{ get_crawler('name') }}" name="name"
+                                label="name" />
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-4">
                             <x-admin.layout.input.text label="slug" value="" disabled="true" name="slug" />
                         </div>
                         <div class="form-group col-6">
                             @php
                                 $desc = '';
                                 $kws = '';
-                                if (count($crawler) > 0) {
-                                    $meta = get_crawler('meta');
+                                $meta = get_crawler('meta');
+                                if ($meta) {
                                     $desc = $meta['desc'];
                                     $kws = $meta['kws'];
                                 }
@@ -69,7 +78,7 @@
                         </div>
                         <div class="form-group col-12">
                             <x-admin.layout.form.label text="meta desc" />
-                            <textarea class="form-control" name="des" id="" rows="4">{{ $desc }}{{ old('des') }}</textarea>
+                            <textarea class="form-control" name="des" id="" rows="4">{{ $desc }}</textarea>
                             <x-admin.layout.form.error name="des" />
                         </div>
 
@@ -91,19 +100,20 @@
                                 }
 
                             @endphp
-                            <x-admin.layout.input.text label="giá bán" required="true" name="price" class="input-price"
-                                :value="$price" id="prd_price" placeholder="..." />
+
+                            <x-admin.layout.input.text label="giá bán" :value="$price" required="true" name="price"
+                                class="input-price" id="prd_price" placeholder="..." />
                         </div>
                         <div class="form-group col-6">
 
-                            <x-admin.layout.input.text label="giá gốc" required="true" name="historical_cost"
-                                class="input-price" :value="$price_cost" id="historical_cost" placeholder="..." />
+                            <x-admin.layout.input.text label="giá gốc" :value="$price_cost" required="true"
+                                name="historical_cost" class="input-price" id="historical_cost" placeholder="..." />
 
                         </div>
                         <div class="form-group col-6">
 
-                            <x-admin.layout.input.text label="số lượng" required="true" type="number" min="1"
-                                name="quantity" id="quantity" value="0" />
+                            <x-admin.layout.input.text label="số lượng" value="0" type="number" min="0"
+                                name="qty" id="qty" />
                         </div>
                         <div class="form-group col-6">
 
@@ -154,7 +164,7 @@
                                     id="imgProductMain" label="Hình ảnh chính" />
                             </div>
                             <div class="col-6 mb-3">
-                                <x-admin.ui.form.image width="305px" height="305px" name='sub_img' id="imgProductMain"
+                                <x-admin.ui.form.image width="305px" height="305px" name='sub_img' id="imgProductSub"
                                     label="hình ảnh phụ" />
                             </div>
                             <div class="col-6">
@@ -171,12 +181,13 @@
                     <x-slot name="heading" class="">
                         <h6 class="font-weight-bold d-flex">Hình ảnh chi tiết</h6>
                     </x-slot>
-                    <x-slot name="content" class="">
-                        <x-admin.form.file required="true" label="Hình Ảnh Chi Tiết 700x700" class="mb-5"
+                    <x-slot name="content" class="" id="body-gallery">
+                        <x-admin.product.gallery productAct="add" />
+                        {{-- <x-admin.form.file required="true" label="Hình Ảnh Chi Tiết 700x700" class="mb-5"
                             name='gll700' id="imgProduct700" :multiple="true" />
 
                         <x-admin.form.file label="Hình Ảnh thu nhỏ 80x80" name='gll80' id="imgProduct80"
-                            :multiple="true" />
+                            :multiple="true" /> --}}
                     </x-slot>
 
                 </x-admin.layout.card>
@@ -216,14 +227,14 @@
                     </x-slot>
 
                 </x-admin.layout.card>
-                <x-admin.layout.form.submit />
+                <x-admin.layout.form.submit id="submit-product" />
             </div>
 
             {{-- end-left --}}
             {{-- ----------- --}}
             <div class="col-4">
                 <div class="row w-100 no-gutters">
-                    <div class="col-12 mb-4">
+                    <div class="col-12 mb-4" id="product-category">
                         <x-admin.product.categories :show="true" col="col-12">
                             <x-slot name="cusAttrInput" class="category_create_product"></x-slot>
                         </x-admin.product.categories>
@@ -234,9 +245,9 @@
                         </x-slot>
                         <x-slot name="content" class="">
                             <div class="row">
-                                <div class="col-12 mb-4">
-                                    <x-admin.layout.input.text label="Ngày mở bán" id="date_sold" name="date_sold"
-                                        required="true" disabled>
+                                <div class="col-12 form-group mb-4">
+                                    <x-admin.layout.input.text value="{{ $carbon->now()->format('Y-m-d') }} 00:00:00"
+                                        label="Ngày mở bán" id="date_sold" name="date_sold" required="true">
                                         <x-slot name="append">
                                             <button type="button" class="btn btn-primary date-picker"
                                                 data-target="#date_sold">
@@ -245,7 +256,7 @@
                                         </x-slot>
                                     </x-admin.layout.input.text>
                                 </div>
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <x-admin.layout.form.label text="Tình trạng sản phẩm" />
                                     <select class="custom-select" name="usage_stt">
                                         @foreach (Config::get('product.usage_stt', '1') as $us)
@@ -253,7 +264,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <x-admin.layout.form.label text="sản phẩm nổi bật" />
                                     <select class="custom-select" name="highlight">
                                         @foreach (Config::get('product.highlight', '1') as $hl)
@@ -263,7 +274,7 @@
                                 </div>
 
                                 {{--  --}}
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <x-admin.layout.form.label text="danh mục game" />
                                     <select class="custom-select" name="cat_game" id="">
                                         <option value="0">Select Category Game</option>
@@ -273,7 +284,7 @@
                                     </select>
                                     <x-admin.layout.form.error name="cat_game" />
                                 </div>
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <x-admin.layout.form.label text="phân loại sản phẩm" />
                                     <select class="custom-select" name="type" id="type">
                                         <option value="">Select Type Product</option>
@@ -284,7 +295,7 @@
                                     <x-admin.layout.form.error name="type" />
                                 </div>
                                 {{-- -------- --}}
-                                <div class="col-12">
+                                <div class="col-12 form-group">
                                     <x-admin.layout.input.text label="Nhà Sản Xuất" name="producer" id="producer"
                                         :value="get_crawler('producer')" aria-describedby="producerHelp"
                                         placeholder="Nhập Tên Nhà sản xuất" />
@@ -308,38 +319,38 @@
             {{-- end-right --}}
 
         </div>
+        <x-admin.layout.modal title="thông tin chi tiết">
+            <x-slot name="modal" id="mContentProduct">
+            </x-slot>
+            <x-slot name="dialog" class="modal-xl modal-dialog-scrollable">
+            </x-slot>
+            <x-slot name="body">
+                <div class="form-group col-12">
+                    <textarea name="content" id="content__tiny" class="form-control my-editor">{!! get_crawler('content') !!}</textarea>
+                    <x-admin.layout.form.error name="content" />
+                </div>
+
+            </x-slot>
+            <x-slot name="footer" class="">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </x-slot>
+        </x-admin.layout.modal>
+        <x-admin.layout.modal title="Thông số">
+            <x-slot name="modal" id="mInfoProduct">
+            </x-slot>
+            <x-slot name="dialog" class="modal-xl">
+            </x-slot>
+            <x-slot name="body">
+                <div class="form-group col-12">
+                    <textarea name="info" id="info__tiny" class="form-control my-editor">{!! get_crawler('spec') !!}</textarea>
+                </div>
+
+            </x-slot>
+            <x-slot name="footer" class="">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </x-slot>
+        </x-admin.layout.modal>
         {!! Form::close() !!}
     </div>
     {{-- card body --}}
-    <x-admin.layout.modal title="thông tin chi tiết">
-        <x-slot name="modal" id="mContentProduct">
-        </x-slot>
-        <x-slot name="dialog" class="modal-xl modal-dialog-scrollable">
-        </x-slot>
-        <x-slot name="body">
-            <div class="form-group col-12">
-                <textarea name="content" id="content__tiny" class="form-control my-editor">{!! old('content') !!}</textarea>
-                <x-admin.layout.form.error name="content" />
-            </div>
-
-        </x-slot>
-        <x-slot name="footer" class="">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        </x-slot>
-    </x-admin.layout.modal>
-    <x-admin.layout.modal title="Thông số">
-        <x-slot name="modal" id="mInfoProduct">
-        </x-slot>
-        <x-slot name="dialog" class="modal-xl">
-        </x-slot>
-        <x-slot name="body">
-            <div class="form-group col-12">
-                <textarea name="info" id="info__tiny" class="form-control my-editor">{!! old('info') !!}{!! get_crawler('spec') !!}</textarea>
-            </div>
-
-        </x-slot>
-        <x-slot name="footer" class="">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        </x-slot>
-    </x-admin.layout.modal>
 @endsection

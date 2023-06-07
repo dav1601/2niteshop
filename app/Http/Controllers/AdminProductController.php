@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UpdateProduct;
 use stdClass;
 use App\Models\Policy;
 use App\Models\CatGame;
@@ -15,10 +14,14 @@ use App\Models\gllProducts;
 use App\Models\typeProduct;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use App\Http\Traits\Product;
 use App\Models\BlockProduct;
 use Illuminate\Http\Request;
+use App\Events\UpdateProduct;
+use App\Http\Traits\Responser;
 use Illuminate\Support\Carbon;
 use App\Models\RelatedProducts;
+use App\Http\Traits\Relationship;
 use App\Models\ProductCategories;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\FileInterface;
@@ -34,6 +37,7 @@ use Spatie\ResponseCache\Facades\ResponseCache;
 
 class AdminProductController extends Controller
 {
+    use Responser, Relationship, Product;
     public $handle_file;
     public $data;
     public $res;
@@ -91,7 +95,7 @@ class AdminProductController extends Controller
         $producer = Producer::all()->pluck("name")->toArray();
         $cat_game = CatGame::all();
         $type = typeProduct::where('parent', '=', 0)->get();
-        $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
+        // $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
         $product_categories = ProductCategories::where('products_id', $id)->get()->pluck('category_id')->toArray();
         $rela_blogs = implode(",", $product->related_blogs->pluck("id")->toArray());
         $rela_products =  implode(",", $product->bundled_products->pluck("id")->toArray());
@@ -100,11 +104,11 @@ class AdminProductController extends Controller
         $blocks =  implode(",", $product->blocks->pluck("id")->toArray());
         $gallery = collect($product->gll)->toArray();
         $url = route('product_view_edit', ['id' => $id]);
-        return view('admin.products.edit', compact('id',   'producer', 'cat_game', 'type',  'product', 'sub_type',  'url', 'product_categories', 'rela_blogs', 'rela_products', 'policies', 'ins', 'blocks', 'gallery'));
+        return view('admin.products.edit', compact('id',   'producer', 'cat_game', 'type',  'product',   'url', 'product_categories', 'rela_blogs', 'rela_products', 'policies', 'ins', 'blocks', 'gallery'));
     }
     public function validateProduct($request, $id = null)
     {
-        $ruleName = $id === null ? 'required|unique:products,name' : 'required|unique:products,name,' . $id;
+        $ruleName = !$id  ? 'required|unique:products,name' : 'required|unique:products,name,' . $id;
         $img = "image|mimes:jpeg,png,jpg,tiff,svg|max:204800";
         $validator = Validator::make(
             $request->all(),
@@ -119,9 +123,6 @@ class AdminProductController extends Controller
                 'discount' => 'numeric|lte:price',
                 'main_img' => $id ? $img : 'required|' . $img,
                 'sub_img' => $img,
-                'bg' => $img,
-                'gll700.*' => $img,
-                'gll80.*' => $img,
                 'producer' => 'required',
                 'category' => 'required',
                 'date_sold' => "required"
@@ -132,8 +133,7 @@ class AdminProductController extends Controller
                 'des.required' => "Bạn chưa nhập mô tả ngắn cho sản phẩm",
                 'keywords.required' => "Bạn chưa nhập keywords cho sản phẩm",
                 'type.required' => "Bạn chưa chọn loại sản phẩm",
-                'model.required' => "Bạn chưa nhập tên sản phẩm",
-                'cat.required' => "Bạn chưa chọn danh mục chính",
+                'model.required' => "Bạn chưa nhập model sản phẩm",
                 'producer.required' => "Bạn chưa chọn nhà sản xuất",
                 'price.required' => "Bạn chưa nhập giá sản phẩm",
                 'price.numeric' => "Giá sản phẩm bắt buộc là SỐ",
@@ -164,13 +164,20 @@ class AdminProductController extends Controller
     // //////////////////////////////////////// end view edit
     public function product_handle_add(Request $request)
     {
-        dd($request->all());
+
         $data_create = array();
         $path = config('app.image_products');
         $validator = $this->validateProduct($request);
         if ($validator->fails()) {
+            return $this->errorResponse("validator fail", 403, $validator->errors()->toArray());
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        $producer = Producer::where('name', $request->producer)->first();
+        $producer = $producer ? $producer : Producer::create([
+            'name' => $request->producer,
+            'slug' => Str::slug($request->producer)
+        ]);
+        $data_create['producer_id'] = $producer->id;
         $data_create['name'] = $request->name;
         $data_create['price'] = $request->price;
         $data_create['historical_cost'] = $request->historical_cost;
@@ -181,29 +188,16 @@ class AdminProductController extends Controller
         $data_create['info'] = $request->info;
         $data_create['model'] = $request->model;
         $data_create['date_sold'] = $request->date_sold;
-        $data_create['qty'] = $request->qty;
+        $data_create['qty'] = (int) $request->qty;
         $data_create['discount'] = $request->discount;
-        $data_create['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
-        if ($request->sub_type != 0) {
-            $data_create['sub_type'] = typeProduct::where('id', '=', $request->sub_type)->first()->name;
-        }
-        $producer = Producer::where('name', $request->producer)->first();
-        if (!$producer) {
-            $producer = Producer::create([
-                'name' => $request->producer,
-                'slug' => Str::slug($request->producer)
-            ]);
-        }
-        $data_create['producer_id'] = $producer->id;
-        if ($request->cat_game != 0) {
-            $data_create['cat_game_id'] = CatGame::where('id', '=', $request->cat_game)->first()->name;
-        } else {
-            $data_create['cat_game_id'] = NULL;
-        }
+        $data_create['type'] = (int) $request->type;
+        $data_create['cat_game_id'] = $request->cat_game != 0 ? (int) $request->cat_game : NULL;
         $data_create['usage_stt'] = $request->usage_stt;
         $data_create['highlight'] = $request->highlight;
-        $data_create['status'] = statusProduct($request->date_sold, $request->qty);
+        $data_create['status'] = $this->statusProduct($request->date_sold, $data_create['qty']);
         $path = $path  . "/" . $data_create['type'] . "/";
+
+
         // /////////////////////////////////
 
         // //////////// background img
@@ -212,38 +206,52 @@ class AdminProductController extends Controller
         $path_main_img = $path  . "main/";
         $data_create['main_img'] = $this->handle_file->storeFileImg($request->main_img, $path_main_img);
         // //////////////// end main
-        if ($request->has('sub_img')) {
-            $path_sub_img = $path  . "sub/";;
+        if ($request->sub_img) {
+            $path_sub_img = $path  . "sub/";
             $data_create['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
         }
 
-        if ($request->has('bg')) {
+        if ($request->bg) {
             $path_bg =  $path  .  "backgroud/";
             $data_create['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
         }
         // end backgroud
-        $created = Products::create($data_create);
-        $request->request->add(['rela__category' => implode(',', $request->category)]);
-        // createdd end
-        if ($created) {
-            // end 80x80 img
-            handle_rela($request, 'products-ins', $created->id, false);
-            handle_rela($request, 'products-plc', $created->id, false);
-            handle_rela($request, 'product-products', $created->id, false);
-            handle_rela($request, 'products-block', $created->id, false);
-            handle_rela($request, 'products-blogs', $created->id, false);
-            return redirect()->back()->with('success', 'Create Product Success');
+        try {
+            $created = Products::create($data_create);
+            // createdd end
+            if ($created) {
+                $galleries = $request->file('galleries');
+                $galleries = $galleries ? $galleries : [];
+                if (count($galleries) > 0) {
+                    foreach ($galleries as $key =>  $gallery) {
+                        $path_700 = $path . "700/";
+                        $path_80 = $path . "80/";
+                        $image_700 = $this->handle_file->storeFileImg($gallery[700], $path_700);
+                        $image_80 = $this->handle_file->storeFileImg($gallery[80], $path_80);
+                        gllProducts::create(['products_id' => $created->id, 'image_700' => $image_700, 'image_80' => $image_80, 'index' => $key]);
+                    }
+                }
+                $created->categories()->attach($request->category);
+                $created->ins()->attach(a_explode(",", $request->rela__ins));
+                $created->policies()->attach(a_explode(",", $request->rela__plc));
+                $created->bundled_products()->attach(a_explode(",", $request->rela__products));
+                $created->blocks()->attach(a_explode(",", $request->rela__block));
+                $created->related_blogs()->attach(a_explode(",", $request->rela__blogs));
+                return $this->successResponse(['redirect_edit' => route('product_view_edit', ['id' => $created->id])]);
+            }
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
         }
-        return redirect()->back()->with('error', 'Create Product Failed');
+
         // end else
 
     }
 
     //////////////////////////////////////// end add product
-    public function product_handle_edit($id, FileInterface $handle_file, Request $request)
+    public function product_handle_edit($id,  Request $request)
     {
-        dd($request->all());
         $validator = $this->validateProduct($request, $id);
+        return "edit";
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -261,11 +269,12 @@ class AdminProductController extends Controller
         $data_update['discount'] = $request->discount;
         $data_update['usage_stt'] = $request->usage_stt;
         $data_update['highlight'] = $request->highlight;
-        $data_update['status'] = statusProduct($request->date_sold, $request->qty);
+        $data_update['type'] = (int) $request->type;
+        $data_update['cat_game_id'] = $request->cat_game != 0 ? $request->cat_game : NULL;
+        $data_update['status'] = $this->statusProduct($request->date_sold, $request->qty);
         // /////////////
         $request->request->add(['rela__category' => implode(',', $request->category)]);
-        $data_update['sub_type'] = $request->sub_type != 0 ? typeProduct::where('id', '=', $request->sub_type)->first()->name : NULL;
-        $data_update['cat_game_id'] = $request->cat_game != 0 ? CatGame::where('id', '=', $request->cat_game)->first()->name : NULL;
+
         ////////////////
         $producer = Producer::where('name', $request->producer)->first();
         if (!$producer) {
@@ -275,7 +284,6 @@ class AdminProductController extends Controller
             ]);
         }
         $data_update['producer_id'] = $producer->id;
-        $data_update['type'] = typeProduct::where('id', '=', $request->type)->first()->name;
         // /////////////////////////////////
         // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
         // update product
@@ -283,32 +291,27 @@ class AdminProductController extends Controller
         if (!$updated) {
             return redirect()->back()->with('error', 'Updated Product Failed');
         }
+        $product = Products::find($id);
         event(new UpdateProduct($id));
-        handle_rela($request, "products-category", $id, false, true);
         // ///////// update pre order product
-        if (isPreOrder($request->date_sold)) {
-            PreOrder::where('products_id', '=', $id)->update([
+        if ($data_update['status'] >= 1) {
+            PreOrder::where('products_id',  $id)->update([
                 'status_product' => 0,
                 'price' => NULL
             ]);
         } else {
-            if ($request->qty > 0) {
-                PreOrder::where('products_id', '=', $id)->update([
-                    'status_product' => 1,
-                    'price' => $request->price
-                ]);
-            } else {
-                PreOrder::where('products_id', '=', $id)->update([
-                    'status_product' => 0,
-                    'price' => NULL
-                ]);
-            }
+            PreOrder::where('products_id',  $id)->update([
+                'status_product' => 1,
+                'price' => $request->price
+            ]);
         }
-        handle_rela($request, 'products-ins', $id, false, true);
-        handle_rela($request, 'products-plc', $id, false, true);
-        handle_rela($request, 'product-products', $id, false, true);
-        handle_rela($request, 'products-block', $id, false, true);
-        handle_rela($request, 'products-blogs', $id, false, true);
+
+        $product->categories()->sync($request->category);
+        $product->ins()->sync(a_explode(",", $request->rela__ins));
+        $product->policies()->sync(a_explode(",", $request->rela__plc));
+        $product->bundled_products()->sync(a_explode(",", $request->rela__products));
+        $product->blocks()->sync(a_explode(",", $request->rela__block));
+        $product->related_blogs()->sync(a_explode(",", $request->rela__blogs));
         return redirect()->back()->with('success', 'Updated Product Success');
     }
 
@@ -319,8 +322,10 @@ class AdminProductController extends Controller
         $category = Category::where('parent_id', '=', 0)->get();
         $products = new Products();
         $products = $products->with(['producer']);
-        $products = $repom->pagination($products, null, 1, 12, null);
-        return view('admin.products.show', compact('category',  'products'));
+        $products = $repom->pagination($products, null, 1, 16, null);
+        $minPrice = $products->data->min('price');
+        $maxPrice = $products->data->max('price');
+        return view('admin.products.show', compact('category',  'products', 'minPrice', 'maxPrice'));
     }
 
     //////////////////////////////////////// end show product
@@ -397,14 +402,20 @@ class AdminProductController extends Controller
             array_push($array, $node->image()->getUri());
             return $array;
         });
-        $res['page_title'] = $crawler->filter('.page-title')->text("");
-        $url = url("https://game.haloshop.vn/index.php?route=product/search&search=" . $res['page_title']);
-        $crawler_2 = \Goutte::request('GET', $url);
-        $main_images =  $crawler_2->filter(".product-img div img")->each(function ($node) {
-            $array_2 = [];
-            array_push($array_2, $node->image()->getUri());
-            return $array_2;
-        });
+
+        // $url = url("https://haloshop.vn/index.php?route=product/search&search=" . $res['page_title']);
+        // $crawler_2 = \Goutte::request('GET', $url);
+        // $img_first =  $crawler_2->filter(".img-first")->each(function ($node) {
+        //     $array_2 = [];
+        //     array_push($array_2, $node->image()->getUri());
+        //     return $array_2;
+        // });
+        // $img_second =  $crawler_2->filter(".img-second")->each(function ($node) {
+        //     $array_2 = [];
+        //     array_push($array_2, $node->image()->getUri());
+        //     return $array_2;
+        // });
+        $res['name'] = $crawler->filter('.page-title')->text("");
         $res['producer'] = $crawler->filter('.product-manufacturer a')->text("");
         $res['price'] = preg_replace('/\D/', '', $crawler->filter('.product-price')->text(0));
         $res["price_new"] = preg_replace('/\D/', '', $crawler->filter('.product-price-new')->text(0));
@@ -413,12 +424,9 @@ class AdminProductController extends Controller
         $res['spec'] = $crawler->filter('#tab-specification')->html("");
         $res["content"] = $crawler->filter(".tab-content .block-content")->html("");
         $res["model"] = $crawler->filter(".product-model span")->text("");
-        $files_main = glob('E:/01/datatest/2nite/main/*'); // get all file names
-        foreach ($files_main as $fm) { // iterate files
-            if (is_file($fm)) {
-                unlink($fm); // delete file
-            }
-        }
+
+        // get all file names
+
         $files = glob('E:/01/datatest/2nite/700/*'); // get all file names
         foreach ($files as $file) { // iterate files
             if (is_file($file)) {
@@ -431,12 +439,12 @@ class AdminProductController extends Controller
                 unlink($file); // delete file
             }
         }
-        for ($k = 0; $k < count($main_images); $k++) {
-            $url = $main_images[$k][0];
-            $info = pathinfo($url);
-            $forder = 'E:/01/datatest/2nite/main/' . $info["basename"];
-            file_put_contents($forder . $info["basename"], file_get_contents($url));
-        }
+        // for ($k = 0; $k < count($main_images); $k++) {
+        //     $url = $main_images[$k][0];
+        //     $info = pathinfo($url);
+        //     $forder = 'E:/01/datatest/2nite/main/' . $info["basename"];
+        //     file_put_contents($forder . $info["basename"], file_get_contents($url));
+        // }
         for ($i = 0; $i < count($images); $i++) {
             $url = $images[$i][0];
             $info = pathinfo($url);
@@ -444,7 +452,8 @@ class AdminProductController extends Controller
             $forder = $i < count($images) / 2 ? 'E:/01/datatest/2nite/700/' . $name : 'E:/01/datatest/2nite/80/' . $name;
             file_put_contents($forder . $name, file_get_contents($url));
         }
-        return redirect()->back()->with("crawler", $res);
+
+        return redirect()->back()->with("resCrawl", $res);
     }
     //  //////////////////////////////////////// end crawler
     public function block__product__handle(Request $request, ModelInterface $repom)

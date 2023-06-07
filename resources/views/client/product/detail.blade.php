@@ -1,3 +1,4 @@
+@inject('tPrd', 'App\Http\Traits\Product')
 @extends('layouts.app')
 @section('title', $product->name)
 @section('meta-desc', $product->des)
@@ -42,9 +43,7 @@
 @endsection
 @section('content')
     @php
-        $arrGll = collect($product->gll)
-            ->groupBy('size')
-            ->toArray();
+        $arrGll = collect($product->gll)->toArray();
         $arrIns = collect($product->ins)
             ->groupBy('group')
             ->toArray();
@@ -68,13 +67,13 @@
                 return $plc->fullset != 0;
             })
             ->first();
-        $price = price_product($product, $ops);
+        $price = $tPrd->price_product($product, $ops);
 
     @endphp
     {{-- @dd($price) --}}
     @if ($product->bg != null)
         @php
-            $bg = asset($product->bg);
+            $bg = $file->ver_img($product->bg);
         @endphp
         <style>
             body {

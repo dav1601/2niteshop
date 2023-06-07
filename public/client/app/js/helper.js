@@ -48,7 +48,6 @@ $(function () {
         } else {
             for (let index = 0; index < form.length; index++) {
                 let element = form[index];
-
                 let name = element.getAttribute("name");
                 if (errors.hasOwnProperty(name)) {
                     let html = renderErrForm(errors[name][0]);

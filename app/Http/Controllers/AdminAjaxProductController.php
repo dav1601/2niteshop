@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Traits\Responser;
 use stdClass;
 use App\Models\User;
 use App\Models\Blogs;
@@ -24,10 +24,11 @@ use App\Repositories\ModelInterface;
 use App\Models\bundled_accessory_cat;
 use App\Repositories\AdminPrdInterface;
 use App\Repositories\FileInterface;
-use Mockery\Expectation;
+
 
 class AdminAjaxProductController extends Controller
 {
+    use Responser;
     //////////////////////////////////////
     private $error = 0;
     private $data = array();
@@ -38,251 +39,59 @@ class AdminAjaxProductController extends Controller
     {
         $this->repoPrd = $repo_prd;
     }
-    public function handle_reload(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $pdc = new Producer;
-        if ($request->type == 1) {
-            if ($request->kw != null) {
-                $pdc = $pdc->where('name', 'LIKE', '%' . $request->kw . '%');
-            }
-            $pdc = $pdc->get();
-            if (count($pdc) > 0) {
-                foreach ($pdc as $pc) {
-                    $output .= '
-                    <option value="' .  $pc->id . '">' . $pc->name . '</option>
-                    ';
-                }
-            } else {
-                $output .= '<option value="">Không có nhà sản xuất nào phù hợp với ' . $request->kw . '</option>';
-            }
-        }
-        if ($request->type == 2) {
-            $ins = Insurance::all();
-            foreach ($ins as $in) {
-                $output .= '
-                <div class="mb-4 col-3 cis_item">
-                <div class="va-checkbox d-flex align-items-center w-100">
-                    <input type="checkbox" name="ins[]" value="' . $in->id . '" id="ci__' . $in->id . '"
-                        class="check_ins ">
-                    <label for="ci__' . $in->id . '" data-toggle="tooltip" data-placement="top"
-                        title="Giá Bảo Hành: ' . crf($in->price) . ' ">
-                        ' . $in->name . '
-                    </label>
-                </div>
-            </div>
-                    ';
-            }
-        }
-        if ($request->type == 3) {
-            $policy = Policy::all();
-            foreach ($policy as $plc) {
-                $output .= '
-               <div class="mb-4 col-3 plc_item">
-               <div class="va-checkbox d-flex align-items-center w-100">
-                   <input type="checkbox" name="plc[]" value="' . $plc->id . '"
-                       id="plc__' . $plc->id . '" class="check_plc">
-                   <label for="plc__' . $plc->id . '" data-toggle="tooltip" data-html="true"
-                       data-placement="top" title="' . htmlentities($plc->content) . '">
-                       ' . $plc->title . ' (Pos: ' . $plc->position . ')
-                   </label>
-               </div>
-           </div>
-               ';
-            }
-        }
-        $data['html'] = $output;
-        return response()->json($data);
-    }
-    ////////////////////////////////////////
-    public function handle_search(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $pdc = new Producer;
-        if ($request->kw != null) {
-            $pdc = $pdc->where('name', 'LIKE', '%' . $request->kw . '%');
-        }
-        $pdc = $pdc->get();
-        if (count($pdc) > 0) {
-            foreach ($pdc as $pc) {
-                $output .= '
-                <option value="' .  $pc->id . '">' . $pc->name . '</option>
-                ';
-            }
-        } else {
-            $output .= '<option value="">Không có nhà sản xuất nào phù hợp với ' . $request->kw . '</option>';
-        }
-        $data['html'] = $output;
-        return response()->json($data);
-    }
 
     ////////////////////////////////////////
-    public function handle_cat(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $output_2 = '';
-        $output_3 = '';
-        $data_create = array();
-        $data_update = array();
-        $accesss = new Products;
-        $error = array();
-        if ($request->type == 1) {
-            $id = $request->cat_id;
-            $skin = category_child(Category::all(), $id);
-            $cat_2 = Category::where('parent_id', '=', $id)->get();
-            $access =  Products::where(function ($query) use ($id) {
-                $query->where('cat_id', '=', $id);
-            });
-            if ($request->sub_type == 1) {
-                $access = $access->where('sub_type', 'LIKE', 'controller');
-            }
-            $access = $access->where('type', 'LIKE', 'access')->get();
-            $output .= '<option value="0">Chọn Danh Mục Skin</option>';
-            foreach ($skin as $sk) {
-                $output .= '
-                <option value="' . $sk->id . '">' . $sk->name . '</option>
-                ';
-            }
-            if (!empty($cat_2)) {
-                $output_2 .= '<option value="">Chọn Danh Mục Phụ 1</option>';
-                foreach ($cat_2 as $c2) {
-                    $output_2 .= '
-                   <option value="' . $c2->id . '">' . $c2->name . '</option>
-                   ';
-                }
-            } else {
-                $output_2 = '<option value="">Không Có Danh Mục Phụ 1</option>';
-            }
-            if (count($access) > 0) {
-                foreach ($access as $as) {
-                    $output_3 .= '
-                    <div class="mb-4 col-3 acs_item">
-                    <div class="va-checkbox d-flex align-items-center w-100">
-                        <input type="checkbox" name="access[]" value="' . $as->id . '" id="acs__' . $as->id . '"
-                            class="check_acs ">
-                        <label for="acs__' .  $as->id . '">
-                            ' . $as->name . '
-                        </label>
-                    </div>
-                </div>
-                    ';
-                }
-            } else {
-                $output_3 = '<span>Chưa Có Phụ Kiện Nào Thuộc Danh Mục Này.....</span>';
-            }
-        }
 
-        if ($request->type == 2) {
-            $id = $request->cat_id;
-            $cat_3 = Category::where('parent_id', '=', $id)->get();
-            if (count($cat_3) > 0) {
-                $output .= '<option value="0">Chọn Danh Mục Phụ 2</option>';
-                foreach ($cat_3 as $c3) {
-                    $output .= '
-                   <option value="' . $c3->id . '">' . $c3->name . '</option>
-                   ';
-                }
-            } else {
-                $output = '<option value="">Không Có Danh Mục Phụ 2</option>';
-            }
-        }
-        if ($request->type == 4) {
-            $id = $request->tp;
-            $type = typeProduct::where('parent', '=', $id)->get();
-            if (count($type) > 0) {
-                $output .= '<option value="0">Chọn loại sản phẩm phụ</option>';
-                foreach ($type as $t) {
-                    $output .= '
-                   <option value="' . $t->id . '">' . $t->name . '</option>
-                   ';
-                }
-            } else {
-                $output = '<option value="0">Không Có loại sản phẩm phụ</option>';
-            }
-        }
-
-        $data['html'] = $output;
-        $data['html_2'] = $output_2;
-        $data['html_3'] = $output_3;
-        return response()->json($data);
-    }
-
-    ////////////////////////////////////////
     //////////////////////////////////////
 
     public function handle_load(Request $request, ModelInterface $repom)
     {
-        $data = array();
+
         $pagination = '';
         $output = '';
-        $data_create = array();
-        $data_update = array();
         $product = new Products;
-        $error = array();
-        $id = $request->id;
-        $page = $request->page;
-        if ($request->action == "update_stock") {
-            Products::where('id', '=', $id)->update([
-                'stock' => $request->val
-            ]);
-        }
+        $page = (int) $request->page;
         if ($request->action == "update_hl") {
-            Products::where('id', '=', $id)->update([
-                'highlight' => $request->val
+            $id = (int) $request->id;
+            $highlight = (int) $request->highlight;
+            $updated = Products::where('id', '=', $id)->update([
+                'highlight' => $highlight
             ]);
+            return $this->successResponse(null, "Updated Hightlight Product");
         }
-        if ($request->nameOrId != null) {
-            $nameOrId = $request->nameOrId;
-            $product = $product->where(function ($query) use ($nameOrId) {
-                $query->where('id', '=', $nameOrId)
-                    ->orWhere('name', 'LIKE', '%' . $nameOrId . '%');
+        if ($request->name) {
+            $name = $request->name;
+            $product = $product->where(function ($query) use ($name) {
+                $query->where('id', '=', $name)
+                    ->orWhere('name', 'LIKE', '%' . $name . '%');
             });
         }
-        if ($request->author != null) {
-            $product = $product->where('author', 'LIKE',  '%' . $request->author . '%');
+        if ($request->usage) {
+            $product = $product->where('usage_stt',  $request->usage);
         }
-        if ($request->model != null) {
+        if ($request->model) {
             $product = $product->where('model',  'LIKE', '%' . $request->model . '%');
         }
-        if ($request->stock != 0) {
-            $product = $product->where('stock', '=', $request->stock);
+        if ($request->status) {
+            $product = $product->where('status', (int) $request->status);
         }
-        if ($request->pdc != 0) {
-            $product = $product->where('producer_id', '=', $request->pdc);
+        if ($request->producer) {
+            $product = $product->where('producer_id', (int) $request->producer);
         }
-        if ($request->cat_s1 != null) {
-            $product = $product->where('sub_1_cat_id', '=', $request->cat_s1);
-        }
-        if ($request->pF != null && $request->pT == null) {
-            $product = $product->whereBetween('price', [$request->pF, Products::max('price')]);
-        }
-        if ($request->pF == null && $request->pT != null) {
-            $product = $product->whereBetween('price', [Products::min('price'), $request->pT]);
-        }
-        if ($request->pF != null && $request->pT != null) {
-            if ($request->pT > $request->pF) {
-                $product = $product->whereBetween('price', [$request->pF, $request->pT]);
-            }
-        }
-        if ($request->has('categories')) {
+        if ($request->categories) {
             $categories = $request->categories;
             $product = $product->whereHas('categories', function ($q) use ($categories) {
                 $q->whereIn('category_id', $categories);
             });
         }
-        $products = $repom->pagination($product, [$request->val_sort, $request->sort], $page, 12, null);
+        if ($request->author) {
+            $author = $request->author;
+            $product = $product->whereHas('user', function ($q) use ($author) {
+                $q->where('name', 'LIKE', "%" . $author . "%");
+            });
+        }
+        $product = $product->whereBetween("price", [(int) $request->pMin, (int) $request->pMax]);
+        $products = $repom->pagination($product, [$request->sort, $request->field], $page, 16, null);
         if ($products->count > 0) {
             foreach ($products->data as $prd) {
                 $output .= view('components.admin.product.item', compact('prd'));
@@ -290,14 +99,11 @@ class AdminAjaxProductController extends Controller
         } else {
             $output .= view('components.empty.nodata');
         }
-        if ($products->number_page > 0) {
-            $pagination =  navi_ajax_page($products->number_page, $page, "", "justify-content-center", "mt-2");
-        }
+        $pagination .= view('components.pagination', ['page' => $page, 'number_page' => $products->number_page, 'classWp' => "justify-content-center mt-2"]);
 
         $data['html'] = $output;
         $data['page'] = $pagination;
-        $data['type'] = $request->type;
-        return response()->json($data);
+        return $this->successResponse($data, null);
     }
 
     ////////////////////////////////////////
@@ -311,6 +117,7 @@ class AdminAjaxProductController extends Controller
         $res['image'] = "";
         $act = $request->act;
         $galleries = json_decode($request->gallery);
+        $res['deleted'] = false;
         switch ($act) {
             case 'upload-image':
                 $id = (int) $request->id;
@@ -325,7 +132,7 @@ class AdminAjaxProductController extends Controller
                         $save = $file->storeFileImg($request->file, $path);
                         $image->update(['image_' . $size =>  $save]);
                         $res['image'] = $file->ver_img($save);
-                    } catch (\Expectation $e) {
+                    } catch (\Exception $e) {
                         $this->resCode = 500;
                     }
                 }
@@ -357,7 +164,7 @@ class AdminAjaxProductController extends Controller
                 $item = collect(json_decode($request->item))->toArray();
                 $index = (int) $request->index;
                 $id = (int) $request->id;
-                $isEdit = $request->isEdit;
+                $isEdit = $request->isEdit === "true";
                 if ($isEdit) {
                     $created = gllProducts::create(['products_id' => $id, "image_80" => null, 'image_700' => null, 'index' => $index]);
                     $item['id'] = $created->id;
@@ -367,6 +174,7 @@ class AdminAjaxProductController extends Controller
                 $props['key'] = $index;
                 $props["productact"] = $isEdit ? "edit"  : 'add';
                 $res['html'] .= view('components.admin.product.gallery.item', $props);
+
                 break;
             case 'sort':
                 foreach (explode(",", $request->sort) as $index => $id) {
@@ -374,10 +182,62 @@ class AdminAjaxProductController extends Controller
                 }
                 break;
             case "single-image-delete":
+                $type = $request->type;
+                $productId = $request->id;
+                try {
+                    $product = Products::select(['main_img', 'sub_img', 'bg'])->where('id', $productId)->first();
+                    switch ($type) {
+                        case 'img_sub':
+                            $file->deleteFile($product->sub_img);
+                            $product->update(['sub_img' => NULL]);
+                            break;
+                        case 'img_bg':
+                            $file->deleteFile($product->bg);
+                            $product->update(['bg' => NULL]);
+                            break;
+                        default:
+                            break;
+                    }
+                    $res['deleted'] = true;
+                    $res['image'] = config('app.no_image');
+                } catch (\Exception $e) {
+
+                    $this->resCode = 500;
+                }
 
                 break;
             case "single-image-upload":
 
+                $type = $request->type;
+                $id = $request->id;
+                $path = config("app.image_products") . "/";
+                $image = $request->image;
+                try {
+                    $product = Products::where('id', $id);
+                    switch ($type) {
+                        case 'img_sub':
+                            $path = $path  . "sub/";
+                            $save = $file->storeFileImg($image, $path);
+                            $product->update(['sub_img' => $save]);
+                            break;
+                        case 'img_bg':
+                            $path = $path . "background/";
+                            $save = $file->storeFileImg($image, $path);
+                            $product->update(['bg' => $save]);
+                            break;
+                        case 'img_main':
+                            $path = $path . "main/";
+                            $save = $file->storeFileImg($image, $path);
+                            $product->update(['main_img' => $save]);
+                            break;
+                        default:
+                            break;
+                    }
+                    $res['uploaded'] = true;
+                    $res['image'] = $file->ver_img($save);
+                } catch (\Exception $e) {
+                    $this->resCode = 500;
+                }
                 break;
             default:
                 # code...
@@ -419,7 +279,7 @@ class AdminAjaxProductController extends Controller
         $model = $request->model ? $request->model : "Products";
         $modelRela = $request->relaModel ? $request->relaModel : "RelatedProducts";
         $act = $request->act;
-        $page = $request->page;
+        $page = (int) $request->page;
         $relaKey = $request->relaKey . "_id";
         $relaName = $request->relaName . "_id";
         $option = json_decode($request->option);

@@ -3,9 +3,11 @@
 namespace App\View\Components\admin\relation;
 
 use Illuminate\View\Component;
+use App\Http\Traits\Relationship;
 
 class rela extends Component
 {
+    use Relationship;
     /**
      * Create a new component instance.
      *
@@ -25,7 +27,7 @@ class rela extends Component
     public function __construct($rl = "product-products", $relaid = 0, $reverse = false, $selected = "", $id = "", $onlymodel = null)
     {
         // $arrela index 0 : relaName , index 1 : relaKey
-        $rlship = getRelationship($rl);
+        $rlship = $this->getRelationship($rl);
         if (!$rlship) {
             abort(500, "Không tìm thấy relation");
         }

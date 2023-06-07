@@ -14,19 +14,29 @@
     <link rel="shortcut icon" href="<?php echo e($file->ver_img(config('setting-2nite.icon'))); ?>" type="image/x-icon">
     <title><?php echo $__env->yieldContent('title', 'Dashboard'); ?></title>
     <link rel="stylesheet" href="<?php echo e(asset('plugin/reset.css')); ?>">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css"
+        integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="<?php echo e(asset('plugin/bootstrap/css/bootstrap.min.css')); ?>">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
         integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <?php
         file_put_contents(public_path('pgb/pgb.css'), '');
     ?>
@@ -42,6 +52,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
         integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <?php echo $__env->yieldContent('import_css'); ?>
     <link rel="stylesheet" href="<?php echo e($file->ver('admin/app/css/app.css')); ?>">
     <?php if (isset($component)) { $__componentOriginal9636b50d9f0a3581b759498e9135550b36d917c2 = $component; } ?>
@@ -62,47 +73,72 @@
     <?php echo app('Tightenco\Ziggy\BladeRouteGenerator')->generate(); ?>
     <script type="text/javascript">
         const user = <?php echo json_encode(Auth::user()); ?>;
-    </script>
-    <script type="text/javascript">
         const path_ab = <?php echo json_encode(env('PATH_TINYMCE')); ?>;
     </script>
-
-    <script src="<?php echo e(asset('plugin/bootstrap/js/jquery-3.5.1.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('plugin/bootstrap/js/popper.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('plugin/bootstrap/js/bootstrap.min.js')); ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
-        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <?php if (isset($component)) { $__componentOriginalf56e96fa23f50da776b13da3b20b3c57206083f1 = $component; } ?>
+<?php $component = App\View\Components\Include\Bootstrap::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('include.bootstrap'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Include\Bootstrap::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalf56e96fa23f50da776b13da3b20b3c57206083f1)): ?>
+<?php $component = $__componentOriginalf56e96fa23f50da776b13da3b20b3c57206083f1; ?>
+<?php unset($__componentOriginalf56e96fa23f50da776b13da3b20b3c57206083f1); ?>
+<?php endif; ?>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
         integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="<?php echo e($file->ver('app/common.js')); ?>"></script>
-    <script src="<?php echo e($file->ver('admin/app/js/config.js')); ?>"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+        integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
         integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
         integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"
         integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.min.js"></script>
     <script src="<?php echo e($file->ver('js/laravel-server/laravel-echo-server.js')); ?>"></script>
+    
     <script src="<?php echo e(asset('admin/plugin/tags/tagsinput.js')); ?>"></script>
+    
     <script src="https://cdn.tiny.cloud/1/bho6ckhdsdjmv2bmyaxmm2dn52w16ounvk9au2ys2oqo8gty/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
-    <script src="<?php echo e($file->ver('admin/app/js/tinymce.js')); ?>"></script>
-    <script src="<?php echo e($file->ver('admin/app/js/relationship.js')); ?>"></script>
-    <script src="<?php echo e($file->ver('plugin/color-picker/color.min.js')); ?>"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
         integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    
+    <script src="<?php echo e($file->ver('app/common.js')); ?>"></script>
+    <script src="<?php echo e($file->ver('admin/app/js/config.js')); ?>"></script>
+    <script src="<?php echo e($file->ver('admin/app/js/tinymce.js')); ?>"></script>
+    <script src="<?php echo e($file->ver('admin/app/js/relationship.js')); ?>"></script>
+    <script src="<?php echo e($file->ver('plugin/color-picker/color.min.js')); ?>"></script>
+    <script src="<?php echo e($file->ver('admin/app/js/a_media.js')); ?>"></script>
     <?php echo $__env->yieldContent('import_js'); ?>
     <script src="<?php echo e($file->ver('admin/app/js/app.js')); ?>"></script>
 
@@ -161,7 +197,6 @@
                     <div class="sidebar__head--logo d-flex align-items-center">
                         <img src="https://res.cloudinary.com/vanh-tech/image/upload/v1681081513/my_logo_dark_tfzcgj.png"
                             width="250" height="150" alt="">
-
                     </div>
                     <div class="sidebar__head--info d-flex align-items-center justify-content-center my-2">
                         <?php if(Auth::user()->avatar != null): ?>
@@ -172,7 +207,7 @@
                         <?php endif; ?>
                         <div class="text">
                             <span class="d-block"><?php echo e(Auth::user()->name); ?></span>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -512,27 +547,7 @@
                                     class="module_drop <?php echo e($module == 'banner' ? 'show' : ''); ?> collapse"
                                     data-parent="#sidebar__content--accordion">
                                     <ul class="module__drop--menu">
-                                        <li class="item">
-                                            <a href="<?php echo e(route('banner_view_add')); ?>"
-                                                class="<?php echo e($route == 'banner_view_add' ? 'route_active' : ''); ?> <?php echo e($route == 'banner_view_edit' ? 'route_active' : ''); ?>">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý Banner</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="<?php echo e(route('slide_view_add')); ?>"
-                                                class="<?php echo e($route == 'slide_view_add' ? 'route_active' : ''); ?>">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý Slide</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="<?php echo e(route('ads_view_add')); ?>"
-                                                class="<?php echo e($route == 'ads_view_add' ? 'route_active' : ''); ?>">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý ADS</span>
-                                            </a>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                             </li>
@@ -590,8 +605,8 @@
                                 <img src="<?php echo e(asset(Auth::user()->avatar)); ?>" width="60" height="60"
                                     alt="">
                             <?php else: ?>
-                                <img src="<?php echo e(asset('client/images/user-large.png')); ?>" width="60"
-                                    height="60" alt="">
+                                <img src="<?php echo e(asset('client/images/user-large.png')); ?>" width="60" height="60"
+                                    alt="">
                             <?php endif; ?>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right drop-content" aria-labelledby="avatar__drop">

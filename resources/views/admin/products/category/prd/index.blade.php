@@ -1,13 +1,7 @@
 @extends('admin.layout.app')
-@section('import_css')
-    <link rel="stylesheet" href="{{ asset('admin/plugin/tags/tagsinput.css') }}">
-@endsection
+
 @section('import_js')
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="{{ asset('admin/app/js/category.js') }}?ver=@php echo filemtime('admin/app/js/category.js') @endphp">
-    </script>
-    <script src="{{ asset('admin/app/js/related_all.js') }}"></script>
-    <script src="{{ asset('admin/plugin/tags/tagsinput.js') }}"></script>
+    <script src="{{ $file->ver('admin/app/js/category.js') }}"></script>
 @endsection
 
 @section('name')
@@ -157,7 +151,7 @@
                         <div class="card-header text-center">
                             <h2>Danh Sách Danh Mục</h2>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" id="outputCategories">
                             <ul class="admin-cate admin-cate-connect row no-gutters lv-0" id="admin-cate-0"
                                 data-lv="0">
                                 <x-admin.category.dd.item :categories="$categories" />
@@ -172,7 +166,7 @@
     </div>
     <div class="modal show" id="m_editCategory" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="m_editCategoryLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             {!! Form::open(['url' => '#', 'method' => 'POST', 'files' => true, 'class' => 'formUpdateCategory']) !!}
             <div class="modal-content">
                 <div class="modal-header">
@@ -181,7 +175,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="bodyEditCategory">
                     ...
                 </div>
                 <div class="modal-footer">

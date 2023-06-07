@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Http\Traits\Responser;
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use Responser;
     /**
      * A list of the exception types that are not reported.
      *
@@ -32,10 +35,13 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
+
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            // perhaps things are here...
         });
+
     }
+
 }

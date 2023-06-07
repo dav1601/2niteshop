@@ -71,7 +71,7 @@ $(function () {
         return h.replace(/&nbsp;/g, "");
     });
 
-    function loading_data_product($page = 1) {
+    function loading_data_product($page = 1, act = "def") {
         var page = $page;
         var genre = get_checked("game_genre").toString();
         var dataView = $("#sort").attr("data-view");
@@ -114,11 +114,15 @@ $(function () {
                 $.loading();
             },
             success: function (data) {
-                $("#outputGrid").html(data.html);
-                $("#outputList").html(data.html_2);
-                $('[data-toggle="tooltip"]').tooltip();
-                $(".products__page").html(data.page);
-                $(document).scrollTop($("#category__filter").offset().top - 48);
+                $("#outputGrid").html(data.grid);
+                $("#outputList").html(data.list);
+                $(".products__page").html(data.pagination);
+                if (act === "paging") {
+                    $(document).scrollTop(
+                        $("#category__filter").offset().top - 48
+                    );
+                }
+
                 $.end_loading();
             },
         });
@@ -130,7 +134,7 @@ $(function () {
         loading_data_product();
     });
     $(document).on("click", ".products__page .page-link", function () {
-        loading_data_product($(this).attr("data-page"));
+        loading_data_product($(this).attr("data-page"), "paging");
     });
     // ////////////////////
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY

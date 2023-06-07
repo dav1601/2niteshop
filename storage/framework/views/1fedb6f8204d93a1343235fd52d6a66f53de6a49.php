@@ -1,12 +1,5 @@
-<?php $__env->startSection('import_css'); ?>
-    <link rel="stylesheet" href="<?php echo e(asset('admin/plugin/tags/tagsinput.css')); ?>">
-<?php $__env->stopSection(); ?>
 <?php $__env->startSection('import_js'); ?>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="<?php echo e(asset('admin/app/js/category.js')); ?>?ver=<?php echo filemtime('admin/app/js/category.js') ?>">
-    </script>
-    <script src="<?php echo e(asset('admin/app/js/related_all.js')); ?>"></script>
-    <script src="<?php echo e(asset('admin/plugin/tags/tagsinput.js')); ?>"></script>
+    <script src="<?php echo e($file->ver('admin/app/js/category.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('name'); ?>
@@ -208,9 +201,7 @@ unset($__errorArgs, $__bag); ?>
 
                             <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
 <?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'icon','id' => 'iconCategory','custom' => [
-                                'plh' => 'Icon Danh Mục (!Chỉ
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dành cho
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        danh mục CHÍNH)',
+                                'plh' => 'Icon Danh Mục (!Chỉ dành cho danh mục CHÍNH)',
                             ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.form.file'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -244,8 +235,7 @@ unset($__errorArgs, $__bag); ?>
                         <div class="card-header text-center">
                             <h2>Danh Sách Danh Mục</h2>
                         </div>
-                        <div class="card-body">
-
+                        <div class="card-body" id="outputCategories">
                             <ul class="admin-cate admin-cate-connect row no-gutters lv-0" id="admin-cate-0"
                                 data-lv="0">
                                 <?php if (isset($component)) { $__componentOriginal8dfd7164f23edfceef9d5b00d69c950cc5e7cefa = $component; } ?>
@@ -274,7 +264,7 @@ unset($__errorArgs, $__bag); ?>
     </div>
     <div class="modal show" id="m_editCategory" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="m_editCategoryLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <?php echo Form::open(['url' => '#', 'method' => 'POST', 'files' => true, 'class' => 'formUpdateCategory']); ?>
 
             <div class="modal-content">
@@ -284,7 +274,7 @@ unset($__errorArgs, $__bag); ?>
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="bodyEditCategory">
                     ...
                 </div>
                 <div class="modal-footer">

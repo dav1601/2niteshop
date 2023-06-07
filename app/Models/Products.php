@@ -3,9 +3,12 @@
 namespace App\Models;
 
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Models\Products
@@ -68,9 +71,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Products withoutTrashed()
  * @mixin \Eloquent
  */
-class Products extends Model
+class Products extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
     protected $table = 'products';
     protected $fillable = [
         'id',
@@ -80,6 +83,7 @@ class Products extends Model
         'des',
         'keywords',
         'price',
+        'qty',
         'discount',
         'historical_cost',
         'content',
@@ -93,6 +97,7 @@ class Products extends Model
         'cat_game_id',
         'stock',
         'new',
+        'status',
         'usage_stt',
         'num_orders',
         'highlight',
@@ -129,12 +134,17 @@ class Products extends Model
     }
     public function cat_game()
     {
-        return $this->belongsTo('App\Models\CatGame', 'cat_game_id', 'name');
+        return $this->belongsTo('App\Models\CatGame', 'cat_game_id');
+    }
+    public function type()
+    {
+        return $this->belongsTo('App\Models\typeProduct', 'type');
     }
     public function producer()
     {
         return $this->belongsTo('App\Models\Producer', 'producer_id', 'id');
     }
+
     public function categories()
     {
         return $this->belongsToMany("App\Models\Category", 'product_categories', 'products_id', 'category_id');
@@ -146,5 +156,9 @@ class Products extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id');
+    }
+    public function getPreOrderAttribute()
+    {
+        return strtotime($this->date_sold) >= strtotime(Carbon::now()) || $this->status === 3;
     }
 }

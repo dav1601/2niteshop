@@ -40,24 +40,9 @@ $(function () {
         $("#admin-cate-collapse-" + target).collapse("toggle");
     });
 
-    // $(document).on("mousedown", ".admin-cate-dd", function () {
-    //     $(this).draggable({
-    //         scroll: true,
-    //         containment: "body",
-    //         revert: false,
-    //         helper: "clone",
-    //         disable: false,
-    //         start: function (event, ui) {
-    //             console.log(ui);
-    //         },
-    //         drag: function (event, ui) {
-    //             console.log(ui);
-    //         },
-    //         stop: function (event, ui) {
-    //             console.log(ui);
-    //         },
-    //     });
-    // });
+    $("#m_editCategory").on("hidden.bs.modal", function () {
+        $("#bodyEditCategory").html("");
+    });
     function handleLevelDD(el, lvDrop, root = true, act = "p") {
         let lv = lvDrop;
         if (!root) {
@@ -133,7 +118,9 @@ $(function () {
             data: data,
             dataType: "json",
             success: function (res) {
-                console.log(res);
+                if (res.update_categories) {
+                    $("#outputCategories").html(res.categories_html);
+                }
                 $.btn_loading_v2(form, false, true);
                 $.errForm(false, form, res.errors);
                 if (res.s) {
@@ -179,8 +166,11 @@ $(function () {
         ajaxSort(data);
         // $("#m_editCategory").modal("show");
     });
+
     $(".admin-cate").sortable({
-        connectWith: ".admin-cate-connect",
+        items: ".admin-cate-dd",
+        containment: "parent",
+        forcePlaceholderSize: true,
         update: function (event, ui) {
             const el = $(ui.item[0]);
             const lv = Number(el.attr("data-lv"));
@@ -197,42 +187,131 @@ $(function () {
         },
 
         over: function (e, ui) {
+            console.log({
+                act: "over",
+                u: ui,
+                t: $(this),
+            });
             renderDD($(ui.item[0]), $(this));
         },
         receive: function (event, ui) {
-            const currItem = $(ui.item[0]);
-            let idParent = $(this).attr("data-id");
-            let idChild = currItem.attr("data-id");
-            let elEach = $(this).children("li");
-            renderDD(currItem, $(this));
-            const data = {
+            console.log({
                 act: "receive",
-                idParent: idParent,
-                idChild: idChild,
-                level: currItem.attr("data-lv"),
-            };
-            ajaxSort(data);
-            // console.log({
-            //     t: $(this),
-            //     u: ui,
-            //     e: "receive",
-            //     data: data,
-            // });
-            // renderDD(ui.item[0], $(this));
+                u: ui,
+            });
+            // console.log(ui);
+            // const currItem = $(ui.item[0]);
+            // let idParent = $(this).attr("data-id");
+            // let idChild = currItem.attr("data-id");
+            // let elEach = $(this).children("li");
+            // renderDD(currItem, $(this));
+            // const data = {
+            //     act: "receive",
+            //     idParent: idParent,
+            //     idChild: idChild,
+            //     level: currItem.attr("data-lv"),
+            // };
+            // ajaxSort(data);
         },
     });
-    // $(".admin-cate-collapse").droppable({
-    //     over: function (event, ui) {
-    //         const elDrag = $(ui.draggable[0]);
-    //         const elDrop = $(this);
-    //         let lvDrag = elDrag.attr("data-lv");
-    //         let lvDrop = elDrop.attr("data-lv");
-    //         console.log({
-    //             lda: lvDrag,
-    //             ldo: lvDrop,
-    //         });
-    //     },
-    // });
+    $(".admin-cate-collapse").droppable({
+        over: function (event, ui) {
+            const elDrag = $(ui.draggable[0]);
+            const elDrop = $(this);
+            let lvDrag = elDrag.attr("data-lv");
+            let lvDrop = elDrop.attr("data-lv");
+            console.log({
+                lda: lvDrag,
+                ldo: lvDrop,
+            });
+        },
+    });
+    // handle images category
+    function handleImage(act = "upload", ajax = {}) {
+        let form = new FormData();
+        for (const key in ajax) {
+            form.append(key, ajax[key]);
+        }
+        form.append("act", act);
+        return $.ajax({
+            type: "post",
+            url: route("ajax.handleImage"),
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+        });
+    }
+    $(document).on("click", ".image-category-clear", function () {
+        Swal.fire({
+            title: "Bạn Chắc Chắn Xoá Chứ?",
+            text: "Hình ảnh không thể khôi phục chỉ có thể thêm lại!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Delete",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const id = $(this).attr("data-id");
+                const type = $(this).attr("data-type");
+                const ajax = {
+                    id: id,
+                    type: type,
+                };
+                $.btn_loading_v2($(this), true);
+                handleImage("clear", ajax).then((res) => {
+                    const data = res.data;
+                    console.log(data);
+                    if (data.deleted) {
+                        $.resClearImage(
+                            $(this).attr("data-target"),
+                            data.image
+                        );
+                    }
+                    $.btn_loading_v2($(this), false);
+                });
+            }
+        });
+    });
+    $(document).on("change", ".image-category-input", function () {
+        const id = $(this).attr("data-id");
+        const type = $(this).attr("data-type");
+        const image = $(this).prop("files")[0];
+        const ajax = {
+            id: id,
+            type: type,
+            image: image,
+        };
+        const target = "#" + $(this).attr("id");
+        const btn = $(".image-category-upload[data-target='" + target + "']");
+        $.btn_loading_v2(btn, true);
+        handleImage("upload", ajax).then((res) => {
+            const data = res.data;
+            console.log(data);
+            if (data.uploaded) {
+                $.resUploadImage(target, data.image);
+            }
+            $.btn_loading_v2(btn, false);
+        });
+    });
+    $(document).on("click", ".image-category-upload", function () {
+        Swal.fire({
+            title: "Bạn chắc chắn muốn upload ?",
+            text: "Hình ảnh cũ sẽ bị xoá đi và thay thế bằng ảnh mới!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Upload",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const target = $(this).attr("data-target");
+                $(target).click();
+            }
+        });
+    });
     // LÀM TIẾP PHẦN NÀY + AJAX + TƯ DUY ĐỔI CLASS KHI OVER LÊN COLLAPSE
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

@@ -62,7 +62,7 @@
 
     <div class="container">
         <div class="row mx-0">
-            <div id="category" class="<?php if(App\Models\Category::where('id', '=', $id)->first()->is_game == 1): ?> col-md-10 col-12 <?php else: ?> col-md-12 <?php endif; ?> pr-0">
+            <div id="category" class="<?php if($is_game): ?> col-md-10 col-12 <?php else: ?> col-md-12 <?php endif; ?> pr-0">
                 <div id="category__header">
                     <h1> <?php echo e($category->name); ?> </h1>
                 </div>
@@ -128,8 +128,7 @@
                                 <div class="row mx-0" id="outputGrid">
                                     
                                     <?php $__currentLoopData = $products->data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6 item w-100">
-                                            <?php if (isset($component)) { $__componentOriginal58ee110754c547cdf765a6d10246c95d9c380967 = $component; } ?>
+                                        <?php if (isset($component)) { $__componentOriginal58ee110754c547cdf765a6d10246c95d9c380967 = $component; } ?>
 <?php $component = App\View\Components\Product\Itemgrid::resolve(['class' => 'prdcat','message' => $prd] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('product.itemgrid'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -137,27 +136,33 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Product\Itemgrid::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['type' => '2']); ?>
+<?php $component->withAttributes(['classWp' => 'col-lg-3 col-md-4 col-12 col-sm-6 item']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal58ee110754c547cdf765a6d10246c95d9c380967)): ?>
 <?php $component = $__componentOriginal58ee110754c547cdf765a6d10246c95d9c380967; ?>
 <?php unset($__componentOriginal58ee110754c547cdf765a6d10246c95d9c380967); ?>
 <?php endif; ?>
-                                        </div>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
                                 <?php if($products->count > 1): ?>
                                     <div class="products__page mt-4">
                                         <div class="products__page mt-4">
-                                            <?php echo navi_ajax_page(
-                                                $products->number_page,
-                                                $products->page,
-                                                $size = 'pagination-sm',
-                                                'justify-content-center',
-                                                $mt = 'mt-4',
-                                            ); ?>
-
+                                            <?php if (isset($component)) { $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966 = $component; } ?>
+<?php $component = App\View\Components\Pagination::resolve(['page' => $products->page] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('pagination'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Pagination::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['number_page' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($products->number_page),'classWp' => 'pagination-sm justify-content-center mt-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966)): ?>
+<?php $component = $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966; ?>
+<?php unset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966); ?>
+<?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endif; ?>
@@ -170,8 +175,7 @@
                             <?php if($products->count > 0): ?>
                                 <div class="row flex-column mx-0" id="outputList">
                                     <?php $__currentLoopData = $products->data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <div class="item w-100">
-                                            <?php if (isset($component)) { $__componentOriginal864fe51715cf3144d2db94045882ab8e7689549c = $component; } ?>
+                                        <?php if (isset($component)) { $__componentOriginal864fe51715cf3144d2db94045882ab8e7689549c = $component; } ?>
 <?php $component = App\View\Components\Listitem::resolve(['message' => $prd] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('listitem'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -179,26 +183,32 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Listitem::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
+<?php $component->withAttributes(['classWp' => 'item w-100']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal864fe51715cf3144d2db94045882ab8e7689549c)): ?>
 <?php $component = $__componentOriginal864fe51715cf3144d2db94045882ab8e7689549c; ?>
 <?php unset($__componentOriginal864fe51715cf3144d2db94045882ab8e7689549c); ?>
 <?php endif; ?>
-                                        </div>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
                                 <?php if($products->count > 1): ?>
                                     <div class="products__page mt-4">
-                                        <?php echo navi_ajax_page(
-                                            $products->number_page,
-                                            $products->page,
-                                            $size = 'pagination-sm',
-                                            'justify-content-center',
-                                            $mt = 'mt-4',
-                                        ); ?>
-
+                                        <?php if (isset($component)) { $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966 = $component; } ?>
+<?php $component = App\View\Components\Pagination::resolve(['page' => $products->page] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('pagination'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Pagination::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['number_page' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($products->number_page),'classWp' => 'pagination-sm justify-content-center mt-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966)): ?>
+<?php $component = $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966; ?>
+<?php unset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966); ?>
+<?php endif; ?>
                                     </div>
                                 <?php endif; ?>
                             <?php else: ?>
@@ -209,7 +219,7 @@
                 </div>
             </div>
             
-            <?php if(App\Models\Category::where('id', '=', $id)->first()->is_game == 1): ?>
+            <?php if($is_game): ?>
                 <div id="filter_genre" class="col-md-2 pr-0">
                     <div class="d-flex justify-content-between align-items-center">
                         <h2>Bộ lọc</h2>

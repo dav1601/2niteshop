@@ -63,7 +63,7 @@
 
     <div class="container">
         <div class="row mx-0">
-            <div id="category" class="@if (App\Models\Category::where('id', '=', $id)->first()->is_game == 1) col-md-10 col-12 @else col-md-12 @endif pr-0">
+            <div id="category" class="@if ($is_game) col-md-10 col-12 @else col-md-12 @endif pr-0">
                 <div id="category__header">
                     <h1> {{ $category->name }} </h1>
                 </div>
@@ -130,21 +130,15 @@
                                     {{-- @if (App\Models\Category::where('id', '=', $id)->first()->is_game == 1) col-md-4
                             @else col-md-3 @endif --}}
                                     @foreach ($products->data as $prd)
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6 item w-100">
-                                            <x-product.itemgrid type="2" class="prdcat" :message="$prd" />
-                                        </div>
+                                        <x-product.itemgrid class="prdcat" classWp="col-lg-3 col-md-4 col-12 col-sm-6 item"
+                                            :message="$prd" />
                                     @endforeach
                                 </div>
                                 @if ($products->count > 1)
                                     <div class="products__page mt-4">
                                         <div class="products__page mt-4">
-                                            {!! navi_ajax_page(
-                                                $products->number_page,
-                                                $products->page,
-                                                $size = 'pagination-sm',
-                                                'justify-content-center',
-                                                $mt = 'mt-4',
-                                            ) !!}
+                                            <x-pagination :number_page="$products->number_page" :page="$products->page"
+                                                classWp="pagination-sm justify-content-center mt-4" />
                                         </div>
                                     </div>
                                 @endif
@@ -157,20 +151,13 @@
                             @if ($products->count > 0)
                                 <div class="row flex-column mx-0" id="outputList">
                                     @foreach ($products->data as $prd)
-                                        <div class="item w-100">
-                                            <x-listitem :message="$prd" />
-                                        </div>
+                                        <x-listitem classWp="item w-100" :message="$prd" />
                                     @endforeach
                                 </div>
                                 @if ($products->count > 1)
                                     <div class="products__page mt-4">
-                                        {!! navi_ajax_page(
-                                            $products->number_page,
-                                            $products->page,
-                                            $size = 'pagination-sm',
-                                            'justify-content-center',
-                                            $mt = 'mt-4',
-                                        ) !!}
+                                        <x-pagination :number_page="$products->number_page" :page="$products->page"
+                                            classWp="pagination-sm justify-content-center mt-4" />
                                     </div>
                                 @endif
                             @else
@@ -181,7 +168,7 @@
                 </div>
             </div>
             {{-- end category --}}
-            @if (App\Models\Category::where('id', '=', $id)->first()->is_game == 1)
+            @if ($is_game)
                 <div id="filter_genre" class="col-md-2 pr-0">
                     <div class="d-flex justify-content-between align-items-center">
                         <h2>Bộ lọc</h2>

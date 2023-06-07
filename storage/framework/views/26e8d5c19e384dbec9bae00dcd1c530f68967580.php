@@ -4,6 +4,8 @@
     <script>
         // if (route('current'))
         var producer = <?php echo e(Js::from($producer)); ?>;
+        var galleries = [];
+        var isEdit = false;
     </script>
     
 <?php $__env->stopSection(); ?>
@@ -64,7 +66,12 @@
 <?php endif; ?>
 
         
-        <?php echo Form::open(['url' => route('product_handle_add'), 'method' => 'POST', 'files' => true]); ?>
+        <?php echo Form::open([
+            'url' => route('product_handle_add'),
+            'method' => 'POST',
+            'files' => true,
+            'id' => 'formProducts',
+        ]); ?>
 
         <div class="w-100 row no-gutters">
             <div class="col-8 row no-gutters pr-4">
@@ -78,7 +85,8 @@
 <?php endif; ?>
 <?php $component->withAttributes(['class' => 'col-12 mb-5']); ?>
                      <?php $__env->slot('content', null, ['class' => 'row w-100']); ?> 
-                        <div class="form-group col-6">
+                        <div class="form-group col-8">
+                            
                             <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.input.text'); ?>
@@ -87,7 +95,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['required' => 'true','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(get_crawler('page_title')),'name' => 'name','label' => 'name']); ?>
+<?php $component->withAttributes(['required' => 'true','value' => ''.e(get_crawler('name')).'','name' => 'name','label' => 'name']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
@@ -95,7 +103,7 @@
 <?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
 <?php endif; ?>
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-4">
                             <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.input.text'); ?>
@@ -116,8 +124,8 @@
                             <?php
                                 $desc = '';
                                 $kws = '';
-                                if (count($crawler) > 0) {
-                                    $meta = get_crawler('meta');
+                                $meta = get_crawler('meta');
+                                if ($meta) {
                                     $desc = $meta['desc'];
                                     $kws = $meta['kws'];
                                 }
@@ -173,7 +181,7 @@
 <?php $component = $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21; ?>
 <?php unset($__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21); ?>
 <?php endif; ?>
-                            <textarea class="form-control" name="des" id="" rows="4"><?php echo e($desc); ?><?php echo e(old('des')); ?></textarea>
+                            <textarea class="form-control" name="des" id="" rows="4"><?php echo e($desc); ?></textarea>
                             <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.form.error'); ?>
@@ -222,6 +230,7 @@
                                 }
 
                             ?>
+
                             <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.input.text'); ?>
@@ -230,7 +239,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'giá bán','required' => 'true','name' => 'price','class' => 'input-price','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($price),'id' => 'prd_price','placeholder' => '...']); ?>
+<?php $component->withAttributes(['label' => 'giá bán','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($price),'required' => 'true','name' => 'price','class' => 'input-price','id' => 'prd_price','placeholder' => '...']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
@@ -248,7 +257,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'giá gốc','required' => 'true','name' => 'historical_cost','class' => 'input-price','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($price_cost),'id' => 'historical_cost','placeholder' => '...']); ?>
+<?php $component->withAttributes(['label' => 'giá gốc','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($price_cost),'required' => 'true','name' => 'historical_cost','class' => 'input-price','id' => 'historical_cost','placeholder' => '...']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
@@ -267,7 +276,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'số lượng','required' => 'true','type' => 'number','min' => '1','name' => 'quantity','id' => 'quantity','value' => '0']); ?>
+<?php $component->withAttributes(['label' => 'số lượng','value' => '0','type' => 'number','min' => '0','name' => 'qty','id' => 'qty']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84)): ?>
@@ -433,14 +442,14 @@
                             </div>
                             <div class="col-6 mb-3">
                                 <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','height' => '305px','name' => 'sub_img','id' => 'imgProductMain','label' => 'hình ảnh phụ']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.ui.form.image','data' => ['width' => '305px','height' => '305px','name' => 'sub_img','id' => 'imgProductSub','label' => 'hình ảnh phụ']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.ui.form.image'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['width' => '305px','height' => '305px','name' => 'sub_img','id' => 'imgProductMain','label' => 'hình ảnh phụ']); ?>
+<?php $component->withAttributes(['width' => '305px','height' => '305px','name' => 'sub_img','id' => 'imgProductSub','label' => 'hình ảnh phụ']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -488,38 +497,23 @@
                      <?php $__env->slot('heading', null, ['class' => '']); ?> 
                         <h6 class="font-weight-bold d-flex">Hình ảnh chi tiết</h6>
                      <?php $__env->endSlot(); ?>
-                     <?php $__env->slot('content', null, ['class' => '']); ?> 
-                        <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['class' => 'mb-5','name' => 'gll700','id' => 'imgProduct700','multiple' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('admin.form.file'); ?>
+                     <?php $__env->slot('content', null, ['class' => '','id' => 'body-gallery']); ?> 
+                        <?php if (isset($component)) { $__componentOriginalc45b07ad776af439fae1d222352b59be7e111d90 = $component; } ?>
+<?php $component = App\View\Components\Admin\Product\Gallery::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.product.gallery'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Product\Gallery::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['required' => 'true','label' => 'Hình Ảnh Chi Tiết 700x700']); ?>
+<?php $component->withAttributes(['productAct' => 'add']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
-<?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
-<?php $component = $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5; ?>
-<?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
+<?php if (isset($__componentOriginalc45b07ad776af439fae1d222352b59be7e111d90)): ?>
+<?php $component = $__componentOriginalc45b07ad776af439fae1d222352b59be7e111d90; ?>
+<?php unset($__componentOriginalc45b07ad776af439fae1d222352b59be7e111d90); ?>
 <?php endif; ?>
-
-                        <?php if (isset($component)) { $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5 = $component; } ?>
-<?php $component = App\View\Components\Admin\Form\File::resolve(['name' => 'gll80','id' => 'imgProduct80','multiple' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('admin.form.file'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Form\File::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['label' => 'Hình Ảnh thu nhỏ 80x80']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5)): ?>
-<?php $component = $__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5; ?>
-<?php unset($__componentOriginal19571530086391dd0a770e0cef2481dd23608ab5); ?>
-<?php endif; ?>
+                        
                      <?php $__env->endSlot(); ?>
 
                  <?php echo $__env->renderComponent(); ?>
@@ -655,7 +649,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Form\Submit::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
+<?php $component->withAttributes(['id' => 'submit-product']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginald7fc8f80a6c60591340d5a5c1c4ec20d3dbfdcd7)): ?>
@@ -668,7 +662,7 @@
             
             <div class="col-4">
                 <div class="row w-100 no-gutters">
-                    <div class="col-12 mb-4">
+                    <div class="col-12 mb-4" id="product-category">
                         <?php if (isset($component)) { $__componentOriginal14ccd556195a083e2011d1951fb32f245d8802c5 = $component; } ?>
 <?php $component = App\View\Components\Admin\Product\Categories::resolve(['show' => true] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.product.categories'); ?>
@@ -700,7 +694,7 @@
                          <?php $__env->endSlot(); ?>
                          <?php $__env->slot('content', null, ['class' => '']); ?> 
                             <div class="row">
-                                <div class="col-12 mb-4">
+                                <div class="col-12 form-group mb-4">
                                     <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.input.text'); ?>
@@ -709,7 +703,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Layout\Input\Text::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'Ngày mở bán','id' => 'date_sold','name' => 'date_sold','required' => 'true','disabled' => true]); ?>
+<?php $component->withAttributes(['value' => ''.e($carbon->now()->format('Y-m-d')).' 00:00:00','label' => 'Ngày mở bán','id' => 'date_sold','name' => 'date_sold','required' => 'true']); ?>
                                          <?php $__env->slot('append', null, []); ?> 
                                             <button type="button" class="btn btn-primary date-picker"
                                                 data-target="#date_sold">
@@ -723,7 +717,7 @@
 <?php unset($__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84); ?>
 <?php endif; ?>
                                 </div>
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.form.label'); ?>
@@ -745,7 +739,7 @@
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.form.label'); ?>
@@ -769,7 +763,7 @@
                                 </div>
 
                                 
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.form.label'); ?>
@@ -807,7 +801,7 @@
 <?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
 <?php endif; ?>
                                 </div>
-                                <div class="col-6 mb-4">
+                                <div class="col-6 form-group mb-4">
                                     <?php if (isset($component)) { $__componentOriginalb30f1b15d41d938c39f11ba50f70b7b92b91da21 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Form\Label::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.form.label'); ?>
@@ -846,7 +840,7 @@
 <?php endif; ?>
                                 </div>
                                 
-                                <div class="col-12">
+                                <div class="col-12 form-group">
                                     <?php if (isset($component)) { $__componentOriginal98ab7ae604b382c640f957abf57133ecfbd55f84 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Input\Text::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.input.text'); ?>
@@ -887,11 +881,7 @@
             
 
         </div>
-        <?php echo Form::close(); ?>
-
-    </div>
-    
-    <?php if (isset($component)) { $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9 = $component; } ?>
+        <?php if (isset($component)) { $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Modal::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.modal'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -900,14 +890,14 @@
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['title' => 'thông tin chi tiết']); ?>
-         <?php $__env->slot('modal', null, ['id' => 'mContentProduct']); ?> 
-         <?php $__env->endSlot(); ?>
-         <?php $__env->slot('dialog', null, ['class' => 'modal-xl modal-dialog-scrollable']); ?> 
-         <?php $__env->endSlot(); ?>
-         <?php $__env->slot('body', null, []); ?> 
-            <div class="form-group col-12">
-                <textarea name="content" id="content__tiny" class="form-control my-editor"><?php echo old('content'); ?></textarea>
-                <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
+             <?php $__env->slot('modal', null, ['id' => 'mContentProduct']); ?> 
+             <?php $__env->endSlot(); ?>
+             <?php $__env->slot('dialog', null, ['class' => 'modal-xl modal-dialog-scrollable']); ?> 
+             <?php $__env->endSlot(); ?>
+             <?php $__env->slot('body', null, []); ?> 
+                <div class="form-group col-12">
+                    <textarea name="content" id="content__tiny" class="form-control my-editor"><?php echo get_crawler('content'); ?></textarea>
+                    <?php if (isset($component)) { $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Form\Error::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.form.error'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -922,19 +912,19 @@
 <?php $component = $__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40; ?>
 <?php unset($__componentOriginal18c6b1c91d5c983bf8ab3b6e2054ef7950952a40); ?>
 <?php endif; ?>
-            </div>
+                </div>
 
-         <?php $__env->endSlot(); ?>
-         <?php $__env->slot('footer', null, ['class' => '']); ?> 
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-         <?php $__env->endSlot(); ?>
-     <?php echo $__env->renderComponent(); ?>
+             <?php $__env->endSlot(); ?>
+             <?php $__env->slot('footer', null, ['class' => '']); ?> 
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+             <?php $__env->endSlot(); ?>
+         <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9)): ?>
 <?php $component = $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9; ?>
 <?php unset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9); ?>
 <?php endif; ?>
-    <?php if (isset($component)) { $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9 = $component; } ?>
+        <?php if (isset($component)) { $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9 = $component; } ?>
 <?php $component = App\View\Components\Admin\Layout\Modal::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('admin.layout.modal'); ?>
 <?php if ($component->shouldRender()): ?>
@@ -943,25 +933,29 @@
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['title' => 'Thông số']); ?>
-         <?php $__env->slot('modal', null, ['id' => 'mInfoProduct']); ?> 
-         <?php $__env->endSlot(); ?>
-         <?php $__env->slot('dialog', null, ['class' => 'modal-xl']); ?> 
-         <?php $__env->endSlot(); ?>
-         <?php $__env->slot('body', null, []); ?> 
-            <div class="form-group col-12">
-                <textarea name="info" id="info__tiny" class="form-control my-editor"><?php echo old('info'); ?><?php echo get_crawler('spec'); ?></textarea>
-            </div>
+             <?php $__env->slot('modal', null, ['id' => 'mInfoProduct']); ?> 
+             <?php $__env->endSlot(); ?>
+             <?php $__env->slot('dialog', null, ['class' => 'modal-xl']); ?> 
+             <?php $__env->endSlot(); ?>
+             <?php $__env->slot('body', null, []); ?> 
+                <div class="form-group col-12">
+                    <textarea name="info" id="info__tiny" class="form-control my-editor"><?php echo get_crawler('spec'); ?></textarea>
+                </div>
 
-         <?php $__env->endSlot(); ?>
-         <?php $__env->slot('footer', null, ['class' => '']); ?> 
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-         <?php $__env->endSlot(); ?>
-     <?php echo $__env->renderComponent(); ?>
+             <?php $__env->endSlot(); ?>
+             <?php $__env->slot('footer', null, ['class' => '']); ?> 
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+             <?php $__env->endSlot(); ?>
+         <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9)): ?>
 <?php $component = $__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9; ?>
 <?php unset($__componentOriginala5f18ae664ad62494165a06e85924976adecaeb9); ?>
 <?php endif; ?>
+        <?php echo Form::close(); ?>
+
+    </div>
+    
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('admin.layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\xampp\htdocs\2niteshop\home\u217861923\domains\vachill.com\public_html\resources\views/admin/products/add.blade.php ENDPATH**/ ?>

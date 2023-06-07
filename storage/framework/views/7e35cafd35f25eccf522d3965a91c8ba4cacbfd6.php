@@ -1,22 +1,5 @@
-<table class="table-dark table-bordered table">
-    <thead>
-        <tr>
-            <th>
-                Chọn
-            </th>
-            <th scope="col" class="text-center">ID</th>
-            <th scope="col">Tên Item</th>
-            <?php if($m === 'BlockProduct' || $m === 'Policy' || $m === 'Insurance'): ?>
-                <th scope="col" class="text-center">Content</th>
-            <?php endif; ?>
-            <?php if($m === 'Policy'): ?>
-                <th scope="col" class="text-center">Position</th>
-            <?php endif; ?>
-            <?php if($m === 'PageBuilder'): ?>
-                <th scope="col" class="text-center">Type</th>
-            <?php endif; ?>
-        </tr>
-    </thead>
+<table class="table-dark table-bordered w-100 mb-0 table">
+
     <tbody>
         <?php $__currentLoopData = $vadata->data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
@@ -24,7 +7,7 @@
                 $name = collect($item)->get($p);
             ?>
             <tr>
-                <td style="width:60px;">
+                <td style="width:30px">
                     <?php
                         $id = 'select__prd--check-' . $item->id;
                     ?>
@@ -38,7 +21,7 @@
                         </div>
                     </div>
                 </td>
-                <td style="width:160px;" class="text-center"> <?php echo e($item->id); ?> </td>
+
                 <td> <?php echo e($name); ?> </td>
                 <?php if($m === 'Insurance'): ?>
                     <td class="text-center">
@@ -76,8 +59,21 @@
     </tbody>
 </table>
 <div class="card-footer" id="select__prd--page">
-    <?php echo navi_ajax_page($vadata->number_page, $page, '', 'justify-content-center', 'mt-2'); ?>
-
+    <?php if (isset($component)) { $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966 = $component; } ?>
+<?php $component = App\View\Components\Pagination::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('pagination'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Pagination::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['number_page' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($vadata->number_page),'page' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($page),'classWp' => 'justify-content-center mt-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966)): ?>
+<?php $component = $__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966; ?>
+<?php unset($__componentOriginal41fa1a726c2cdc888fd1699c1c531da853ade966); ?>
+<?php endif; ?>
 </div>
 <?php if($m === 'BlockProduct' || $m === 'Policy'): ?>
     <div class="modal fade" id="view__content__block" tabindex="-1" role="dialog"
