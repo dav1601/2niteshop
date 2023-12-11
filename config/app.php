@@ -189,6 +189,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
 
 
     ],
@@ -247,9 +248,10 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         // or
 
-        'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade',
+        'Twilio' => Aloha\Twilio\Support\Laravel\Facade::class,
         // ...
 
     ],

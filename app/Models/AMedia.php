@@ -17,6 +17,7 @@ class AMedia extends Model
         'uuid',
         'model',
         'path',
+        'collection',
         'name',
         'file_name',
         'mime_type',

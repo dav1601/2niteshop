@@ -1,11 +1,10 @@
-
 $(function () {
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-
+    
     jQuery.ajaxCart = function ajaxCart(data = {}) {
         const type = data.type;
         $.ajax({
@@ -50,13 +49,16 @@ $(function () {
         const data = { type: "load" };
         $.ajaxCart(data);
     }
+
     function initApp() {
+        $('[data-toggle="tooltip"]').tooltip();
         checkScrollTop();
         loadCart();
         set_cookie_view(cookie_view);
         $.initSwiper();
         $.initMultipleSwiper();
     }
+    // ANCHOR INIT APP //////////////////////////////////////////////////////
     initApp();
     function showMobileMenu(show = true, menu = "category") {
         const el = $(".mobile__menu." + "--" + menu);
@@ -115,9 +117,7 @@ $(function () {
             data: data,
             dataType: "json",
             success: function (data) {
-                $("#authModalTitle").html(
-                    `<h2 class="title text-center">${title}</h2>`
-                );
+                $("#authModalTitle").text(title);
                 $("#authContent").html(data.html);
                 if (modal) {
                     authModal.modal("show");
@@ -311,7 +311,6 @@ $(function () {
         }
     });
     //////////////////////
-    $('[data-toggle="tooltip"]').tooltip();
 
     $(".tawk-button").css("width", "30px !important");
     //  chỉnh chiều cao cho ảnh phải banner

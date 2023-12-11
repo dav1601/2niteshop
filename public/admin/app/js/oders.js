@@ -1,11 +1,11 @@
 $(function () {
-    
     jQuery.load_data = function load_data(
         $action = "load",
         $type = 1,
         $val = 0,
         $id = 0,
-        $page = 1
+        $page = 1,
+        $options = []
     ) {
         let sort = $(prefix + "sort").val();
         let stt = $(prefix + "stt").val();
@@ -16,7 +16,6 @@ $(function () {
         let p = $(prefix + "prov").val();
         let d = $(prefix + "dist").val();
         let w = $(prefix + "ward").val();
-
         $.ajax({
             type: "post",
             url: route("handle_ajax_orders"),
@@ -35,18 +34,19 @@ $(function () {
                 id: $id,
                 page: $page,
                 val: $val,
+                options: $options,
             },
             dataType: "json",
-            success: function (data) {
-                $("#table__show--orders").html(data.html);
+            success: function (res) {
+                $("#table__show--orders").html(res.html);
                 if ($action != "load") {
-                    $("#detail__order--update").html(data.html_detail);
+                    $("#detail__order--update").html(res.html_detail);
                 }
-                if (data.type == 2) {
+                if (res.type == 2) {
                     var mess = "Cập nhật TT đơn hàng số " + $id + " thành công";
                     toastr.success(mess, "Cập nhật trạng thái đơn hàng");
                 }
-                if (data.type == 3) {
+                if (res.type == 3) {
                     var mess =
                         "Cập nhật TT thanh toán đơn hàng số " +
                         $id +
@@ -117,7 +117,22 @@ $(function () {
     $.load_data("load");
 
     // /////////////
-
+    $(document).on("click", ".export_invoice", function () {
+        $.btn_loading_v2($(this), true);
+        $.ajax({
+            type: "post",
+            url: route("export_invoice"),
+            data: { code: $(this).attr("data-code") },
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $.btn_loading_v2($(this), false);
+            },
+            error: function (res) {
+                $.btn_loading_v2($(this), false);
+            },
+        });
+    });
     // //////////////////////////
     // if (route == "show_orders") {
     //     setInterval(load_data, 5000);
@@ -197,7 +212,7 @@ $(function () {
     $(document).on("change", ".update__paid", function () {
         var id = $(this).attr("data-id");
         var val = $(this).val();
-        $.load_data("update_paid", 3, val, id);
+        $.load_data("update", 3, val, id);
     });
     $(document).on("click", ".page-link", function () {
         $.load_data("paging", 4, null, null, $(this).attr("data-page"));

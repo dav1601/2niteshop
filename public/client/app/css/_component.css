@@ -235,12 +235,38 @@
 .product__item {
   position: relative;
   overflow: hidden;
-  transition: all 0.5s;
+  transition: all 0.3s ease-in-out;
   width: 100%;
   padding: 0 5px !important;
 }
 .product__item--img {
   position: relative;
+  width: 305px;
+  height: 305px;
+}
+.product__item--img img {
+  visibility: unset;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.product__item--img .img_show {
+  opacity: 1;
+}
+.product__item--img .img_hide {
+  opacity: 0;
+}
+.product__item--img:hover .img_show {
+  opacity: 0;
+}
+.product__item--img:hover .img_hide {
+  opacity: 1;
+}
+.product__item--img:hover .quick__view {
+  visibility: visible;
 }
 .product__item--img .quick__view {
   visibility: hidden;
@@ -291,44 +317,6 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 5px;
-}
-.product__item--labels .stock-2 {
-  background: #ce11d1 !important;
-}
-.product__item--labels .stock-3 {
-  background: #696973;
-}
-.product__item--labels .ht {
-  background: #a13333;
-}
-.product__item .img_show {
-  visibility: unset;
-}
-.product__item .img_hide {
-  visibility: unset;
-  position: absolute;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-.product__item:hover .img_show {
-  visibility: hidden;
-  position: absolute;
-  opacity: 1;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-.product__item:hover .img_hide {
-  visibility: unset;
-  position: unset;
-  opacity: 1;
-}
-.product__item:hover .quick__view {
-  visibility: visible;
 }
 .product__item--content .name {
   font-family: "Nunito Sans", sans-serif;
@@ -695,8 +683,8 @@
 }
 .cart__item--caption {
   padding: 0px 10px;
-  flex: 0 0 50%;
-  max-width: 50%;
+  flex: 0 0 60%;
+  max-width: 60%;
 }
 .cart__item--caption .name {
   color: #333333;
@@ -1313,13 +1301,13 @@
   margin-bottom: 5px;
 }
 .product__item--labels .stock-2 {
-  background: #ce11d1 !important;
+  background: #696973 !important;
 }
 .product__item--labels .stock-3 {
-  background: #696973;
+  background: #ffcb00 !important;
 }
 .product__item--labels .hl {
-  background: #a13333;
+  background: #ff3838 !important;
 }
 
 .bis {

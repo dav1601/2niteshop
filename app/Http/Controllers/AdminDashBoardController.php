@@ -123,165 +123,10 @@ class AdminDashBoardController extends Controller
     }
     //  //////////////////////////////////////// end validatorCHome
     ////////////////////////////////////////
-    public function add_cofhome_handle(Request $request)
-    {
-        $data = array();
-        $validator = $this->validatorCHome($request);
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-        }
-        $prefix = "section-category-";
-        $all_section = $request->section;
-        $data['name'] = $request->name;
-        $data['main_link'] = $request->link_main;
-        $data['use_link'] = $request->link_use;
-        $data['fix_link'] = $request->link_fix;
-        $data['instruct_link'] = $request->link_instruct;
-        $data['access_link'] = $request->link_access;
-        $data['color'] = $request->color;
-        $folder = "admin/images/show_home/";
-        // main img
-        $path_main = $folder . Str::slug($request->name) . "/" . "main/";
-        $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
-        // end main img
-        // use img
-        if ($request->has('use_img')) {
-            $path_use = $folder . Str::slug($request->name) . "/" . "use/";
-            $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
-        }
-        // end use img
-        // instruct img
-        if ($request->has('instruct_img')) {
-            $path_instruct = $folder . Str::slug($request->name) . "/" . "instruct/";
-            $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
-        }
-        // end instruct img
-        // fix img
-        if ($request->has('fix_img')) {
-            $path_fix = $folder . Str::slug($request->name) . "/" . "fix/";
-            $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
-        }
-        // end fix img
-        // access img
-        if ($request->has('access_img')) {
-            $path_access = $folder . Str::slug($request->name) . "/" . "access/";
-            $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
-        }
-        if ($request->has("category__digital")) {
-            $data['cat_digital'] = implode(",", $request->get("category__digital"));
-        }
-        // end access img
-        $created = showHome::create($data);
-        if ($created) {
-            $last_position = (int) showHome::latest()->first()->positon;
-            $position = $last_position + 1;
-            showHome::where('id', $created->id)->update(['position' =>  $position]);
-            if ($all_section != 0) {
-                for ($i = 0; $i < $all_section; $i++) {
-                    $section = $request->get($prefix . $i);
-                    if (count($section) > 0 && $section != 0) {
-                        foreach ($section as $category_id) {
-                            SectionHome::create([
-                                'show_id' => $created->id,
-                                'section' => $i,
-                                'category_id' => $category_id
-                            ]);
-                            unset($category_id);
-                        }
-                    }
-                }
-            }
-        }
-        return redirect()->back()->with('ok', '1');
-    }
+
 
     //////////////////////////////////////// end add show_home
-    public function edit_cofhome_handle($id, Request $request)
-    {
-        $data = array();
-        $conf = showHome::where('id', '=', $id)->first();
-        $validator = $this->validatorCHome($request, $id);
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-        }
-        $prefix = "section-category-";
-        $all_section = $request->section;
-        $data['name'] = $request->name;
-        $data['main_link'] = $request->link_main;
-        $data['use_link'] = $request->link_use;
-        $data['fix_link'] = $request->link_fix;
-        $data['instruct_link'] = $request->link_instruct;
-        $data['access_link'] = $request->link_access;
-        if ($request->has('active')) {
-            $data['active'] = 1;
-        } else {
-            $data['active'] = 0;
-        }
-        $data['color'] = $request->color;
-        if ($request->has("category__digital")) {
-            $data['cat_digital'] = implode(",", $request->get("category__digital"));
-        }
-        // main img
-        if ($request->has('main_img')) {
-            if ($conf->main_img != NULL)
-                $this->file->deleteFile($conf->main_img);
-            $path_main = "admin/images/show_home/" . Str::slug($request->name) . "/" . "main/";
-            $data['main_img'] = $this->file->storeFileImg($request->main_img, $path_main);
-        }
-        // end main img
-        // use img
-        if ($request->has('use_img')) {
-            if ($conf->use_img != NULL)
-                $this->file->deleteFile($conf->use_img);
-            $path_use = "admin/images/show_home/" . Str::slug($request->name) . "/" . "use/";
-            $data['use_img'] = $this->file->storeFileImg($request->use_img, $path_use);
-        }
-        // end use img
-        // instruct img
-        if ($request->has('instruct_img')) {
-            if ($conf->instruct_img != NULL)
-                $this->file->deleteFile($conf->instruct_img);
-            $path_instruct = "admin/images/show_home/" . Str::slug($request->name) . "/" . "instruct/";
-            $data['instruct_img'] = $this->file->storeFileImg($request->instruct_img,  $path_instruct);
-        }
-        // end instruct img
-        // fix img
-        if ($request->has('fix_img')) {
-            if ($conf->fix_img != NULL)
-                $this->file->deleteFile($conf->fix_img);
-            $path_fix = "admin/images/show_home/" . Str::slug($request->name) . "/" . "fix/";
-            $data['fix_img'] = $this->file->storeFileImg($request->fix_img, $path_fix);
-        }
-        // end fix img
-        // access img
-        if ($request->has('access_img')) {
-            if ($conf->access_img != NULL)
-                $this->file->deleteFile($conf->access_img);
-            $path_access = "admin/images/show_home/" . Str::slug($request->name) . "/" . "access/";
-            $data['access_img'] = $this->file->storeFileImg($request->access_img,  $path_access);
-        }
-        // end access img
-        $updated = showHome::where('id', '=', $id)->update($data);
-        if ($updated) {
-            SectionHome::where('show_id', $id)->delete();
-            if ($all_section != 0) {
-                for ($i = 0; $i < $all_section; $i++) {
-                    $section = $request->get($prefix . $i);
-                    if ($section && count($section) > 0) {
-                        foreach ($section as $category_id) {
-                            SectionHome::create([
-                                'show_id' => $id,
-                                'section' => $i,
-                                'category_id' => $category_id
-                            ]);
-                            unset($category_id);
-                        }
-                    }
-                }
-            }
-            return redirect()->back()->with('ok', '1');
-        }
-    }
+
 
     ////////////////////////////////////////
     ////////////////////////////////////////
@@ -333,7 +178,7 @@ class AdminDashBoardController extends Controller
             $data_create['type'] = $request->type;
             if ($request->has('value_img')) {
                 $path = "admin/images/info/";
-                $data_create['value'] = $this->file->storeFileImg($request->value_img, $path);
+                $data_create['value'] = $this->file->storeFileImg($request->value_img, "info", "public");
             } else {
                 $data_create['value'] = $request->value;
             }
@@ -371,16 +216,16 @@ class AdminDashBoardController extends Controller
             $data_update['type'] = $request->type;
             if ($request->has('value_img')) {
                 if ($config_info->value != NULL) {
-                    $this->file->deleteFile($config_info->value);
+                    $this->file->deleteFile($config_info->value, "public");
                 }
-                $path = "admin/images/info/";
-                $data_update['value'] = $this->file->storeFileImg($request->value_img, $path);
+
+                $data_update['value'] = $this->file->storeFileImg($request->value_img, "info", "public");
             } else {
                 $data_update['value'] = $request->value;
             }
             if ($request->has('setNull')) {
                 if ($config_info->value != NULL) {
-                    $this->file->deleteFile($config_info->value);
+                    $this->file->deleteFile($config_info->value, "public");
                 }
                 $data_update['value'] = NULL;
             }

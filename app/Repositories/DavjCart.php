@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Traits\Product;
 use App\Models\Products;
 use App\Models\Insurance;
+use App\Models\ProductIns;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\DavjCartInterface;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -18,11 +19,10 @@ class DavjCart implements DavjCartInterface
 
         $this->file = $handle_file;
     }
-    public function add__or_update($id = 0, $qty = 1, $op_actives = "", $options = [], $realTimeUpdateProduct = false)
+    public function add__or_update($id = 0, $qty = 1, $op_actives = "", $options = [], $realTimeUpdateProduct = false, $instance = "shopping")
     {
-        $op_actives = !$op_actives ? '' : $op_actives;
-        $instance = array_key_exists("fake_shopping", $options) ? "fake_shopping" : "shopping";
-        $product = Products::select(['slug', 'historical_cost', 'discount', 'id', 'main_img', 'model', 'name', 'price'])->where('id', $id)->firstOrFail();
+        // $instance = array_key_exists("fake_shopping", $options) ? "fake_shopping" : "shopping";
+        $product = Products::select(['id', "image_first",  'slug', 'historical_cost', 'discount', 'id', 'main_img', 'model', 'name', 'price'])->with("img_first")->where('id', $id)->firstOrFail();
         $sub_total = 0;
         $res['act'] = "";
         $res['product'] = "";
@@ -47,11 +47,10 @@ class DavjCart implements DavjCartInterface
                     'options' => [
                         'ins' => $op_actives,
                         'model' => $product->model,
-                        'image' => $product->main_img,
+                        'image' => $product->path_first,
                         'sub_total' => $sub_total,
                         'other' => $options,
                         'slug' => $product->slug,
-                        'cost' => $product->historical_cost,
                         'discount' => $product->discount
                     ],
                 ]
@@ -72,11 +71,10 @@ class DavjCart implements DavjCartInterface
                     'options' => [
                         'ins' => $op_actives,
                         'model' => $product->model,
-                        'image' => $product->main_img,
+                        'image' => $product->path_first,
                         'sub_total' => $sub_total,
                         'other' => $options,
                         'slug' => $product->slug,
-                        'cost' => $product->historical_cost,
                         'discount' => $product->discount
                     ],
                 ]
@@ -86,6 +84,29 @@ class DavjCart implements DavjCartInterface
         return $res;
     }
     //
+
+    public function full_update()
+    {
+        $cart = Cart::instance('shopping')->content();
+        if (count($cart) <= 0) {
+            return false;
+        }
+        foreach ($cart as  $item) {
+            $options = [];
+            $arrayIns = explode(",", $item->options->ins);
+            if (count($arrayIns) > 0) {
+                foreach (explode(",", $item->options->ins) as  $value) {
+                    $exist = ProductIns::where("products_id", $item->id)->where("ins_id", (int) $value)->first();
+                    if ($exist) {
+                        array_push($options, $value);
+                    }
+                }
+            }
+            $this->add__or_update($item->id, $item->qty, implode(",", $options), ['type' => "update"], true);
+        }
+        return true;
+    }
+    ///
     public function update__cart($id, $rowId,  $qty = 1, $ins = 0, $color = 0)
     {
         $product = Products::where('id', '=', $id)->first();
@@ -104,7 +125,7 @@ class DavjCart implements DavjCartInterface
                 'ins' => $ins,
                 'color' => $color,
                 'model' => $product->model,
-                'image' => $product->main_img,
+                'image' => $product->path_first,
                 'sub_total' => $sub_total,
                 'cost' => $product->historical_cost
             ],

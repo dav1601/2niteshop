@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between align-items-center container">
             <div class="header__content--logo">
                 <a href="{{ route('home') }}" class="d-block">
-                    <img src="{{ $file->ver_img(getVal('logo')->value) }}" alt="logo" width="169" height="90">
+                    <img src="{{ getVal('logo')->value }}" alt="logo" width="169" height="90">
                 </a>
             </div>
             <div class="header__content--search">

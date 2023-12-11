@@ -32,7 +32,7 @@ class ClientProductsController extends Controller
 
     public function index($slug, Request $request, ModelInterface $vam)
     {
-      
+
         if (!$request->has('isAjax')) {
             $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('category/'), '', url()->current())));
             $slug = collect($bc)->last();
@@ -52,6 +52,7 @@ class ClientProductsController extends Controller
             }
 
         );
+
         $genre = [];
         if ($category->is_game) {
             $genre = $products->with(['product', 'product.cat_game'])->get();
@@ -74,8 +75,9 @@ class ClientProductsController extends Controller
         $ord = $request->has('ord') && $request->ord ? strtolower($request->ord) : "desc";
         $orderBy[] = $sort;
         $orderBy[] = $ord;
-        $products = $products->with(['producer']);
+        $products = $products->with(['producer', 'img_first', 'img_second']);
         $products = $vam->pagination($products, $orderBy, $page, 16, null);
+        dd($products);
         if ($request->has('isAjax')) {
             $data = array();
             $pagination = "";
@@ -106,11 +108,13 @@ class ClientProductsController extends Controller
 
 
     ////////////////////////////////////////
+    // ANCHOR detail //////////////////////////////////////////////////////
     public function detail_product(AdminPrdInterface $rprd, Request $request)
     {
         $bc =  explode("/", Str::replaceFirst('/', '', Str::replace(url('products/'), '', url()->current())));
         $slug = collect($bc)->last();
-        $product = $rprd->product($slug);
+        $product = $rprd->getProduct($slug);
+        dd($product);
         $categories = $product->categories->pluck('id');
         $related_products = [];
         $is_game = collect($product->categories)->filter(function ($category) {
@@ -136,7 +140,7 @@ class ClientProductsController extends Controller
         $data = array();
         $output = '';
         $id = $request->id;
-        $product = $rprd->product($id);
+        $product = $rprd->getProduct($id);
         $output .= view('components.modal.detail', compact('product'));
         $data['html'] = $output;
         return response()->json($data);

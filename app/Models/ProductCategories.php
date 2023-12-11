@@ -34,10 +34,10 @@ class ProductCategories extends Model
     ];
     public function cat()
     {
-        return $this->belongsToMany('App\Models\Category', 'category_id', 'id');
+        return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
     public function product()
     {
-        return $this->belongsToMany('App\Models\Products', 'products_id', 'id');
+        return $this->belongsTo('App\Models\Products', 'products_id', 'id');
     }
 }

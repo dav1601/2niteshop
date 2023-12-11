@@ -30,11 +30,29 @@ class gllProducts extends Model
         'products_id',
         'image_80',
         'image_700',
+        'media_700',
+        'media_80',
         'size',
         'index'
     ];
     function product()
     {
-        return $this->belongsTo('App\Models\Products')->orderBy('index', 'DESC');
+        return $this->belongsTo('App\Models\Products');
+    }
+    public function image_large()
+    {
+        return $this->belongsTo('App\Models\AMedia', 'media_700');
+    }
+    public function thumbnail()
+    {
+        return $this->belongsTo('App\Models\AMedia', 'media_80');
+    }
+    public function getPath700Attribute()
+    {
+        return $this->image_large ? $this->image_large->path : NULL;
+    }
+    public function getPath80Attribute()
+    {
+        return $this->thumbnail ? $this->thumbnail->path : NULL;
     }
 }

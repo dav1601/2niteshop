@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Repositories\FileInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminAjaxCategoryController extends Controller
@@ -29,7 +30,7 @@ class AdminAjaxCategoryController extends Controller
             $update[$type] = NUll;
             switch ($act) {
                 case 'clear':
-                    $deleted = $file->deleteFile($category[$type]);
+                    $deleted = $file->deleteFile($category[$type], "public");
                     if ($deleted) {
                         $query->update($update);
                         $res['image'] = config('app.no_image');
@@ -40,12 +41,12 @@ class AdminAjaxCategoryController extends Controller
                     break;
                 case 'upload':
                     $image = $request->image;
-                    $path = config('app.catalog') . "category";
-                    $save = $file->storeFileImg($image, $path);
+                    $path = "category/" . $type;
+                    $save = $file->storeFileImg($image, $path, "public");
                     if ($save) {
-                        $update[$type] = $save;
+                        $update[$type] = $save['path'];
                         $query->update($update);
-                        $res['image'] = $file->ver_img($save);
+                        $res['image'] = urlImg($save);
                         $res['uploaded'] = true;
                         $message = "uploaded image successly";
                     } else {

@@ -1,4 +1,8 @@
 $(function () {
+    var modalAddress = $("#modal-address");
+    var btnSaveAddress = $("#save__address");
+    var modalAddressContent = $("#modal-address-content");
+    var blobAvatar = "";
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -17,14 +21,9 @@ $(function () {
         var name = $("#name").val();
         var phone = $("#phone").val();
         var prov = $("#prov").val();
-        var prov_id = $("#prov :selected").attr("data-id");
         var dist = $("#dist").val();
-        var dist_id = $("#dist :selected").attr("data-id");
         var ward = $("#ward").val();
-        var ward_id = $("#ward :selected").attr("data-id");
         var detail = $("#detail").val();
-        var type = $(".type__item--active").attr("data-type");
-        var def = $("#set__def:checked").val();
         if (
             name == "" ||
             phone == "" ||
@@ -33,19 +32,19 @@ $(function () {
             ward == 0 ||
             detail == ""
         ) {
-            $("#add__address").addClass("disabled");
-            $("#add__address").prop("disabled", true);
-            $("#add__address").css("cursor", "not-allowed");
-            $("#update__address").addClass("disabled");
-            $("#update__address").prop("disabled", true);
-            $("#update__address").css("cursor", "not-allowed");
+            $("#save__address").addClass("disabled");
+            $("#save__address").prop("disabled", true);
+            $("#save__address").css("cursor", "not-allowed");
+            // $("#update__address").addClass("disabled");
+            // $("#update__address").prop("disabled", true);
+            // $("#update__address").css("cursor", "not-allowed");
         } else {
-            $("#add__address").removeClass("disabled");
-            $("#add__address").prop("disabled", false);
-            $("#add__address").css("cursor", "pointer");
-            $("#update__address").removeClass("disabled");
-            $("#update__address").prop("disabled", false);
-            $("#update__address").css("cursor", "pointer");
+            $("#save__address").removeClass("disabled");
+            $("#save__address").prop("disabled", false);
+            $("#save__address").css("cursor", "pointer");
+            // $("#update__address").removeClass("disabled");
+            // $("#update__address").prop("disabled", false);
+            // $("#update__address").css("cursor", "pointer");
         }
     }
     function renderAlert($icon = "success", $title = "Tiêu Đề") {
@@ -66,168 +65,221 @@ $(function () {
             title: $title,
         });
     }
+    // ANCHOR ajax update profile //////////////////////////////////////////////////////
 
-    $(document).on("click", "#add__address", function () {
-        var name = $("#name").val();
-        var phone = $("#phone").val();
-        var prov = $("#prov").val();
-        var prov_id = $("#prov :selected").attr("data-id");
-        var dist = $("#dist").val();
-        var dist_id = $("#dist :selected").attr("data-id");
-        var ward = $("#ward").val();
-        var ward_id = $("#ward :selected").attr("data-id");
-        var detail = $("#detail").val();
-        var type = $(".type__item--active").attr("data-type");
-        var def = $("#set__def:checked").val();
-        var act = "add";
-        $.ajax({
+    // ANCHOR ajax address //////////////////////////////////////////////////////
+    function ajaxAddress(act = "add", params = {}, callBtnLoading = true) {
+        params["act"] = act;
+        params["route"] = route().current();
+        return $.ajax({
             type: "post",
             url: route("ajax__address"),
-            data: {
-                name: name,
-                phone: phone,
-                prov: prov,
-                prov_id: prov_id,
-                dist: dist,
-                dist_id: dist_id,
-                ward: ward,
-                ward_id: ward_id,
-                detail: detail,
-                type: type,
-                def: def,
-                act: act,
-            },
+            data: params,
             dataType: "json",
             beforeSend: function () {
-                $.loading();
-            },
-            success: function (data) {
-                $("#rc__address").html(data.html);
-                $.end_loading();
-                if (data.ok == 1) {
-                    renderAlert("success", "Thêm địa chỉ Thành công");
-                    $("#outputAddress").html(data.rs_form);
-                } else {
-                    renderAlert("error", "Thêm địa chỉ thất bại");
+                if (act === "add" || act === "update") {
+                    $.btn_loading_v2(btnSaveAddress, true);
                 }
-                $("#addAddress").modal("hide");
+            },
+            success: function (res) {
+                const data = res.data;
+                console.log(data);
+                if (params["route"] !== "checkout" && act !== "data-address") {
+                    $("#rc__address").html(data.list_item_address);
+                } else {
+                    $(".section-select-address-list").html(
+                        data.list_item_address
+                    );
+                }
+                switch (act) {
+                    case "add":
+                        modalAddressContent.html(data.form_clear);
+
+                        renderAlert("success", "Thêm địa chỉ Thành công");
+                        $.btn_loading_v2(btnSaveAddress, false);
+
+                        modalAddress.modal("hide");
+                        break;
+                    case "update":
+                        renderAlert("success", "Cập nhật địa chỉ Thành công");
+                        $.btn_loading_v2(btnSaveAddress, false);
+
+                        break;
+                    case "data-address":
+                        modalAddressContent.html(data.html_content_address);
+                        modalAddress.modal("show");
+                        break;
+                    case "set-def-address":
+                        renderAlert(
+                            "success",
+                            "Cập nhật địa chỉ mặc đỊnh thành công"
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                const data = err.responseJSON.data;
+                if (err.status === 403) {
+                    $.validationFail(data);
+                    $.btn_loading_v2(btnSaveAddress, false);
+                    return;
+                }
+                switch (act) {
+                    case "add":
+                        renderAlert("error", "Thêm địa chỉ thất bại");
+                        $.btn_loading_v2(btnSaveAddress, false);
+                        break;
+                    case "update":
+                        renderAlert("error", "Cập nhật địa chỉ thất bại");
+                        $.btn_loading_v2(btnSaveAddress, false);
+                        break;
+                    case "data-address":
+                        renderAlert("error", "tải dữ liệu địa chỉ thất bại");
+                        break;
+                    case "set-def-address":
+                        renderAlert(
+                            "error",
+                            "Cập nhật địa chỉ mặc đỊnh thất bại"
+                        );
+                        break;
+                    default:
+                        break;
+                }
             },
         });
+    }
+    // $(document).on("click", "#add__address", function () {
+    //     var name = $("#name").val();
+    //     var phone = $("#phone").val();
+    //     var prov = $("#prov").val();
+    //     var prov_id = $("#prov :selected").attr("data-id");
+    //     var dist = $("#dist").val();
+    //     var dist_id = $("#dist :selected").attr("data-id");
+    //     var ward = $("#ward").val();
+    //     var ward_id = $("#ward :selected").attr("data-id");
+    //     var detail = $("#detail").val();
+    //     var type = $(".type__item--active").attr("data-type");
+    //     var def = $("#set__def:checked").val();
+    //     var act = "add";
+    //     var data = {
+    //         name: name,
+    //         phone: phone,
+    //         prov: prov,
+    //         prov_id: prov_id,
+    //         dist: dist,
+    //         dist_id: dist_id,
+    //         ward: ward,
+    //         ward_id: ward_id,
+    //         detail: detail,
+    //         type: type,
+    //         def: def,
+    //         act: act,
+    //     };
+    // });
+    $(document).on("click", "#save__address", function () {
+        let params = {
+            name: $("#name").val(),
+            phone: $("#phone").val(),
+            prov: $("#prov").val(),
+            prov_id: $("#prov :selected").attr("data-id"),
+            dist: $("#dist").val(),
+            dist_id: $("#dist :selected").attr("data-id"),
+            ward: $("#ward").val(),
+            ward_id: $("#ward :selected").attr("data-id"),
+            detail: $("#detail").val(),
+            type: $(".type__item--active").attr("data-type"),
+            def: $("#set__def:checked").val(),
+            id: $(this).attr("address-id"),
+        };
+        $.btn_loading_v2($(this), true);
+        ajaxAddress($(this).attr("data-type"), params)
+            .then(() => {
+                $.btn_loading_v2($(this), false);
+            })
+            .catch(() => {
+                $.btn_loading_v2($(this), false);
+            });
     });
     //    ////////////////////////////////////////
-    $(document).on("click", "#update__address", function () {
-        var name = $("#name").val();
-        var phone = $("#phone").val();
-        var prov = $("#prov").val();
-        var prov_id = $("#prov :selected").attr("data-id");
-        var dist = $("#dist").val();
-        var dist_id = $("#dist :selected").attr("data-id");
-        var ward = $("#ward").val();
-        var ward_id = $("#ward :selected").attr("data-id");
-        var detail = $("#detail").val();
-        var type = $(".type__item--active").attr("data-type");
-        var def = $("#set__def:checked").val();
-        var act = "update";
-        var id = $(this).attr("data-id");
-        $.ajax({
-            type: "post",
-            url: route("ajax__address"),
-            data: {
-                name: name,
-                phone: phone,
-                prov: prov,
-                prov_id: prov_id,
-                dist: dist,
-                dist_id: dist_id,
-                ward: ward,
-                ward_id: ward_id,
-                detail: detail,
-                type: type,
-                def: def,
-                act: act,
-                id: id,
-            },
-            dataType: "json",
-            beforeSend: function () {
-                $.loading();
-            },
-            success: function (data) {
-                $("#rc__address").html(data.html);
-                $.end_loading();
-                if (data.ok == 1) {
-                    renderAlert("success", "Cập Nhật địa chỉ Thành công");
-                } else {
-                    renderAlert("error", "Cập Nhật địa chỉ thất bại");
-                }
-            },
-        });
-    });
+    // $(document).on("click", "#update__address", function () {
+    //     var name = $("#name").val();
+    //     var phone = $("#phone").val();
+    //     var prov = $("#prov").val();
+    //     var prov_id = $("#prov :selected").attr("data-id");
+    //     var dist = $("#dist").val();
+    //     var dist_id = $("#dist :selected").attr("data-id");
+    //     var ward = $("#ward").val();
+    //     var ward_id = $("#ward :selected").attr("data-id");
+    //     var detail = $("#detail").val();
+    //     var type = $(".type__item--active").attr("data-type");
+    //     var def = $("#set__def:checked").val();
+    //     var act = "update";
+    //     var id = $(this).attr("data-id");
+    //     $.ajax({
+    //         type: "post",
+    //         url: route("ajax__address"),
+    //         data: {
+    //             name: name,
+    //             phone: phone,
+    //             prov: prov,
+    //             prov_id: prov_id,
+    //             dist: dist,
+    //             dist_id: dist_id,
+    //             ward: ward,
+    //             ward_id: ward_id,
+    //             detail: detail,
+    //             type: type,
+    //             def: def,
+    //             act: act,
+    //             id: id,
+    //         },
+    //         dataType: "json",
+    //         beforeSend: function () {
+    //             $.loading();
+    //         },
+    //         success: function (data) {
+    //             $("#rc__address").html(data.html);
+    //             $.end_loading();
+    //             if (data.ok == 1) {
+    //                 renderAlert("success", "Cập Nhật địa chỉ Thành công");
+    //             } else {
+    //                 renderAlert("error", "Cập Nhật địa chỉ thất bại");
+    //             }
+    //         },
+    //     });
+    // });
 
     // ////////////////////////////////////////////
     $(document).on("click", ".aa__del", function () {
-        var id = $(this).attr("data-id");
-        var act = "delete";
-        $.ajax({
-            type: "post",
-            url: route("ajax__address"),
-            data: { id: id, act: act },
-            dataType: "json",
-            beforeSend: function () {
-                $.loading();
-            },
-            success: function (data) {
-                $("#rc__address").html(data.html);
-                $.end_loading();
-                if (data.ok == 1) {
-                    renderAlert("success", "Xoá địa chỉ Thành công");
-                } else {
-                    renderAlert("Xoá", "Xoá địa chỉ thất bại");
-                }
-            },
+        $.btn_loading_v2($(this), true);
+        ajaxAddress("delete", { id: $(this).attr("data-id") }).catch(() => {
+            $.btn_loading_v2($(this), false);
         });
     });
     $(document).on("click", ".aa__edit", function () {
-        var id = $(this).attr("data-id");
-        var act = "data";
-        $.ajax({
-            type: "post",
-            url: route("ajax__address"),
-            data: { id: id, act: act },
-            dataType: "json",
-            beforeSend: function () {
-                $.loading();
-            },
-            success: function (data) {
-                $("#outputEditAddress").html(data.html_2);
-                $("#editAddress").modal("show");
-                $.end_loading();
-            },
-        });
+        const id = $(this).attr("data-id");
+        $.btn_loading_v2($(this), true);
+        ajaxAddress("data-address", { id: id })
+            .then((res) => {
+                $.btn_loading_v2($(this), false);
+            })
+            .catch((err) => {
+                $.btn_loading_v2($(this), false);
+            });
     });
     $(document).on("click", ".aa__btn", function () {
-        var id = $(this).attr("data-id");
-        var act = "setDef";
-        $.ajax({
-            type: "post",
-            url: route("ajax__address"),
-            data: { id: id, act: act },
-            dataType: "json",
-            beforeSend: function () {
-                $.loading();
-            },
-            success: function (data) {
-                $("#rc__address").html(data.html);
-                $.end_loading();
-                if (data.ok == 1) {
-                    renderAlert(
-                        "success",
-                        "Cập nhật địa chỉ mặc định Thành công"
-                    );
-                } else {
-                    renderAlert("Xoá", "Cập nhật địa chỉ mặc định Thất Bại");
-                }
-            },
-        });
+        const id = $(this).attr("data-id");
+        $.btn_loading_v2($(this), true);
+        ajaxAddress("set-def-address", { id: id })
+            .then(() => {
+                $.btn_loading_v2($(this), false);
+            })
+            .catch(() => {
+                $.btn_loading_v2($(this), false);
+            });
     });
     // //////////////////// end delete address
     $(document).on("keyup", "#name", function () {
@@ -237,51 +289,25 @@ $(function () {
         checkAddAddress();
     });
     $(document).on("change", "#prov", function () {
-        var url = route("change_address_2");
-        var id = $("#prov :selected").attr("data-id");
+        const id = $("#prov :selected").attr("data-id");
         if ($(this).val() == 0) {
             $("#dist").html('<option value="0">Bạn Chưa Chọn Tỉnh</option>');
             $("#ward").html(
                 '<option value="0">Bạn Chưa Chọn Quận/Huyện</option>'
             );
         } else {
-            $.ajax({
-                type: "post",
-                url: url,
-                data: { type: 1, id: id },
-                dataType: "json",
-                success: function (data) {
-                    if (data.type == 1) {
-                        $("#dist").html(data.html);
-                    } else {
-                        $("#ward").html(data.html);
-                    }
-                },
-            });
+            $.renderOptionAddress(id, "dist");
         }
         checkAddAddress();
     });
     $(document).on("change", "#dist", function () {
-        var url = route("change_address_2");
-        var id = $("#prov :selected").attr("data-id");
+        const id = $("#prov :selected").attr("data-id");
         if ($(this).val() == 0) {
             $("#ward").html(
                 '<option value="0">Bạn Chưa Chọn Quận/Huyện</option>'
             );
         } else {
-            $.ajax({
-                type: "post",
-                url: url,
-                data: { type: 2, id: id },
-                dataType: "json",
-                success: function (data) {
-                    if (data.type == 1) {
-                        $("#dist").html(data.html);
-                    } else {
-                        $("#ward").html(data.html);
-                    }
-                },
-            });
+            $.renderOptionAddress(id, "ward");
         }
         checkAddAddress();
     });
@@ -293,54 +319,60 @@ $(function () {
     });
 
     $(document).on("change", "#dvsAvatar", function () {
-        var formData = new FormData();
-        var url = route("ajax__avatar");
-        formData.append("avatar", $(this)[0].files[0]);
-        $.ajax({
-            type: "post",
-            url: url,
-            data: formData,
-            dataType: "json",
-            contentType: false,
-            processData: false,
-            beforeSend: function () {
-                var loading = $("#ajax__avatar--loading").val();
-                $("#davishop__avatar--edit").attr("src", loading);
-            },
-            success: function (data) {
-                if (data.ok == 0) {
-                    $.each(data.errors.avatar, function (key, val) {
-                        alert(val);
-                    });
-                    $("#davishop__avatar--edit").attr("src", avatar__user);
-                    $(".davishop__avatar img").attr("src", avatar__user);
-                } else {
-                    $("#davishop__avatar--edit").attr("src", data.img);
-                    $(".davishop__avatar img").attr("src", data.img);
-                    deleteAjaxImage(data.unlink);
-                    $("#target__file").text("Huỷ Bỏ");
-                    $("#target__file").attr("id", "cancel__target");
-                }
-            },
-        });
+        const file = $(this)[0].files[0];
+        if (file) {
+            $("#davishop__avatar--edit").attr("src", URL.createObjectURL(file));
+            $("#target__file").text("Huỷ Bỏ");
+            $("#target__file").attr("id", "cancel__target");
+        }
+        // var formData = new FormData();
+        // var url = route("ajax__avatar");
+        // formData.append("avatar", $(this)[0].files[0]);
+        // $.ajax({
+        //     type: "post",
+        //     url: url,
+        //     data: formData,
+        //     dataType: "json",
+        //     contentType: false,
+        //     processData: false,
+        //     beforeSend: function () {
+        //         var loading = $("#ajax__avatar--loading").val();
+        //         $("#davishop__avatar--edit").attr("src", loading);
+        //     },
+        //     success: function (data) {
+        //         if (data.ok == 0) {
+        //             $.each(data.errors.avatar, function (key, val) {
+        //                 alert(val);
+        //             });
+        //             $("#davishop__avatar--edit").attr("src", avatar__user);
+        //             $(".davishop__avatar img").attr("src", avatar__user);
+        //         } else {
+        //             $("#davishop__avatar--edit").attr("src", data.img);
+        //             $(".davishop__avatar img").attr("src", data.img);
+        //             deleteAjaxImage(data.unlink);
+        //             $("#target__file").text("Huỷ Bỏ");
+        //             $("#target__file").attr("id", "cancel__target");
+        //         }
+        //     },
+        // });
     });
+
     $(document).on("click", "#cancel__target", function () {
-        $("#davishop__avatar--edit").attr("src", avatar__user);
-        $(".davishop__avatar img").attr("src", avatar__user);
+        $("#davishop__avatar--edit").attr("src", currentAvatar);
         $("#dvsAvatar").val("");
         $(this).text("Thay Ảnh");
         $(this).attr("id", "target__file");
         return false;
     });
-    function deleteAjaxImage($path = "") {
-        var url = route("ajax__avatar__delete");
-        $.ajax({
-            type: "post",
-            url: url,
-            data: { path: $path },
-            dataType: "json",
-        });
-    }
+    // function deleteAjaxImage($path = "") {
+    //     var url = route("ajax__avatar__delete");
+    //     $.ajax({
+    //         type: "post",
+    //         url: url,
+    //         data: { path: $path },
+    //         dataType: "json",
+    //     });
+    // }
     // AREA PURCHASE
     $(document).on("click", ".stt__item", function () {
         $(".stt__item").removeClass("active");
@@ -386,6 +418,11 @@ $(function () {
     $(document).on("click", ".update__cancel", function () {
         let id = $(this).attr("data-id");
         $.loadOrder(false, "cancel", id);
+    });
+    $("#formUpdateProfile").ajaxForm({
+        success: function (res) {
+            console.log(res);
+        },
     });
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

@@ -11,21 +11,24 @@ use App\Models\PreOrder;
 use App\Models\Products;
 use App\Models\Customers;
 use App\Events\UpdateOrder;
+use App\Http\Traits\Responser;
 use Illuminate\Http\Request;
 use Laravel\Ui\Presets\React;
 use Illuminate\Support\Carbon;
 use App\Repositories\VaEventRepo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
+use App\Repositories\ModelInterface;
 use App\Repositories\OrderInterface;
 use App\Repositories\VaEventInterface;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use PDF;
 use App\Repositories\CustomerInterface;
 use App\Repositories\MailOrderInterface;
 use Illuminate\Support\Facades\Validator;
 
 class AdminOrderController extends Controller
 {
+    use Responser;
     public $customer;
     public $mailer;
     public function __construct(CustomerInterface $customer, MailOrderInterface $mailer)
@@ -38,15 +41,16 @@ class AdminOrderController extends Controller
         $this->mailer = $mailer;
     }
     ////////////////////////////////////////
-    public function index()
+    public function index(ModelInterface $rmodel)
     {
-        $page = 1;
-        $item_page = 10;
-        $start = ($page - 1) * $item_page;
-        $count = Orders::count();
-        $number_page = ceil($count / $item_page);
-        $orders = Orders::orderBy('id', 'DESC')->offset($start)->limit($item_page)->get();
-        return view('admin.orders.show', compact('orders', 'number_page', 'page'));
+        // $page = 1;
+        // $item_page = 10;
+        // $start = ($page - 1) * $item_page;
+        // $count = Orders::count();
+        // $number_page = ceil($count / $item_page);
+        // $orders = Orders::orderBy('id',);
+
+        return view('admin.orders.show');
     }
     // //////////////////////////////////
     public function detail($id, Request $request)
@@ -67,8 +71,8 @@ class AdminOrderController extends Controller
         return view('admin.orders.customer', compact('customers', 'number_page', 'page'));
     }
     // //////////////////////////////////////////
-
-    public function handle_ajax(Request $request, VaEventInterface $vaev, MailOrderInterface $mail_order)
+    // ANCHOR handle ajax //////////////////////////////////////////////////////
+    public function handle_ajax(Request $request, VaEventInterface $vaev, MailOrderInterface $mail_order, ModelInterface $repoModel)
     {
         $data = array();
         $pagination = '';
@@ -81,10 +85,12 @@ class AdminOrderController extends Controller
         $page = $request->page;
         $html_detail_order = '';
         $orders = new Orders();
+        // ANCHOR update detail update //////////////////////////////////////////////////////
         if ($request->act == "update") {
             $ordered = Orders::where('id', '=', $id)->firstOrFail();
             $html_detail_order .= view('components.admin.order.select', compact('ordered'));
         }
+        // ANCHOR update status order //////////////////////////////////////////////////////
         if ($request->act == "update_stt") {
             $ordered = Orders::where('id', '=', $id)->firstOrFail();
             if ($request->val == 3) {
@@ -103,19 +109,21 @@ class AdminOrderController extends Controller
                 $this->customer->stats($ordered->total, $total_cost);
             } else {
                 Orders::where('id', '=', $id)->update(['status' => $request->val]);
+                if ($request->val == 2) {
+                    Orders::where('id', '=', $id)->update(['date_ship' => Carbon::now('Asia/Ho_Chi_Minh')]);
+                }
             }
             $ordered = Orders::where('id', '=', $id)->firstOrFail();
-            if ($request->val == 2) {
-                Orders::where('id', '=', $id)->update(['date_ship' => Carbon::now('Asia/Ho_Chi_Minh')]);
-            }
+
+            // ANCHOR mail update status //////////////////////////////////////////////////////
             $mail_order->send_mail_order($ordered);
             if ($ordered->users_id) {
                 event(new UpdateOrder($ordered->users_id));
-                $vaev->admin_update_order($ordered->id);
             }
+            $vaev->admin_update_order($ordered->id);
             $html_detail_order .= view('components.admin.order.select', compact('ordered'));
         }
-
+        // ANCHOR update paid //////////////////////////////////////////////////////
         if ($request->act == "update_paid") {
             $ordered = Orders::where('id', '=', $id)->first();
             if (!$ordered->paid == 2) {
@@ -130,12 +138,13 @@ class AdminOrderController extends Controller
                 }
                 if ($ordered->users_id) {
                     event(new UpdateOrder($ordered->users_id));
-                    $vaev->admin_update_order($ordered->id);
                 }
+                $vaev->admin_update_order($ordered->id);
                 $ordered = Orders::where('id', '=', $id)->first();
                 $html_detail_order .= view('components.admin.order.select', compact('ordered'));
             }
         }
+        // ANCHOR load orders //////////////////////////////////////////////////////
         if ($request->stt != 0) {
             $orders = $orders->where('status', '=', $request->stt);
         }
@@ -165,13 +174,10 @@ class AdminOrderController extends Controller
         if ($request->w != 0) {
             $orders =  $orders->where('ward', 'LIKE', $request->w);
         }
-        $item_page = 10;
-        $start = ($page - 1) * $item_page;
-        $count = $orders->count();
-        $number = ceil($count / $item_page);
-        $order = $orders->orderBy('id', $sort)->offset($start)->limit($item_page)->get();
-        if (count($order) > 0) {
-            $output .= view('components.tableorders', compact('order', 'number', 'page'));
+
+        $orders = $repoModel->pagination($orders, ['id', $sort], $page);
+        if ($orders->count > 0) {
+            $output .= view('components.tableorders', compact('orders'));
         } else {
             $output .= view('components.empty.nodata');
         }
@@ -372,16 +378,18 @@ class AdminOrderController extends Controller
     }
 
     ////////////////////////////////////////
-    public function export_invoice($id, Request $request)
+    public function export_invoice(Request $request)
     {
-        $ordered = Orders::where('id', $id)->firstOrFail();
+        $code = $request->code;
+        $ordered = Orders::where('code',  $code)->firstOrFail();
         $cart = unserialize($ordered->cart);
-        $nameFilePdf = 'hoá đơn đơn hàng số ' . $id . ' của ' . $ordered->name . '.pdf';
+        $nameFilePdf = 'hoá đơn đơn hàng số ' . $ordered->code . ' của ' . $ordered->name . '.pdf';
         $html = "";
-        $html .= view("admin.orders.invoice", compact('ordered', 'cart'));
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML($html);
-        return $pdf->download($nameFilePdf);
+
+        // $html .= view("admin.orders.invoice", compact('ordered', 'cart'));
+
+
+
     }
 
 

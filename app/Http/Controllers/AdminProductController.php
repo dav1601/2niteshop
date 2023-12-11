@@ -18,6 +18,7 @@ use App\Http\Traits\Product;
 use App\Models\BlockProduct;
 use Illuminate\Http\Request;
 use App\Events\UpdateProduct;
+use App\Http\Traits\AvFileManager;
 use App\Http\Traits\Responser;
 use Illuminate\Support\Carbon;
 use App\Models\RelatedProducts;
@@ -37,11 +38,13 @@ use Spatie\ResponseCache\Facades\ResponseCache;
 
 class AdminProductController extends Controller
 {
-    use Responser, Relationship, Product;
+    use Responser, Relationship, Product, AvFileManager;
     public $handle_file;
     public $data;
     public $res;
     public $repoPrd;
+    public $diskMedia;
+    public $folderMedia;
     public function __construct(FileInterface $handle_file, AdminPrdInterface $repo_prd)
     {
         $this->middleware(function ($request, $next) {
@@ -53,25 +56,31 @@ class AdminProductController extends Controller
         $this->res = [];
         $this->res['html'] = "";
         $this->repoPrd = $repo_prd;
+        $this->diskMedia = "media";
+        $this->folderMedia = "products";
     }
     public function index()
     {
     }
     ////////////////////////////////////////
-    public function delete_product($id, Request $request)
+    public function delete_product(Request $request)
     {
-        $this->authorize('admin-action');
-        $product = Products::where('id', $id)->first();
-        if ($product->banner) {
-            $this->handle_file->deleteFile($product->banner);
-        }
-        $this->handle_file->deleteFile($product->main_img);
-        $this->handle_file->deleteFile($product->sub_img);
-        if (Products::where('id', '=', $id)->delete()) {
-            return redirect()->back()->with('delete-ok', 1);
+        $id = (int) $request->prdId;
+        $foc = (bool) $request->foc;
+        $error = null;
+
+        if ($foc) {
+            if (Auth::user()->hasRole("super-admin")) {
+                $error = Products::where("id", $id)->forceDelete() ? null : "focus delete failed";
+            }
         } else {
-            return redirect()->back()->with('delete-notok', 1);
+            $error = Products::where("id", $id)->delete() ? null : "delete failed";
         }
+
+        if ($error) {
+            return $this->errorResponse($error);
+        }
+        return $this->successResponse(["deleted" => true, "rd" => route("show_product")]);
     }
     // /////////////////////////////////////////////////////
     public function product_view_add(Request $request)
@@ -89,31 +98,35 @@ class AdminProductController extends Controller
         return view('admin.products.add', compact('ins', 'policy', 'producer', 'cat_game', 'type',   'url', 'crawler'));
     }
     // //////////////////////////////////////// end view add
+    // ANCHOR  product edit action //////////////////////////////////////////////////////
     public function product_view_edit($id, Request $request)
     {
-        $product = $this->repoPrd->product($id);
+        $product = $this->repoPrd->getProduct($id)['data'];
+        if (!$product) {
+            return abort(503);
+        }
         $producer = Producer::all()->pluck("name")->toArray();
         $cat_game = CatGame::all();
         $type = typeProduct::where('parent', '=', 0)->get();
-        // $sub_type = typeProduct::where('parent', '=', typeProduct::where('name', '=', $product->type)->first()->id)->get();
         $product_categories = ProductCategories::where('products_id', $id)->get()->pluck('category_id')->toArray();
         $rela_blogs = implode(",", $product->related_blogs->pluck("id")->toArray());
         $rela_products =  implode(",", $product->bundled_products->pluck("id")->toArray());
         $policies = implode(",", $product->policies->pluck("id")->toArray());
-        $ins =  implode(",", $product->ins->pluck("id")->toArray());
+        $options =  implode(",", $product->options->pluck("id")->toArray());
         $blocks =  implode(",", $product->blocks->pluck("id")->toArray());
-        $gallery = collect($product->gll)->toArray();
+        $gallery = $product->gallery;
         $url = route('product_view_edit', ['id' => $id]);
-        return view('admin.products.edit', compact('id',   'producer', 'cat_game', 'type',  'product',   'url', 'product_categories', 'rela_blogs', 'rela_products', 'policies', 'ins', 'blocks', 'gallery'));
+        return view('admin.products.edit', compact('id',   'producer', 'cat_game', 'type',  'product',   'url', 'product_categories', 'rela_blogs', 'rela_products', 'policies', 'options', 'blocks', 'gallery'));
     }
     public function validateProduct($request, $id = null)
     {
-        $ruleName = !$id  ? 'required|unique:products,name' : 'required|unique:products,name,' . $id;
-        $img = "image|mimes:jpeg,png,jpg,tiff,svg|max:204800";
+        // $ruleName = !$id  ? 'required|unique:products,name' : 'required|unique:products,name,' . $id;
+        $image_first = !$id ? "required" : "";
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => $ruleName,
+                'name' => "required",
+                'slug' => 'unique:products,slug,' . $id,
                 'model' => 'required',
                 'des' => 'required',
                 'keywords' => 'required',
@@ -121,15 +134,15 @@ class AdminProductController extends Controller
                 'price' => 'required|required_with:historical_cost|numeric',
                 'historical_cost' => 'required|required_with:price|numeric|lte:price',
                 'discount' => 'numeric|lte:price',
-                'main_img' => $id ? $img : 'required|' . $img,
-                'sub_img' => $img,
+                'image_first' => $image_first,
                 'producer' => 'required',
                 'category' => 'required',
-                'date_sold' => "required"
+                'date_sold' => "required",
+                'qty' => "numeric"
             ],
             [
                 'name.required' => "Bạn chưa nhập tên sản phẩm",
-                'name.unique' => "Sản phẩm đã tồn tại",
+                'slug.unique' => "Slug này đã tồn tại , hãy đỔi slug khác cho sản phẩm",
                 'des.required' => "Bạn chưa nhập mô tả ngắn cho sản phẩm",
                 'keywords.required' => "Bạn chưa nhập keywords cho sản phẩm",
                 'type.required' => "Bạn chưa chọn loại sản phẩm",
@@ -160,18 +173,64 @@ class AdminProductController extends Controller
         return $validator;
     }
     ////////////////////////////////////////
+    public function handleRelatioships($product, $request, $action = "attach")
+    {
+        $product->categories()->{$action}($request->category);
+        $product->options()->{$action}(a_explode(",", $request->rela__options));
+        $product->policies()->{$action}(a_explode(",", $request->rela__plc));
+        $product->bundled_products()->{$action}(a_explode(",", $request->rela__products));
+        $product->blocks()->{$action}(a_explode(",", $request->rela__block));
+        $product->related_blogs()->{$action}(a_explode(",", $request->rela__blogs));
+    }
+    // ANCHOR REPLICATE //////////////////////////////////////////////////////
 
-    // //////////////////////////////////////// end view edit
+    public function replicate_product(Request $request)
+    {
+        $id = (int) $request->id;
+        $product = $this->repoPrd->getProduct($id)['data'];
+        if ($product['status'] != 1) {
+            return $this->errorResponse("not found product", 404);
+        }
+        $newProduct = $product->replicate();
+        $name = $newProduct->name;
+        $k = 1;
+        $newName = $name . " (copy-" . $k . ")";
+        while (Products::where("name", "LIKE", $newName)->first()) {
+            $newName = $name . " (copy-" . $k . ")";
+            $k++;
+        }
+        $name = $newName;
+        $newProduct->name = $name;
+        $newProduct->slug = Str::slug($name);
+        $newProduct->user_id = Auth::id();
+        $newProduct->save();
+        $newProduct->policies()->attach($newProduct->policies->pluck('id')->toArray());
+        $newProduct->categories()->attach($newProduct->categories->pluck('id')->toArray());
+        $newProduct->ins()->attach($newProduct->ins->pluck('id')->toArray());
+        $newProduct->bundled_products()->attach($newProduct->bundled_products->pluck('id')->toArray());
+        $newProduct->blocks()->attach($newProduct->blocks->pluck('id')->toArray());
+        $newProduct->related_blogs()->attach($newProduct->related_blogs->pluck('id')->toArray());
+        foreach ($newProduct->gallery as  $gll) {
+            $dupg = $gll->replicate();
+            $dupg->products_id = $newProduct->id;
+            $dupg->save();
+            unset($dupg);
+        }
+        return $this->successResponse(['redirect' => route("product_view_edit", ['id' => $newProduct->id])]);
+    }
+
+    // ANCHOR PRODUCT ADD LOGIC ////////////////////////////////////////
     public function product_handle_add(Request $request)
     {
 
-        $data_create = array();
         $path = config('app.image_products');
         $validator = $this->validateProduct($request);
+
+
         if ($validator->fails()) {
             return $this->errorResponse("validator fail", 403, $validator->errors()->toArray());
-            return redirect()->back()->withErrors($validator)->withInput();
         }
+
         $producer = Producer::where('name', $request->producer)->first();
         $producer = $producer ? $producer : Producer::create([
             'name' => $request->producer,
@@ -181,7 +240,7 @@ class AdminProductController extends Controller
         $data_create['name'] = $request->name;
         $data_create['price'] = $request->price;
         $data_create['historical_cost'] = $request->historical_cost;
-        $data_create['slug'] = Str::slug($request->name);
+        $data_create['slug'] = $request->slug;
         $data_create['des'] = $request->des;
         $data_create['keywords'] = $request->keywords;
         $data_create['content'] = $request->content;
@@ -197,46 +256,29 @@ class AdminProductController extends Controller
         $data_create['status'] = $this->statusProduct($request->date_sold, $data_create['qty']);
         $path = $path  . "/" . $data_create['type'] . "/";
 
-
         // /////////////////////////////////
 
-        // //////////// background img
-
         // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
-        $path_main_img = $path  . "main/";
-        $data_create['main_img'] = $this->handle_file->storeFileImg($request->main_img, $path_main_img);
+        $data_create['image_first'] = $request->image_first;
         // //////////////// end main
-        if ($request->sub_img) {
-            $path_sub_img = $path  . "sub/";
-            $data_create['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
+        if ($request->image_second) {
+            $data_create['image_second'] = $request->image_second;
         }
 
-        if ($request->bg) {
-            $path_bg =  $path  .  "backgroud/";
-            $data_create['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
+        if ($request->image_background) {
+            $data_create['image_background'] = $request->image_background;
         }
         // end backgroud
         try {
             $created = Products::create($data_create);
             // createdd end
             if ($created) {
-                $galleries = $request->file('galleries');
-                $galleries = $galleries ? $galleries : [];
-                if (count($galleries) > 0) {
-                    foreach ($galleries as $key =>  $gallery) {
-                        $path_700 = $path . "700/";
-                        $path_80 = $path . "80/";
-                        $image_700 = $this->handle_file->storeFileImg($gallery[700], $path_700);
-                        $image_80 = $this->handle_file->storeFileImg($gallery[80], $path_80);
-                        gllProducts::create(['products_id' => $created->id, 'image_700' => $image_700, 'image_80' => $image_80, 'index' => $key]);
-                    }
+                $this->handleRelatioships($created, $request);
+                $gallery = $request->gallery;
+                foreach ($gallery as $key => $item) {
+                    $item = collect($item)->toArray();
+                    gllProducts::create(['products_id' => $created->id, 'media_700' => $item[700], 'media_80' => $item[80], 'index' => $key]);
                 }
-                $created->categories()->attach($request->category);
-                $created->ins()->attach(a_explode(",", $request->rela__ins));
-                $created->policies()->attach(a_explode(",", $request->rela__plc));
-                $created->bundled_products()->attach(a_explode(",", $request->rela__products));
-                $created->blocks()->attach(a_explode(",", $request->rela__block));
-                $created->related_blogs()->attach(a_explode(",", $request->rela__blogs));
                 return $this->successResponse(['redirect_edit' => route('product_view_edit', ['id' => $created->id])]);
             }
         } catch (\Exception $e) {
@@ -248,12 +290,12 @@ class AdminProductController extends Controller
     }
 
     //////////////////////////////////////// end add product
+    // ANCHOR PRODUCT EIDT LOGIC //////////////////////////////////////////////////////
     public function product_handle_edit($id,  Request $request)
     {
         $validator = $this->validateProduct($request, $id);
-        return "edit";
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return $this->errorResponse("validator fail", 403, $validator->errors()->toArray());
         }
         $data_update['name'] = $request->name;
         $data_update['des'] = $request->des;
@@ -261,7 +303,7 @@ class AdminProductController extends Controller
         $data_update['price'] = $request->price;
         $data_update['historical_cost'] = $request->historical_cost;
         $data_update['content'] = $request->content;
-        $data_update['slug'] = Str::slug($request->name);
+        $data_update['slug'] = $request->slug;
         $data_update['info'] = $request->info;
         $data_update['model'] = $request->model;
         $data_update['date_sold'] = $request->date_sold;
@@ -289,7 +331,7 @@ class AdminProductController extends Controller
         // update product
         $updated =  Products::where('id', $id)->update($data_update);
         if (!$updated) {
-            return redirect()->back()->with('error', 'Updated Product Failed');
+            return $this->errorResponse("update product failed", 500);
         }
         $product = Products::find($id);
         event(new UpdateProduct($id));
@@ -305,14 +347,8 @@ class AdminProductController extends Controller
                 'price' => $request->price
             ]);
         }
-
-        $product->categories()->sync($request->category);
-        $product->ins()->sync(a_explode(",", $request->rela__ins));
-        $product->policies()->sync(a_explode(",", $request->rela__plc));
-        $product->bundled_products()->sync(a_explode(",", $request->rela__products));
-        $product->blocks()->sync(a_explode(",", $request->rela__block));
-        $product->related_blogs()->sync(a_explode(",", $request->rela__blogs));
-        return redirect()->back()->with('success', 'Updated Product Success');
+        $this->handleRelatioships($product, $request, "sync");
+        return $this->successResponse("update product success");
     }
 
     //////////////////////////////////////// end edit product
@@ -321,10 +357,10 @@ class AdminProductController extends Controller
     {
         $category = Category::where('parent_id', '=', 0)->get();
         $products = new Products();
-        $products = $products->with(['producer']);
-        $products = $repom->pagination($products, null, 1, 16, null);
-        $minPrice = $products->data->min('price');
-        $maxPrice = $products->data->max('price');
+        // $products = $products->with(['producer']);
+        // $products = $repom->pagination($products, null, 1, 16, null);
+        $minPrice = Products::min('price');
+        $maxPrice = Products::max('price');
         return view('admin.products.show', compact('category',  'products', 'minPrice', 'maxPrice'));
     }
 
@@ -379,7 +415,7 @@ class AdminProductController extends Controller
         $type = $request->type;
         if ($type == "add") {
             $data = new stdClass();
-            $blocks = $repom->pagination(new BlockProduct(), null, null, null, null);
+            $blocks = $repom->pagination(new BlockProduct());
             $data->blocks = $blocks->data;
             $data->number_page = $blocks->number_page;
             return view('admin.products.block.add', compact('data'));
@@ -391,43 +427,39 @@ class AdminProductController extends Controller
     public function crawler(Request $request)
     {
         $res = [];
-        $crawler = \Goutte::request('GET', $request->url);
+        $url = $request->url;
+        $crawler = \Goutte::request('GET', $url);
         $images =  $crawler->filter('.product-image .swiper-slide img')->each(function ($node) {
             $array = [];
             array_push($array, $node->image()->getUri());
             return $array;
         });
-        $images =  $crawler->filter('.product-image .swiper-slide img')->each(function ($node) {
-            $array = [];
-            array_push($array, $node->image()->getUri());
-            return $array;
-        });
-
-        // $url = url("https://haloshop.vn/index.php?route=product/search&search=" . $res['page_title']);
-        // $crawler_2 = \Goutte::request('GET', $url);
-        // $img_first =  $crawler_2->filter(".img-first")->each(function ($node) {
-        //     $array_2 = [];
-        //     array_push($array_2, $node->image()->getUri());
-        //     return $array_2;
-        // });
-        // $img_second =  $crawler_2->filter(".img-second")->each(function ($node) {
-        //     $array_2 = [];
-        //     array_push($array_2, $node->image()->getUri());
-        //     return $array_2;
-        // });
         $res['name'] = $crawler->filter('.page-title')->text("");
         $res['producer'] = $crawler->filter('.product-manufacturer a')->text("");
         $res['price'] = preg_replace('/\D/', '', $crawler->filter('.product-price')->text(0));
         $res["price_new"] = preg_replace('/\D/', '', $crawler->filter('.product-price-new')->text(0));
         $res["price_old"] = preg_replace('/\D/', '', $crawler->filter('.product-price-old')->text(0));
-        $res['meta'] = va_get_meta($request->url);
+        $res['meta'] = va_get_meta($url);
         $res['spec'] = $crawler->filter('#tab-specification')->html("");
-        $res["content"] = $crawler->filter(".tab-content .block-content")->html("");
+        $res["content"] = $crawler->filter(".block-content.expand-content.block-expanded")->html("");
         $res["model"] = $crawler->filter(".product-model span")->text("");
+        $searchUrl = "https://haloshop.vn/index.php?route=product/search&search=" . $res['name'];
+        $searchData = \Goutte::request("GET", $searchUrl);
+        $images_search = $searchData->filter('.product-img img')->each(function ($node) {
+            $array = [];
+            array_push($array, $node->attr("data-src"));
+            return $array;
+        });
 
         // get all file names
 
         $files = glob('E:/01/datatest/2nite/700/*'); // get all file names
+        foreach ($files as $file) { // iterate files
+            if (is_file($file)) {
+                unlink($file); // delete file
+            }
+        }
+        $files = glob('E:/01/datatest/2nite/main/*'); // get all file names
         foreach ($files as $file) { // iterate files
             if (is_file($file)) {
                 unlink($file); // delete file
@@ -439,19 +471,20 @@ class AdminProductController extends Controller
                 unlink($file); // delete file
             }
         }
-        // for ($k = 0; $k < count($main_images); $k++) {
-        //     $url = $main_images[$k][0];
-        //     $info = pathinfo($url);
-        //     $forder = 'E:/01/datatest/2nite/main/' . $info["basename"];
-        //     file_put_contents($forder . $info["basename"], file_get_contents($url));
-        // }
+        for ($k = 0; $k < count($images_search); $k++) {
+            $url = $images_search[$k][0];
+            $info = pathinfo($url);
+            $forder = 'E:/01/datatest/2nite/main/' . $info["basename"];
+            file_put_contents($forder, file_get_contents($url));
+        }
         for ($i = 0; $i < count($images); $i++) {
             $url = $images[$i][0];
             $info = pathinfo($url);
             $name = $i . "-" . $info["basename"];
             $forder = $i < count($images) / 2 ? 'E:/01/datatest/2nite/700/' . $name : 'E:/01/datatest/2nite/80/' . $name;
-            file_put_contents($forder . $name, file_get_contents($url));
+            file_put_contents($forder, file_get_contents($url));
         }
+
 
         return redirect()->back()->with("resCrawl", $res);
     }
@@ -523,5 +556,10 @@ class AdminProductController extends Controller
             return response()->json($this->res);
         }
         return redirect()->back()->with('succes', $succes)->with('msg', $msg);
+    }
+    // ANCHOR name to slug  //////////////////////////////////////////////////////
+    public function name_to_slug(Request $request)
+    {
+        return $this->successResponse(['slug' => Str::slug($request->name)]);
     }
 }

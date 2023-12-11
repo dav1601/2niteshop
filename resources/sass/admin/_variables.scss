@@ -29,6 +29,7 @@ $idx-loading: 50000;
 $idx-gallery: 5002;
 $idx-sweet: 5003;
 $max-idx: 2147483647;
+$h-media: calc(75vh - 85px);
 @mixin active {
     background: linear-gradient(
         90deg,

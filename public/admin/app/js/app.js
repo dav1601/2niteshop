@@ -8,6 +8,7 @@ $(function () {
             e.stopImmediatePropagation();
         }
     });
+
     jQuery.initColorPicker = function initColorPicker() {
         return $(".color-picker").minicolors({
             // animation speed
@@ -54,6 +55,7 @@ $(function () {
             swatches: [],
         });
     };
+   
     initPlugin();
     $.page_loading(false);
     $(document).ajaxSuccess(function (event, request, settings, res) {
@@ -244,6 +246,26 @@ $(function () {
             image.attr("src", URL.createObjectURL(file));
             buttonClear.removeClass("d-none");
         }
+    });
+    //
+    function collapseToggleIcon(act, id) {
+        const button = $(`[aria-controls=${id}]`);
+        const icon = button.find("i");
+        console.log("🚀 ~ file: app.js:252 ~ collapseToggleIcon ~ icon:", icon);
+        if (act === "hide") {
+            icon.removeClass("fa-caret-up");
+            icon.addClass("fa-caret-down");
+        } else {
+            icon.removeClass("fa-caret-down");
+            icon.addClass("fa-caret-up");
+        }
+    }
+
+    $(".va-card-collapse").on("hide.bs.collapse", function () {
+        collapseToggleIcon("hide", $(this).attr("id"));
+    });
+    $(".va-card-collapse").on("show.bs.collapse", function () {
+        collapseToggleIcon("show", $(this).attr("id"));
     });
     // END READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 });

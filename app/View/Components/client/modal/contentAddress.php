@@ -11,10 +11,9 @@ class contentAddress extends Component
      *
      * @return void
      */
-    public $data_edit;
-    public function __construct($data_edit)
+
+    public function __construct()
     {
-        $this->data_eidt = $data_edit;
     }
 
     /**

@@ -7,7 +7,7 @@
 Tài khoản của bạn
 @endsection
 @section('rh__left')
-<h1 class="my__address mb-1">Địa Chỉ Của Tôi</h1>
+<h1 class="my__address mb-1 title">Địa Chỉ Của Tôi</h1>
 @endsection
 @section('class_rc') wp__address @endsection
 @section('rh__right')

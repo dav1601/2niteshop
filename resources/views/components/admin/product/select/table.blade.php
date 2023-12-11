@@ -22,7 +22,7 @@
                 </td>
 
                 <td> {{ $name }} </td>
-                @if ($m === 'Insurance')
+                @if ($m === 'Options')
                     <td class="text-center">
                         Giá: {{ crf($item->price) }}
                     </td>

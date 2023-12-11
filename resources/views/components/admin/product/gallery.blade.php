@@ -3,7 +3,8 @@
     <div class="justify-content-start align-items-center" id="product-galleries">
         @if (count($galleries) > 0)
             @foreach ($galleries as $key => $item)
-                <x-admin.product.gallery.item :productact="$productAct" :key="$key" :item="$item" />
+                <x-admin.product.gallery.item :productact="$productAct" :key="$key" :large="$item->path_700" :thumb="$item->path_80"
+                    :id="$item->id" />
             @endforeach
         @endif
     </div>

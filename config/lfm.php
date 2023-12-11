@@ -49,7 +49,7 @@ return [
         'file'  => [
             'folder_name'  => 'files',
             'startup_view' => 'list',
-            'max_size'     => 500000, // size in KB
+            'max_size'     => 20480, // size in KB
             'valid_mime'   => [
                 'image/jpeg',
                 'image/pjpeg',
@@ -62,7 +62,7 @@ return [
         'image' => [
             'folder_name'  => 'photos',
             'startup_view' => 'grid',
-            'max_size'     => 500000, // size in KB
+            'max_size'     => 20480, // size in KB
             'valid_mime'   => [
                 'image/jpeg',
                 'image/pjpeg',
@@ -88,17 +88,17 @@ return [
     |--------------------------------------------------------------------------
      */
 
-    'disk'                     => 'a_media',
+    'disk'                     => 'lfm',
 
     'rename_file'              => false,
 
-    'rename_duplicates'        => false,
+    'rename_duplicates'        => true,
 
     'alphanumeric_filename'    => false,
 
     'alphanumeric_directory'   => false,
 
-    'should_validate_size'     => false,
+    'should_validate_size'     => true,
 
     'should_validate_mime'     => true,
 

@@ -9,7 +9,7 @@
             <i>{{ $carbon->create($blog->created_at)->format('M') }}</i>
         </span>
         <a href="{{ $href }}" class="d-block">
-            <img src="{{ $file->ver_img($blog->img) }}" alt="{{ $blog->title }}" width="100%">
+            <img src="{{ urlImg($blog->img) }}" alt="{{ $blog->title }}" width="100%">
         </a>
     </div>
     <div class="bis__stats">

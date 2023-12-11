@@ -188,16 +188,14 @@
 #b1ad__footer--content .box__ft .box__chill-header {
   margin-bottom: 10px;
 }
-#b1ad__footer--content .box__ft--header h1 {
-  display: inline-block;
-  color: #ffffff;
-  font-family: Montserrat;
+#b1ad__footer--content .box__ft--header h3 {
   font-size: 22px;
   font-weight: 700;
-  line-height: 26.4px;
-  margin: 0px 0px 15px;
-  text-align: left;
-  text-transform: uppercase;
+  padding: 0px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+  color: white;
 }
 #b1ad__footer--content .box__ft--cont p:not(.box-chill p) {
   color: #ffffff;

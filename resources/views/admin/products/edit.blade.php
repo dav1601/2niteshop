@@ -2,6 +2,7 @@
 
 @section('import_js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{{ $file->ver('admin/app/js/a_media.js') }}"></script>
     <script src="{{ $file->ver('admin/app/js/products.js') }}"></script>
     <script>
         // if (route('current'))
@@ -14,11 +15,10 @@
 @endsection
 
 @section('name')
-    Product
+    Edit Product
 @endsection
 
 @section('content')
-    <x-pagination :number_page="4" page="2" classWp="justify-content-center mt-2" />
     <div id="product__edit">
         {{-- ----------- --}}
         {!! Form::open([
@@ -30,12 +30,16 @@
         <div class="w-100 row no-gutters">
             <div class="col-8 row no-gutters pr-4">
                 <x-admin.layout.card class="col-12 mb-5">
+                    <x-slot name="heading" class="">
+                        Chung
+                    </x-slot>
                     <x-slot name="content" class="row w-100">
                         <div class="form-group col-6">
-                            <x-admin.layout.input.text required="true" :value="$product->name" name="name" label="name" />
+                            <x-admin.layout.input.text id="product_name" required="true" :value="$product->name" name="name"
+                                label="name" />
                         </div>
                         <div class="form-group col-6">
-                            <x-admin.layout.input.text label="slug" :value="$product->slug" disabled="true" name="slug" />
+                            <x-admin.layout.input.text id="product_slug" label="slug" :value="$product->slug" name="slug" />
                         </div>
                         <div class="form-group col-6">
 
@@ -55,9 +59,9 @@
                     </x-slot>
                 </x-admin.layout.card>
                 {{-- end general product --}}
-                <x-admin.layout.card class="col-12 mb-5">
+                <x-admin.layout.card class="col-12 mb-5" title="Gía và kho">
                     <x-slot name="heading" class="">
-                        <h6 class="font-weight-bold d-flex">Giá và kho</h6>
+                        Giá và kho
                     </x-slot>
                     <x-slot name="content" class="row w-100">
                         <div class="form-group col-6">
@@ -84,72 +88,50 @@
                     </x-slot>
                 </x-admin.layout.card>
 
-                <x-admin.layout.card class="col-12 mb-5">
+                <x-admin.layout.card class="col-12 mb-5" type="collapse" idColl="coll_content_info">
                     <x-slot name="heading" class="">
-                        <h6 class="font-weight-bold d-flex">Thông số và thông tin chi tiết</h6>
+                        Thông số và thông tin chi tiết
                     </x-slot>
                     <x-slot name="content" class="row w-100">
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 mb-5">
                             <x-admin.layout.form.label text="Thông số" />
-                            <div class="w-100">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#mInfoProduct">
-                                    <i class="fa-solid fa-pen-to-square mr-2"></i>Editor
-                                </button>
-                            </div>
-                            <x-admin.layout.form.error name="info" />
+                            <textarea name="info" id="info__tiny" class="form-control my-editor">{!! $product->info !!}</textarea>
                         </div>
-                        <div class="form-group col-6">
-                            <x-admin.layout.form.label text="Thông tin chi tiết" />
-                            <div class="w-100">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#mContentProduct">
-                                    <i class="fa-solid fa-pen-to-square mr-2"></i>Editor
-                                </button>
-                            </div>
+                        <div class="form-group col-12">
+                            <x-admin.layout.form.label text="Nội dung" required="true" />
+                            <textarea name="content" id="content__tiny" class="form-control my-editor">
+                                {!! $product->content !!}
+                            </textarea>
                             <x-admin.layout.form.error name="content" />
                         </div>
-
                     </x-slot>
                 </x-admin.layout.card>
                 {{-- -------------- --}}
-                <x-admin.layout.card class="col-12 mb-5">
+                <x-admin.layout.card class="col-12 mb-5" type="collapse" idColl="product_single_image">
                     <x-slot name="heading" class="">
                         <h6 class="font-weight-bold d-flex">Hình ảnh</h6>
                     </x-slot>
                     <x-slot name="content" class="">
                         <div class="row">
                             <div class="w-100 col-6 mb-3">
-                                {{-- <x-admin.ui.form.image name='main_img' :required="true" id="imgProductMain"
-                                    label="Hình ảnh chính" :image="$file->ver_img($product->main_img)" /> --}}
-                                <x-admin.ui.form.image width="305px" blockEventDef="true" height="305px"
-                                    classUpload="single-image-product-upload"
-                                    classClear="single-image-product-delete d-none" classInput="single-image-product-input"
-                                    name='main_img' id="imgProductMain" label="Hình ảnh chính" :image="$file->ver_img($product->main_img)"
-                                    :required="true">
-                                    <x-slot name="btn_clear" data-type="img_main"></x-slot>
-                                    <x-slot name="btn_upload" data-type="img_main"></x-slot>
-                                    <x-slot name="input" data-type="img_main"></x-slot>
+
+                                <x-admin.ui.form.image width="305px" avMedia="true" height="305px" id="imgProductMain"
+                                    classInput="product_single_image" label="Hình ảnh chính" :required="true"
+                                    image="{{ urlImg($product->path_first, 'media') }}" name="image_first">
+
                                 </x-admin.ui.form.image>
                             </div>
                             <div class="w-100 col-6 mb-3">
-                                <x-admin.ui.form.image width="305px" blockEventDef="true" height="305px"
-                                    classUpload="single-image-product-upload" classClear="single-image-product-delete"
-                                    classInput="single-image-product-input" name='sub_img' id="imgProductSub"
-                                    label="Hình ảnh phụ" :image="$file->ver_img($product->sub_img)">
-                                    <x-slot name="btn_clear" data-type="img_sub"></x-slot>
-                                    <x-slot name="btn_upload" data-type="img_sub"></x-slot>
-                                    <x-slot name="input" data-type="img_sub"></x-slot>
+                                <x-admin.ui.form.image width="305px" avMedia="true" height="305px" id="imgProductSub"
+                                    classInput="product_single_image" label="Hình ảnh phụ"
+                                    image="{{ urlImg($product->path_second, 'media') }}" name="image_second">
                                 </x-admin.ui.form.image>
                             </div>
                             <div class="w-100 col-6">
+                                <x-admin.ui.form.image width="305px" avMedia="true" height="305px"
+                                    classInput="product_single_image" name="image_background" id="imgProductBg"
+                                    label="Hình ảnh nền sản phẩm" image="{{ urlImg($product->path_bg, 'media') }}">
 
-                                <x-admin.ui.form.image width="305px" blockEventDef="true" height="305px" classUpload=""
-                                    classClear="single-image-product" classInput="single-input-product" name='bg'
-                                    id="imgProductBg" label="Hình ảnh nền sản phẩm" :image="$file->ver_img($product->bg)">
-                                    <x-slot name="btn_clear" data-type="img_bg"></x-slot>
-                                    <x-slot name="btn_upload" data-type="img_bg"></x-slot>
-                                    <x-slot name="input" data-type="img_bg"></x-slot>
                                 </x-admin.ui.form.image>
                             </div>
                         </div>
@@ -158,7 +140,7 @@
 
                 </x-admin.layout.card>
                 {{-- --------------- --}}
-                <x-admin.layout.card class="col-12 mb-5">
+                <x-admin.layout.card class="col-12 mb-5" type="collapse" idColl="coll_gallery">
                     <x-slot name="heading" class="">
                         <h6 class="font-weight-bold d-flex">Thêm Hình ảnh chi tiết</h6>
                     </x-slot>
@@ -167,18 +149,10 @@
                     </x-slot>
 
                 </x-admin.layout.card>
-                {{-- ----------- --}}
-                <x-admin.layout.card class="col-12 mb-5">
-                    <x-slot name="heading" class="">
-                        <h6 class="font-weight-bold d-flex">Danh sách hình ảnh chi tiết</h6>
-                    </x-slot>
-                    <x-slot name="content" class="">
-                        {{-- <x-admin.product.gll.table :gll700="$gll700" :gll80="$gll80" /> --}}
-                    </x-slot>
+                {{-- -----------  --}}
 
-                </x-admin.layout.card>
                 {{-- ---------------- --}}
-                <x-admin.layout.card class="col-12 mb-5">
+                <x-admin.layout.card class="col-12 mb-5" type="collapse" idColl="product_relation">
                     <x-slot name="heading" class="">
                         <h6 class="font-weight-bold d-flex">Các liên kết của sản phẩm</h6>
                     </x-slot>
@@ -186,7 +160,7 @@
                         <div class="row">
                             {{-- --}}
                             <div class="col-4 mb-3">
-                                <x-admin.relation.rela rl="products-ins" :relaid="$product->id" :selected="$ins" />
+                                <x-admin.relation.rela rl="products-options" :relaid="$product->id" :selected="$options" />
                             </div>
 
                             {{-- --}}
@@ -214,7 +188,18 @@
                     </x-slot>
 
                 </x-admin.layout.card>
-                <x-admin.layout.form.submit act="Update" id="submit-product" />
+                <x-admin.layout.form.submit act="Update" class='prd_edit_action' id="submit-product">
+                    <x-slot name="btn" class="" id="">
+                        <button type="button" class="btn btn-primary ml-2" id="replicate_product">Duplicate</button>
+                        <button type="button" class="btn btn-danger ml-2" id="prd_delete" data-foc="0">Move to
+                            trash</button>
+                        @role('super-admin')
+                            <button type="button" class="btn btn-danger ml-2" id="prd_delete" data-foc="1">Force
+                                Delete</button>
+                        @endrole
+
+                    </x-slot>
+                </x-admin.layout.form.submit>
             </div>
 
             {{-- end-left --}}
@@ -232,7 +217,11 @@
                         </x-slot>
                         <x-slot name="content" class="">
                             <div class="row">
-                                <div class="col-12 mb-4">
+                                <div class="col-3 mb-4">
+                                    <x-admin.layout.form.label text="Trạng thái" />
+                                    <span class="badge badge-primary">{{ stock_stt($product->stock) }}</span>
+                                </div>
+                                <div class="col-9 mb-4">
                                     <x-admin.layout.input.text label="Ngày mở bán" id="date_sold"
                                         value="{{ $product->date_sold }}" name="date_sold" required="true">
                                         <x-slot name="append">
@@ -307,7 +296,7 @@
         {!! Form::close() !!}
     </div>
     {{-- card body --}}
-    <x-admin.layout.modal title="thông tin chi tiết">
+    {{-- <x-admin.layout.modal title="thông tin chi tiết">
         <x-slot name="modal" id="mContentProduct">
         </x-slot>
         <x-slot name="dialog" class="modal-xl modal-dialog-scrollable">
@@ -339,5 +328,9 @@
         <x-slot name="footer" class="">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
         </x-slot>
-    </x-admin.layout.modal>
+    </x-admin.layout.modal> --}}
+
+
+    {{-- init media --}}
+    <x-admin.media.init />
 @endsection

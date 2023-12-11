@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Traits\AvFileManager;
+use App\Http\Traits\Responser;
 use App\Models\User;
 use App\Models\Blogs;
 use App\Models\Orders;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ClientUserController extends Controller
 {
+    use Responser, AvFileManager;
     public $user;
     public $file;
     public function __construct(UserInterface $user, FileInterface $file)
@@ -45,6 +47,7 @@ class ClientUserController extends Controller
         return view('client.user.purchase', compact('type', 'origin'));
     }
     ////////////////////////////////////////
+
     //////////////////////////////////////
 
     public function ajax__order(Request $request)
@@ -109,16 +112,7 @@ class ClientUserController extends Controller
                 'phone' => 'required|numeric|unique:users,phone,' . $id,
                 'avatar' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:1000',
             ],
-            [
-                'name.required' => "Không Được Để Trống Tên",
-                'name.string' => "Tên phải là 1 chuỗi kí tự",
-                'phone.unique' => "Số điện thoại này đã tồn tại",
-                'phone.required' => "Bạn chưa điền số điện thoại",
-                'phone.numeric' => "Bắt buộc là 1 chuỗi các SỐ",
-                'avatar.image' => "File không phải là file ảnh",
-                'avatar.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'avatar.max' => "File ảnh không vượt quá 1000kb",
-            ]
+
         );
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
@@ -128,9 +122,8 @@ class ClientUserController extends Controller
             $data['phone'] = $request->phone;
             if ($request->has('avatar')) {
                 if ($user->avatar != NULL)
-                    $file->deleteFile("" . $user->avatar);
-                $path = "admin/images/avatar/";
-                $data['avatar'] = $file->storeFileImg($request->avatar, $path);
+                    $file->deleteFile($user->avatar, "public");
+                $data['avatar'] = $file->storeFileImg($request->avatar, "avatar", "public");
             }
             User::where('id', '=', $id)->update($data);
             if (Auth::user()->role_id <= 3) {
@@ -144,68 +137,7 @@ class ClientUserController extends Controller
     ////////////////////////////////////////
     //////////////////////////////////////
 
-    public function ajax__avatar(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $ok = 0;
-        $path = "admin/images/ajax/avatar/";
-        $path_public = "admin/images/ajax/avatar/";
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'avatar' => 'required|image|mimes:jpeg,png,jpg,tiff,svg|max:1000',
-            ],
-            [
-                'avatar.required' => "Không được để trống hình ảnh chính",
-                'avatar.image' => "File không phải là file ảnh",
-                'avatar.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'avatar.max' => "File ảnh không vượt quá 1MB",
-            ]
-        );
-        if ($validator->fails()) {
-            $data['errors'] =  $validator->errors();
-            $data['ok'] = 0;
-            return response()->json($data);
-        } else {
-            $main_img = $request->avatar;
-            $n_main = $main_img->getClientOriginalName();
-            if (file_exists($path_public . $n_main)) {
-                $filename = pathinfo($n_main, PATHINFO_FILENAME);
-                $ext = $main_img->getClientOriginalExtension();
-                $n_main = $filename . '(1)' . '.' . $ext;
-                $i = 1;
-                while (file_exists($path_public . $n_main)) {
-                    $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-                    $i++;
-                }
-            }
-            $save_main = url($path_public . $n_main);
-            $main_img->move($path_public, $n_main);
-            $data['img'] = $save_main;
-            $data['ok'] = 1;
-            $data['unlink'] = $path_public . $n_main;
-            return response()->json($data);
-        }
-    }
 
-    ////////////////////////////////////////
-    public function ajax__delete__avatar(Request $request)
-    {
-        $data = array();
-        $pagination = '';
-        $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $this->file->deleteFile($request->path);
-        $data['pong'] = $request->path;
-        return response()->json($data);
-    }
 
     //  //////////////////////////////////
     ////////////////////////////////////////
@@ -218,91 +150,123 @@ class ClientUserController extends Controller
 
     ////////////////////////////////////////
     //////////////////////////////////////
-
+    // ANCHOR ajax address //////////////////////////////////////////////////////
     public function ajax__address(Request $request)
     {
-        $data = array();
-        $pagination = '';
         $output = '';
-        $data_create = array();
-        $data_update = array();
-        $error = array();
-        $ok = 0;
-        $output_2 = '';
+        $data_form = [];
+        $html_content_address = '';
         $output_rs_form_addAddress = '';
-        if ($request->act == "delete") {
-            if (Address::where('id', '=',  $request->id)->delete()) {
-                $ok = 1;
+        $action = $request->act;
+        $fromRoute = $request->has("route") ? $request->route : "";
+        if ($action == "data-address") {
+            $address_data =  Address::where('id', '=', $request->id)->first();
+            $html_content_address .= view('components.client.modal.contentaddress', ["address" => $address_data]);
+        }
+        if ($action == "delete") {
+            try {
+                Address::where('id', "=", $request->id)->delete();
+            } catch (\Exception $e) {
+                return $this->errorResponse($e->getMessage());
             }
         }
-        if ($request->act == "setDef") {
-            Address::where('user_id', '=',  Auth::id())->update(['def' => 0]);
-            Address::where('id', '=',  $request->id)->update(['def' => 1]);
-            $ok = 1;
-        }
-        if ($request->act == "add") {
-            $data_create['user_id'] = Auth::id();
-            $data_create['name'] = $request->name;
-            $data_create['phone'] = $request->phone;
-            $data_create['prov'] = $request->prov;
-            $data_create['prov_id'] = $request->prov_id;
-            $data_create['dist'] = $request->dist;
-            $data_create['dist_id'] = $request->dist_id;
-            $data_create['ward'] = $request->ward;
-            $data_create['ward_id'] = $request->ward_id;
-            $data_create['detail'] = $request->detail;
-            $data_create['type'] = $request->type;
-            if ($request->has('def')) {
+        if ($action == "set-def-address") {
+            try {
                 Address::where('user_id', '=',  Auth::id())->update(['def' => 0]);
-                $data_create['def'] = 1;
-            }
-            if (Address::create($data_create)) {
-                $ok = 1;
-                $output_rs_form_addAddress .= view('components.client.modal.contaddress');
-                $data['rs_form'] = $output_rs_form_addAddress;
+                Address::where('id', '=',  $request->id)->update(['def' => 1]);
+            } catch (\Exception $e) {
+                return $this->errorResponse($e->getMessage());
             }
         }
-        if ($request->act == "update") {
-            $data_update['user_id'] = Auth::id();
-            $data_update['name'] = $request->name;
-            $data_update['phone'] = $request->phone;
-            $data_update['prov'] = $request->prov;
-            $data_update['prov_id'] = $request->prov_id;
-            $data_update['dist'] = $request->dist;
-            $data_update['dist_id'] = $request->dist_id;
-            $data_update['ward'] = $request->ward;
-            $data_update['ward_id'] = $request->ward_id;
-            $data_update['detail'] = $request->detail;
-            $data_update['type'] = $request->type;
-            if ($request->has('def')) {
-                Address::where('user_id', '=',  Auth::id())->update(['def' => 0]);
-                $data_update['def'] = 1;
-            } else {
-                $data_update['def'] = 0;
+
+        if ($action === "update" || $action === "add") {
+            $validator = Validator::make($request->all(), [
+                "name" => "required|string|max:255",
+                "phone" => "required|numeric|digits_between:8,20",
+                "detail" => "string|max:500",
+                "prov" => "required",
+                "dist" => "required"
+            ]);
+            if ($validator->fails()) {
+                return $this->validatorFailResponse($validator);
             }
-            if (Address::where('id', '=', $request->id)->update($data_update)) {
-                $ok = 1;
+            $data_form['user_id'] = Auth::id();
+            $data_form['name'] = $request->name;
+            $data_form['phone'] = $request->phone;
+            $data_form['prov'] = $request->prov;
+            $data_form['prov_id'] = $request->prov_id;
+            $data_form['dist'] = $request->dist;
+            $data_form['dist_id'] = $request->dist_id;
+            $data_form['ward'] = $request->ward;
+            $data_form['ward_id'] = $request->ward_id;
+            $data_form['detail'] = $request->detail;
+            $data_form['type'] = $request->type;
+            $data_create['def'] = $request->has("def");
+            switch ($action) {
+                case 'add':
+                    try {
+                        $created = Address::create($data_form);
+                        if ($data_create['def']) {
+                            Address::where('user_id', '=',  Auth::id())->where("id", "!=", $created->id)->update(['def' => 0]);
+                        }
+                    } catch (\Exception $e) {
+                        return $this->errorResponse($e->getMessage());
+                    }
+                    break;
+                case 'update':
+                    try {
+                        $id = $request->id;
+                        Address::where("id", $id)->update($data_form);
+                        if ($data_create['def']) {
+                            Address::where('user_id', '=',  Auth::id())->where("id", "!=", $id)->update(['def' => 0]);
+                        }
+                    } catch (\Exception $e) {
+                        return $this->errorResponse($e->getMessage());
+                    }
+                    break;
+                default:
+                    # code...
+                    break;
             }
         }
-        if ($request->act == "data") {
-            $data_edit =  Address::where('id', '=', $request->id)->first();
-            $output_2 .= view('components.client.modal.contentaddress', compact('data_edit'));
-        }
-        $user_address =  User::find(Auth::id())->address;
+        $user_address =  Auth::user()->address;
         if (count($user_address) > 0) {
-            foreach ($user_address as $address) {
-                $output .= view('components.client.account.address.item', compact('address'));
+            if ($fromRoute !== "checkout") {
+                foreach ($user_address as $address) {
+                    $output .= view('components.client.account.address.item', compact('address'));
+                }
+            } else {
+                $output .= view("components.client.checkout.address.radio", ['user_address' => $user_address]);
             }
         } else {
             $output .= "Hiện bạn chưa có thêm địa chỉ nào!";
         }
-        $data['html'] = $output;
-        $data['ok'] = $ok;
-        $data['html_2']  = $output_2;
-        return response()->json($data);
+        $response['list_item_address'] = $output;
+        $response['html_content_address'] = $html_content_address;
+        $request['form_clear'] = "" . view('components.client.modal.contentaddress');
+        return $this->successResponse($response);
     }
 
     ////////////////////////////////////////
+    // ANCHOR update_profile  //////////////////////////////////////////////////////
+    public function update_profile(Request $request)
+    {
+        return $request->all();
+        $validator = Validator::make($request->all(), [
+            "name" => "required|string|max:255",
+            "phone" => "required|numeric|digits_between:8,20|unique:users,phone," . $request->id,
+            "avatar" => "image|mimes:jpeg,png,jpg,tiff,svg|max:1000"
+
+        ]);
+        if ($validator->fails()) {
+            return $this->validatorFailResponse($validator);
+        }
+        $data_form['name'] = $request->name;
+        $data_form['phone'] = $request->phone;
+        if ($request->has("avatar") && $request->avatar) {
+        }
+    }
+    //////////////////////////////////////////////////////
 
     // //////////////////////////////////
 }

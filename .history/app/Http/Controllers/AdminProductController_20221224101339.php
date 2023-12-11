@@ -387,41 +387,41 @@ class AdminProductController extends Controller
             ProductPlc::where('products_id', $id)->delete();
         }
         // /////////////////////////////////
-        if ($request->has('banner')) {
-            if ($product->banner != NULL) {
-                $this->file->deleteFile($product->banner);
-            }
-            $path_banner = $path . Str::slug($data_update['cat_name']) . "/"  . "banner/";
-            $data_update['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
-            $data_update['banner_link'] = $request->banner_link;
-        }
+        // if ($request->has('banner')) {
+        //     if ($product->banner != NULL) {
+        //         $this->file->deleteFile($product->banner);
+        //     }
+        //     $path_banner = $path . Str::slug($data_update['cat_name']) . "/"  . "banner/";
+        //     $data_update['banner'] = $this->handle_file->storeFileImg($request->banner, $path_banner);
+        //     $data_update['banner_link'] = $request->banner_link;
+        // }
 
         // end bannerrrrrrrrrrrrrrrrrrrrrrrrrr
-        if ($request->has('main_img')) {
-            if ($product->main_img != NULL) {
-                $this->file->deleteFile($product->main_img);
-            }
-            $main_path = $path . Str::slug($data_update['cat_name']) . "/"  . "main/";
-            $data_update['main_img'] = $this->handle_file->storeFileImg($request->main_img, $main_path);
-        }
+        // if ($request->has('main_img')) {
+        //     if ($product->main_img != NULL) {
+        //         $this->file->deleteFile($product->main_img);
+        //     }
+        //     $main_path = $path . Str::slug($data_update['cat_name']) . "/"  . "main/";
+        //     $data_update['main_img'] = $this->handle_file->storeFileImg($request->main_img, $main_path);
+        // }
 
         // //////////////// end main
-        if ($request->has('sub_img')) {
-            if ($product->sub_img != NULL) {
-                $this->file->deleteFile($product->sub_img);
-            }
-            $path_sub_img = $path .  Str::slug($data_update['cat_name']) . "/"  . "sub/";
-            $data_update['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
-        }
+        // if ($request->has('sub_img')) {
+        //     if ($product->sub_img != NULL) {
+        //         $this->file->deleteFile($product->sub_img);
+        //     }
+        //     $path_sub_img = $path .  Str::slug($data_update['cat_name']) . "/"  . "sub/";
+        //     $data_update['sub_img'] = $this->handle_file->storeFileImg($request->sub_img, $path_sub_img);
+        // }
         // end subbbbbbbbbbbbbb
         // start backgroup img
-        if ($request->has('bg')) {
-            if ($product->bg != NULL && $product->bg != '') {
-                $this->file->deleteFile($product->bg);
-            }
-            $path_bg =  $path . Str::slug($data_update['cat_name']) . "/"  . "backgroud/";
-            $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
-        }
+        // if ($request->has('bg')) {
+        //     if ($product->bg != NULL && $product->bg != '') {
+        //         $this->file->deleteFile($product->bg);
+        //     }
+        //     $path_bg =  $path . Str::slug($data_update['cat_name']) . "/"  . "backgroud/";
+        //     $data_update['bg'] = $this->handle_file->storeFileImg($request->bg, $path_bg);
+        // }
         // update product
         Products::where('id', $id)->update($data_update);
         // ///////// update pre order product

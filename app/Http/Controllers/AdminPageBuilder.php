@@ -11,7 +11,7 @@ class AdminPageBuilder extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            session(['active' => 'dashboard']);
+            session(['active' => 'pgb']);
             return $next($request);
         });
     }
@@ -64,6 +64,7 @@ class AdminPageBuilder extends Controller
             case 'preview':
                 $payload = json_decode($request->payload, true);
                 handleStyle($payload, true);
+
                 $html_preview .= view("components.admin.pagebuilder.preview", ['payload' => $payload]);
                 break;
             case 'reset-create':

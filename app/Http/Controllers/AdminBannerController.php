@@ -94,7 +94,7 @@ class AdminBannerController extends Controller
             $data['link'] = $request->link;
             if ($request->has('img')) {
                 if ($banner->img != NULL)
-                    $file->deleteFile("" . $banner->img);
+                    // $file->deleteFile("" . $banner->img);
                 $path_img = "admin/images/banners/";
                 $data['img'] = $file->storeFileImg($request->img, $path_img);
             }
@@ -152,32 +152,32 @@ class AdminBannerController extends Controller
         return $validator;
     }
     ////////////////////////////////////////
-    public function slide_update(Request $request)
-    {
-        $validator = $this->slide_validator($request->all());
-        if ($validator->fails()) {
-            $data['error'] = $validator->errors()->first();
-        } else {
-            $slide = Slides::where('id',  $request->id)->first();
-            $path = "admin/images/slides/";
-            $data_update['name'] = $request->name;
-            $data_update['link'] = $request->link;
-            $data_update['users_id'] = Auth::id();
-            $data_update['author_post'] = Auth::id();
-            if ($request->img) {
-                if ($slide->img) {
-                    $this->file->deleteFile($slide->img);
-                }
-                $save_main =  $this->file->storeFileImg($request->img, $path);
-                $data_update['img'] = $save_main;
-            }
-            $updated =  Slides::where('id', $request->id)->update($data_update);
-            if (!$updated) {
-                $data['error'] = "Updated fail";
-            }
-        }
-        return response()->json($data);
-    }
+    // public function slide_update(Request $request)
+    // {
+    //     $validator = $this->slide_validator($request->all());
+    //     if ($validator->fails()) {
+    //         $data['error'] = $validator->errors()->first();
+    //     } else {
+    //         $slide = Slides::where('id',  $request->id)->first();
+    //         $path = "admin/images/slides/";
+    //         $data_update['name'] = $request->name;
+    //         $data_update['link'] = $request->link;
+    //         $data_update['users_id'] = Auth::id();
+    //         $data_update['author_post'] = Auth::id();
+    //         if ($request->img) {
+    //             if ($slide->img) {
+    //                 $this->file->deleteFile($slide->img);
+    //             }
+    //             $save_main =  $this->file->storeFileImg($request->img, $path);
+    //             $data_update['img'] = $save_main;
+    //         }
+    //         $updated =  Slides::where('id', $request->id)->update($data_update);
+    //         if (!$updated) {
+    //             $data['error'] = "Updated fail";
+    //         }
+    //     }
+    //     return response()->json($data);
+    // }
     //////////////////////////////////////
     //    ///////////////////////////////////////
     public function slide_modal_content(Request $request)
@@ -317,65 +317,65 @@ class AdminBannerController extends Controller
         }
     }
     //    ///////////////////////////////////////
-    public function slide_handle(Request $request)
-    {
-        $act = $request->act;
-        $ido = $request->ido;
-        $ida = $request->ida;
-        $indexo = $request->indexo;
-        $indexa = $request->indexa;
-        $id = $request->has('id') ? $request->id : 0;
-        $status = $request->active;
-        $html = '';
-        $html_edit = '';
-        $data['update_s'] = false;
-        $data['update_slide']['errors'] = null;
-        switch ($act) {
-            case 'update_index':
-                $arraySort = explode(",", $request->arrSort);
-                foreach ($arraySort as $key => $idSlide) {
-                    Slides::where('id', $idSlide)->update(['index' => $key]);
-                }
-                break;
-            case 'update_stt':
-                $last = Slides::where('status', '=', 1)->first();
-                $index = $status == 1 ? (int) $last->index + 1 : NULL;
-                Slides::where('id', $id)->update(['index' => $index, 'status' => $status]);
-                break;
-            case 'update_slide':
-                $validator = $this->slide_validator($request->all());
-                if ($validator->fails()) {
-                    $data['update_slide']['errors'] = $validator->errors();
-                } else {
-                    $slide = Slides::where('id',  $id)->first();
-                    $path = "admin/images/slides/";
-                    $data_update['name'] = $request->name;
-                    $data_update['link'] = $request->link;
-                    if ($request->img) {
-                        if ($slide->img) {
-                            $this->file->deleteFile($slide->img);
-                        }
-                        $save_main =  $this->file->storeFileImg($request->img, $path);
-                        $data_update['img'] = $save_main;
-                    }
-                    $updated =  Slides::where('id', $request->id)->update($data_update);
-                    if ($updated) {
-                        $data['update_s'] = true;
-                    }
-                }
-                $slide = Slides::where('id', $id)->first();
-                $html_edit .= view('components.admin.modal.slide.content', ['slide' => $slide]);
-                $data['html_edit'] = $html_edit;
-                break;
-            default:
-                break;
-        }
-        $slides = Slides::with("author")->get();
-        $html .= view('components.admin.slides.show', compact('slides'));
+    // public function slide_handle(Request $request)
+    // {
+    //     $act = $request->act;
+    //     $ido = $request->ido;
+    //     $ida = $request->ida;
+    //     $indexo = $request->indexo;
+    //     $indexa = $request->indexa;
+    //     $id = $request->has('id') ? $request->id : 0;
+    //     $status = $request->active;
+    //     $html = '';
+    //     $html_edit = '';
+    //     $data['update_s'] = false;
+    //     $data['update_slide']['errors'] = null;
+    //     switch ($act) {
+    //         case 'update_index':
+    //             $arraySort = explode(",", $request->arrSort);
+    //             foreach ($arraySort as $key => $idSlide) {
+    //                 Slides::where('id', $idSlide)->update(['index' => $key]);
+    //             }
+    //             break;
+    //         case 'update_stt':
+    //             $last = Slides::where('status', '=', 1)->first();
+    //             $index = $status == 1 ? (int) $last->index + 1 : NULL;
+    //             Slides::where('id', $id)->update(['index' => $index, 'status' => $status]);
+    //             break;
+    //         case 'update_slide':
+    //             $validator = $this->slide_validator($request->all());
+    //             if ($validator->fails()) {
+    //                 $data['update_slide']['errors'] = $validator->errors();
+    //             } else {
+    //                 $slide = Slides::where('id',  $id)->first();
+    //                 $path = "admin/images/slides/";
+    //                 $data_update['name'] = $request->name;
+    //                 $data_update['link'] = $request->link;
+    //                 if ($request->img) {
+    //                     if ($slide->img) {
+    //                         $this->file->deleteFile($slide->img);
+    //                     }
+    //                     $save_main =  $this->file->storeFileImg($request->img, $path);
+    //                     $data_update['img'] = $save_main;
+    //                 }
+    //                 $updated =  Slides::where('id', $request->id)->update($data_update);
+    //                 if ($updated) {
+    //                     $data['update_s'] = true;
+    //                 }
+    //             }
+    //             $slide = Slides::where('id', $id)->first();
+    //             $html_edit .= view('components.admin.modal.slide.content', ['slide' => $slide]);
+    //             $data['html_edit'] = $html_edit;
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    //     $slides = Slides::with("author")->get();
+    //     $html .= view('components.admin.slides.show', compact('slides'));
 
-        $data['html'] = $html;
-        return response()->json($data);
-    }
+    //     $data['html'] = $html;
+    //     return response()->json($data);
+    // }
     //  //////////////////////////////////////// end name
     ////////////////////////////////////////
 }

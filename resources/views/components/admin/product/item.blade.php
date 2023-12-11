@@ -1,8 +1,11 @@
 <div class="col-3 prd__s--item mb-4">
     <div class="card">
         <div class="prd-img">
-            <img src="{{ $file->ver_img($prd->main_img) }}" alt="" class="prd-img--main">
-            <img src="{{ $file->ver_img($prd->sub_img) }}" alt="" class="prd-img--sub">
+            <img src="{{ urlImg($prd->path_first, 'media') }}" class="{{ $prd->path_second ? 'prd-img--main' : '' }}">
+            @if ($prd->path_second)
+                <img src="{{ urlImg($prd->path_second, 'media') }}" class="prd-img--sub">
+            @endif
+
         </div>
         <div class="prd-info p-3">
             <span class="name d-block text-truncate">{{ $prd->name }}</span>
@@ -18,7 +21,7 @@
             <span class="inventory d-block info-item"><i class="fa-solid fa-warehouse"></i>
                 {{ stock_stt($prd->status) }}</span>
             <div class="row mx-0 mt-3">
-                <div class="form-group col-12 pr-0 pl-0">
+                <div class="form-group col-12 pl-0 pr-0">
                     <select class="custom-select" name="" id="product__show--hl" data-id="{{ $prd->id }}">
                         <option value="{{ $prd->highlight }}">{{ highlight_stt($prd->highlight) }}</option>
                         @foreach (Config::get('product.highlight') as $highlight)
@@ -34,7 +37,7 @@
             <div class="prd-date d-flex justify-content-between align-items-center mb-2 mt-2 pl-0">
                 <div class="date">
                     <i class="far fa-calendar pr-1"></i>
-                    <span>{{ $prd->created_at->toFormattedDateString() }}</span>
+                    <span>{{ $carbon->parse($prd->created_at)->toFormattedDateString() }}</span>
                 </div>
 
             </div>
@@ -44,11 +47,11 @@
                         class="d-block btn btn-primary"><i class="fas fa-edit pr-1"></i>
                         Chỉnh Sửa</a>
                 </div>
-                <div class="action-delete">
+                {{-- <div class="action-delete">
                     <a data-url="{{ route('delete_product', ['id' => $prd->id]) }}"
                         class="d-block btn btn-primary remove__product mx-3"><i class="fas fa-trash pr-1"></i>
                         Xoá</a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

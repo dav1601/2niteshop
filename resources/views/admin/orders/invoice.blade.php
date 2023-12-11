@@ -149,12 +149,9 @@
                         <table class="table-borderless table">
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <img src="{{ asset('client/images/email-logo.png') }}" alt=""
-                                            width="100" height="auto">
-                                    </td>
+
                                     <td class="top-right invoice__top--right" style="z-index: 1000;">
-                                        <h3 class="marginright">INVOICE-{{ $ordered->id }} </h3>
+                                        <h3 class="marginright">INVOICE-{{ $ordered->code }} </h3>
                                         <span class="marginright">{{ $carbon->now() }}</span>
                                 </tr>
 
@@ -200,7 +197,7 @@
                             <table class="table-striped table">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">#</th>
+
                                         <th style="width:50%">Tên sản phẩm</th>
                                         <th style="width:50%">Options đi kèm</th>
                                         <th class="text-right">Số lượng</th>
@@ -209,22 +206,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $index = 0;
-                                    @endphp
-                                    @foreach ($cart as $item)
-                                        @php
-                                            $index++;
-                                        @endphp
+
+                                    @foreach ($cart as $product)
                                         <tr>
-                                            <td class="text-center">{{ $index }}</td>
+
                                             <td>
-                                                {{ $item->name }}
+                                                {{ $product->name }}
                                             </td>
-                                            <td>
-                                                @if ($item->options->ins)
+                                            {{-- <td>
+                                                @if ($product->options->ins)
                                                     @php
-                                                        $arrIns = explode(',', $item->options->ins);
+                                                        $arrIns = explode(',', $product->options->ins);
                                                     @endphp
 
                                                     @foreach ($arrIns as $insid)
@@ -242,35 +234,28 @@
                                                     <span>Không có</span>
                                                 @endif
 
+                                            </td> --}}
+                                            <td class="text-right">x{{ $product->qty }}
                                             </td>
-                                            <td class="text-right">x{{ $item->qty }}
-                                            </td>
-                                            <td class="text-right"> {{ crf($item->price) }}
+                                            <td class="text-right"> {{ crf($product->price) }}
                                             </td>
                                             <td class="text-right">
-                                                {{ crf($item->options->sub_total) }} </td>
+                                                {{ crf($product->options->sub_total) }} </td>
                                         </tr>
                                     @endforeach
 
 
                                 </tbody>
                             </table>
-
                         </div>
-
-
                         <table class="table-borderless table">
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <strong class="marginbottom d-block"
-                                            style="margin-left:120px; font-size:20px;">Signature Shop:</strong>
-                                        <img src="{{ asset('client/images/signature.png') }}" alt="signature"
-                                            width="400">
-                                    </td>
+
                                     <td class="top-right" style="z-index: 1000;">
                                         <p style="font-size: 20px;">Total : <strong>{{ crf($ordered->total) }}</strong>
                                         </p>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

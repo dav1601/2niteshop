@@ -1,4 +1,5 @@
 $(function () {
+    // ANCHOR start //////////////////////////////////////////////////////
     var sections = [];
     var arrColumn = [];
     var arrPackage = [];
@@ -76,7 +77,7 @@ $(function () {
         }
         prePress = e.keyCode;
     });
-
+    // ANCHOR loading modal //////////////////////////////////////////////////////
     function loadingModal(loading = true) {
         const btn = $("#pgb-form-submit");
         $.btn_loading_v2(btn, loading);
@@ -105,7 +106,7 @@ $(function () {
         }
         $(this).val(val);
     });
-
+    // ANCHOR edit //////////////////////////////////////////////////////
     if (!isCreate) {
         $.page_loading(true);
         let handlePage = page;
@@ -166,7 +167,7 @@ $(function () {
         const idPage = page ? page.id : 0;
         return type + "-" + index + "-" + uid() + idPage;
     }
-
+    // ANCHOR handle pack + section //////////////////////////////////////////////////////
     function removePackage(pid) {
         const index = indexPackById(pid);
         if (index > -1) {
@@ -273,6 +274,7 @@ $(function () {
         return packages;
     }
     // handle sort
+    // ANCHOR sort //////////////////////////////////////////////////////
     function initSortPackage() {
         $(".pgb-sort-package").sortable({
             connectWith: ".pgb-sort-connect-package",
@@ -349,6 +351,7 @@ $(function () {
     }
 
     // *-load-comps
+    // ANCHOR load comps //////////////////////////////////////////////////////
     async function loadGllYt(btn = null, cb) {
         const pid = $("#edit-package-id").val();
         let dataAjax = {
@@ -429,7 +432,7 @@ $(function () {
             });
     }
     // *-load-comps end
-    // *-remove-index
+    // ANCHOR handle remove //////////////////////////////////////////////////////
     $(document).on("click", ".p-e-crsimages-remove", function () {
         let index = $(this).attr("data-index");
         crsImages.splice(index, 1);
@@ -466,10 +469,12 @@ $(function () {
     });
     // *remove-index end
     // end sort
+    // ANCHOR update height //////////////////////////////////////////////////////
     function updateHeightBuild() {
         const currentHeigt = $("#build-sections").height();
         $("#build-sections").css("min-height", currentHeigt + 200);
     }
+    // ANCHOR ajax handle //////////////////////////////////////////////////////
     function ajaxHandle(data) {
         return $.ajax({
             type: "post",
@@ -565,6 +570,34 @@ $(function () {
         });
     }
     //
+    // ANCHOR tabs //////////////////////////////////////////////////////
+    $(document).on("click", "#pack-edit-tabs-add", function () {
+        let tab = {
+            type: "none",
+            title: "",
+            value: "",
+        };
+        arrayTabs.push(tab);
+        loadTabs($(this));
+    });
+    $(document).on("click", ".pack-edit-tab-component-remove", function () {
+        const id = $(this).attr("data-id");
+        const el = $("#" + id);
+        if (el) {
+            const packId = $("#edit-package-id").val();
+            const indexPack = indexPackById(packId);
+            let newTabs = arrPackage[indexPack].payload.content.filter(
+                (tab) => {
+                    return tab.id !== id;
+                }
+            );
+            arrPackage[indexPack].payload.content = newTabs;
+            el.remove();
+            console.log({
+                afterRemove: arrPackage[indexPack].payload.content,
+            });
+        }
+    });
     $(document).on("change", ".type-tabs", function () {
         const type = $(this).val();
         const id = $(this).attr("data-index");
@@ -587,6 +620,7 @@ $(function () {
         });
     });
     //
+    // ANCHOR add section + render modal package //////////////////////////////////////////////////////
     $(document).on("click", ".pgb-add-section", function () {
         handleSection($(this).attr("data-t"));
     });
@@ -636,6 +670,7 @@ $(function () {
         }
         return html;
     };
+    // ANCHOR change lfm input //////////////////////////////////////////////////////
     $(document).on(
         "keyup",
         ".lfm-upload-input",
@@ -661,6 +696,7 @@ $(function () {
             console.log($(this).parent().next());
         }
     });
+    // ANCHOR remove preview image //////////////////////////////////////////////////////
     $(document).on("click", ".prev-img-pack-remove", function () {
         const index = $(this).attr("index-image");
         const indexArr = $(this).attr("index-array");
@@ -672,6 +708,7 @@ $(function () {
         input.val(imagePackage[indexArr].toString());
         input.change();
     });
+    // ANCHOR event modal  //////////////////////////////////////////////////////
     $("#pgb-section-modal").on("hidden.bs.modal", function (event) {
         imagePackage = [];
         outputModal.html("....");
@@ -694,34 +731,8 @@ $(function () {
     });
     // *add-comp
 
-    $(document).on("click", "#pack-edit-tabs-add", function () {
-        let tab = {
-            type: "none",
-            title: "",
-            value: "",
-        };
-        arrayTabs.push(tab);
-        loadTabs($(this));
-    });
-    $(document).on("click", ".pack-edit-tab-component-remove", function () {
-        const id = $(this).attr("data-id");
-        const el = $("#" + id);
-        if (el) {
-            const packId = $("#edit-package-id").val();
-            const indexPack = indexPackById(packId);
-            let newTabs = arrPackage[indexPack].payload.content.filter(
-                (tab) => {
-                    return tab.id !== id;
-                }
-            );
-            arrPackage[indexPack].payload.content = newTabs;
-            el.remove();
-            console.log({
-                afterRemove: arrPackage[indexPack].payload.content,
-            });
-        }
-    });
     // *crsimages
+    // ANCHOR crs images //////////////////////////////////////////////////////
     $(document).on("click", "#pack-edit-crs-image-add", function () {
         const pid = $("#edit-package-id").val();
         let indexPack = indexPackById(pid);
@@ -732,16 +743,17 @@ $(function () {
                 link: "",
             });
         }
-
         $("#p-e-items").text(crsImages.length);
         loadCrsImages(null, $(this));
-        console.log({
-            pecrsimages: arrPackage[indexPack].payload.content,
-        });
+
+        console.log(
+            "🚀 ~ file: page_builder.js:751 ~ arrPackage[indexPack].payload.content:",
+            arrPackage[indexPack].payload.content
+        );
     });
     // *crsimages end
     // *banners-add
-
+    // ANCHOR banners //////////////////////////////////////////////////////
     $(document).on("click", "#pack-edit-banners-add", function () {
         const pid = $("#edit-package-id").val();
         let number = Number($("#pack-edit-banners-number").val());
@@ -771,275 +783,255 @@ $(function () {
 
     // *add-comp end
     // *form
-    $(document)
-        .on("submit", "#pgb-section-form", function (e) {
-            e.preventDefault();
-            const type = $("#pgb-modal-type").val();
-            $.btn_loading_v2($(this)[0], true, true);
-            let visible = [];
-            let spacing = {};
-            let classes = "";
-            switch (type) {
-                case "edit-package":
-                    let typePackage = $("#edit-package-type").val();
-                    let classesPack = $("#edit-package-class").val();
-                    let packageId = $("#edit-package-id").val();
-                    let indexPack = indexPackById(packageId);
-                    let content;
-                    let payloadPack = {
-                        type: typePackage,
-                        class: classesPack,
-                        options: {},
-                    };
-                    let stylePack = {};
-                    switch (typePackage) {
-                        case "image":
-                            let image = $("#package-edit-image").val();
-                            let href = $("#pack-edit-href").val();
-                            stylePack = updateBorderStyle();
-                            payloadPack["content"] = image;
-                            payloadPack.options["href"] = href;
-                            payloadPack.options["typeUpload"] = $(
-                                "#pgb-edit-image-type-upload"
-                            ).val();
-                            break;
-                        case "video":
-                            payloadPack["content"] = $(
-                                "#pack-edit-video-source"
-                            ).val();
-                            payloadPack.options["pf"] = $(
-                                "#pgb-m-video-platform"
-                            ).val();
-                            break;
-                        case "texteditor":
-                            payloadPack["content"] = $(
-                                "#pgb-package-edit-tiny"
-                            ).val();
-                            break;
-                        case "category":
-                            payloadPack["content"] = $(
-                                "#pack-edit-category"
-                            ).val();
-                            break;
-                        case "header":
-                            payloadPack["content"] =
-                                $("#pack-edit-header").val();
-                            break;
-                        case "googlemap":
-                            payloadPack["content"] =
-                                $("#pack-edit-ggmap").val();
-                            break;
-                        case "blogs":
-                            payloadPack["content"] = Number(
-                                $("#pack-edit-blogs").val()
-                            );
-                            break;
-                        case "tabs":
-                            const tabs = $(".pack-edit-tab-component");
-                            stylePack["activeColor"] =
-                                $("#color-active-tabs").val();
-                            content = [];
-                            $.each(tabs, function (index, el) {
-                                let title = $(el)
-                                    .find(".p-e-tab-comp-title")
-                                    .val();
-                                let type = $(el)
-                                    .find(".p-e-tab-comp-type")
-                                    .val();
-                                let value = "";
-                                switch (type) {
-                                    case "category":
-                                        value = $(
-                                            "#pgb-tab-category-" + index
-                                        ).val();
-                                        break;
-                                    case "products":
-                                        value = $(
-                                            "#pgb-tab-products-" + index
-                                        ).val();
-                                        break;
-                                }
-                                let tab = {
-                                    type: type,
-                                    title: title,
-                                    value: value,
-                                };
-                                content.push(tab);
-                            });
-                            payloadPack["content"] = content;
-
-                            break;
-                        case "crsimages":
-                            let items = $(".p-e-component-crsimages");
-                            content = [];
-                            $.each(items, function (index, item) {
-                                let image = $(item)
-                                    .find(".p-e-crsimages-image")
-                                    .val();
-                                let link = $(item)
-                                    .find(".p-e-crsimages-link")
-                                    .val();
-                                console.log(link);
-                                content.push({
-                                    value: image,
-                                    link: link,
-                                });
-                            });
-                            payloadPack["content"] = content;
-                            break;
-                        case "banners":
-                            let bannerItems = $(".p-e-component-banner");
-                            payloadPack["content"] = {};
-                            content = [];
-                            $.each(bannerItems, function (index, item) {
-                                let image = $(item)
-                                    .find(".p-e-banners-image")
-                                    .val();
-                                let link = $(item)
-                                    .find(".p-e-banners-link")
-                                    .val();
-                                content.push({
-                                    value: image,
-                                    link: link,
-                                });
-                            });
-                            payloadPack["content"]["images"] = content;
-                            payloadPack["content"]["max"] = $(
-                                "#pack-edit-banners-max"
-                            ).val();
-                            payloadPack["content"]["min"] = $(
-                                "#pack-edit-banners-min"
-                            ).val();
-                            stylePack = {
-                                ...stylePack,
-                                ...updateBorderStyle(),
+    // ANCHOR section form * //////////////////////////////////////////////////////
+    $(document).on("submit", "#pgb-section-form", function (e) {
+        e.preventDefault();
+        const type = $("#pgb-modal-type").val();
+        $.btn_loading_v2($(this)[0], true, true);
+        let visible = [];
+        let spacing = {};
+        let classes = "";
+        switch (type) {
+            // ANCHOR f-edit-pack //////////////////////////////////////////////////////
+            case "edit-package":
+                let typePackage = $("#edit-package-type").val();
+                let classesPack = $("#edit-package-class").val();
+                let packageId = $("#edit-package-id").val();
+                let indexPack = indexPackById(packageId);
+                let content;
+                let payloadPack = {
+                    type: typePackage,
+                    class: classesPack,
+                    options: {},
+                };
+                let stylePack = {};
+                switch (typePackage) {
+                    case "image":
+                        let image = $("#package-edit-image").val();
+                        let href = $("#pack-edit-href").val();
+                        stylePack = updateBorderStyle();
+                        payloadPack["content"] = image;
+                        payloadPack.options["href"] = href;
+                        payloadPack.options["typeUpload"] = $(
+                            "#pgb-edit-image-type-upload"
+                        ).val();
+                        break;
+                    case "video":
+                        payloadPack["content"] = $(
+                            "#pack-edit-video-source"
+                        ).val();
+                        payloadPack.options["pf"] = $(
+                            "#pgb-m-video-platform"
+                        ).val();
+                        break;
+                    case "texteditor":
+                        payloadPack["content"] = $(
+                            "#pgb-package-edit-tiny"
+                        ).val();
+                        break;
+                    case "category":
+                        payloadPack["content"] = $("#pack-edit-category").val();
+                        break;
+                    case "header":
+                        payloadPack["content"] = $("#pack-edit-header").val();
+                        break;
+                    case "googlemap":
+                        payloadPack["content"] = $("#pack-edit-ggmap").val();
+                        break;
+                    case "blogs":
+                        payloadPack["content"] = Number(
+                            $("#pack-edit-blogs").val()
+                        );
+                        break;
+                    case "tabs":
+                        const tabs = $(".pack-edit-tab-component");
+                        stylePack["activeColor"] =
+                            $("#color-active-tabs").val();
+                        content = [];
+                        $.each(tabs, function (index, el) {
+                            let title = $(el).find(".p-e-tab-comp-title").val();
+                            let type = $(el).find(".p-e-tab-comp-type").val();
+                            let value = "";
+                            switch (type) {
+                                case "category":
+                                    value = $(
+                                        "#pgb-tab-category-" + index
+                                    ).val();
+                                    break;
+                                case "products":
+                                    value = $(
+                                        "#pgb-tab-products-" + index
+                                    ).val();
+                                    break;
+                            }
+                            let tab = {
+                                type: type,
+                                title: title,
+                                value: value,
                             };
-                            break;
-                        case "galleryyt":
-                            payloadPack["content"] = {};
-                            payloadPack["content"]["number_item"] = $(
-                                "#pack-edit-gll-yt-items"
-                            ).val();
-                            let itemsYt = $(".p-e-gllYt-link");
-                            payloadPack["content"]["items"] = [];
-                            $.each(itemsYt, function (index, item) {
-                                payloadPack["content"]["items"].push(
-                                    $(item).val()
-                                );
-                            });
+                            content.push(tab);
+                        });
+                        payloadPack["content"] = content;
 
-                            break;
-                        default:
-                            break;
-                    }
-                    if (indexPack > -1) {
-                        arrPackage[indexPack].payload = payloadPack;
-                        arrPackage[indexPack].advanced = updateAdvanced();
-                        arrPackage[indexPack].style = stylePack;
-                    }
-                    console.log({
-                        type: type,
-                        afterUpdatePackage: arrPackage[indexPack],
-                    });
-                    $.btn_loading_v2($(this)[0], false, true);
-                    break;
-                case "change-layout":
-                    const selected = $("#selected_layout");
-                    const layout = selected.attr("data-layout");
-                    const sid = selected.attr("sid");
-                    let payload = {
-                        sid: sid,
-                        layout: layout,
-                    };
-                    handleSection(
-                        type,
-                        payload,
-                        $.btn_loading_v2($(this)[0], false, true)
-                    );
-                    break;
-                case "edit-section":
-                    const bgWp = $("#pgb-section-bg-wp").val();
-                    const bgSection = $("#pgb-section-bg").val();
-                    const classes = $("#edit-section-class").val();
-                    const container = $("#switch-section-cotainer").is(
-                        ":checked"
-                    );
-                    $.each(
-                        $(".pgb-device-visible:checkbox:checked"),
-                        function (indexInArray, elVisible) {
-                            visible.push($(elVisible).val());
-                        }
-                    );
-                    let ploadS = {
-                        class: classes,
-                    };
-                    let background = {
-                        background_section: bgWp,
-                        background_container: bgSection,
-                    };
-                    let sectionId = $("#edit-section-id").val();
-                    let indexSection = indexSectionById(sectionId);
-                    let spacing = handleSpacing("update");
-                    if (indexSection > -1) {
-                        sections[indexSection].container = container;
-                        sections[indexSection].payload = ploadS;
-                        sections[indexSection].advanced = updateAdvanced();
-                        sections[indexSection].style = {
-                            ...background,
+                        break;
+                    case "crsimages":
+                        let items = $(".p-e-component-crsimages");
+                        content = [];
+                        $.each(items, function (index, item) {
+                            let image = $(item)
+                                .find(".p-e-crsimages-image")
+                                .val();
+                            let link = $(item)
+                                .find(".p-e-crsimages-link")
+                                .val();
+                            console.log(link);
+                            content.push({
+                                value: image,
+                                link: link,
+                            });
+                        });
+                        payloadPack["content"] = content;
+                        break;
+                    case "banners":
+                        let bannerItems = $(".p-e-component-banner");
+                        payloadPack["content"] = {};
+                        content = [];
+                        $.each(bannerItems, function (index, item) {
+                            let image = $(item)
+                                .find(".p-e-banners-image")
+                                .val();
+                            let link = $(item).find(".p-e-banners-link").val();
+                            content.push({
+                                value: image,
+                                link: link,
+                            });
+                        });
+                        payloadPack["content"]["images"] = content;
+                        payloadPack["content"]["max"] = $(
+                            "#pack-edit-banners-max"
+                        ).val();
+                        payloadPack["content"]["min"] = $(
+                            "#pack-edit-banners-min"
+                        ).val();
+                        stylePack = {
+                            ...stylePack,
                             ...updateBorderStyle(),
                         };
-                    }
-                    console.log({
-                        afterUpdateSection: sections[indexSection],
-                    });
+                        break;
+                    case "galleryyt":
+                        payloadPack["content"] = {};
+                        payloadPack["content"]["number_item"] = $(
+                            "#pack-edit-gll-yt-items"
+                        ).val();
+                        let itemsYt = $(".p-e-gllYt-link");
+                        payloadPack["content"]["items"] = [];
+                        $.each(itemsYt, function (index, item) {
+                            payloadPack["content"]["items"].push($(item).val());
+                        });
+
+                        break;
+                    default:
+                        break;
+                }
+                if (indexPack > -1) {
+                    arrPackage[indexPack].payload = payloadPack;
+                    arrPackage[indexPack].advanced = updateAdvanced();
+                    arrPackage[indexPack].style = stylePack;
+                }
+
+                $.btn_loading_v2($(this)[0], false, true);
+                break;
+            // ANCHOR f-change-layout //////////////////////////////////////////////////////
+            case "change-layout":
+                const selected = $("#selected_layout");
+                const layout = selected.attr("data-layout");
+                const sid = selected.attr("sid");
+                let payload = {
+                    sid: sid,
+                    layout: layout,
+                };
+                handleSection(type, payload).then(() => {
                     $.btn_loading_v2($(this)[0], false, true);
-                    break;
-                case "edit-column":
-                    let fw_devices = getChecked("pgb-fw-devices");
-                    let styleCol = {
-                        background: $("#pgb-col-bg").val(),
-                    };
-                    styleCol = {
-                        ...styleCol,
+                });
+                break;
+            // ANCHOR f-edit-sec //////////////////////////////////////////////////////
+            case "edit-section":
+                const bgWp = $("#pgb-section-bg-wp").val();
+                const bgSection = $("#pgb-section-bg").val();
+                const classes = $("#edit-section-class").val();
+                const container = $("#switch-section-cotainer").is(":checked");
+                $.each(
+                    $(".pgb-device-visible:checkbox:checked"),
+                    function (indexInArray, elVisible) {
+                        visible.push($(elVisible).val());
+                    }
+                );
+                let ploadS = {
+                    class: classes,
+                };
+                let background = {
+                    background_section: bgWp,
+                    background_container: bgSection,
+                };
+                let sectionId = $("#edit-section-id").val();
+                let indexSection = indexSectionById(sectionId);
+                let spacing = handleSpacing("update");
+                if (indexSection > -1) {
+                    sections[indexSection].container = container;
+                    sections[indexSection].payload = ploadS;
+                    sections[indexSection].advanced = updateAdvanced();
+                    sections[indexSection].style = {
+                        ...background,
                         ...updateBorderStyle(),
                     };
-                    const cId = $("#edit-col-id").val();
-                    const indexCol = indexColById(cId);
-                    if (indexCol > -1) {
-                        arrColumn[indexCol].style = styleCol;
-                        arrColumn[indexCol].class = $("#edit-col-class").val();
-                        arrColumn[indexCol].advanced = updateAdvanced({
-                            fw_devices: fw_devices.toString(),
-                        });
-                    }
-                    console.log({
-                        afterUpdateCol: arrColumn[indexCol],
+                }
+
+                console.log(
+                    "🚀 ~ file: page_builder.js:993 ~ sections[indexSection]:",
+                    sections[indexSection]
+                );
+                $.btn_loading_v2($(this)[0], false, true);
+                break;
+            // ANCHOR f-edit-col //////////////////////////////////////////////////////
+            case "edit-column":
+                let fw_devices = getChecked("pgb-fw-devices");
+                let styleCol = {
+                    background: $("#pgb-col-bg").val(),
+                };
+                styleCol = {
+                    ...styleCol,
+                    ...updateBorderStyle(),
+                };
+                const cId = $("#edit-col-id").val();
+                const indexCol = indexColById(cId);
+                if (indexCol > -1) {
+                    arrColumn[indexCol].style = styleCol;
+                    arrColumn[indexCol].class = $("#edit-col-class").val();
+                    arrColumn[indexCol].advanced = updateAdvanced({
+                        fw_devices: fw_devices.toString(),
                     });
-                    $.btn_loading_v2($(this)[0], false, true);
-                    break;
-                default:
-                    const shortCode = $(".pgb-shortCode-item.active").attr(
-                        "value"
-                    );
-                    const cid = $(".pgb-shortCode-item.active").attr("cid");
-                    if (shortCode != 0) {
-                        let payload = {
-                            cid: cid,
-                        };
-                        handlePackage(
-                            "create",
-                            shortCode,
-                            payload,
-                            $.btn_loading_v2($(this)[0], false, true)
-                        );
-                    }
-                    break;
-            }
-            modal.modal("hide");
-        })
-        .catch((err) => {
-            $.btn_loading_v2($(this)[0], false, true)
-        });
+                }
+                console.log({
+                    afterUpdateCol: arrColumn[indexCol],
+                });
+                $.btn_loading_v2($(this)[0], false, true);
+                break;
+            default:
+                const shortCode = $(".pgb-shortCode-item.active").attr("value");
+                const cid = $(".pgb-shortCode-item.active").attr("cid");
+                if (shortCode != 0) {
+                    let payload = {
+                        cid: cid,
+                    };
+                    handlePackage("create", shortCode, payload).then(() => {
+                        $.btn_loading_v2($(this)[0], false, true);
+                    });
+                }
+                break;
+        }
+        modal.modal("hide");
+    });
+    // ANCHOR layout + pack remove //////////////////////////////////////////////////////
     $(document).on("click", ".select-layout", function () {
         let currActive = $(".select-layout.active");
         let layout = $(this).attr("data-layout");
@@ -1055,6 +1047,8 @@ $(function () {
         };
         ajaxRenderModalPackage(dataAjax, { minWidth: 800 });
     });
+
+    // ANCHOR package edit //////////////////////////////////////////////////////
     $(document).on("click", ".pack-remove", function () {
         const pid = $(this).attr("pack-id");
         removePackage(pid);
@@ -1063,7 +1057,6 @@ $(function () {
     function addAttr(pid) {
         $("#modal__select--save").attr("pack-id", pid);
     }
-    // *pack-edit
     $(document).on("click", ".pack-edit", function () {
         const pid = $(this).attr("pack-id");
         const type = $(this).attr("data-type");
@@ -1129,6 +1122,7 @@ $(function () {
             );
         }
     });
+    // ANCHOR action edit add section col //////////////////////////////////////////////////////
     $(document).on("click", ".pgb-section-act .edit", function () {
         const sid = $(this).attr("sid");
         let dataAjax = {
@@ -1165,6 +1159,7 @@ $(function () {
         }
     };
     //*createAdvanced  //////////////////////////////////
+    // ANCHOR handle advanced //////////////////////////////////////////////////////
     function updateAdvanced(customs = {}) {
         let data = {};
         let visible = [];
@@ -1214,6 +1209,7 @@ $(function () {
     }
     // //////////////////////////////////////
     // *hS
+    // ANCHOR handle Section //////////////////////////////////////////////////////
     function handleSection(
         type,
         payload = null,
@@ -1254,10 +1250,10 @@ $(function () {
                     section: section,
                     type: "add-section",
                 };
-                ajaxHandle(dataAjax).then((res) => {
+                return ajaxHandle(dataAjax).then((res) => {
                     callbackAjax;
                 });
-                break;
+
             case "change-layout":
                 const sid = payload.sid;
                 let currentSection = getSectionById(sid, true);
@@ -1340,7 +1336,7 @@ $(function () {
                         section: getSectionById(sid),
                         type: "change-layout",
                     };
-                    ajaxHandle(dataAjax).then((res) => {
+                    return ajaxHandle(dataAjax).then((res) => {
                         callbackAjax;
                     });
                 }
@@ -1378,7 +1374,7 @@ $(function () {
             box_shadow: propertyStyle["box_shadow"],
         };
     }
-
+    // ANCHOR handle column //////////////////////////////////////////////////////
     function handleColumn(
         type,
         section = null,
@@ -1516,14 +1512,16 @@ $(function () {
                     type: "add-package",
                     column: getColById(payload.cid),
                 };
-                ajaxHandle(dataAjax).then((res) => {
-                    callbackAjax;
-                });
                 console.log({
                     type: type + "-package",
                     package: package,
                     packByCid: getPackageByCid(payload.cid),
                 });
+
+                return ajaxHandle(dataAjax).then((res) => {
+                    callbackAjax;
+                });
+
                 break;
             case "delete":
                 arrPackage = arrPackage.filter(function (element, index) {
@@ -1537,7 +1535,7 @@ $(function () {
         }
     }
     // ///////////////////////////
-
+    // ANCHOR shortcode + pgb handle btn //////////////////////////////////////////////////////
     $(document).on("click", ".pgb-shortCode-item", function () {
         $(".pgb-shortCode-item.active").removeClass("active");
         $(this).addClass("active");
@@ -1606,10 +1604,11 @@ $(function () {
                 }
                 $.btn_loading_v2($(this), false, false);
             })
-            .catch((err) => {
+            .catch(() => {
                 $.btn_loading_v2($(this), false, false);
             });
     });
+    // ANCHOR lfm //////////////////////////////////////////////////////
     $(document).on("change", "#pgb-edit-image-type-upload", function () {
         let type = $(this).val();
         let op = $("#pgb-edit-image-op-tup");
@@ -1625,7 +1624,7 @@ $(function () {
             preview = $("#preview-" + id);
         }
         window.open(
-            path_ab + "/laravel-filemanager" + "?type=" + "Images",
+            path_ab + "/laravel-filemanager?type=pagebuilder",
             "FileManager",
             "width=900,height=600"
         );

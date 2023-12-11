@@ -71,12 +71,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Products withoutTrashed()
  * @mixin \Eloquent
  */
-class Products extends Model implements HasMedia
+class Products extends Model
 {
-    use HasFactory, SoftDeletes, InteractsWithMedia;
+    use HasFactory, SoftDeletes;
     protected $table = 'products';
     protected $fillable = [
-        'id',
         'user_id',
         'name',
         'slug',
@@ -91,6 +90,9 @@ class Products extends Model implements HasMedia
         'model',
         'main_img',
         'sub_img',
+        'image_first',
+        'image_second',
+        'image_background',
         'bg',
         'type',
         'producer_id',
@@ -101,16 +103,18 @@ class Products extends Model implements HasMedia
         'usage_stt',
         'num_orders',
         'highlight',
-        'date_sold'
+        'date_sold',
 
     ];
     // scope
     public function scopeExclude($query, $value = [])
     {
-        return $query->select(array_diff($this->fillable, (array) $value));
+        $fillable = $this->fillable;
+        // array_push($fillable, "deleted_at", "created_at", "updated_at");
+        return $query->select(array_diff($fillable, (array) $value));
     }
     // end scope
-    public function gll()
+    public function gallery()
     {
         return $this->hasMany('App\Models\gllProducts')->orderBy('index', 'ASC');
     }
@@ -119,7 +123,18 @@ class Products extends Model implements HasMedia
     {
         return $this->belongsToMany('App\Models\Products', 'product_rela_product', 'product_id', 'products_id');
     }
-
+    public function img_first()
+    {
+        return $this->belongsTo('App\Models\AMedia', 'image_first');
+    }
+    public function img_second()
+    {
+        return $this->belongsTo('App\Models\AMedia', 'image_second');
+    }
+    public function background()
+    {
+        return $this->belongsTo('App\Models\AMedia', 'image_background');
+    }
     public function related_blogs()
     {
         return $this->belongsToMany('App\Models\Blogs', 'prd_rela_blog', 'products_id', 'blogs_id');
@@ -153,6 +168,11 @@ class Products extends Model implements HasMedia
     {
         return $this->belongsToMany('App\Models\BlockProduct', 'prd_rela_block', 'products_id', 'block_id');
     }
+    public function options()
+    {
+        return $this->belongsToMany('App\Models\Options', 'product_option', 'product_id', 'option_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id');
@@ -160,5 +180,17 @@ class Products extends Model implements HasMedia
     public function getPreOrderAttribute()
     {
         return strtotime($this->date_sold) >= strtotime(Carbon::now()) || $this->status === 3;
+    }
+    public function getPathFirstAttribute()
+    {
+        return $this->img_first ? $this->img_first->path : NULL;
+    }
+    public function getPathSecondAttribute()
+    {
+        return $this->img_second ? $this->img_second->path : NULL;
+    }
+    public function getPathBgAttribute()
+    {
+        return $this->background ? $this->background->path : NULL;
     }
 }

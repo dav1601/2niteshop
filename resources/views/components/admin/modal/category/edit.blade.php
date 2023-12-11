@@ -1,3 +1,4 @@
+<input type="hidden" name="id" value="{{ $category->id }}">
 <div class="form-group mb-5">
     <label for="">Tên Danh Mục</label>
     <input type="text" class="form-control" name="name" id="" value="{{ $category->name }}" placeholder="">
@@ -45,7 +46,7 @@
 {{-- --------- --}}
 <x-admin.ui.form.image name="img" blockEventDef="true" classImage="rounded" classWp="w-100 mb-5"
     classClear="image-category-clear" classUpload="image-category-upload" classInput="image-category-input"
-    id="m_editCategoryBanner" :image="$file->ver_img($category->img)" label="Banner">
+    id="m_editCategoryBanner" :image="urlImg($category->img)" label="Banner">
     <x-slot name="input" :data-id="$category->id" data-type="img">
 
     </x-slot>
@@ -57,7 +58,7 @@
     </x-slot>
 </x-admin.ui.form.image>
 <x-admin.ui.form.image name="icon" blockEventDef="true" classImage="rounded" classClear="image-category-clear"
-    classUpload="image-category-upload" classInput="image-category-input" id="m_editCategoryIcon" :image="$file->ver_img($category->icon)"
+    classUpload="image-category-upload" classInput="image-category-input" id="m_editCategoryIcon" :image="urlImg($category->icon)"
     label="icon" width="64px" height="64px">
     <x-slot name="input" :data-id="$category->id" data-type="icon">
 

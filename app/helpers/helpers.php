@@ -3,16 +3,67 @@
 use Carbon\Carbon;
 use App\Models\Config;
 use App\Models\Category;
+use App\Models\District;
 use App\Models\Products;
+use App\Models\Province;
 use App\Models\Insurance;
+use App\Models\Ward;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Exists;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
+function getCacheAddress($t = "province")
+{
+    switch ($t) {
+        case 'province':
+            return Province::all();
+        case 'district':
+            return District::all();
+        case 'ward':
+            return Ward::all();
+    }
+    return [];
+}
+
+function findCacheAddress($parent_id = 0, $t = "district")
+{
+
+    $list = collect(getCacheAddress($t));
+    switch ($t) {
+        case 'district':
+            $key = "_province_id";
+            break;
+        case 'ward':
+            $key = "_district_id";
+            break;
+        default:
+            return [];
+    }
+
+    return $list->filter(function ($item) use ($key, $parent_id) {
+        return $item[$key] == $parent_id;
+    });
+}
 
 
+function urlImg($path, $disk = "storage", $time = true)
+{
+    $no_image = asset("app/images/no-image.svg");
+    if (!$path || !Storage::disk($disk)->exists($path)) {
+        return $no_image;
+    }
+    $url = Storage::disk($disk)->url($path);
+    // if ($time) {
+    //     $url = $url . '?time=' . Carbon::now()->timestamp;
+    // }
+    return $time ? $url . '?time=' . Carbon::now()->timestamp : $url;
+}
+function randCodeOrder($id)
+{
+    return "" . mt_rand(10000, 99999) . $id . mt_rand(10000, 99999);
+}
 function badges($array, $key = null, $type = "primary")
 {
     $html = "";
@@ -26,6 +77,38 @@ function badges($array, $key = null, $type = "primary")
         }
     }
     return $html;
+}
+function meta($file): array
+{
+    $meta = [];
+    if ($file) {
+        $meta['size'] = $file->getSize();
+        $meta['file_name'] = $file->getClientOriginalName();
+        $meta['mime_type'] = $file->getClientOriginalExtension();
+    }
+    return $meta;
+}
+function formatSizeUnits($bytes)
+{
+    if ($bytes >= 1073741824) {
+        $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+    } elseif ($bytes >= 1048576) {
+        $bytes = number_format($bytes / 1048576, 2) . ' MB';
+    } elseif ($bytes >= 1024) {
+        $bytes = number_format($bytes / 1024, 2) . ' KB';
+    } elseif ($bytes > 1) {
+        $bytes = $bytes . ' bytes';
+    } elseif ($bytes == 1) {
+        $bytes = $bytes . ' byte';
+    } else {
+        $bytes = '0 bytes';
+    }
+
+    return $bytes;
+}
+function getTrait($name = "")
+{
+    return "App\\Http\\Traits\\"  . $name;
 }
 function getSizeMedia($path)
 {
@@ -105,6 +188,11 @@ function array_search_key($needle_key, $array)
     }
     return false;
 }
+function get_crawl_data_category($key = "")
+{
+    if (!session("crawler")) return "";
+    return array_search_key($key, session("crawler"));
+}
 function get_crawler($key = null)
 {
 
@@ -119,6 +207,10 @@ function is_product_new($created_at)
     $date1 = Carbon::create($created_at);
     $date2 = Carbon::now()->subDays(7);
     return $date1->gt($date2);
+}
+function is_product_hot($num_orders)
+{
+    return (int) $num_orders >= 25;
 }
 
 if (!function_exists('va_get_meta')) {

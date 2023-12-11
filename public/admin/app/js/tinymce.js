@@ -4,6 +4,8 @@ $(function () {
             path_absolute: path_ab,
             selector: "#" + id,
             height: height,
+            skin: "oxide-dark",
+            content_css: "dark",
             plugins:
                 "lists advlist anchor autolink  autosave charmap code codesample directionality emoticons fullscreen help image importcss insertdatetime link lists media nonbreaking pagebreak preview quickbars save  table  visualblocks visualchars wordcount",
             toolbar:
@@ -45,7 +47,7 @@ $(function () {
     };
 
     $.create_editor("plc__tiny", 400);
-    $.create_editor("info__tiny", 400);
+    $.create_editor("info__tiny", 600);
     $.create_editor("content__tiny", 1000);
     $.create_editor("content__blog", 1600);
     $.create_editor("value_config_infor", 500);

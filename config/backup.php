@@ -29,6 +29,7 @@ return [
                 'exclude' => [
                     base_path('vendor'),
                     base_path('node_modules'),
+                    base_path('storage/logs')
                 ],
 
                 /*
@@ -110,7 +111,7 @@ return [
             /*
              * The filename prefix used for the backup zip file.
              */
-            'filename_prefix' => 'backup_vachill_local_',
+            'filename_prefix' => 'backup_dvanhshop_local_',
 
             /*
              * The disk names on which the backups will be stored.
@@ -215,7 +216,7 @@ return [
             'disks' => ['backup_google'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => env("BACKUP_GOOGLE_DRIVE_MAX", 5120),
             ],
         ],
 
@@ -274,7 +275,7 @@ return [
              * After cleaning up the backups remove the oldest backup until
              * this amount of megabytes has been reached.
              */
-            'delete_oldest_backups_when_using_more_megabytes_than' => 5000,
+            'delete_oldest_backups_when_using_more_megabytes_than' => env("BACKUP_GOOGLE_DRIVE_MAX", 5120),
         ],
     ],
 

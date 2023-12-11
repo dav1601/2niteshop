@@ -1,10 +1,11 @@
 @import "_variables";
 @import "../common/global";
 @import "_responsive";
-@import "layout";
+@import "_layout";
 @import "_component";
 @import "_footer";
 @import "../admin/component";
+@import "_modal";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Nunito+Sans&family=Open+Sans&display=swap");
 html {
     scroll-behavior: smooth;
@@ -25,6 +26,34 @@ ul {
 }
 a {
     text-decoration: none;
+}
+.title {
+    font-family: "Montserrat";
+    font-weight: 700;
+    font-size: 16px;
+    color: rgba(51, 51, 51, 1);
+    margin-bottom: 15px;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+    text-align: left;
+}
+.nite-btn {
+    background: rgba(58, 71, 84, 1);
+    border-width: 2px;
+    padding: 15px;
+    color: rgba(250, 250, 250, 1);
+    font-weight: 400;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    &:hover {
+        color: rgba(250, 250, 250, 1);
+        background: rgba(20, 102, 120, 1);
+        text-decoration: none;
+    }
 }
 #top-category {
     .grid-row {
@@ -1688,6 +1717,15 @@ body {
             border-style: solid;
             border-color: rgba(221, 221, 221, 1);
             margin-bottom: 25px;
+            .section-title {
+                font-size: 15px;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: initial;
+            }
+            label {
+                margin-bottom: 0;
+            }
             @include responsive_v(iphoneX, down) {
                 margin-bottom: 0;
             }
@@ -2205,42 +2243,7 @@ body {
                             }
                         }
                     }
-                    #addAddress,
-                    #editAddress {
-                        label {
-                            margin-bottom: 5px;
-                            font-size: 15px;
-                            font-family: Helvetica Neue;
-                        }
-                        .type__item {
-                            align-items: center;
-                            display: flex;
-                            padding: 0 12px;
-                            margin-right: 10px;
-                            height: 40px;
-                            max-width: 146px;
-                            border: 1px solid rgba(0, 0, 0, 0.09);
-                            -moz-box-sizing: border-box;
-                            box-sizing: border-box;
-                            box-shadow: 0 1px 1px rgb(0 0 0 / 3%);
-                            border-radius: 2px;
-                            cursor: pointer;
-                        }
-                        .va-checkbox label::before {
-                            width: 17px;
-                            height: 17px;
-                            top: 0px;
-                            left: 0;
-                            border-radius: 4px;
-                        }
-                        .va-checkbox label::after {
-                            top: 3px;
-                            left: 1px;
-                        }
-                        .type__item--active {
-                            border: 1px solid #277b8c;
-                        }
-                    }
+
                     .edit__pro5 {
                         margin-bottom: 50px;
                         &--left {
@@ -2420,9 +2423,3 @@ body {
     z-index: $inx-fixed-header-top;
 }
 // /////////////////
-.block__product {
-    &--title {
-    }
-    &--text {
-    }
-}

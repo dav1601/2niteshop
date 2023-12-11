@@ -25,8 +25,8 @@
                 <td class="char__255">{{ $user->email }}</td>
                 <td>{{ $user->phone }}</td>
                 <td>
-                    <img src="{{ $user->provider === null ? $file->ver_img($user->avatar) : $user->avatar }}"
-                        width="80" alt="" style="border-radius: 5px;">
+                    <img src="{{ urlImg(Auth::user()->avatar) }}" width="80" alt=""
+                        style="border-radius: 5px;">
                 </td>
                 <td>
                     {{ $user->provider ?? 'No' }}

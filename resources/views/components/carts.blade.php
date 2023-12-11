@@ -4,7 +4,7 @@
 <div class="cart__item">
     <div class="cart__item--image">
         <a href="{{ route('detail_product', ['slug' => $cart->options->slug]) }}" class="d-block">
-            <img src="{{ $file->ver_img($cart->options->image) }}" width="100" alt=" {{ $cart->name }} ">
+            <img src="{{ urlImg($cart->options->image, 'media') }}" width="100" alt=" {{ $cart->name }} ">
         </a>
     </div>
     <div class="cart__item--caption">

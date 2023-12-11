@@ -15,17 +15,27 @@
                 }
             }
             &--header {
-                h1 {
-                    display: inline-block;
-                    color: #ffffff;
-                    font-family: Montserrat;
+                h3 {
                     font-size: 22px;
                     font-weight: 700;
-                    line-height: 26.4px;
-                    margin: 0px 0px 15px;
-                    text-align: left;
-                    text-transform: uppercase;
+                    padding: 0px;
+                    white-space: normal;
+                    overflow: visible;
+                    text-overflow: initial;
+                    color: white;
                 }
+
+                // h1 {
+                //     display: inline-block;
+                //     color: #ffffff;
+                //     font-family: Montserrat;
+                //     font-size: 22px;
+                //     font-weight: 700;
+                //     line-height: 26.4px;
+                //     margin: 0px 0px 15px;
+                //     text-align: left;
+                //     text-transform: uppercase;
+                // }
             }
             &--cont {
                 p:not(.box-chill p) {

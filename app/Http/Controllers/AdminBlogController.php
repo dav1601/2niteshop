@@ -252,8 +252,8 @@ class AdminBlogController extends Controller
             }
 
             $data['desc'] = $request->desc;
-            $path_img = $path . Str::slug($cat_name) . "/"  . "main/";
-            $data['img'] = $file->storeFileImg($request->img, $path_img);
+
+            $data['img'] = $file->storeFileImg($request->img, "blog", "public");
             $data['category_id'] = $request->cat_product;
             $data['cat_id'] = $request->cat;
             $data['cat_sub_id'] = $request->cat_2;
@@ -263,9 +263,9 @@ class AdminBlogController extends Controller
             $data['active'] = 1;
             $data['type_content'] = $request->type_content;
             $created = Blogs::create($data);
-            if ($request->type_content === "pgb") {
-                handle_rela($request, "blogs-pgb", $created->id);
-            }
+            // if ($request->type_content === "pgb") {
+            //     handle_rela($request, "blogs-pgb", $created->id);
+            // }
             return redirect()->back()->with('ok', 1);
         }
     }
@@ -285,16 +285,15 @@ class AdminBlogController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
-            $path = "admin/images/blogs/";
-            $cat_name = CatBlog::where('id', '=', $request->cat)->first()->name;
+
             $data['title'] = $request->title;
             $data['slug'] = Str::slug($request->title);
             $data['desc'] = $request->desc;
             if ($request->has('img')) {
-                if ($blog->img != NULL)
-                    $file->deleteFile('' . $blog->img);
-                $path_img = $path . Str::slug($cat_name) . "/"  . "main/";
-                $data['img'] = $file->storeFileImg($request->img, $path_img);
+                if ($blog->img !== NULL)
+                    $file->deleteFile($blog->img, "public");
+
+                $data['img'] = $file->storeFileImg($request->img, "blog", "public");
             }
             if ($request->type_content === "def") {
                 $data['content'] = $request->content;
@@ -306,9 +305,9 @@ class AdminBlogController extends Controller
             $data['author'] = Auth::user()->name;
             $data['active'] = 1;
             Blogs::where('id', '=', $id)->update($data);
-            if ($request->type_content === "pgb") {
-                handle_rela($request, "blogs-pgb", $id, false, true);
-            }
+            // if ($request->type_content === "pgb") {
+            //     handle_rela($request, "blogs-pgb", $id, false, true);
+            // }
             return redirect()->back()->with('ok', 1);
         }
     }

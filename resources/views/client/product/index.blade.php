@@ -6,10 +6,10 @@
 @section('og-title', $category->title)
 @section('og-desc', $category->desc)
 @if ($category->img != null)
-    @section('og-image', $file->ver_img($category->img))
+    @section('og-image', urlImg($category->img))
 @endif
 @section('import_css')
-    <link rel="stylesheet" href="{{ asset('plugin/skelton/index.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('plugin/skelton/index.min.css') }}"> --}}
 @endsection
 
 @section('twitter-title', $category->title)
@@ -17,8 +17,8 @@
 
 @section('import_js')
     <script src="{{ $file->ver('client/zoom-master/jquery.zoom.min.js') }}"></script>
-    <script src="{{ $file->import_js('scrollReval.js') }}"></script>
-    <script src="https://unpkg.com/scrollreveal"></script>
+    {{-- <script src="{{ $file->import_js('scrollReval.js') }}"></script>
+    <script src="https://unpkg.com/scrollreveal"></script> --}}
     <script>
         var category = {{ Js::from($category->toArray()) }};
     </script>
@@ -26,6 +26,7 @@
 {{-- end import js --}}
 @section('margin') dtl__margin @endsection
 @section('content')
+
     <div id="breadCrumb">
         <div class="container">
             <ol class="b__crumb">
@@ -52,7 +53,7 @@
                         @endif
 
                         <li class="b__crumb--item">
-                            <h1>{{ $name->name }}</h1>
+                            <h6>{{ $name->name }}</h6>
                         </li>
                     @endif
                 @endforeach
@@ -63,28 +64,18 @@
 
     <div class="container">
         <div class="row mx-0">
+
             <div id="category" class="@if ($is_game) col-md-10 col-12 @else col-md-12 @endif pr-0">
                 <div id="category__header">
                     <h1> {{ $category->name }} </h1>
                 </div>
                 @if ($category->img != null)
                     <div id="category__banner">
-                        <img src="{{ $file->ver_img($category->img) }}" class="lazy" height="auto" width="100%"
+                        <img src="{{ urlImg($category->img) }}" class="lazy" height="auto" width="100%"
                             alt="{{ $category->name }}">
                     </div>
                 @endif
-                @if (count($list_banner) > 0)
-                    <div class="owl-carousel owl-theme mb-2" id="list__banner">
-                        @foreach ($list_banner as $banner)
-                            <div class="item">
-                                <a href="{{ url('category/' . $banner->link) }}" class="d-block">
-                                    <img src="{{ $file->ver_img($banner->path) }}" class="img-fluid lazy"
-                                        alt="{{ $category->name }}">
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
+
                 <div id="category__filter" class="w-100 container">
                     <div class="d-flex align-items-center justify-content-between" id="category__filter--box">
                         <div class="view d-flex align-items-center nav" role="tablist">

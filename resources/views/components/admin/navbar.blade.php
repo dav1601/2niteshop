@@ -11,8 +11,7 @@
 
                 <div class="nav__perfil">
                     <div class="nav__img">
-                        <img src="{{ $daviUser->getAvatarUser(Auth::id()) }}" alt="" height="100%"
-                            width="100%">
+                        <img src="{{ urlImg(Auth::user()->avatar) }}" alt="" height="100%" width="100%">
                     </div>
                     <div>
                         <a href="{{ route('admin_profile', ['id' => Auth::id()]) }}" target="_blank"

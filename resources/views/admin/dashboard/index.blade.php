@@ -1,7 +1,6 @@
 @extends('admin.layout.app')
 @section('import_css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
-
 @endsection
 @section('import_js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js"
@@ -72,7 +71,7 @@
 
                                         <td>{{ $product->name }}</td>
                                         <td>
-                                            <img src="{{ $file->ver_img($product->main_img) }}" width="150px"
+                                            <img src="{{ urlImg($product->path_first, 'media') }}" width="150px"
                                                 height="150px" class="va-radius-fb" alt="">
                                         </td>
                                         <td>{{ crf($product->price) }}</td>

@@ -51,12 +51,13 @@
                                 </div>
                                 {!! Form::close() !!}
                             </div>
+                           
                             {!! Form::open(['url' => route('handle_add_cat'), 'method' => 'POST', 'files' => true]) !!}
                             <div class="form-group mb-5">
                                 <label for="">Tên Danh Mục</label>
                                 <input type="text" class="form-control" name="name" id=""
                                     placeholder="Tên Danh Mục (!Duy Nhất)"
-                                    value="{{ old('name') }}{{ get_crawler('page_title') }}">
+                                    value="{{ old('name') }}{{ get_crawl_data_category('page_title') }}">
                                 @error('name')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -69,7 +70,8 @@
                             <div class="form-group mb-5">
                                 <label for="">Title</label>
                                 <input type="text" class="form-control" name="title" id=""
-                                    placeholder="Title Danh Mục" value="{{ old('title') }}{{ get_crawler('title') }}">
+                                    placeholder="Title Danh Mục"
+                                    value="{{ old('title') }}{{ get_crawl_data_category('title') }}">
                                 @error('title')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -82,7 +84,8 @@
                             <div class="form-group mb-5">
                                 <label for="">Slug</label>
                                 <input type="text" class="form-control" name="slug" id=""
-                                    placeholder="Slug (!Duy Nhất)" value="{{ old('slug') }}{{ get_crawler('slug') }}">
+                                    placeholder="Slug (!Duy Nhất)"
+                                    value="{{ old('slug') }}{{ get_crawl_data_category('slug') }}">
                                 @error('slug')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -95,7 +98,7 @@
                             {{-- --}}
                             <div class="form-group mb-5">
                                 <label for="">Description</label>
-                                <textarea type="text" class="form-control" name="desc" id="" placeholder="Description danh mục">{{ old('desc') }}{{ get_crawler('desc') }}</textarea>
+                                <textarea type="text" class="form-control" name="desc" id="" placeholder="Description danh mục">{{ old('desc') }}{{ get_crawl_data_category('desc') }}</textarea>
                                 @error('desc')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -109,7 +112,7 @@
                             <div class="form-group mb-5">
                                 <label for="">Keywords</label>
                                 <input type="text" data-role="tagsinput" class="form-control" name="keywords"
-                                    value="{{ get_crawler('kws') }}">
+                                    value="{{ get_crawl_data_category('kws') }}">
                                 @error('keywords')
                                     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                                         {{ $message }}
@@ -167,10 +170,15 @@
     <div class="modal show" id="m_editCategory" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="m_editCategoryLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            {!! Form::open(['url' => '#', 'method' => 'POST', 'files' => true, 'class' => 'formUpdateCategory']) !!}
+            {!! Form::open([
+                'url' => route('handle_edit_cat'),
+                'method' => 'POST',
+                'files' => true,
+                'id' => 'formUpdateCategory',
+            ]) !!}
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Chỉnh sửa slide</h5>
+                    <h5 class="modal-title">Chỉnh sửa danh mục</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

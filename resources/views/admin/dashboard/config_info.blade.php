@@ -128,25 +128,23 @@
                         Danh sách config thông tin
                     </div>
                     <div class="card-body" id="config__home--show">
-                        <table class="table-borderless table">
+                        <table class="table-bordered table">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
+
                                     <th scope="col">Tên</th>
-                                    <th scope="col">Value</th>
                                     <th scope="col">Type</th>
-                                    <th scope="col">Sửa</th>
-                                    <th scope="col">Xoá</th>
+                                    <th scope="col">View/Edit</th>
+                                    <th scope="col">Delete</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($config_info as $conf)
                                     <tr>
-                                        <th scope="row">{{ $conf->id }}</th>
+
                                         <td>{{ $conf->name }}</td>
-                                        <td style="max-width:600px !important;" class="d-block">
-                                            {!! $conf->value !!}
-                                        </td>
+
                                         <td>
                                             {{ $conf->type }}
                                         </td>

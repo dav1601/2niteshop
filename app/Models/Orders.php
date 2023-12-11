@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,6 +51,7 @@ class Orders extends Model
     protected $table = 'orders';
     protected $fillable = [
         'name',
+        'code',
         'cart',
         'users_id',
         'total',
@@ -63,13 +65,13 @@ class Orders extends Model
         'phone',
         'status',
         'paid',
-        'd',
-        'm',
-        'y',
         'date_s',
-        'd_s',
-        'm_s',
-        'y_s',
         'date_ship',
     ];
+    protected static function booted()
+    {
+        static::created(function ($model) {
+            $model->code = "" . mt_rand(1000000000, 9999999999) . $model->id;
+        });
+    }
 }

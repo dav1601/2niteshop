@@ -141,21 +141,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="w-100 banner__video">
-                            @if ($product->banner != null)
-                                <div class="prd__banner">
-                                    <a href="{{ url($product->banner_link) }}" class="d-block">
-                                        <img src="{{ $file->ver_img($product->banner) }}" class="img-fluid"
-                                            alt="{{ $product->name }}">
-                                    </a>
-                                </div>
-                            @endif
-                            @if ($product->video != null)
-                                <div class="prd__video mt-4">
-                                    {!! $product->video !!}
-                                </div>
-                            @endif
-                        </div>
+
                     </div>
                     <div class="dtl__prd--right col-md-6 pr-0">
                         <div class="w-100" id="prd" class="prd__dtl">

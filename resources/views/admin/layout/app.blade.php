@@ -6,19 +6,23 @@
 @endphp
 
 <head>
-    @cloudinaryJS
+    {{-- @cloudinaryJS --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ $file->ver_img(config('setting-2nite.icon')) }}" type="image/x-icon">
     <title>@yield('title', 'Dashboard')</title>
-    <link rel="stylesheet" href="{{ asset('plugin/reset.css') }}">
-    {{-- reset --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css"
-        integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+        integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {{-- reset --}}
+    <x-include.bootstrap />
     {{-- bootstrap --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.css"
+        integrity="sha512-nGNAKpV+BrfDZabPX1O6q6mRlT57/amdj+6vF322ongqKABLHYLfLc3jYtVVbkiR9towDWPPE9gWFE2tsZIPZg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {{-- swiper --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -47,7 +51,9 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('admin/plugin/tags/tagsinput.css') }}">
     <link rel="stylesheet" href="{{ $file->ver('plugin/color-picker/color.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    {{-- ---------- --}}
+
+    {{-- ---------------- --}}
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
         integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
@@ -55,6 +61,7 @@
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     @yield('import_css')
     <link rel="stylesheet" href="{{ $file->ver('admin/app/css/app.css') }}">
+
     <x-app.plugin.debug />
     @routes
     <script type="text/javascript">
@@ -62,7 +69,7 @@
         const path_ab = {!! json_encode(env('PATH_TINYMCE')) !!};
     </script>
     {{-- ------------- --}}
-    <x-include.bootstrap />
+
     {{-- bootstrap --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
         integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ=="
@@ -84,7 +91,9 @@
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {{-- toastr --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.12/sweetalert2.all.min.js"
+        integrity="sha512-J8fMSsNsuWKj3xd1PRJ7M328sNj4jzUm2uYFI/spmO29rvGJvjsYXBTCun7OFCaRMeDowiEFGdXrkbBlCL5myw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {{-- sweetalert 2 --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"
         integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg=="
@@ -98,7 +107,9 @@
     <script src="https://cdn.tiny.cloud/1/bho6ckhdsdjmv2bmyaxmm2dn52w16ounvk9au2ys2oqo8gty/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
     {{-- tinymce --}}
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js"
+        integrity="sha512-3Ei7OPFo83kw3cPbDLeLhn/YF8tZB7Vs8sfli0B/KEekureL5eosDeshYFICCvt4K8i0yUil/lK3cSiic2Wjkg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {{-- swiper slide --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
         integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
@@ -110,7 +121,6 @@
     <script src="{{ $file->ver('admin/app/js/tinymce.js') }}"></script>
     <script src="{{ $file->ver('admin/app/js/relationship.js') }}"></script>
     <script src="{{ $file->ver('plugin/color-picker/color.min.js') }}"></script>
-    <script src="{{ $file->ver('admin/app/js/a_media.js') }}"></script>
     @yield('import_js')
     <script src="{{ $file->ver('admin/app/js/app.js') }}"></script>
 
@@ -143,12 +153,7 @@
                             width="250" height="150" alt="">
                     </div>
                     <div class="sidebar__head--info d-flex align-items-center justify-content-center my-2">
-                        @if (Auth::user()->avatar != null)
-                            <img src="{{ asset(Auth::user()->avatar) }}" width="60" height="60" alt="">
-                        @else
-                            <img src="{{ asset('client/images/user-large.png') }}" width="60" height="60"
-                                alt="">
-                        @endif
+                        {{-- <img src="{{ urlImg(Auth::user()->avatar) }}" alt=""> --}}
                         <div class="text">
                             <span class="d-block">{{ Auth::user()->name }}</span>
 
@@ -158,403 +163,11 @@
                 <div class="sidebar__content">
                     <h1 class="text-uppercase font-weight-bold mb-3 text-center" style="font-size: 16px">Tổng Quan</h1>
                     <div class="accordion" id="sidebar__content--accordion">
+
                         <ul class="sidebar__content--menu">
-                            <li class="module">
-                                <a class="{{ $module == 'dashboard' ? 'module_active' : '' }}" data-toggle="collapse"
-                                    data-target="#dashboard" aria-expanded="true" aria-controls="dashboard">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="left">
-                                            <i class="fas fa-home"></i>
-                                            <span>Dashboard</span>
-                                        </div>
-                                        <div class="right">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="dashboard"
-                                    class="module_drop {{ $module == 'dashboard' ? 'show' : '' }} collapse"
-                                    data-parent="#sidebar__content--accordion">
-                                    <ul class="module__drop--menu">
-                                        <li class="item">
-                                            <a href="{{ route('dashboard') }}"
-                                                class="{{ $route == 'dashboard' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Dashboard 2NITESHOP</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('pgb.index') }}"
-                                                class="{{ $route == 'pgb.index' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý Page Builder</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('pgb.create.or.edit') }}"
-                                                class="{{ $route == 'pgb.create.or.edit' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Page Builder</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('add_cofhome_view') }}"
-                                                class="{{ $route == 'add_cofhome_view' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Config Trang Chủ</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('add_cofinfor_view') }}"
-                                                class="{{ $route == 'add_cofinfor_view' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Config Thông Tin</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </li>
-                            {{-- -------------------- --}}
-                            <li class="module">
-                                <a class="{{ $module == 'category' ? 'module_active' : '' }}" data-toggle="collapse"
-                                    data-target="#product" aria-expanded="true" aria-controls="product">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="left">
-                                            <i class="fas fa-box"></i>
-                                            <span>Sản Phẩm</span>
-                                        </div>
-                                        <div class="right">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="product"
-                                    class="module_drop {{ $module == 'category' ? 'show' : '' }} {{ $module == 'prd' ? 'show' : '' }} collapse"
-                                    data-parent="#sidebar__content--accordion">
-                                    <ul class="module__drop--menu">
-                                        <li class="item">
-                                            <a href="{{ route('add_product_view') }}"
-                                                class="{{ $route == 'add_product_view' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thêm Sản Phẩm</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('product_block_view', ['type' => 'add']) }}"
-                                                class="{{ $route == 'product_block_view' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thêm Block Sản Phẩm</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('category_block_view', ['type' => 'add']) }}"
-                                                class="{{ $route == 'category_block_view' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thêm Block Danh Mục</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('show_product') }}"
-                                                class="{{ $route == 'show_product' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Sách Sản Phẩm</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="#"
-                                                class="{{ $route == 'product_view_edit' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Chỉnh Sửa Sản Phẩm</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('cat') }}"
-                                                class="{{ $route == 'cat' ? 'route_active' : '' }} {{ $route == 'edit_cat' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Mục Sản Phẩm</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('prdcer') }}"
-                                                class="{{ $route == 'prdcer' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Nhà Sản Xuất</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('game') }}"
-                                                class="{{ $route == 'game' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Mục Game</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('insurance') }}"
-                                                class="{{ $route == 'insurance' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Chính Sách Bảo Hành</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('plc') }}"
-                                                class="{{ $route == 'plc' ? 'route_active' : '' }} {{ $route == 'edit_plc' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Các Chính Sách Của Shop</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            {{-- ------------------------------------ --}}
-                            <li class="module">
-                                <a class="{{ $module == 'users' ? 'module_active' : '' }}" data-toggle="collapse"
-                                    data-target="#user" aria-expanded="true" aria-controls="user">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="left">
-                                            <i class="fas fa-users"></i>
-                                            <span>Users</span>
-                                        </div>
-                                        <div class="right">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="user"
-                                    class="module_drop {{ $module == 'users' ? 'show' : '' }} collapse"
-                                    data-parent="#sidebar__content--accordion">
-                                    <ul class="module__drop--menu">
-                                        <li class="item">
-                                            <a href="{{ route('add_user') }}"
-                                                class="{{ $route == 'add_user' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thêm User</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('show_user') }}"
-                                                class="{{ $route == 'show_user' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Sách Người Dùng</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('add_roles') }}"
-                                                class="{{ $route == 'add_roles' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Tạo Role User</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('add_permissions') }}"
-                                                class="{{ $route == 'add_permissions' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Tạo Quyền User</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="item">
-                                            <a href="{{ route('admin_profile', ['id' => Auth::id()]) }}"
-                                                class="{{ $route == 'admin_profile' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thông Tin Tài Khoản</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('setting_profile', ['id' => Auth::id()]) }}"
-                                                class="{{ $route == 'setting_profile' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Cài Đặt Thông Tin Tài Khoản</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </li>
-                            {{-- ------------------------------------ --}}
-                            <li class="module">
-                                <a class="{{ $module == 'orders' ? 'module_active' : '' }}" data-toggle="collapse"
-                                    data-target="#order" aria-expanded="true" aria-controls="order">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="left">
-                                            <i class="fas fa-receipt"></i>
-                                            <span>Đơn Hàng</span>
-                                        </div>
-                                        <div class="right">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="order"
-                                    class="module_drop {{ $module == 'orders' ? 'show' : '' }} collapse"
-                                    data-parent="#sidebar__content--accordion">
-                                    <ul class="module__drop--menu">
-                                        <li class="item">
-                                            <a href="{{ route('show_orders') }}"
-                                                class="{{ $route == 'show_orders' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Sách Đơn Hàng</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('customers') }}"
-                                                class="{{ $route == 'customers' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Sách Khách Hàng</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('show_preOrders') }}"
-                                                class="{{ $route == 'show_preOrders' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Sách Đặt Hàng Trước</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="#"
-                                                class="{{ $route == 'detail_order' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Chi Tiết Đơn Hàng</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="#"
-                                                class="{{ $route == 'update_preOrders' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Chi Tiết Đơn Đặt Hàng</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </li>
-
-                            {{-- ------------------------------------ --}}
-                            <li class="module">
-                                <a class="{{ $module == 'blog' ? 'module_active' : '' }}" data-toggle="collapse"
-                                    data-target="#blog" aria-expanded="true" aria-controls="blog">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="left">
-                                            <i class="fas fa-blog"></i>
-                                            <span>Bài Viết</span>
-                                        </div>
-                                        <div class="right">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="blog"
-                                    class="module_drop {{ $module == 'blog' ? 'show' : '' }} collapse"
-                                    data-parent="#sidebar__content--accordion">
-                                    <ul class="module__drop--menu">
-                                        <li class="item">
-                                            <a href="{{ route('add_blog_view') }}"
-                                                class="{{ $route == 'add_blog_view' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thêm Bài Viết</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('show_blogs') }}"
-                                                class="{{ $route == 'show_blogs' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Sách Bài Viết</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('category_blog') }}"
-                                                class="{{ $route == 'category_blog' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Danh Mục Bài Viết</span>
-                                            </a>
-                                        </li>
-                                        {{-- <li class="item">
-                                            <a href="{{ route('add_related_view') }}"
-                                                class="{{ $route == 'add_related_view'?'route_active':''  }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Thêm Bài Viết Liên Quan</span>
-                                            </a>
-                                        </li> --}}
-
-                                    </ul>
-                                </div>
-                            </li>
-                            {{-- ------------------------------------ --}}
-                            <li class="module">
-                                <a class="{{ $module == 'banner' ? 'module_active' : '' }}" data-toggle="collapse"
-                                    data-target="#banner" aria-expanded="true" aria-controls="banner">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="left">
-                                            <i class="fab fa-slideshare"></i>
-                                            <span>Slide Và Banner</span>
-                                        </div>
-                                        <div class="right">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="banner"
-                                    class="module_drop {{ $module == 'banner' ? 'show' : '' }} collapse"
-                                    data-parent="#sidebar__content--accordion">
-                                    <ul class="module__drop--menu">
-                                        {{-- <li class="item">
-                                            <a href="{{ route('banner_view_add') }}"
-                                                class="{{ $route == 'banner_view_add' ? 'route_active' : '' }} {{ $route == 'banner_view_edit' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý Banner</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('slide_view_add') }}"
-                                                class="{{ $route == 'slide_view_add' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý Slide</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="{{ route('ads_view_add') }}"
-                                                class="{{ $route == 'ads_view_add' ? 'route_active' : '' }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý ADS</span>
-                                            </a>
-                                        </li> --}}
-                                    </ul>
-                                </div>
-                            </li>
-
-                            {{-- ------------------------------------ --}}
-                            <li class="module">
-                                <a class="" data-toggle="collapse" data-target="#page" aria-expanded="true"
-                                    aria-controls="page">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="left">
-                                            <i class="fas fa-pager"></i>
-                                            <span>Trang</span>
-                                        </div>
-                                        <div class="right">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="page"
-                                    class="module_drop {{ $module == 'pages' ? 'show' : '' }} collapse"
-                                    data-parent="#sidebar__content--accordion">
-                                    <ul class="module__drop--menu">
-                                        <li class="item">
-                                            <a href="{{ route('manage_pages') }}">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Quản Lý Trang</span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="#">
-                                                <i class="fas fa-long-arrow-alt-right"></i>
-                                                <span>Chỉnh Sửa Trang</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                            @foreach (config('admin.sidebar.module') as $key => $data)
+                                <x-admin.layout.sidebar.module :key="$key" :data="$data" :active="$module" />
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -571,13 +184,8 @@
                     </div>
                     <div class="content__header--right dropdown">
                         <a class="avatar" id="avatar__drop" data-toggle="dropdown" aria-expanded="false">
-                            @if (Auth::user()->avatar != null)
-                                <img src="{{ asset(Auth::user()->avatar) }}" width="60" height="60"
-                                    alt="">
-                            @else
-                                <img src="{{ asset('client/images/user-large.png') }}" width="60" height="60"
-                                    alt="">
-                            @endif
+                            <img src="{{ urlImg(Auth::user()->avatar) }}" class="rounded" width="60" height="60"
+                                alt="">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right drop-content" aria-labelledby="avatar__drop">
                             <a class="dropdown-item" href="{{ route('admin_profile', ['id' => Auth::id()]) }}"><i

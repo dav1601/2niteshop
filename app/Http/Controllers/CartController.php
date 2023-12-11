@@ -76,10 +76,11 @@ class CartController extends Controller
             if (Auth::check()) {
                 Cart::instance('shopping')->destroy();
                 Cart::instance('shopping')->restore(Auth::id());
+                $this->handle_cart->full_update();
             }
         }
-        if ($id != 0) {
-            $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, ['type' => $type], $realTimeUpdate);
+        if ($id != 0 && !$realTimeUpdate) {
+            $res = $this->handle_cart->add__or_update($id, $qty, $op_actives, ['type' => $type]);
             $data['status'] = $res['act'];
             if ($data['status'] === "add") {
                 $item = $res['product'];
@@ -90,19 +91,14 @@ class CartController extends Controller
                 $data['fm_sub_total'] = crf($res['item']->options->sub_total);
             }
         }
-       
+
         if ($request->type == "delete") {
             $rowId = $request->rowId;
             Cart::instance('shopping')->remove($rowId);
             $data['status'] = "delete";
         }
         if ($realTimeUpdate) {
-            $current_cart = Cart::instance('shopping')->content();
-            if (count($current_cart) > 0) {
-                foreach ($current_cart as $item) {
-                    $this->handle_cart->add__or_update($item->id, $item->qty, $item->options->ins, ['type' => ['update']], true);
-                }
-            }
+            $this->handle_cart->full_update();
             $data['new'] = true;
             $data['status'] = "update_all";
         }
@@ -202,19 +198,15 @@ class CartController extends Controller
             $data['phone'] = $request->phone;
             $data['status'] = 1;
             $data['paid'] = 1;
-            $data['d'] = Carbon::now('Asia/Ho_Chi_Minh')->day;
-            $data['m'] = Carbon::now('Asia/Ho_Chi_Minh')->month;
-            $data['y'] = Carbon::now('Asia/Ho_Chi_Minh')->year;
             $ordered = Orders::create($data);
             if ($ordered) {
-
                 Cart::instance('shopping')->destroy();
                 $this->handle_cart->store_cart();
                 if (!$mail_order->send_mail_order($ordered)) {
                     return redirect()->back()->with('error', 'Gửi email đơn hàng thất bại. Chúng tôi xin lỗi vì sự bất tiện này, quý khách vui lòng liên hệ với đội ngũ hỗ trợ khách hàng');
                 }
-                $request->session()->put('last_orderd', $ordered->id);
-                return redirect()->route('checkout_s');
+
+                return redirect()->route('checkout_s', ['code' => $ordered->code]);
             }
             return redirect()->back()->with('error', 'Tạo đƠn hàng thất bại');
         }
@@ -222,15 +214,11 @@ class CartController extends Controller
     ////////////////////////////////////////
     ////////////////////////////////////////
 
-    public function checkout_s(Request $request)
+    public function checkout_s($code, Request $request)
     {
-        if (!session()->has('last_orderd')) {
-            return redirect()->route('purchase');
-        }
-        $id = session()->get('last_orderd');
-        $ordered = Orders::where('id', '=', $id)->first();
+
+        $ordered = Orders::where('code', $code)->firstOrFail();
         $cart = unserialize($ordered->cart);
-        session()->forget('last_orderd');
         return view('client.cart.checkout-success', compact('ordered', 'cart'));
     }
 

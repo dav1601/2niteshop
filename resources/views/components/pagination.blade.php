@@ -29,7 +29,8 @@
             @endfor
             @if ($page < $number_page - $point)
                 <li class="page-item"><a class="page-link">...</a></li>
-                <li class="page-item {{ $class }}"><a class="page-link" data-page="1"> {{ $number_page }}
+                <li class="page-item {{ $class }}"><a class="page-link" data-page="{{ $number_page }}">
+                        {{ $number_page }}
                     </a>
                 </li>
             @endif

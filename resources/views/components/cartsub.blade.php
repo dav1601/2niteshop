@@ -6,7 +6,7 @@
     <div class="img">
 
         <a href="{{ route('detail_product', ['slug' => $cartsub->options->slug]) }}">
-            <img src="{{ $file->ver_img($cartsub->options->image) }}" width="60" alt=" {{ $cartsub->name }} ">
+            <img src="{{ urlImg($cartsub->options->image, 'media') }}" width="60" alt=" {{ $cartsub->name }} ">
         </a>
     </div>
     <div class="info">

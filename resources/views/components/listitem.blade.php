@@ -11,12 +11,14 @@
 <div class="{{ $classWp }}">
     <div class="product__item--list d-flex reval-item w-100 flex-wrap" data-id="{{ $message->id }}">
         <div class="image position-relative" data-id="{{ $message->id }}">
-            <a href="{{ $route_product }}" class="img_show">
-                <img data-src="{{ $file->ver_img($message->main_img) }}" alt="{{ $message->name }}" class="lazyload">
+            <a href="{{ $route_product }}" class="{{ $message->path_second ? 'img_show' : '' }}">
+                <img src="{{ urlImg($message->path_first, 'media') }}" alt="{{ $message->name }}">
             </a>
-            <a href="{{ $route_product }}" class="img_hide">
-                <img data-src="{{ $file->ver_img($message->sub_img) }}" alt="{{ $message->name }}" class="lazyload">
-            </a>
+            @if ($message->path_second)
+                <a href="{{ $route_product }}" class="img_hide">
+                    <img src="{{ urlImg($message->path_second, 'media') }}" alt="{{ $message->name }}">
+                </a>
+            @endif
             <div class="quick__view qv__{{ $message->id }}" data-toggle="tooltip" data-placement="top"
                 title="Xem Nhanh" class="open__modal--qview" data-id="{{ $message->id }}">
                 <i class="fas fa-plus"></i>

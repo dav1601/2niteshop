@@ -253,7 +253,7 @@
         <x-slot name="heading" class="text-center">
             Danh sách sản phẩm
         </x-slot>
-        <x-slot name="content" id="product__show" class="prd__s">
+    <x-slot name="content" id="product__show" class="prd__s">
             <div class="row mx-0" id="product__show--ajax"></div>
         </x-slot>
         <x-slot name="footer" id="product__show--page">

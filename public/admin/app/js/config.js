@@ -4,6 +4,19 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+    jQuery.copyToClipboard = (val) => {
+        if (window.isSecureContext && navigator.clipboard) {
+            return navigator.clipboard.writeText(val);
+        }
+        return;
+    };
+    jQuery.objToFormData = (obj = {}) => {
+        let fd = new FormData();
+        for (const property in obj) {
+            fd.append(property, obj[property]);
+        }
+        return fd;
+    };
     jQuery.validationFail = (errors = []) => {
         const validatorOld = $(".validator-error");
         $.each(validatorOld, function (index, el) {
@@ -128,36 +141,7 @@ $(function () {
         obj[keyPath[lastKeyIndex]] = value;
         return obj;
     };
-    jQuery.btn_loading_v2 = function btn_loading_v2(
-        el,
-        loading = true,
-        submit = false
-    ) {
-        let btnSubmit = $(el);
-        if (submit) {
-            btnSubmit = $(el).find("[type='submit']");
-        }
-        if (!btnSubmit) {
-            return;
-        }
-        if (!btnSubmit.attr("data-original")) {
-            let currentHtml = $(btnSubmit).html();
-            $(btnSubmit).attr("data-original", currentHtml);
-        }
-        $(btnSubmit).prop("disabled", loading);
-        if (loading) {
-            $(btnSubmit).attr("is-loading", true);
-            $(btnSubmit)
-                .html(`<span class="spinner-border spinner-border-sm"  role="status" aria-hidden="true"></span>
-                Loading...`);
-        } else {
-            const old = $(btnSubmit).attr("data-original");
-            $(btnSubmit).html(old);
-            $(btnSubmit).attr("is-loading", false);
-        }
 
-        return;
-    };
     jQuery.errForm = function errForm(clear = false, form = [], errors = []) {
         if (clear) {
             let elErr = $(".invalid-feedback");

@@ -2,6 +2,41 @@
 #wrapper {
     display: flex;
 }
+// ANCHOR color backgroud //////////////////////////////////////////////////////
+.bg-orange {
+    background: #ff7f50;
+    color: white;
+    &:hover {
+        background: #ff6348;
+        color: white;
+    }
+}
+.a-skeleton {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
+.text-name-email {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.flex-1 {
+    flex: 1;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .swal2-container {
     z-index: $idx-sweet !important;
 }
@@ -9,6 +44,9 @@
     &:hover {
         color: $blue !important;
     }
+}
+ul.ui-autocomplete {
+    z-index: $idx-loading;
 }
 .max-h-100 {
     max-height: 100%;
@@ -21,9 +59,12 @@
     max-width: none;
     height: 100%;
     margin: 0;
-    padding: 20px;
     .modal-content {
         height: 100%;
+    }
+    padding: 0;
+    @media (min-width: 1920px) {
+        padding: 20px;
     }
 }
 .btn-orange {

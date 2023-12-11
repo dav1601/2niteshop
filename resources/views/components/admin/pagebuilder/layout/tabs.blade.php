@@ -4,14 +4,16 @@
 @endphp
 <div class="nav nav-pills justify-content-center my-4" id="nav-tab-pgb-modal" role="tablist">
     @if ((bool) $isPack)
-        <button class="nav-link active" id="pgb-content-pack" data-toggle="tab" data-target="#pgb-pane-content-pack"
-            type="button" role="tab" aria-controls="pgb-pane-content-pack" aria-selected="true">General</button>
+        <button class="nav-link active pgb-btn-layout-tabs" id="pgb-content-pack" data-toggle="tab"
+            data-target="#pgb-pane-content-pack" type="button" role="tab" aria-controls="pgb-pane-content-pack"
+            aria-selected="true">General</button>
     @endif
-    <button class="nav-link {{ !$isPack ? 'active' : '' }}" id="pgb-nav-style" data-toggle="tab"
+    <button class="nav-link {{ !$isPack ? 'active' : '' }} pgb-btn-layout-tabs" id="pgb-nav-style" data-toggle="tab"
         data-target="#pgb-pane-style" type="button" role="tab" aria-controls="pgb-pane-style"
         aria-selected="false">Style</button>
-    <button class="nav-link" id="pgb-nav-advanced" data-toggle="tab" data-target="#pbg-pane-advanced" type="button"
-        role="tab" aria-controls="pbg-pane-advanced" aria-selected="false">Advanced</button>
+    <button class="nav-link pgb-btn-layout-tabs" id="pgb-nav-advanced" data-toggle="tab"
+        data-target="#pbg-pane-advanced" type="button" role="tab" aria-controls="pbg-pane-advanced"
+        aria-selected="false">Advanced</button>
 </div>
 
 <div class="tab-content" id="pgb-tabContent">

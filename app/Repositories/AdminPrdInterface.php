@@ -4,6 +4,6 @@ namespace App\Repositories;
 
 interface AdminPrdInterface
 {
-    public function pagination($model, $orderBy, $page, $item_page);
-    public function product($id);
+    public function getProduct($idOrSlug, $customRelation = []);
+    public function getAll($attributes = [], $exclude = [], $relationship = []);
 }

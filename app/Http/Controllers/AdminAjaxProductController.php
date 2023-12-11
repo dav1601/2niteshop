@@ -35,9 +35,11 @@ class AdminAjaxProductController extends Controller
     private $html = '';
     public $repoPrd;
     public $resCode = 200;
+    public $query;
     public function __construct(AdminPrdInterface $repo_prd)
     {
         $this->repoPrd = $repo_prd;
+        $this->query = new Products();
     }
 
     ////////////////////////////////////////
@@ -49,49 +51,13 @@ class AdminAjaxProductController extends Controller
 
         $pagination = '';
         $output = '';
-        $product = new Products;
-        $page = (int) $request->page;
-        if ($request->action == "update_hl") {
-            $id = (int) $request->id;
-            $highlight = (int) $request->highlight;
-            $updated = Products::where('id', '=', $id)->update([
-                'highlight' => $highlight
-            ]);
-            return $this->successResponse(null, "Updated Hightlight Product");
+        $res = $this->repoPrd->getAll($request->all(), [], ["img_second", "img_first"]);
+
+        if ($res['status'] === 0) {
+            return $this->errorResponse($res['message']);
         }
-        if ($request->name) {
-            $name = $request->name;
-            $product = $product->where(function ($query) use ($name) {
-                $query->where('id', '=', $name)
-                    ->orWhere('name', 'LIKE', '%' . $name . '%');
-            });
-        }
-        if ($request->usage) {
-            $product = $product->where('usage_stt',  $request->usage);
-        }
-        if ($request->model) {
-            $product = $product->where('model',  'LIKE', '%' . $request->model . '%');
-        }
-        if ($request->status) {
-            $product = $product->where('status', (int) $request->status);
-        }
-        if ($request->producer) {
-            $product = $product->where('producer_id', (int) $request->producer);
-        }
-        if ($request->categories) {
-            $categories = $request->categories;
-            $product = $product->whereHas('categories', function ($q) use ($categories) {
-                $q->whereIn('category_id', $categories);
-            });
-        }
-        if ($request->author) {
-            $author = $request->author;
-            $product = $product->whereHas('user', function ($q) use ($author) {
-                $q->where('name', 'LIKE', "%" . $author . "%");
-            });
-        }
-        $product = $product->whereBetween("price", [(int) $request->pMin, (int) $request->pMax]);
-        $products = $repom->pagination($product, [$request->sort, $request->field], $page, 16, null);
+        $products = $res['data'];
+
         if ($products->count > 0) {
             foreach ($products->data as $prd) {
                 $output .= view('components.admin.product.item', compact('prd'));
@@ -99,7 +65,7 @@ class AdminAjaxProductController extends Controller
         } else {
             $output .= view('components.empty.nodata');
         }
-        $pagination .= view('components.pagination', ['page' => $page, 'number_page' => $products->number_page, 'classWp' => "justify-content-center mt-2"]);
+        $pagination .= view('components.pagination', ['page' => $products->page, 'number_page' => $products->number_page, 'classWp' => "justify-content-center mt-2"]);
 
         $data['html'] = $output;
         $data['page'] = $pagination;
@@ -109,142 +75,93 @@ class AdminAjaxProductController extends Controller
     ////////////////////////////////////////
 
     // ////////////////////////////////////// end load product
-    //////////////////////////////////////
 
+    // ANCHOR handle gallery //////////////////////////////////////////////////////
     public function handle_gallery(Request $request, FileInterface $file)
     {
         $res = [];
         $res['image'] = "";
         $act = $request->act;
-        $galleries = json_decode($request->gallery);
+        $type = $request->type;
         $res['deleted'] = false;
-        switch ($act) {
-            case 'upload-image':
-                $id = (int) $request->id;
-                $index =  (int) $request->index;
-                $size =   $request->size;
-                $image = gllProducts::where('products_id', $id)->where('index', $index)->first();
-                $type = Products::select("type")->where('id', $id)->first()->type;
-                $path = config('app.image_products') . "/"  . $type . "/gallery" . "/" . $size;
-                if ($image) {
+        $res['updated'] = false;
+        $productId = (int) $request->productId;
+        $index = $request->has("index") ? (int) $request->index : null;
+        $product = Products::where('id', $productId);
+        $gallery = gllProducts::where("products_id", $productId)->where("index", $index);
+        try {
+            switch ($act) {
+
+                case 'delete-gallery':
                     try {
-                        $file->deleteFile($image['image_' . $size]);
-                        $save = $file->storeFileImg($request->file, $path);
-                        $image->update(['image_' . $size =>  $save]);
-                        $res['image'] = $file->ver_img($save);
+                        gllProducts::where('index', $request->index)->where('products_id', $request->id)->delete();
+                        $res['deleted'] = true;
                     } catch (\Exception $e) {
                         $this->resCode = 500;
                     }
-                }
-                break;
-            case "delete-image":
-                try {
-                    $id = (int) $request->id;
+                    break;
+                case 'add-gallery':
+                    $item = collect(json_decode($request->item))->toArray();
                     $index = (int) $request->index;
-                    $size = $request->size;
-                    $image = gllProducts::where('products_id', $id)->where('index', $index)->first();
-                    if ($image) {
-                        $file->deleteFile($image['image_' . $size]);
-                        $image->update(['image_' . $size => null]);
-                        $res['image'] = config('app.no_image', "");
+                    $id = (int) $request->id;
+                    $isEdit = $request->isEdit === "true";
+                    if ($isEdit) {
+                        $created = gllProducts::create(['products_id' => $id, "media_80" => null, 'media_700' => null, 'index' => $index]);
+                        $item['id'] = $created->id;
+                        $props['id'] = $created->id;
                     }
-                } catch (\Exception $e) {
-                    $this->resCode = 500;
-                }
-                break;
-            case 'delete-gallery':
-                try {
-                    gllProducts::where('index', $request->index)->where('products_id', $request->id)->delete();
-                    $res['deleted'] = true;
-                } catch (\Exception $e) {
-                    $this->resCode = 500;
-                }
-                break;
-            case 'add-gallery':
-                $item = collect(json_decode($request->item))->toArray();
-                $index = (int) $request->index;
-                $id = (int) $request->id;
-                $isEdit = $request->isEdit === "true";
-                if ($isEdit) {
-                    $created = gllProducts::create(['products_id' => $id, "image_80" => null, 'image_700' => null, 'index' => $index]);
-                    $item['id'] = $created->id;
-                }
-                $res['html'] = "";
-                $props["item"] = $item;
-                $props['key'] = $index;
-                $props["productact"] = $isEdit ? "edit"  : 'add';
-                $res['html'] .= view('components.admin.product.gallery.item', $props);
+                    $res['html'] = "";
+                    $props['key'] = $index;
+                    $props["productact"] = $isEdit ? "edit"  : 'add';
+                    $props['large'] = "";
+                    $props['thumb']  = "";
+                    $res['html'] .= view('components.admin.product.gallery.item', $props);
 
-                break;
-            case 'sort':
-                foreach (explode(",", $request->sort) as $index => $id) {
-                    gllProducts::where('id', (int) $id)->update(['index' => $index]);
-                }
-                break;
-            case "single-image-delete":
-                $type = $request->type;
-                $productId = $request->id;
-                try {
-                    $product = Products::select(['main_img', 'sub_img', 'bg'])->where('id', $productId)->first();
+                    break;
+                case 'sort':
+                    foreach (explode(",", $request->sort) as $index => $id) {
+                        gllProducts::where('id', (int) $id)->update(['index' => $index]);
+                    }
+                    break;
+                case "delete":
                     switch ($type) {
-                        case 'img_sub':
-                            $file->deleteFile($product->sub_img);
-                            $product->update(['sub_img' => NULL]);
+
+                        case "single":
+                            $res['deleted'] =  $product->update([$request->get("name") => NULL]);
                             break;
-                        case 'img_bg':
-                            $file->deleteFile($product->bg);
-                            $product->update(['bg' => NULL]);
+                        case "gallery":
+                            $res['deleted'] = $gallery->update([$request->get("name"), NULL]);
+
                             break;
                         default:
+                            # code...
                             break;
                     }
-                    $res['deleted'] = true;
-                    $res['image'] = config('app.no_image');
-                } catch (\Exception $e) {
-
-                    $this->resCode = 500;
-                }
-
-                break;
-            case "single-image-upload":
-
-                $type = $request->type;
-                $id = $request->id;
-                $path = config("app.image_products") . "/";
-                $image = $request->image;
-                try {
-                    $product = Products::where('id', $id);
+                    break;
+                case "update":
+                    $media = $request->media ? explode(",", $request->media) : [];
+                    $media_id = count($media) > 0 ? $media[0] : NULL;
                     switch ($type) {
-                        case 'img_sub':
-                            $path = $path  . "sub/";
-                            $save = $file->storeFileImg($image, $path);
-                            $product->update(['sub_img' => $save]);
+
+                        case "single":
+                            $res['updated'] =  $product->update([$request->get("name") => $media_id]);
                             break;
-                        case 'img_bg':
-                            $path = $path . "background/";
-                            $save = $file->storeFileImg($image, $path);
-                            $product->update(['bg' => $save]);
-                            break;
-                        case 'img_main':
-                            $path = $path . "main/";
-                            $save = $file->storeFileImg($image, $path);
-                            $product->update(['main_img' => $save]);
+                        case "gallery":
+                            $res['updated'] = $gallery->update([$request->get("name") => $media_id]);
                             break;
                         default:
+                            # code...
                             break;
                     }
-                    $res['uploaded'] = true;
-                    $res['image'] = $file->ver_img($save);
-                } catch (\Exception $e) {
-                    $this->resCode = 500;
-                }
-                break;
-            default:
-                # code...
-                break;
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            return $this->successResponse($res);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
-
-        return response()->json($res, $this->resCode);
     }
 
     ////////////////////////////////////////
@@ -290,9 +207,11 @@ class AdminAjaxProductController extends Controller
         $modelRela = '\\App\Models\\' . $modelRela;
         $model = new $model_name;
         $p = "title";
-        if ($m == "Products" || $m === "Insurance") {
+        $arrayKeyName = ["Products",  "Insurance", 'Options'];
+        if (in_array($m, $arrayKeyName)) {
             $p = "name";
         }
+
         switch ($act) {
             case  "save":
                 try {
@@ -330,7 +249,7 @@ class AdminAjaxProductController extends Controller
         if ($option->keyword) {
             $model = $model->where($p, 'LIKE', '%' . $option->keyword . '%');
         }
-        $vadata = $vam->pagination($model, null, $page, null,  []);
+        $vadata = $vam->pagination($model, ['id', 'desc'], $page, 16);
         $selectedId = $selected;
         $array = [];
         foreach ($selected as $id) {

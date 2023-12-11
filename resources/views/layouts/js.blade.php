@@ -5,7 +5,7 @@
     var cookie_view = {{ Js::from(Cookie::has('view') ? Cookie::get('view') : 'grid') }};
 </script>
 
-<x-include.bootstrap />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/object-fit/ls.object-fit.min.js"
     integrity="sha512-uq8vhRSzhuN8xiniPi20LTGnDZs2UumLLjBHgwfAZnDtS4C/tNCqvr/ZZ4mzkt7BIKe1HB/O1o4zfiu5GX1S9g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -44,5 +44,8 @@
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.min.js"></script>
 <script src="{{ $file->ver('js/laravel-server/laravel-echo-server.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+    integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @yield('import_js')
 <script src="{{ $file->import_js('app.js') }}"></script>

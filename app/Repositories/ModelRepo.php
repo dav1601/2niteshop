@@ -8,42 +8,30 @@ use stdClass;
 
 class ModelRepo implements ModelInterface
 {
-    public $item_page;
+
     public function __construct()
     {
-        $this->item_page = config('product.item_page');
     }
-    public function pagination($query = null, $orderBy = [], $page = 1, $item_page, $pluck = [])
+    public function pagination($query = null, $orderBy = ["id", "desc"], $page = 1, $items = 16, $pluck = [])
     {
 
+        $key = (string) $orderBy[0];
+        $sort = strtoupper((string) $orderBy[1]);
+        $result = new stdClass();
         try {
-            if (!$page) {
-                $page = 1;
-            }
-
-            if (!$item_page) {
-                $item_page = $this->item_page;
-            }
-            if (!$orderBy) {
-                $key = "id";
-                $sort = "desc";
-            } else {
-                $key = (string) $orderBy[0];
-                $sort = strtoupper((string) $orderBy[1]);
-            }
             $count = $query->count();
-            $start = ($page - 1) * $item_page;
-            $number_page = ceil($count / $item_page);
-            $result = new stdClass();
-            $result->data = $query->orderBy($key, $sort)->offset($start)->limit($item_page)->get()->pluck($pluck);
+            $start = ($page - 1) * $items;
+            $number_page = ceil($count / $items);
+            $data = $query->orderBy($key, $sort)->offset($start)->limit($items)->get()->pluck($pluck);
+            $result->data = $data;
             $result->number_page = (int)  $number_page;
             $result->page = (int)  $page;
-            $result->nextPage = (int)  $page + 1;
-            $result->prePage = (int)  $page - 1;
             $result->count = (int) count($result->data);
-            return $result;
+            $result->all = (int) $count;
+            $result->error = null;
         } catch (\Exception $e) {
-            return $e;
+            $result->error = $e->getMessage();
         }
+        return $result;
     }
 }

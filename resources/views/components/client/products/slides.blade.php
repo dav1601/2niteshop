@@ -11,10 +11,6 @@
                         <x-product.itemgrid type="1" :message="$prd" />
                     </div>
                 @endif
-
-                @php
-                    unset($prd);
-                @endphp
             @endforeach
         </div>
         <div class="swiper-button-next"></div>

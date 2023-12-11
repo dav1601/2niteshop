@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Traits\AvFileManager;
 use App\Models\Products;
 use App\Models\Insurance;
 use Illuminate\Support\Carbon;
@@ -19,10 +20,13 @@ class FileRepository implements FileInterface
 {
     public $folder;
     public $driver;
+    public $noImage;
+    use AvFileManager;
     public function __construct()
     {
         $this->folder = config('2nitefile.forder');
         $this->driver = config('filesystems.va_driver');
+        $this->noImage = config("app.no_image");
     }
     public function import_css($file = "")
     {
@@ -57,7 +61,7 @@ class FileRepository implements FileInterface
                 $path = "storage" . "/" . $link;
                 $link =  config('app.url') . "/" . $path . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
 
-                return File::exists($path) ? $link : $this->noImage();
+                return File::exists($path) ? $link : $this->noImage;
             case 'cloudinary':
                 $data = json_decode($link);
                 $path = $link;
@@ -85,38 +89,14 @@ class FileRepository implements FileInterface
     {
         return  asset('client/images/banner_2nite.png') . '?ver=' . Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
     }
-    public function storeFileImg($file, $path)
+    public function storeFileImg($file, $path = "all", $disk = "storage")
     {
-        if (!$path) {
-            return "";
-        }
-        $last_path = substr($path, -1);
-
-        if ($last_path !== "/") {
-            $path = $path . "/";
-        }
 
         switch ($this->driver) {
             case 'local':
-                $path_public = config('app.url') . "/storage" . "/" . $path;
-                $name = $file->getClientOriginalName();
-                if (file_exists($path_public .  $name)) {
-                    $file_name = pathinfo($name, PATHINFO_FILENAME);
-                    $ext = $file->getClientOriginalExtension();
-                    $name = $file_name . '-1' . '.' . $ext;
-                    $k = 1;
-                    while (file_exists($path_public . $name)) {
-                        $name = $file_name . '-' . $k  . '.' . $ext;
-                        $k++;
-                    }
-                }
-                $save = $path . $name;
-                if (Storage::disk('public')->putFileAs(
-                    $path,
-                    $file,
-                    $name
-                )) {
-                    return $save;
+                $res = $this->saveFile($file, $path, $disk);
+                if ($res) {
+                    return $res['path'];
                 }
                 break;
             case 'cloudinary':
@@ -135,29 +115,17 @@ class FileRepository implements FileInterface
         }
         return "";
     }
-    public function deleteFile($path): bool
+    public function deleteFile($path, $disk = "storage"): bool
     {
 
         if ($path) {
             switch ($this->driver) {
                 case 'local':
-                    $first_path = $path[0];
-                    if ($first_path === "/") {
-                        $path = substr($path, 1);
-                    }
-                    $path = "storage/" . $path;
-                    if (File::exists($path)) {
-                        return unlink($path);
-                    }
-                    break;
+                    return Storage::disk($disk)->delete($path);
                 default:
                     break;
             }
         }
         return false;
-    }
-    public function noImage()
-    {
-        return "https://res.cloudinary.com/vanh-tech/image/upload/v1684495435/logo/360_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb-removebg-preview_jxhtqz.png";
     }
 }

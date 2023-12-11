@@ -39,17 +39,17 @@ class Address extends Model
         'phone',
         'prov',
         'prov_id',
+        "dist_id",
+        "ward_id",
         'dist',
-        'dist_id',
         'ward',
-        'ward_id',
         'detail',
         'map',
         'def',
+        "type"
     ];
-    public function user(){
-        return $this->belongsTo('App\Models\User');
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User' , 'user_id' , "id");
     }
-
-
 }

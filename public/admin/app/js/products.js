@@ -33,7 +33,7 @@ $(function () {
     // //////////////////////
 
     // /////////////////////////////////////////
-
+    // ANCHOR ajax add + update //////////////////////////////////////////////////////
     $("#formProducts").ajaxForm({
         beforeSend: function () {
             $.btn_loading_v2(btnSubmit, true, false);
@@ -41,7 +41,11 @@ $(function () {
         success: function (res) {
             const data = res.data;
             $.btn_loading_v2(btnSubmit, false, false);
-            return (location.href = data.redirect_edit);
+            if (!isEdit) {
+                return (location.href = data.redirect_edit);
+            } else {
+                toastr.success("update product success");
+            }
         },
         error: function (res) {
             const data = res.responseJSON.data;
@@ -49,6 +53,24 @@ $(function () {
             $.validationFail(data);
             $.btn_loading_v2(btnSubmit, false, false);
         },
+    });
+    $(document).on("click", "#replicate_product", function (e) {
+        $.btn_loading_v2($(this), true, false);
+        $.ajax({
+            type: "post",
+            url: route("product_replicate"),
+            data: { id: productId },
+            dataType: "json",
+            success: function (res) {
+                const data = res.data;
+                window.location.href = data.redirect;
+            },
+            error: function (data) {
+                $.btn_loading_v2($(this), false, false);
+                toastr.error("Not Found Product");
+            },
+        });
+        return false;
     });
 
     // /////////////////////////////////////////
@@ -157,13 +179,41 @@ $(function () {
             );
         }
     });
+    function group_btn_loading(loading = true) {
+        const btns = $(".prd_edit_action").children("button");
+        $.each(btns, function (indexInArray, btn) {
+            $.btn_loading_v2(btn, loading, false);
+        });
+    }
 
+    // ANCHOR force delete //////////////////////////////////////////////////////
+    $(document).on("click", "#prd_delete", function () {
+        group_btn_loading();
+        $.ajax({
+            type: "post",
+            url: route("delete_product"),
+            data: {
+                prdId: productId,
+                foc: $(this).attr("data-foc"),
+            },
+            dataType: "json",
+            success: function (res) {
+                toastr.success("delete success");
+                return (window.location.href = res.data.rd);
+            },
+            error: function (res) {
+                console.log(res);
+                group_btn_loading(false);
+            },
+        });
+    });
     // /////////////////////////////////////////
     function currentPage() {
         return $("#product__show--page .page-item.active .page-link").attr(
             "data-page"
         );
     }
+    // ANCHOR load products //////////////////////////////////////////////////////
     function load_products(action = "load", page = 1, dataAjax = {}) {
         switch (action) {
             case "delete-product":
@@ -188,10 +238,15 @@ $(function () {
             "sort"
         );
         let categories = [];
+
         let selectedCategories = $(".a-checkbox-input:checked");
         $.each(selectedCategories, function (i, e) {
             categories.push($(e).val());
         });
+        console.log(
+            "🚀 ~ file: products.js:214 ~ load_products ~ categories:",
+            categories
+        );
         form.append("act", action);
         form.append("page", page);
         if (!_.isEmpty(dataAjax)) {
@@ -200,16 +255,16 @@ $(function () {
             }
         }
 
-        form.append("sort", val_sort);
-        form.append("field", sort);
+        form.append("sort", sort);
+        form.append("sortField", val_sort);
         form.append("name", nameOrId);
-        form.append("pMin", priceMin);
-        form.append("pMax", priceMax);
+        form.append("priceMin", priceMin);
+        form.append("priceMax", priceMax);
         form.append("producer", pdc);
         form.append("author", author);
         form.append("model", model);
         form.append("status", status);
-        form.append("usage", usage);
+        form.append("usage_stte", usage);
         form.append("categories", categories);
         return $.ajax({
             type: "post",
@@ -230,7 +285,7 @@ $(function () {
         load_products();
     }
     // ////////////////////////////////////////
-    $(document).on("click", prefix__filter + "category", function () {
+    $(document).on("click", ".prd__filter--category", function () {
         load_products();
     });
     // //////////////////////////////// end filter cat main
@@ -466,12 +521,14 @@ $(function () {
             .catch((res) => {});
     });
     // ///////////////////////////////////////////////////
+    // ANCHOR gallery add  //////////////////////////////////////////////////////
+    // Mai lam phan nay
     $(document).on("click", ".a-product-gallery-add", function () {
         const id = isEdit ? productId : null;
         const item = {
             id: null,
-            image_700: "",
-            image_80: "",
+            media_700: "",
+            media_80: "",
             products_id: id,
         };
         const index = galleries.length;
@@ -482,7 +539,8 @@ $(function () {
             index: index,
             id: id,
         }).then((res) => {
-            $("#product-galleries").append(res.html);
+            const data = res.data;
+            $("#product-galleries").append(data.html);
         });
     });
     // //////////////////////////////////////////////////
@@ -538,17 +596,18 @@ $(function () {
         });
     });
     initSortGallery();
+    // ANCHOR sort gallery //////////////////////////////////////////////////////
     function sortGallery() {
         let sort = [];
         const els = $("#product-galleries").find(".a-product-gallery-item");
-
         $.each(els, function (index, el) {
             sort.push($(el).attr("data-id"));
+            const input = $(el).find("input");
+            input.attr("data-index", index);
         });
         handle_gallery("sort", {
             sort: sort,
         }).then((res) => {
-            console.log(res);
             toastr.success("Sắp xếp gallery thành công");
         });
     }
@@ -591,6 +650,7 @@ $(function () {
             cursor: "move",
             scroll: false,
             tolerance: "pointer",
+            scroll: true,
             cursorAt: { bottom: 10, right: 10 },
             axis: "y",
             update: function (event, ui) {
@@ -681,5 +741,111 @@ $(function () {
             }
         });
     });
+    // ANCHOR media //////////////////////////////////////////////////////
+    function handle_media(act = "update", params = {}) {
+        params["productId"] = productId;
+        params["act"] = act;
+        $.ajax({
+            type: "post",
+            url: route("handle_gallery"),
+            data: $.objToFormData(params),
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+        }).then((res) => {
+            const data = res.data;
+            if (data.updated) {
+                toastr.success("update media success");
+            }
+            if (data.deleted) {
+                toastr.success("delete media success");
+            }
+        });
+    }
+    $(document).on("change", ".product_single_image", function () {
+        if (!isEdit) {
+            return;
+        }
+        const media = $(this).val();
+        console.log("🚀 ~ file: products.js:711 ~ media:", media);
+        const name = $(this).attr("name");
+        console.log("🚀 ~ file: products.js:713 ~ name:", name);
+        if (media) {
+            handle_media("update", {
+                media: media,
+                type: "single",
+                name: name,
+            });
+        } else {
+            handle_media("delete", {
+                type: "single",
+                name: name,
+            });
+        }
+    });
+    $(document).on("change", ".product_gallery_input", function () {
+        if (!isEdit) {
+            return;
+        }
+        const idx = $(this).attr("data-index");
+        console.log("🚀 ~ file: products.js:729 ~ idx:", idx);
+        const name = $(this).attr("name");
+        console.log("🚀 ~ file: products.js:731 ~ name:", name);
+        const media = $(this).val();
+        handle_media("update", {
+            type: "gallery",
+            name: name,
+            media: media,
+            index: idx,
+        });
+    });
+    // ANCHOR name_to_slug //////////////////////////////////////////////////////
+    $(document).on(
+        "keyup",
+        "#product_name",
+        _.debounce(function () {
+            $(this).change();
+        }, 300)
+    );
+    $(document).on("change", "#product_name", function () {
+        const name = $(this).val();
+        const elSlug = $("#product_slug");
+        elSlug.val("converting....");
+        elSlug.attr("disabled", "disabled");
+        $.ajax({
+            type: "post",
+            url: route("product.name-to-slug"),
+            data: { name: name },
+            dataType: "json",
+            success: function (res) {
+                console.log(res.data.slug);
+                elSlug.val(res.data.slug);
+                elSlug.removeAttr("disabled");
+            },
+        });
+    });
+    // $(document).on("change", "#imgProductSub", function () {
+    //     if (!isEdit) {
+    //         return;
+    //     }
+    //     const media = $(this).val();
+    //     if (media) {
+    //         handle_media("update", { media: media, type: "img_second" });
+    //     } else {
+    //         handle_media("delete", { type: "img_second" });
+    //     }
+    // });
+    // $(document).on("change", "#imgProductBg", function () {
+    //     if (!isEdit) {
+    //         return;
+    //     }
+    //     const media = $(this).val();
+    //     if (media) {
+    //         handle_media("update", { media: media, type: "img_background" });
+    //     } else {
+    //         handle_media("delete", { type: "img_background" });
+    //     }
+    // });
     // /////////////////////
 });

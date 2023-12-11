@@ -5,7 +5,7 @@
             <a href="{{ url('category/' . $category->slug) }}">
                 <div class="icon-name">
                     @if ($category->parent_id == 0)
-                        <img src="{{ $file->ver_img($category->icon) }}" width="25" height="25"
+                        <img src="{{ urlImg($category->icon) }}" width="25" height="25"
                             alt=" {{ $category->name }} ">
                     @endif
                     <span>{{ $category->name }}</span>

@@ -43,6 +43,9 @@ class rela extends Component
             case 'blogs':
                 $title =  "Bài viết liên kết";
                 break;
+            case 'options':
+                $title =  "Options đi kèm";
+                break;
             case 'ins':
                 $title =  "Chính sách bảo hành";
                 break;

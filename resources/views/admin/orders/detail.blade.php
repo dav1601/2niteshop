@@ -15,6 +15,7 @@
 @section('name')
     Chi Tiết Đơn Hàng
 @endsection
+
 @section('content')
     <div class="row mx-0">
         <div class="col-12 mt-4 p-0">
@@ -50,7 +51,7 @@
                                             {{ $item->id }}
                                         </td>
                                         <td>
-                                            <img src="{{ $file->ver_img($item->options->image) }}" width="150px"
+                                            <img src="{{ urlImg($item->options->image, 'media') }}" width="150px"
                                                 alt="">
                                         </td>
                                         <td>
@@ -113,15 +114,15 @@
 
 
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer text-right">
+                        <x-layout.button.back link="{{ route('show_orders') }}" />
                         @if ($ordered->status == 3)
-                            <a data-id="{{ $ordered->id }}"
-                                class="invoice-{{ $ordered->id }} btn navi_btn w-100 export_invoice mb-4 text-center">
+                            <a data-code="{{ $ordered->code }}" class="btn bg-orange export_invoice text-center">
                                 <i class="fa-solid fa-file-export"></i> Xuất Hoá Đơn
                             </a>
                         @endif
-                        <a href="{{ route('show_orders') }}" class="btn navi_btn w-100">Quay Lại Trang Danh Sách Đơn
-                            Hàng</a>
+
+
                     </div>
 
                 </div>

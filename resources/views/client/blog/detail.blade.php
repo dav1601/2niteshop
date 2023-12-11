@@ -9,7 +9,7 @@
     tech news, game hot, review, unbox, iphone moi, macbook moi, surface moi, tips, huong dan va thu thuat')
 @section('og-title', $blog->title)
 @section('og-desc', $blog->desc)
-@section('og-image', $file->ver_img($blog->img))
+@section('og-image', urlImg($blog->img))
 @section('twitter-title', $blog->title)
 @section('og-type', 'blog')
 {{-- end seo meta og twitt --}}

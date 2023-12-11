@@ -4,6 +4,7 @@
 @import "_layout";
 @import "_component";
 @import "../client/component";
+
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 body {
@@ -14,8 +15,19 @@ body {
     font-weight: $font-weight;
     background: $body-bg;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     scroll-behavior: smooth;
+}
+.va-card {
+    .card-header {
+        font-size: 16px !important;
+        text-transform: capitalize !important;
+        font-weight: bold !important;
+        color: white !important;
+        * {
+            margin: 0;
+        }
+    }
 }
 .tox-tinymce-aux {
     z-index: 999999 !important;
@@ -118,6 +130,11 @@ i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
     }
     .va-checkbox label::before {
         top: 2px;
+    }
+}
+#config__home--show {
+    td {
+        text-align: center;
     }
 }
 .show_gll_700,
@@ -662,4 +679,14 @@ i.mce-i-[FONT-AWESOME-CLASSNAME]:before {
 #product__show {
     height: 850px;
     overflow-y: scroll;
+}
+// ANCHOR dark //////////////////////////////////////////////////////
+.dark-tab {
+    border-bottom: none !important;
+    a {
+        color: #656472 !important;
+    }
+}
+// ANCHOR configuration //////////////////////////////////////////////////////
+#configuration_general {
 }

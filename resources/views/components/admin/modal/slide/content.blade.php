@@ -12,5 +12,5 @@
 <input type="hidden" name="id" value="{{ $slide->id }}" id="idSlide">
 <div class="my-2">
     <span class="d-block">Hình ảnh hiện tại:</span>
-    <img src="{{ $file->ver_img($slide->img) }}" class="w-100" style="max-height: 350px;" alt="">
+    <img src="" class="w-100" style="max-height: 350px;" alt="">
 </div>

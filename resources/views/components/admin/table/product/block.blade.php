@@ -49,5 +49,6 @@
     </tbody>
 </table>
 <div class="card-footer" id="product__block">
-    {!! navi_ajax_page($vadata->number_page, 1, '', 'justify-content-center', 'mt-2') !!}
+
+    <x-pagination number_page="$vadata->number_page" page="1" />
 </div>

@@ -93,8 +93,8 @@
                                     <div class="left__header">
                                         <div class="davishop__avatar">
                                             @if (Auth::user()->avatar != null)
-                                                <img src="{{ $daviUser->getAvatarUser(Auth::id()) }}" width="48"
-                                                    height="48" class="rounded-circle" alt="avatar user">
+                                                <img src="{{ urlImg(Auth::user()->avatar) }}" width="48" height="48"
+                                                    class="rounded-circle" alt="avatar user">
                                             @endif
                                         </div>
                                         <div class="davishop__info pl-2">

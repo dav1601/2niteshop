@@ -103,37 +103,52 @@ $(function () {
         };
         ajaxSort(data);
     }
-    $(document).on("submit", ".formUpdateCategory", function (e) {
-        e.preventDefault();
-        let form = $(this)[0];
-        $.errForm(true, form);
-        let data = new FormData(this);
-        $.btn_loading_v2(form, true, true);
-        $.ajax({
-            type: "post",
-            url: route("handle_edit_cat"),
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: data,
-            dataType: "json",
-            success: function (res) {
-                if (res.update_categories) {
-                    $("#outputCategories").html(res.categories_html);
-                }
-                $.btn_loading_v2(form, false, true);
-                $.errForm(false, form, res.errors);
-                if (res.s) {
-                    $(".admin-cate-item.--" + data.get("id"))
-                        .children("span")
-                        .text(res.name);
-                    $.vaToas("Chỉnh sửa danh mục thành công");
-                } else {
-                    $.vaToas("Chỉnh sửa danh mục thất bại", "e");
-                }
-            },
-        });
+    // ANCHOR update category //////////////////////////////////////////////////////
+    $("#formUpdateCategory").ajaxForm({
+        beforeSubmit: function () {
+            $.btn_loading_v2($("#formUpdateCategory"), true, true);
+        },
+        success: function (response) {
+            toastr.success("Cập nhật danh mục thành công");
+            $.btn_loading_v2($("#formUpdateCategory"), false, true);
+            console.log(response);
+        },
+        error: function (errors) {
+            $.btn_loading_v2($("#formUpdateCategory"), false, true);
+            console.log(errors);
+        },
     });
+    // $(document).on("submit", ".formUpdateCategory", function (e) {
+    //     e.preventDefault();
+    //     let form = $(this)[0];
+    //     $.errForm(true, form);
+    //     let data = new FormData(this);
+    //     $.btn_loading_v2(form, true, true);
+    //     $.ajax({
+    //         type: "post",
+    //         url: route("handle_edit_cat"),
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         data: data,
+    //         dataType: "json",
+    //         success: function (res) {
+    //             if (res.update_categories) {
+    //                 $("#outputCategories").html(res.categories_html);
+    //             }
+    //             $.btn_loading_v2(form, false, true);
+    //             $.errForm(false, form, res.errors);
+    //             if (res.s) {
+    //                 $(".admin-cate-item.--" + data.get("id"))
+    //                     .children("span")
+    //                     .text(res.name);
+    //                 $.vaToas("Chỉnh sửa danh mục thành công");
+    //             } else {
+    //                 $.vaToas("Chỉnh sửa danh mục thất bại", "e");
+    //             }
+    //         },
+    //     });
+    // });
     function ajaxSort(data) {
         $.ajax({
             type: "post",

@@ -2,6 +2,7 @@
 /public/hot
 /public/admin/images
 /public/client/avatar
+/public/media
 /public/storage
 /storage/*.key
 /storage/app

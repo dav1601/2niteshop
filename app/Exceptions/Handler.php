@@ -9,7 +9,7 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    use Responser;
+    
     /**
      * A list of the exception types that are not reported.
      *

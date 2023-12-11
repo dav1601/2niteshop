@@ -39,7 +39,7 @@
                             <x-slot name="label">
                                 {{ $cate->name }}
                             </x-slot>
-                            <x-slot name="main" :style="$margin">
+                            <x-slot name="main" class="{{ $classCheckbox }}" :style="$margin">
 
                             </x-slot>
                         </x-admin.layout.form.acheckbox>
@@ -54,7 +54,8 @@
                                     <x-slot name="label">
                                         {{ $cate->name }}
                                     </x-slot>
-                                    <x-slot name="main" :style="$margin" class="" id="">
+                                    <x-slot name="main" class="{{ $classCheckbox }}" :style="$margin"
+                                        id="">
 
                                     </x-slot>
                                 </x-admin.layout.form.acheckbox>

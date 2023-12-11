@@ -62,9 +62,15 @@ return [
         ],
         'public' => [
             'driver' => 'local',
-            'root' => public_path() . '/storage',
-            'url' => env('APP_URL') . '/storage',
+            'root' => public_path(""),
+            'url' => env('APP_URL'),
             'visibility' => 'public',
+        ],
+        'storage' => [
+            'driver' => 'local',
+            'root' => public_path("storage"),
+            'url' => env('APP_URL') . '/storage',
+
         ],
 
         's3' => [
@@ -82,10 +88,10 @@ return [
             'root'   => public_path('media'),
             'url'    => env('APP_URL') . '/media',
         ],
-        'a_media' => [
+        'lfm' => [
             'driver' => 'local',
-            'root'   => public_path('a/media'),
-            'url'    => env('APP_URL') . '/a/media',
+            'root'   => public_path('lfm'),
+            'url'    => env('APP_URL') . "/lfm",
         ],
     ],
 

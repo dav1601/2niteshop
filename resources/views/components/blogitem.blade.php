@@ -14,7 +14,7 @@
                 <i>{{ Illuminate\Support\Carbon::create($blog->created_at)->format('M') }}</i>
             </span>
             <a href="{{ $href }}" class="up__views">
-                <img src="{{ $file->ver_img($blog->img) }}" alt=" {{ $blog->title }} " class="img-fluid lazy">
+                <img src="{{ urlImg($blog->img) }}" alt=" {{ $blog->title }} " class="img-fluid lazy">
             </a>
         </div>
         <div class="blog__item--right col-9 va-fix-64 pr-0">

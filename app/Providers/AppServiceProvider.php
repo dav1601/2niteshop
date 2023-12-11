@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Config;
+use App\Models\Orders;
+use App\Observers\OrderObserver;
 use App\Repositories\DaviUser;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
@@ -46,6 +48,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\VaEventInterface::class,
             \App\Repositories\VaEventRepo::class
         );
+        $this->app->bind(
+            \App\Repositories\AMedia\AvFileManagerInterface::class,
+            \App\Repositories\AMedia\AvFileManager::class
+        );
     }
 
     /**
@@ -79,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
 
             return new \Illuminate\Filesystem\FilesystemAdapter($driver, $adapter);
         });
-
+        Orders::observe(OrderObserver::class);
         Paginator::useTailwind();
         View::share('carbon', new Carbon());
         View::share('daviUser', $daviUser);

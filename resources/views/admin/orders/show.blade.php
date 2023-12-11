@@ -11,7 +11,7 @@
 @endsection
 
 @section('name')
-    Danh Sách Sản Phẩm
+    Danh Sách Đơn Hàng
 @endsection
 @section('content')
     <div class="row mx-0">
@@ -119,7 +119,8 @@
                         Danh sách sản phẩm
                     </div>
                     <div class="card-body pb-0" id="table__show--orders">
-                        <x-tableorders :number="$number_page" :page="$page" :order="$orders" />
+                        <x-layout.loading center="true" />
+                        {{-- <x-tableorders :orders="$orders" /> --}}
                     </div>
 
                 </div>

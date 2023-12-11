@@ -26873,13 +26873,14 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
   .container {
-    max-width: 1280px;
+    max-width: 1280px !important;
   }
 }
 .container {
   padding: 0px !important;
+  position: relative !important;
 }
 
 [aria-current=page] span {
@@ -27608,12 +27609,38 @@ body::-webkit-scrollbar-thumb,
 .product__item {
   position: relative;
   overflow: hidden;
-  transition: all 0.5s;
+  transition: all 0.3s ease-in-out;
   width: 100%;
   padding: 0 5px !important;
 }
 .product__item--img {
   position: relative;
+  width: 305px;
+  height: 305px;
+}
+.product__item--img img {
+  visibility: unset;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.product__item--img .img_show {
+  opacity: 1;
+}
+.product__item--img .img_hide {
+  opacity: 0;
+}
+.product__item--img:hover .img_show {
+  opacity: 0;
+}
+.product__item--img:hover .img_hide {
+  opacity: 1;
+}
+.product__item--img:hover .quick__view {
+  visibility: visible;
 }
 .product__item--img .quick__view {
   visibility: hidden;
@@ -27664,44 +27691,6 @@ body::-webkit-scrollbar-thumb,
   justify-content: center;
   align-items: center;
   margin-bottom: 5px;
-}
-.product__item--labels .stock-2 {
-  background: #ce11d1 !important;
-}
-.product__item--labels .stock-3 {
-  background: #696973;
-}
-.product__item--labels .ht {
-  background: #a13333;
-}
-.product__item .img_show {
-  visibility: unset;
-}
-.product__item .img_hide {
-  visibility: unset;
-  position: absolute;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-.product__item:hover .img_show {
-  visibility: hidden;
-  position: absolute;
-  opacity: 1;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-.product__item:hover .img_hide {
-  visibility: unset;
-  position: unset;
-  opacity: 1;
-}
-.product__item:hover .quick__view {
-  visibility: visible;
 }
 .product__item--content .name {
   font-family: "Nunito Sans", sans-serif;
@@ -28068,8 +28057,8 @@ body::-webkit-scrollbar-thumb,
 }
 .cart__item--caption {
   padding: 0px 10px;
-  flex: 0 0 50%;
-  max-width: 50%;
+  flex: 0 0 60%;
+  max-width: 60%;
 }
 .cart__item--caption .name {
   color: #333333;
@@ -28686,13 +28675,13 @@ body::-webkit-scrollbar-thumb,
   margin-bottom: 5px;
 }
 .product__item--labels .stock-2 {
-  background: #ce11d1 !important;
+  background: #696973 !important;
 }
 .product__item--labels .stock-3 {
-  background: #696973;
+  background: #ffcb00 !important;
 }
 .product__item--labels .hl {
-  background: #a13333;
+  background: #ff3838 !important;
 }
 
 .bis {
@@ -29912,16 +29901,14 @@ body::-webkit-scrollbar-thumb,
 #b1ad__footer--content .box__ft .box__chill-header {
   margin-bottom: 10px;
 }
-#b1ad__footer--content .box__ft--header h1 {
-  display: inline-block;
-  color: #ffffff;
-  font-family: Montserrat;
+#b1ad__footer--content .box__ft--header h3 {
   font-size: 22px;
   font-weight: 700;
-  line-height: 26.4px;
-  margin: 0px 0px 15px;
-  text-align: left;
-  text-transform: uppercase;
+  padding: 0px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+  color: white;
 }
 #b1ad__footer--content .box__ft--cont p:not(.box-chill p) {
   color: #ffffff;
@@ -30472,6 +30459,13 @@ body::-webkit-scrollbar-thumb,
   transition: all 0.25s ease;
 }
 
+.pgb-btn-layout-tabs {
+  color: white;
+}
+.pgb-btn-layout-tabs:hover {
+  background-color: var(--primary);
+}
+
 .a-form-label {
   color: #d1d5db;
   font-weight: 700;
@@ -30520,40 +30514,6 @@ body::-webkit-scrollbar-thumb,
   word-wrap: break-word;
 }
 
-.a-media-item {
-  height: 150px;
-  width: 150px;
-  margin-bottom: 15px;
-  margin-left: 7.5px;
-  margin-right: 7.5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid #34495e;
-  position: relative;
-  transition: all 0.25s ease-in-out;
-}
-
-.image-checkbox {
-  overflow: hidden;
-  cursor: pointer;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  margin-bottom: 0;
-  outline: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.image-checkbox img {
-  width: 100%;
-  height: 100%;
-}
-
 .image-auto {
   width: auto !important;
   max-width: 100% !important;
@@ -30565,21 +30525,13 @@ body::-webkit-scrollbar-thumb,
   display: none;
 }
 
-.image-checkbox-checked {
-  border: 1px solid gray;
-}
-
-.image-checkbox-checked.active {
-  border: 4px solid #4783b0;
-}
-
 .image-checkbox .fa {
   position: absolute;
   color: #4a79a3;
   background-color: #fff;
   padding: 5px;
-  top: 0;
-  right: 0;
+  top: 0px;
+  right: 0px;
 }
 
 .image-checkbox.active .fa {
@@ -30600,20 +30552,98 @@ body::-webkit-scrollbar-thumb,
      object-position: 50% 50%;
 }
 
+#a-media-selected .image-selected {
+  width: 40px;
+  height: 40px;
+  transition: all 0.25s ease-in-out;
+}
+#a-media-selected .image-selected i {
+  font-size: 12px;
+  top: -3px;
+  right: -6px;
+  z-index: 10001;
+  color: white;
+}
+#a-media-selected .image-selected i:hover {
+  color: var(--danger);
+}
+#a-media-selected .image-selected.active {
+  border: 3px solid #4783b0;
+}
+#a-media-selected #a-media-selected-files {
+  max-height: 45px;
+  overflow-y: auto;
+}
+
 #a-media-layout {
   position: relative;
 }
 #a-media-layout-l #a-media-media-l {
-  padding-top: 20px;
-  height: 75vh;
+  height: calc(100% - 24px);
   border-right: 1px solid gray;
 }
 #a-media-layout-l #a-media-media-l #a-media {
-  height: calc(100% - 85px);
+  height: calc(75vh - 85px);
+  overflow-y: auto;
+  scroll-behavior: smooth;
   overflow-y: auto;
 }
+#a-media-layout-l #a-media-media-l #a-media-files {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-wrap: wrap;
+}
+#a-media-layout-l #a-media-media-l #a-media .a-media-progress {
+  position: relative;
+  overflow: hidden;
+  background: var(--secondary) !important;
+}
+#a-media-layout-l #a-media-media-l #a-media .a-media-item {
+  flex: 1 1 150px;
+  max-width: 150px;
+  height: 150px;
+  margin: 0 !important;
+  padding: 8px;
+  overflow: hidden;
+  text-align: center;
+  box-sizing: border-box;
+  background: transparent;
+  position: relative;
+  transition: all 0.25s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#a-media-layout-l #a-media-media-l #a-media .a-media-item .image-checkbox {
+  position: relative;
+  background: #f0f0f1;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  overflow: hidden;
+  box-sizing: border-box;
+  outline: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#a-media-layout-l #a-media-media-l #a-media .a-media-item .image-checkbox-checked {
+  border: 1px solid gray;
+}
+#a-media-layout-l #a-media-media-l #a-media .a-media-item .image-checkbox-checked.active {
+  border: 4px solid #4783b0;
+}
+#a-media-layout-l #a-media-media-l #a-media-selected {
+  background-color: #19222c;
+  padding: 10px;
+  z-index: 10000;
+  bottom: 0;
+  left: 0;
+}
 #a-media-layout-l #a-media-media-r {
-  height: 75vh;
+  height: calc(85vh - 80px);
   overflow-y: auto;
   padding: 10px;
 }
@@ -30697,52 +30727,12 @@ body::-webkit-scrollbar-thumb,
   opacity: 0;
 }
 
-.cannot-upload-message {
-  background-color: #ffc6c4;
-  font-size: 17px;
-  display: flex;
-  align-items: center;
-  margin: 5px 0;
-  padding: 5px 10px 5px 30px;
-  border-radius: 5px;
-  color: #bb0000;
-  display: none;
-}
-
-@-webkit-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-.cannot-upload-message span,
-.upload-button-icon {
-  padding-right: 10px;
-}
-
-.cannot-upload-message span:last-child {
-  padding-left: 20px;
-  cursor: pointer;
-}
-
 .file-block {
   color: #f7fff7;
   background-color: #7b2cbf;
-  transition: all 1s;
-  width: 390px;
+  transition: all 1s ease-in-out;
   position: relative;
-  display: none;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -30751,15 +30741,16 @@ body::-webkit-scrollbar-thumb,
   border-radius: 25px;
   cursor: pointer;
 }
-
-.file-info {
+.file-block .file-info {
   display: flex;
   align-items: center;
   font-size: 15px;
 }
-
-.file-icon {
+.file-block .file-icon {
   margin-right: 10px;
+}
+.file-block .remove-file-icon:hover {
+  color: var(--danger);
 }
 
 #modal-popup-image::before {
@@ -30773,6 +30764,170 @@ body::-webkit-scrollbar-thumb,
   z-index: -1;
 }
 
+#a-media-popup-files {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.br-loader:nth-child(1) {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: #2193b0;
+  background: linear-gradient(to right, #2193b0, #6dd5ed);
+  -webkit-animation: animate1 2s linear infinite;
+          animation: animate1 2s linear infinite;
+}
+
+@-webkit-keyframes animate1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes animate1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.br-loader:nth-child(2) {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 3px;
+  background: #2193b0;
+  background: linear-gradient(to bottom, #2193b0, #6dd5ed);
+  -webkit-animation: animate2 2s linear infinite;
+          animation: animate2 2s linear infinite;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+}
+
+@-webkit-keyframes animate2 {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes animate2 {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+.br-loader:nth-child(3) {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: #2193b0;
+  background: linear-gradient(to left, #2193b0, #6dd5ed);
+  -webkit-animation: animate3 2s linear infinite;
+          animation: animate3 2s linear infinite;
+}
+
+@-webkit-keyframes animate3 {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes animate3 {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+.br-loader:nth-child(4) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 3px;
+  background: #2193b0;
+  background: linear-gradient(to top, #2193b0, #6dd5ed);
+  -webkit-animation: animate4 2s linear infinite;
+          animation: animate4 2s linear infinite;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+}
+
+@-webkit-keyframes animate4 {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes animate4 {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+#addAddress label,
+#editAddress label {
+  margin-bottom: 5px;
+  font-size: 15px;
+  font-family: Helvetica Neue;
+}
+#addAddress .type__item,
+#editAddress .type__item {
+  align-items: center;
+  display: flex;
+  padding: 0 12px;
+  margin-right: 10px;
+  height: 40px;
+  max-width: 146px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  box-sizing: border-box;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
+  border-radius: 2px;
+  cursor: pointer;
+}
+#addAddress .va-checkbox label::before,
+#editAddress .va-checkbox label::before {
+  width: 17px;
+  height: 17px;
+  top: 0px;
+  left: 0;
+  border-radius: 4px;
+}
+#addAddress .va-checkbox label::after,
+#editAddress .va-checkbox label::after {
+  top: 3px;
+  left: 1px;
+}
+#addAddress .type__item--active,
+#editAddress .type__item--active {
+  border: 1px solid #277b8c;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -30784,6 +30939,36 @@ ul {
 }
 
 a {
+  text-decoration: none;
+}
+
+.title {
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 15px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+  text-align: left;
+}
+
+.nite-btn {
+  background: #3a4754;
+  border-width: 2px;
+  padding: 15px;
+  color: #fafafa;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+.nite-btn:hover {
+  color: #fafafa;
+  background: #146678;
   text-decoration: none;
 }
 
@@ -32352,6 +32537,15 @@ body {
   border-color: #dddddd;
   margin-bottom: 25px;
 }
+#wp_checkout .checkout .section__checkout .section-title {
+  font-size: 15px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+}
+#wp_checkout .checkout .section__checkout label {
+  margin-bottom: 0;
+}
 #wp_checkout .checkout .section__checkout--title {
   font-family: "Montserrat";
   font-weight: 700;
@@ -32879,43 +33073,6 @@ body {
   width: auto;
   white-space: nowrap;
   margin-right: 12px;
-}
-#wrapper__account #account .layout__account--right .right__content #addAddress label,
-#wrapper__account #account .layout__account--right .right__content #editAddress label {
-  margin-bottom: 5px;
-  font-size: 15px;
-  font-family: Helvetica Neue;
-}
-#wrapper__account #account .layout__account--right .right__content #addAddress .type__item,
-#wrapper__account #account .layout__account--right .right__content #editAddress .type__item {
-  align-items: center;
-  display: flex;
-  padding: 0 12px;
-  margin-right: 10px;
-  height: 40px;
-  max-width: 146px;
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  box-sizing: border-box;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
-  border-radius: 2px;
-  cursor: pointer;
-}
-#wrapper__account #account .layout__account--right .right__content #addAddress .va-checkbox label::before,
-#wrapper__account #account .layout__account--right .right__content #editAddress .va-checkbox label::before {
-  width: 17px;
-  height: 17px;
-  top: 0px;
-  left: 0;
-  border-radius: 4px;
-}
-#wrapper__account #account .layout__account--right .right__content #addAddress .va-checkbox label::after,
-#wrapper__account #account .layout__account--right .right__content #editAddress .va-checkbox label::after {
-  top: 3px;
-  left: 1px;
-}
-#wrapper__account #account .layout__account--right .right__content #addAddress .type__item--active,
-#wrapper__account #account .layout__account--right .right__content #editAddress .type__item--active {
-  border: 1px solid #277b8c;
 }
 #wrapper__account #account .layout__account--right .right__content .edit__pro5 {
   margin-bottom: 50px;

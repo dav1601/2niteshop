@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\Responser;
 use App\Models\BlockCategory;
 use App\Models\gllCat;
 use App\Models\Policy;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminCategoryController extends Controller
 {
+    use Responser;
     public $file;
     public function __construct(FileInterface $file)
     {
@@ -51,7 +53,7 @@ class AdminCategoryController extends Controller
     public function cat(Request $request)
     {
         $categories = Category::tree(false);
-        $url = route('cat');
+        $url = route('view-category.product');
         return view('admin.products.category.prd.index', compact('categories', 'url'));
     }
     ////////////////////////////////////////
@@ -126,13 +128,11 @@ class AdminCategoryController extends Controller
                 $last = (int) Category::where('parent_id', $request->parent)->where('level', '=', $data['level'])->orderBy('position', 'DESC')->first()->position;
             }
             if ($request->has('img')) {
-                $path = "admin/images/category/banner/";
-                $data['img'] = $file->storeFileImg($request->img, $path);
+                $data['img'] = $file->storeFileImg($request->img, "category/img", "public");
             }
             if ($request->has('icon')) {
                 if ($request->parent == 0) {
-                    $path_icon = "admin/images/category/icon/";
-                    $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
+                    $data['icon'] = $file->storeFileImg($request->icon, "category/icon", 'public');
                 } else {
                     return redirect()->back()->with('error', '1');
                 }
@@ -148,92 +148,119 @@ class AdminCategoryController extends Controller
     }
 
     ////////////////////////////////////////
-    public function handle_edit(Request $request, FileInterface $file)
-    {
-        $res['errors'] = [];
-        $res['s'] = true;
-        $res['update_categories'] = false;
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|unique:category,name,' . $request->id,
-                'title' => 'required|unique:category,title,' . $request->id,
-                'slug' => 'unique:category,slug,' . $request->id,
-                'desc' => 'required',
-                'keywords' => 'required',
-                'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'icon' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
-                'gll.*' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500'
-            ],
-            [
-                'name.required' => "Không Được Để Trống Tên",
-                'name.unique' => "Danh Mục Đã Tồn Tại",
-                'title.required' => "Không Được Để Trống Title",
-                'title.unique' => "Title Danh Mục Đã Tồn Tại",
-                'desc.required' => "Bạn chưa nhập description",
-                'keywords.required' => "Bạn chưa nhập keywords",
-                'slug.required' => "Không Được Để Trống Slug",
-                'slug.unique' => "Slug Đã Tồn Tại",
-                'img.image' => "File không phải là file ảnh",
-                'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'img.max' => "File ảnh không vượt quá 500kb",
-                'icon.image' => "File không phải là file ảnh",
-                'icon.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg ",
-                'icon.max' => "File ảnh không vượt quá 500kb",
-                'gll.*.image' => "Có File Không Phải Là File Ảnh",
-                'gll.*.mimes' => "Có File Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
-                'gll.*.max' => "Có File ảnh vượt quá 500kb",
-            ]
-        );
+    // public function handle_edit(Request $request, FileInterface $file)
+    // {
+    //     $res['errors'] = [];
+    //     $res['s'] = true;
+    //     $res['update_categories'] = false;
+    //     $validator = Validator::make(
+    //         $request->all(),
+    //         [
+    //             'name' => 'required|unique:category,name,' . $request->id,
+    //             'title' => 'required|unique:category,title,' . $request->id,
+    //             'slug' => 'unique:category,slug,' . $request->id,
+    //             'desc' => 'required',
+    //             'keywords' => 'required',
+    //             'img' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+    //             'icon' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500',
+    //             'gll.*' => 'image|mimes:jpeg,png,jpg,tiff,svg|max:500'
+    //         ],
+    //         [
+    //             'name.required' => "Không Được Để Trống Tên",
+    //             'name.unique' => "Danh Mục Đã Tồn Tại",
+    //             'title.required' => "Không Được Để Trống Title",
+    //             'title.unique' => "Title Danh Mục Đã Tồn Tại",
+    //             'desc.required' => "Bạn chưa nhập description",
+    //             'keywords.required' => "Bạn chưa nhập keywords",
+    //             'slug.required' => "Không Được Để Trống Slug",
+    //             'slug.unique' => "Slug Đã Tồn Tại",
+    //             'img.image' => "File không phải là file ảnh",
+    //             'img.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+    //             'img.max' => "File ảnh không vượt quá 500kb",
+    //             'icon.image' => "File không phải là file ảnh",
+    //             'icon.mimes' => "Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg ",
+    //             'icon.max' => "File ảnh không vượt quá 500kb",
+    //             'gll.*.image' => "Có File Không Phải Là File Ảnh",
+    //             'gll.*.mimes' => "Có File Ảnh sai định dạng các đuôi ảnh cho phép : jpeg,png,jpg,tiff,svg",
+    //             'gll.*.max' => "Có File ảnh vượt quá 500kb",
+    //         ]
+    //     );
 
-        if ($validator->fails()) {
-            $res['errors'] = $validator->errors();
-        } else {
-            $category = Category::where('id', $request->id)->firstOrFail();
-            $data['name'] = $request->name;
-            $data['title'] = $request->title;
-            $data['parent_id'] = $request->parent;
-            $data['active'] = $request->has("active-category") ? true : false;
-            if ($request->slug == null) {
-                $data['slug'] = Str::slug($request->name);
-            } else {
-                $data['slug'] = $request->slug;
-            }
-            $data['desc'] = $request->desc;
-            $data['keywords'] = $request->keywords;
-            if ($request->has('img')) {
-                if ($category->img != NULL)
-                    $this->file->deleteFile("" . $category->img);
-                $path = "admin/images/category/banner/";
-                $data['img'] = $file->storeFileImg($request->img, $path);
-            }
-            if ($request->has('icon')) {
-                if ($request->parent == 0) {
-                    if ($category->icon != NULL)
-                        $this->file->deleteFile("" . $category->icon);
-                    $path_icon = "admin/images/category/icon/";
-                    $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
-                }
-            }
-            $updated =  Category::where('id', $request->id)->update($data);
-            if ($category->parent_id != $request->parent) {
-                $html_2 = "";
-                $html_2 .= '<ul class="admin-cate admin-cate-connect row no-gutters lv-0" id="admin-cate-0"
-                data-lv="0">';
-                $html_2 .= view('components.admin.category.dd.item', ['categories' => Category::tree()]);
-                $html_2 .= "</div>";
-                $res['categories_html'] = $html_2;
-                $res['update_categories'] = true;
-            }
-            $res['name'] = $request->name;
-            if (!$updated) {
-                $res['s'] = false;
-            }
-        }
-        return response()->json($res);
-    }
+    //     if ($validator->fails()) {
+    //         $res['errors'] = $validator->errors();
+    //     } else {
+    //         $category = Category::where('id', $request->id)->firstOrFail();
+    //         $data['name'] = $request->name;
+    //         $data['title'] = $request->title;
+    //         $data['parent_id'] = $request->parent;
+    //         $data['active'] = $request->has("active-category") ? true : false;
+    //         if ($request->slug == null) {
+    //             $data['slug'] = Str::slug($request->name);
+    //         } else {
+    //             $data['slug'] = $request->slug;
+    //         }
+    //         $data['desc'] = $request->desc;
+    //         $data['keywords'] = $request->keywords;
+    //         if ($request->has('img')) {
+    //             if ($category->img != NULL)
+    //                 $this->file->deleteFile("" . $category->img);
+    //             $path = "admin/images/category/banner/";
+    //             $data['img'] = $file->storeFileImg($request->img, $path);
+    //         }
+    //         if ($request->has('icon')) {
+    //             if ($request->parent == 0) {
+    //                 if ($category->icon != NULL)
+    //                     $this->file->deleteFile("" . $category->icon);
+    //                 $path_icon = "admin/images/category/icon/";
+    //                 $data['icon'] = $file->storeFileImg($request->icon, $path_icon);
+    //             }
+    //         }
+    //         $updated =  Category::where('id', $request->id)->update($data);
+    //         if ($category->parent_id != $request->parent) {
+    //             $html_2 = "";
+    //             $html_2 .= '<ul class="admin-cate admin-cate-connect row no-gutters lv-0" id="admin-cate-0"
+    //             data-lv="0">';
+    //             $html_2 .= view('components.admin.category.dd.item', ['categories' => Category::tree()]);
+    //             $html_2 .= "</div>";
+    //             $res['categories_html'] = $html_2;
+    //             $res['update_categories'] = true;
+    //         }
+    //         $res['name'] = $request->name;
+    //         if (!$updated) {
+    //             $res['s'] = false;
+    //         }
+    //     }
+    //     return response()->json($res);
+    // }
 
     ////////////////////////////////////////
+    function handle_edit(Request $req)
+    {
+
+        $field = $req->all();
+        $id = (int) $field['id'];
+        $field['active'] = $field['active-category'] == "on" ? 1 : 0;
+        $currentParent = (int) Category::select("parent_id")->where("id", $id)->first()->parent_id;
+        if ((int)$field['parent'] !== $currentParent) {
+            $field['parent_id'] = (int) $field['parent'];
+            if ($field['parent_id'] !== 0) {
+                $field['level'] = (int) Category::select("level")->where("id", $field['parent_id'])->first()->level + 1;
+                $field['position'] = (int) Category::select("position")->where("parent_id", $field['parent_id'])->where("level", $field['level'])->latest()->position + 1;
+            } else {
+                $field['parent_id'] = 0;
+                $field['level'] = 0;
+                $field['position'] = (int) Category::select("position")->where("parent_id", 0)->where("level", 0)->latest()->position + 1;
+            }
+        }
+        $removeKeys = ["_token", "id", "img", "icon", "active-category", "parent"];
+        $arrayUpdate = array_diff_key($field, array_flip($removeKeys));
+        try {
+            $updated =  Category::where("id", $id)->update($arrayUpdate);
+            return $this->successResponse(['updated' => $updated]);
+        } catch (\Exception $e) {
+            return $this->errorResponse(['error' => $e->getMessage()]);
+        }
+    }
     ////////////////////////////////////////
 
     public function handle_delete($id)

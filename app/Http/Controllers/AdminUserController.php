@@ -265,21 +265,7 @@ class AdminUserController extends Controller
             return response()->json($data);
         } else {
             $main_img = $request->avatar;
-            $path = "client/avatar";
-            $save_main = $file->storeFileImg($main_img, $path);
-            // $n_main = $main_img->getClientOriginalName();
-            // if (file_exists($path_public . $n_main)) {
-            //     $filename = pathinfo($n_main, PATHINFO_FILENAME);
-            //     $ext = $main_img->getClientOriginalExtension();
-            //     $n_main = $filename . '(1)' . '.' . $ext;
-            //     $i = 1;
-            //     while (file_exists($path_public . $n_main)) {
-            //         $n_main = $filename . '(' . $i . ')' . '.' . $ext;
-            //         $i++;
-            //     }
-            // }
-            // $save_main = url($path_public . $n_main);
-            // $main_img->move($path_public, $n_main);
+            $save_main = $file->storeFileImg($main_img, "avatar", "public");
             $data['img'] = $save_main;
             $data['ok'] = 1;
             $data['unlink'] = $save_main;
@@ -296,7 +282,7 @@ class AdminUserController extends Controller
         $data_create = array();
         $data_update = array();
         $error = array();
-        $file->deleteFile($request->path);
+        $file->deleteFile($request->path, "public");
         $data['pong'] = $request->path;
         return response()->json($data);
     }
@@ -332,9 +318,9 @@ class AdminUserController extends Controller
             $user = User::where('id', '=', $id)->first();
             if ($request->has('avatar')) {
                 if ($user->avatar != NULL)
-                    $file->deleteFile("" . $user->avatar);
-                $path = "admin/images/avatar/";
-                $data_update_user['avatar'] = $file->storeFileImg($request->avatar, $path);
+                    $file->deleteFile($user->avatar, "public");
+
+                $data_update_user['avatar'] = $file->storeFileImg($request->avatar, "avatar", "public");
             }
             $data_update_user['name'] = $request->name;
             $data_update_user['phone'] = $request->phone;

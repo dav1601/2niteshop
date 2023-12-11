@@ -6,19 +6,17 @@ use Illuminate\View\Component;
 
 class tableorders extends Component
 {
-    public $order;
-    public $page;
-    public $number;
+    public $orders;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($order , $number , $page)
+    public function __construct($orders)
     {
-        $this->order = $order;
-        $this->number = $number;
-        $this->page = $page;
+        $this->orders = $orders;
+
     }
 
     /**

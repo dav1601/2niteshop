@@ -3,11 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Orders;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Http\Traits\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OrderSeeder extends Seeder
 {
+    use Product;
     /**
      * Run the database seeds.
      *
@@ -16,6 +18,9 @@ class OrderSeeder extends Seeder
     public function run()
     {
         Orders::truncate();
-        Orders::factory()->count(20)->create();
+        Orders::factory()->count(50)->create();
+        // foreach (Orders::all() as  $value) {
+        //     Orders::where("id", $value->id)->update(['code' => randCodeOrder($value->id)]);
+        // }
     }
 }

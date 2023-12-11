@@ -1,11 +1,15 @@
-@props(['key', 'item', 'productact'])
+@props(['key' => '', 'productact' => 'add', 'id' => '', 'large' => '', 'thumb' => ''])
 @php
     $name700 = 'galleries[' . $key . ']' . '[700]';
     $name80 = 'galleries[' . $key . ']' . '[80]';
+    $id_large = 'gallery-large-' . $key;
+    $id_thumb = 'gallery-thumb-' . $key;
     $isEdit = $productact === 'edit';
+    $id = $id ? $id : $key;
+    $nameLarge = $isEdit ? 'media_700' : 'gallery[' . $key . '][700]';
+    $nameThumb = $isEdit ? 'media_80' : 'gallery[' . $key . '][80]';
 @endphp
-<div class="col-10 row a-product-gallery-item position-relative mx-auto mb-3 p-5"
-    data-id="{{ $isEdit ? $item['id'] : null }}">
+<div class="col-10 row a-product-gallery-item position-relative mx-auto mb-3 p-5" data-id="{{ $isEdit ? $id : null }}">
 
     <div class="d-flex align-items-center justify-content-start a-product-gallery-action position-absolute">
         <button data-key="{{ $key }}" type="button" class="btn btn-sm btn-outline-info gallery-delete"><i
@@ -13,25 +17,21 @@
     </div>
 
     <div class="d-flex justify-content-start col-7">
-        <x-admin.ui.form.image width="240px" blockEventDef="{{ $isEdit ? 'true' : 'false' }}" height="240px"
-            data-size="700" classUpload="{{ $isEdit ? 'gallery-upload' : '' }}"
-            classClear="{{ $item['image_700'] && $isEdit ? 'd-block gallery-clear' : 'd-none' }}"
-            classInput="{{ $isEdit ? 'gallery-input' : '' }}" :name="$name700" id="imgProduct700-{{ $key }}"
-            label="Hình Ảnh Chi Tiết Lớn (700x700)" :image="$item['image_700'] ? $file->ver_img($item['image_700']) : ''">
-            <x-slot name="btn_clear" :data-index="$key" data-size="700"></x-slot>
-            <x-slot name="btn_upload" :data-index="$key" data-size="700"></x-slot>
-            <x-slot name="input" :data-index="$key" data-size="700"></x-slot>
+        <x-admin.ui.form.image width="240px" avMedia="true" classInput="product_gallery_input" height="240px"
+            label="Hình Ảnh Chi Tiết Lớn (700x700)" name="{{ $nameLarge }}" image="{{ urlImg($large, 'media') }}"
+            id="{{ $id_large }}">
+            <x-slot name="input" data-index="{{ $key }}" data-type="large">
+
+            </x-slot>
         </x-admin.ui.form.image>
     </div>
     <div class="d-flex justify-content-start col-5">
-        <x-admin.ui.form.image width="80px" blockEventDef="{{ $isEdit ? 'true' : 'false' }}" height="80px"
-            data-size="80" classUpload="{{ $isEdit ? 'gallery-upload' : '' }}"
-            classClear="{{ $item['image_80'] && $isEdit ? 'd-block gallery-clear' : 'd-none' }}"
-            classInput="{{ $isEdit ? 'gallery-input' : '' }}" :name="$name80" id="imgProduct80-{{ $key }}"
-            label="Hình Ảnh Chi Tiết Lớn (80x80)" :image="$item['image_80'] ? $file->ver_img($item['image_80']) : ''">
-            <x-slot name="btn_clear" :data-index="$key" data-size="80"></x-slot>
-            <x-slot name="btn_upload" :data-index="$key" data-size="80"></x-slot>
-            <x-slot name="input" :data-index="$key" data-size="80"></x-slot>
+        <x-admin.ui.form.image width="80px" avMedia="true" height="80px" classInput="product_gallery_input"
+            label="Hình Ảnh Chi Tiết Nhỏ (80x80)" name="{{ $nameThumb }}" image="{{ urlImg($thumb, 'media') }}"
+            id="{{ $id_thumb }}">
+            <x-slot name="input" data-index="{{ $key }}">
+
+            </x-slot>
         </x-admin.ui.form.image>
     </div>
 </div>

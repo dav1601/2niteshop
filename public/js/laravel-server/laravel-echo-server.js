@@ -1691,90 +1691,6 @@ var Echo = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./resources/sass/client/app.scss":
-/*!****************************************!*\
-  !*** ./resources/sass/client/app.scss ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/client/_variables.scss":
-/*!***********************************************!*\
-  !*** ./resources/sass/client/_variables.scss ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/client/_responsive.scss":
-/*!************************************************!*\
-  !*** ./resources/sass/client/_responsive.scss ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/client/_layout.scss":
-/*!********************************************!*\
-  !*** ./resources/sass/client/_layout.scss ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/client/_naviteam.scss":
-/*!**********************************************!*\
-  !*** ./resources/sass/client/_naviteam.scss ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/client/_component.scss":
-/*!***********************************************!*\
-  !*** ./resources/sass/client/_component.scss ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/client/_footer.scss":
-/*!********************************************!*\
-  !*** ./resources/sass/client/_footer.scss ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./resources/sass/admin/app.scss":
 /*!***************************************!*\
   !*** ./resources/sass/admin/app.scss ***!
@@ -1787,46 +1703,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/sass/admin/_variables.scss":
-/*!**********************************************!*\
-  !*** ./resources/sass/admin/_variables.scss ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/admin/_responsive.scss":
-/*!***********************************************!*\
-  !*** ./resources/sass/admin/_responsive.scss ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/admin/_layout.scss":
-/*!*******************************************!*\
-  !*** ./resources/sass/admin/_layout.scss ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/admin/_naviteam.scss":
-/*!*********************************************!*\
-  !*** ./resources/sass/admin/_naviteam.scss ***!
-  \*********************************************/
+/***/ "./resources/sass/client/app.scss":
+/*!****************************************!*\
+  !*** ./resources/sass/client/app.scss ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1934,18 +1814,8 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"/js/laravel-server/laravel-echo-server": 0,
-/******/ 			"admin/app/css/app": 0,
 /******/ 			"client/app/css/app": 0,
-/******/ 			"client/app/css/_component": 0,
-/******/ 			"admin/app/css/_naviteam": 0,
-/******/ 			"admin/app/css/_layout": 0,
-/******/ 			"admin/app/css/_responsive": 0,
-/******/ 			"admin/app/css/_variables": 0,
-/******/ 			"client/app/css/_footer": 0,
-/******/ 			"client/app/css/_naviteam": 0,
-/******/ 			"client/app/css/_layout": 0,
-/******/ 			"client/app/css/_responsive": 0,
-/******/ 			"client/app/css/_variables": 0
+/******/ 			"admin/app/css/app": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -1995,19 +1865,9 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/js/laravel-echo-server.js")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/admin/app.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/admin/_variables.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/admin/_responsive.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/admin/_layout.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/admin/_naviteam.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/client/app.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/client/_variables.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/client/_responsive.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/client/_layout.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/client/_naviteam.scss")))
-/******/ 	__webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/client/_component.scss")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["admin/app/css/app","client/app/css/app","client/app/css/_component","admin/app/css/_naviteam","admin/app/css/_layout","admin/app/css/_responsive","admin/app/css/_variables","client/app/css/_footer","client/app/css/_naviteam","client/app/css/_layout","client/app/css/_responsive","client/app/css/_variables"], () => (__webpack_require__("./resources/sass/client/_footer.scss")))
+/******/ 	__webpack_require__.O(undefined, ["client/app/css/app","admin/app/css/app"], () => (__webpack_require__("./resources/js/laravel-echo-server.js")))
+/******/ 	__webpack_require__.O(undefined, ["client/app/css/app","admin/app/css/app"], () => (__webpack_require__("./resources/sass/admin/app.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["client/app/css/app","admin/app/css/app"], () => (__webpack_require__("./resources/sass/client/app.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

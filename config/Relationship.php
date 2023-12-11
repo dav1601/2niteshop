@@ -5,7 +5,11 @@ return [
         'models' => ["Products", "Insurance"],
         'modelRela' => "ProductIns",
     ],
-
+    'products-options' =>
+    [
+        'models' => ["Products", "Options"],
+        'modelRela' => "ProductOption",
+    ],
     'product-products' =>
     [
         'models' => ["Products", "Products"],
